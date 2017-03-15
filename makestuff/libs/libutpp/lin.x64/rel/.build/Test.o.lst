@@ -1,0 +1,1302 @@
+   1              		.file	"Test.cpp"
+   2              		.text
+   3              		.align 2
+   4              		.p2align 4,,15
+   5              		.globl	_ZN8UnitTest4TestD2Ev
+   7              	_ZN8UnitTest4TestD2Ev:
+   8              	.LFB1043:
+   9              		.cfi_startproc
+  10 0000 488B0500 		movq	_ZTVN8UnitTest4TestE@GOTPCREL(%rip), %rax
+  10      000000
+  11 0007 4883C010 		addq	$16, %rax
+  12 000b 488907   		movq	%rax, (%rdi)
+  13 000e C3       		ret
+  14              		.cfi_endproc
+  15              	.LFE1043:
+  17              		.globl	_ZN8UnitTest4TestD1Ev
+  18              		.set	_ZN8UnitTest4TestD1Ev,_ZN8UnitTest4TestD2Ev
+  19 000f 90       		.align 2
+  20              		.p2align 4,,15
+  21              		.globl	_ZNK8UnitTest4Test7RunImplEv
+  23              	_ZNK8UnitTest4Test7RunImplEv:
+  24              	.LFB1047:
+  25              		.cfi_startproc
+  26 0010 F3C3     		rep ret
+  27              		.cfi_endproc
+  28              	.LFE1047:
+  30              		.align 2
+  31 0012 66666666 		.p2align 4,,15
+  31      662E0F1F 
+  31      84000000 
+  31      0000
+  32              		.globl	_ZN8UnitTest4TestD0Ev
+  34              	_ZN8UnitTest4TestD0Ev:
+  35              	.LFB1045:
+  36              		.cfi_startproc
+  37 0020 53       		pushq	%rbx
+  38              		.cfi_def_cfa_offset 16
+  39              		.cfi_offset 3, -16
+  40 0021 4889FB   		movq	%rdi, %rbx
+  41 0024 E8000000 		call	_ZN8UnitTest4TestD1Ev@PLT
+  41      00
+  42 0029 4889DF   		movq	%rbx, %rdi
+  43 002c 5B       		popq	%rbx
+  44              		.cfi_def_cfa_offset 8
+  45 002d E9000000 		jmp	_ZdlPv@PLT
+  45      00
+  46              		.cfi_endproc
+  47              	.LFE1045:
+  49              		.section	.text._ZNSt15basic_stringbufIcSt11char_traitsIcESaIcEED2Ev,"axG",@progbits,_ZNSt15basic_s
+  50              		.align 2
+  51              		.p2align 4,,15
+  52              		.weak	_ZNSt15basic_stringbufIcSt11char_traitsIcESaIcEED2Ev
+  54              	_ZNSt15basic_stringbufIcSt11char_traitsIcESaIcEED2Ev:
+  55              	.LFB1057:
+  56              		.cfi_startproc
+  57 0000 53       		pushq	%rbx
+  58              		.cfi_def_cfa_offset 16
+  59              		.cfi_offset 3, -16
+  60 0001 4889FB   		movq	%rdi, %rbx
+  61 0004 4883EC10 		subq	$16, %rsp
+  62              		.cfi_def_cfa_offset 32
+  63 0008 488B0500 		movq	_ZTVSt15basic_stringbufIcSt11char_traitsIcESaIcEE@GOTPCREL(%rip), %rax
+  63      000000
+  64 000f 4883C010 		addq	$16, %rax
+  65 0013 488907   		movq	%rax, (%rdi)
+  66 0016 488B4748 		movq	72(%rdi), %rax
+  67 001a 488D78E8 		leaq	-24(%rax), %rdi
+  68 001e 483B3D00 		cmpq	_ZNSs4_Rep20_S_empty_rep_storageE@GOTPCREL(%rip), %rdi
+  68      000000
+  69 0025 751D     		jne	.L13
+  70              	.L7:
+  71 0027 488B0500 		movq	_ZTVSt15basic_streambufIcSt11char_traitsIcEE@GOTPCREL(%rip), %rax
+  71      000000
+  72 002e 488D7B38 		leaq	56(%rbx), %rdi
+  73 0032 4883C010 		addq	$16, %rax
+  74 0036 488903   		movq	%rax, (%rbx)
+  75 0039 E8000000 		call	_ZNSt6localeD1Ev@PLT
+  75      00
+  76 003e 4883C410 		addq	$16, %rsp
+  77              		.cfi_remember_state
+  78              		.cfi_def_cfa_offset 16
+  79 0042 5B       		popq	%rbx
+  80              		.cfi_def_cfa_offset 8
+  81 0043 C3       		ret
+  82              	.L13:
+  83              		.cfi_restore_state
+  84 0044 48833D00 		cmpq	$0, _ZL28__gthrw___pthread_key_createPjPFvPvE@GOTPCREL(%rip)
+  84      00000000 
+  85 004c 488D5710 		leaq	16(%rdi), %rdx
+  86 0050 7417     		je	.L8
+  87 0052 83C8FF   		orl	$-1, %eax
+  88 0055 F00FC102 		lock xaddl	%eax, (%rdx)
+  89              	.L9:
+  90 0059 85C0     		testl	%eax, %eax
+  91 005b 7FCA     		jg	.L7
+  92 005d 488D7424 		leaq	15(%rsp), %rsi
+  92      0F
+  93 0062 E8000000 		call	_ZNSs4_Rep10_M_destroyERKSaIcE@PLT
+  93      00
+  94 0067 EBBE     		jmp	.L7
+  95              	.L8:
+  96 0069 8B50F8   		movl	-8(%rax), %edx
+  97 006c 8D4AFF   		leal	-1(%rdx), %ecx
+  98 006f 8948F8   		movl	%ecx, -8(%rax)
+  99 0072 89D0     		movl	%edx, %eax
+ 100 0074 EBE3     		jmp	.L9
+ 101              		.cfi_endproc
+ 102              	.LFE1057:
+ 104              		.weak	_ZNSt15basic_stringbufIcSt11char_traitsIcESaIcEED1Ev
+ 105              		.set	_ZNSt15basic_stringbufIcSt11char_traitsIcESaIcEED1Ev,_ZNSt15basic_stringbufIcSt11char_traitsI
+ 106              		.section	.text._ZNSt15basic_stringbufIcSt11char_traitsIcESaIcEED0Ev,"axG",@progbits,_ZNSt15basic_s
+ 107              		.align 2
+ 108              		.p2align 4,,15
+ 109              		.weak	_ZNSt15basic_stringbufIcSt11char_traitsIcESaIcEED0Ev
+ 111              	_ZNSt15basic_stringbufIcSt11char_traitsIcESaIcEED0Ev:
+ 112              	.LFB1059:
+ 113              		.cfi_startproc
+ 114 0000 53       		pushq	%rbx
+ 115              		.cfi_def_cfa_offset 16
+ 116              		.cfi_offset 3, -16
+ 117 0001 4889FB   		movq	%rdi, %rbx
+ 118 0004 4883EC10 		subq	$16, %rsp
+ 119              		.cfi_def_cfa_offset 32
+ 120 0008 488B0500 		movq	_ZTVSt15basic_stringbufIcSt11char_traitsIcESaIcEE@GOTPCREL(%rip), %rax
+ 120      000000
+ 121 000f 4883C010 		addq	$16, %rax
+ 122 0013 488907   		movq	%rax, (%rdi)
+ 123 0016 488B4748 		movq	72(%rdi), %rax
+ 124 001a 488D78E8 		leaq	-24(%rax), %rdi
+ 125 001e 483B3D00 		cmpq	_ZNSs4_Rep20_S_empty_rep_storageE@GOTPCREL(%rip), %rdi
+ 125      000000
+ 126 0025 7525     		jne	.L21
+ 127              	.L16:
+ 128 0027 488B0500 		movq	_ZTVSt15basic_streambufIcSt11char_traitsIcEE@GOTPCREL(%rip), %rax
+ 128      000000
+ 129 002e 488D7B38 		leaq	56(%rbx), %rdi
+ 130 0032 4883C010 		addq	$16, %rax
+ 131 0036 488903   		movq	%rax, (%rbx)
+ 132 0039 E8000000 		call	_ZNSt6localeD1Ev@PLT
+ 132      00
+ 133 003e 4889DF   		movq	%rbx, %rdi
+ 134 0041 E8000000 		call	_ZdlPv@PLT
+ 134      00
+ 135 0046 4883C410 		addq	$16, %rsp
+ 136              		.cfi_remember_state
+ 137              		.cfi_def_cfa_offset 16
+ 138 004a 5B       		popq	%rbx
+ 139              		.cfi_def_cfa_offset 8
+ 140 004b C3       		ret
+ 141              	.L21:
+ 142              		.cfi_restore_state
+ 143 004c 48833D00 		cmpq	$0, _ZL28__gthrw___pthread_key_createPjPFvPvE@GOTPCREL(%rip)
+ 143      00000000 
+ 144 0054 488D5710 		leaq	16(%rdi), %rdx
+ 145 0058 7417     		je	.L17
+ 146 005a 83C8FF   		orl	$-1, %eax
+ 147 005d F00FC102 		lock xaddl	%eax, (%rdx)
+ 148              	.L18:
+ 149 0061 85C0     		testl	%eax, %eax
+ 150 0063 7FC2     		jg	.L16
+ 151 0065 488D7424 		leaq	15(%rsp), %rsi
+ 151      0F
+ 152 006a E8000000 		call	_ZNSs4_Rep10_M_destroyERKSaIcE@PLT
+ 152      00
+ 153 006f EBB6     		jmp	.L16
+ 154              	.L17:
+ 155 0071 8B50F8   		movl	-8(%rax), %edx
+ 156 0074 8D4AFF   		leal	-1(%rdx), %ecx
+ 157 0077 8948F8   		movl	%ecx, -8(%rax)
+ 158 007a 89D0     		movl	%edx, %eax
+ 159 007c EBE3     		jmp	.L18
+ 160              		.cfi_endproc
+ 161              	.LFE1059:
+ 163              		.section	.text._ZN8UnitTest15MemoryOutStreamD1Ev,"axG",@progbits,_ZN8UnitTest15MemoryOutStreamD1Ev
+ 164              		.align 2
+ 165              		.p2align 4,,15
+ 166              		.weak	_ZN8UnitTest15MemoryOutStreamD1Ev
+ 168              	_ZN8UnitTest15MemoryOutStreamD1Ev:
+ 169              	.LFB1078:
+ 170              		.cfi_startproc
+ 171 0000 55       		pushq	%rbp
+ 172              		.cfi_def_cfa_offset 16
+ 173              		.cfi_offset 6, -16
+ 174 0001 53       		pushq	%rbx
+ 175              		.cfi_def_cfa_offset 24
+ 176              		.cfi_offset 3, -24
+ 177 0002 4889FB   		movq	%rdi, %rbx
+ 178 0005 4883EC18 		subq	$24, %rsp
+ 179              		.cfi_def_cfa_offset 48
+ 180 0009 488B0500 		movq	_ZTVN8UnitTest15MemoryOutStreamE@GOTPCREL(%rip), %rax
+ 180      000000
+ 181 0010 488B2D00 		movq	_ZNSs4_Rep20_S_empty_rep_storageE@GOTPCREL(%rip), %rbp
+ 181      000000
+ 182 0017 488D5018 		leaq	24(%rax), %rdx
+ 183 001b 4883C040 		addq	$64, %rax
+ 184 001f 48894760 		movq	%rax, 96(%rdi)
+ 185 0023 488B4758 		movq	88(%rdi), %rax
+ 186 0027 488917   		movq	%rdx, (%rdi)
+ 187 002a 488D78E8 		leaq	-24(%rax), %rdi
+ 188 002e 4839EF   		cmpq	%rbp, %rdi
+ 189 0031 7572     		jne	.L34
+ 190              	.L24:
+ 191 0033 488D0500 		leaq	24+_ZTCN8UnitTest15MemoryOutStreamE0_St19basic_ostringstreamIcSt11char_traitsIcESaIcEE(%rip),
+ 191      000000
+ 192 003a 488903   		movq	%rax, (%rbx)
+ 193 003d 488D0500 		leaq	64+_ZTCN8UnitTest15MemoryOutStreamE0_St19basic_ostringstreamIcSt11char_traitsIcESaIcEE(%rip),
+ 193      000000
+ 194 0044 48894360 		movq	%rax, 96(%rbx)
+ 195 0048 488B0500 		movq	_ZTVSt15basic_stringbufIcSt11char_traitsIcESaIcEE@GOTPCREL(%rip), %rax
+ 195      000000
+ 196 004f 4883C010 		addq	$16, %rax
+ 197 0053 48894308 		movq	%rax, 8(%rbx)
+ 198 0057 488B4350 		movq	80(%rbx), %rax
+ 199 005b 488D78E8 		leaq	-24(%rax), %rdi
+ 200 005f 4839EF   		cmpq	%rbp, %rdi
+ 201 0062 756D     		jne	.L35
+ 202              	.L29:
+ 203 0064 488B0500 		movq	_ZTVSt15basic_streambufIcSt11char_traitsIcEE@GOTPCREL(%rip), %rax
+ 203      000000
+ 204 006b 488D7B40 		leaq	64(%rbx), %rdi
+ 205 006f 4883C010 		addq	$16, %rax
+ 206 0073 48894308 		movq	%rax, 8(%rbx)
+ 207 0077 E8000000 		call	_ZNSt6localeD1Ev@PLT
+ 207      00
+ 208 007c 488D0500 		leaq	24+_ZTCN8UnitTest15MemoryOutStreamE0_So(%rip), %rax
+ 208      000000
+ 209 0083 488D7B60 		leaq	96(%rbx), %rdi
+ 210 0087 488903   		movq	%rax, (%rbx)
+ 211 008a 488B0500 		movq	_ZTVSt9basic_iosIcSt11char_traitsIcEE@GOTPCREL(%rip), %rax
+ 211      000000
+ 212 0091 4883C010 		addq	$16, %rax
+ 213 0095 48894360 		movq	%rax, 96(%rbx)
+ 214 0099 E8000000 		call	_ZNSt8ios_baseD2Ev@PLT
+ 214      00
+ 215 009e 4883C418 		addq	$24, %rsp
+ 216              		.cfi_remember_state
+ 217              		.cfi_def_cfa_offset 24
+ 218 00a2 5B       		popq	%rbx
+ 219              		.cfi_def_cfa_offset 16
+ 220 00a3 5D       		popq	%rbp
+ 221              		.cfi_def_cfa_offset 8
+ 222 00a4 C3       		ret
+ 223              	.L34:
+ 224              		.cfi_restore_state
+ 225 00a5 48833D00 		cmpq	$0, _ZL28__gthrw___pthread_key_createPjPFvPvE@GOTPCREL(%rip)
+ 225      00000000 
+ 226 00ad 488D5710 		leaq	16(%rdi), %rdx
+ 227 00b1 744A     		je	.L25
+ 228 00b3 83C8FF   		orl	$-1, %eax
+ 229 00b6 F00FC102 		lock xaddl	%eax, (%rdx)
+ 230              	.L26:
+ 231 00ba 85C0     		testl	%eax, %eax
+ 232 00bc 0F8F71FF 		jg	.L24
+ 232      FFFF
+ 233 00c2 488D7424 		leaq	15(%rsp), %rsi
+ 233      0F
+ 234 00c7 E8000000 		call	_ZNSs4_Rep10_M_destroyERKSaIcE@PLT
+ 234      00
+ 235 00cc E962FFFF 		jmp	.L24
+ 235      FF
+ 236              	.L35:
+ 237 00d1 48833D00 		cmpq	$0, _ZL28__gthrw___pthread_key_createPjPFvPvE@GOTPCREL(%rip)
+ 237      00000000 
+ 238 00d9 488D5710 		leaq	16(%rdi), %rdx
+ 239 00dd 742B     		je	.L30
+ 240 00df 83C8FF   		orl	$-1, %eax
+ 241 00e2 F00FC102 		lock xaddl	%eax, (%rdx)
+ 242              	.L31:
+ 243 00e6 85C0     		testl	%eax, %eax
+ 244 00e8 0F8F76FF 		jg	.L29
+ 244      FFFF
+ 245 00ee 488D7424 		leaq	15(%rsp), %rsi
+ 245      0F
+ 246 00f3 E8000000 		call	_ZNSs4_Rep10_M_destroyERKSaIcE@PLT
+ 246      00
+ 247 00f8 E967FFFF 		jmp	.L29
+ 247      FF
+ 248              	.L25:
+ 249 00fd 8B50F8   		movl	-8(%rax), %edx
+ 250 0100 8D4AFF   		leal	-1(%rdx), %ecx
+ 251 0103 8948F8   		movl	%ecx, -8(%rax)
+ 252 0106 89D0     		movl	%edx, %eax
+ 253 0108 EBB0     		jmp	.L26
+ 254              	.L30:
+ 255 010a 8B50F8   		movl	-8(%rax), %edx
+ 256 010d 8D4AFF   		leal	-1(%rdx), %ecx
+ 257 0110 8948F8   		movl	%ecx, -8(%rax)
+ 258 0113 89D0     		movl	%edx, %eax
+ 259 0115 EBCF     		jmp	.L31
+ 260              		.cfi_endproc
+ 261              	.LFE1078:
+ 263              		.set	.LTHUNK0,_ZN8UnitTest15MemoryOutStreamD1Ev
+ 264 0117 660F1F84 		.p2align 4,,15
+ 264      00000000 
+ 264      00
+ 265              		.weak	_ZTv0_n24_N8UnitTest15MemoryOutStreamD1Ev
+ 267              	_ZTv0_n24_N8UnitTest15MemoryOutStreamD1Ev:
+ 268              	.LFB1135:
+ 269              		.cfi_startproc
+ 270 0120 4C8B17   		movq	(%rdi), %r10
+ 271 0123 49037AE8 		addq	-24(%r10), %rdi
+ 272 0127 E9D4FEFF 		jmp	.LTHUNK0
+ 272      FF
+ 273              		.cfi_endproc
+ 274              	.LFE1135:
+ 276              		.section	.text._ZN8UnitTest15MemoryOutStreamD0Ev,"axG",@progbits,_ZN8UnitTest15MemoryOutStreamD0Ev
+ 277              		.align 2
+ 278              		.p2align 4,,15
+ 279              		.weak	_ZN8UnitTest15MemoryOutStreamD0Ev
+ 281              	_ZN8UnitTest15MemoryOutStreamD0Ev:
+ 282              	.LFB1079:
+ 283              		.cfi_startproc
+ 284 0000 55       		pushq	%rbp
+ 285              		.cfi_def_cfa_offset 16
+ 286              		.cfi_offset 6, -16
+ 287 0001 53       		pushq	%rbx
+ 288              		.cfi_def_cfa_offset 24
+ 289              		.cfi_offset 3, -24
+ 290 0002 4889FB   		movq	%rdi, %rbx
+ 291 0005 4883EC18 		subq	$24, %rsp
+ 292              		.cfi_def_cfa_offset 48
+ 293 0009 488B0500 		movq	_ZTVN8UnitTest15MemoryOutStreamE@GOTPCREL(%rip), %rax
+ 293      000000
+ 294 0010 488B2D00 		movq	_ZNSs4_Rep20_S_empty_rep_storageE@GOTPCREL(%rip), %rbp
+ 294      000000
+ 295 0017 488D5018 		leaq	24(%rax), %rdx
+ 296 001b 4883C040 		addq	$64, %rax
+ 297 001f 48894760 		movq	%rax, 96(%rdi)
+ 298 0023 488B4758 		movq	88(%rdi), %rax
+ 299 0027 488917   		movq	%rdx, (%rdi)
+ 300 002a 488D78E8 		leaq	-24(%rax), %rdi
+ 301 002e 4839EF   		cmpq	%rbp, %rdi
+ 302 0031 757A     		jne	.L48
+ 303              	.L38:
+ 304 0033 488D0500 		leaq	24+_ZTCN8UnitTest15MemoryOutStreamE0_St19basic_ostringstreamIcSt11char_traitsIcESaIcEE(%rip),
+ 304      000000
+ 305 003a 488903   		movq	%rax, (%rbx)
+ 306 003d 488D0500 		leaq	64+_ZTCN8UnitTest15MemoryOutStreamE0_St19basic_ostringstreamIcSt11char_traitsIcESaIcEE(%rip),
+ 306      000000
+ 307 0044 48894360 		movq	%rax, 96(%rbx)
+ 308 0048 488B0500 		movq	_ZTVSt15basic_stringbufIcSt11char_traitsIcESaIcEE@GOTPCREL(%rip), %rax
+ 308      000000
+ 309 004f 4883C010 		addq	$16, %rax
+ 310 0053 48894308 		movq	%rax, 8(%rbx)
+ 311 0057 488B4350 		movq	80(%rbx), %rax
+ 312 005b 488D78E8 		leaq	-24(%rax), %rdi
+ 313 005f 4839EF   		cmpq	%rbp, %rdi
+ 314 0062 7575     		jne	.L49
+ 315              	.L43:
+ 316 0064 488B0500 		movq	_ZTVSt15basic_streambufIcSt11char_traitsIcEE@GOTPCREL(%rip), %rax
+ 316      000000
+ 317 006b 488D7B40 		leaq	64(%rbx), %rdi
+ 318 006f 4883C010 		addq	$16, %rax
+ 319 0073 48894308 		movq	%rax, 8(%rbx)
+ 320 0077 E8000000 		call	_ZNSt6localeD1Ev@PLT
+ 320      00
+ 321 007c 488D0500 		leaq	24+_ZTCN8UnitTest15MemoryOutStreamE0_So(%rip), %rax
+ 321      000000
+ 322 0083 488D7B60 		leaq	96(%rbx), %rdi
+ 323 0087 488903   		movq	%rax, (%rbx)
+ 324 008a 488B0500 		movq	_ZTVSt9basic_iosIcSt11char_traitsIcEE@GOTPCREL(%rip), %rax
+ 324      000000
+ 325 0091 4883C010 		addq	$16, %rax
+ 326 0095 48894360 		movq	%rax, 96(%rbx)
+ 327 0099 E8000000 		call	_ZNSt8ios_baseD2Ev@PLT
+ 327      00
+ 328 009e 4889DF   		movq	%rbx, %rdi
+ 329 00a1 E8000000 		call	_ZdlPv@PLT
+ 329      00
+ 330 00a6 4883C418 		addq	$24, %rsp
+ 331              		.cfi_remember_state
+ 332              		.cfi_def_cfa_offset 24
+ 333 00aa 5B       		popq	%rbx
+ 334              		.cfi_def_cfa_offset 16
+ 335 00ab 5D       		popq	%rbp
+ 336              		.cfi_def_cfa_offset 8
+ 337 00ac C3       		ret
+ 338              	.L48:
+ 339              		.cfi_restore_state
+ 340 00ad 48833D00 		cmpq	$0, _ZL28__gthrw___pthread_key_createPjPFvPvE@GOTPCREL(%rip)
+ 340      00000000 
+ 341 00b5 488D5710 		leaq	16(%rdi), %rdx
+ 342 00b9 744A     		je	.L39
+ 343 00bb 83C8FF   		orl	$-1, %eax
+ 344 00be F00FC102 		lock xaddl	%eax, (%rdx)
+ 345              	.L40:
+ 346 00c2 85C0     		testl	%eax, %eax
+ 347 00c4 0F8F69FF 		jg	.L38
+ 347      FFFF
+ 348 00ca 488D7424 		leaq	15(%rsp), %rsi
+ 348      0F
+ 349 00cf E8000000 		call	_ZNSs4_Rep10_M_destroyERKSaIcE@PLT
+ 349      00
+ 350 00d4 E95AFFFF 		jmp	.L38
+ 350      FF
+ 351              	.L49:
+ 352 00d9 48833D00 		cmpq	$0, _ZL28__gthrw___pthread_key_createPjPFvPvE@GOTPCREL(%rip)
+ 352      00000000 
+ 353 00e1 488D5710 		leaq	16(%rdi), %rdx
+ 354 00e5 742B     		je	.L44
+ 355 00e7 83C8FF   		orl	$-1, %eax
+ 356 00ea F00FC102 		lock xaddl	%eax, (%rdx)
+ 357              	.L45:
+ 358 00ee 85C0     		testl	%eax, %eax
+ 359 00f0 0F8F6EFF 		jg	.L43
+ 359      FFFF
+ 360 00f6 488D7424 		leaq	15(%rsp), %rsi
+ 360      0F
+ 361 00fb E8000000 		call	_ZNSs4_Rep10_M_destroyERKSaIcE@PLT
+ 361      00
+ 362 0100 E95FFFFF 		jmp	.L43
+ 362      FF
+ 363              	.L39:
+ 364 0105 8B50F8   		movl	-8(%rax), %edx
+ 365 0108 8D4AFF   		leal	-1(%rdx), %ecx
+ 366 010b 8948F8   		movl	%ecx, -8(%rax)
+ 367 010e 89D0     		movl	%edx, %eax
+ 368 0110 EBB0     		jmp	.L40
+ 369              	.L44:
+ 370 0112 8B50F8   		movl	-8(%rax), %edx
+ 371 0115 8D4AFF   		leal	-1(%rdx), %ecx
+ 372 0118 8948F8   		movl	%ecx, -8(%rax)
+ 373 011b 89D0     		movl	%edx, %eax
+ 374 011d EBCF     		jmp	.L45
+ 375              		.cfi_endproc
+ 376              	.LFE1079:
+ 378              		.set	.LTHUNK1,_ZN8UnitTest15MemoryOutStreamD0Ev
+ 379 011f 90       		.p2align 4,,15
+ 380              		.weak	_ZTv0_n24_N8UnitTest15MemoryOutStreamD0Ev
+ 382              	_ZTv0_n24_N8UnitTest15MemoryOutStreamD0Ev:
+ 383              	.LFB1136:
+ 384              		.cfi_startproc
+ 385 0120 4C8B17   		movq	(%rdi), %r10
+ 386 0123 49037AE8 		addq	-24(%r10), %rdi
+ 387 0127 E9D4FEFF 		jmp	.LTHUNK1
+ 387      FF
+ 388              		.cfi_endproc
+ 389              	.LFE1136:
+ 391              		.text
+ 392              		.align 2
+ 393 0032 66666666 		.p2align 4,,15
+ 393      662E0F1F 
+ 393      84000000 
+ 393      0000
+ 394              		.globl	_ZN8UnitTest4Test11GetTestListEv
+ 396              	_ZN8UnitTest4Test11GetTestListEv:
+ 397              	.LFB1038:
+ 398              		.cfi_startproc
+ 399              		.cfi_personality 0x9b,DW.ref.__gxx_personality_v0
+ 400              		.cfi_lsda 0x1b,.LLSDA1038
+ 401 0040 803D0000 		cmpb	$0, _ZGVZN8UnitTest4Test11GetTestListEvE6s_list(%rip)
+ 401      000000
+ 402 0047 740F     		je	.L62
+ 403 0049 488D0500 		leaq	_ZZN8UnitTest4Test11GetTestListEvE6s_list(%rip), %rax
+ 403      000000
+ 404 0050 C3       		ret
+ 405              		.p2align 4,,10
+ 406 0051 0F1F8000 		.p2align 3
+ 406      000000
+ 407              	.L62:
+ 408 0058 53       		pushq	%rbx
+ 409              		.cfi_def_cfa_offset 16
+ 410              		.cfi_offset 3, -16
+ 411 0059 488D3D00 		leaq	_ZGVZN8UnitTest4Test11GetTestListEvE6s_list(%rip), %rdi
+ 411      000000
+ 412 0060 E8000000 		call	__cxa_guard_acquire@PLT
+ 412      00
+ 413 0065 85C0     		testl	%eax, %eax
+ 414 0067 750F     		jne	.L63
+ 415 0069 488D0500 		leaq	_ZZN8UnitTest4Test11GetTestListEvE6s_list(%rip), %rax
+ 415      000000
+ 416 0070 5B       		popq	%rbx
+ 417              		.cfi_remember_state
+ 418              		.cfi_restore 3
+ 419              		.cfi_def_cfa_offset 8
+ 420 0071 C3       		ret
+ 421              		.p2align 4,,10
+ 422 0072 660F1F44 		.p2align 3
+ 422      0000
+ 423              	.L63:
+ 424              		.cfi_restore_state
+ 425 0078 488D3D00 		leaq	_ZZN8UnitTest4Test11GetTestListEvE6s_list(%rip), %rdi
+ 425      000000
+ 426              	.LEHB0:
+ 427 007f E8000000 		call	_ZN8UnitTest8TestListC1Ev@PLT
+ 427      00
+ 428              	.LEHE0:
+ 429 0084 488D3D00 		leaq	_ZGVZN8UnitTest4Test11GetTestListEvE6s_list(%rip), %rdi
+ 429      000000
+ 430 008b E8000000 		call	__cxa_guard_release@PLT
+ 430      00
+ 431 0090 488D0500 		leaq	_ZZN8UnitTest4Test11GetTestListEvE6s_list(%rip), %rax
+ 431      000000
+ 432 0097 5B       		popq	%rbx
+ 433              		.cfi_remember_state
+ 434              		.cfi_restore 3
+ 435              		.cfi_def_cfa_offset 8
+ 436 0098 C3       		ret
+ 437              	.L55:
+ 438              		.cfi_restore_state
+ 439 0099 488D3D00 		leaq	_ZGVZN8UnitTest4Test11GetTestListEvE6s_list(%rip), %rdi
+ 439      000000
+ 440 00a0 4889C3   		movq	%rax, %rbx
+ 441 00a3 E8000000 		call	__cxa_guard_abort@PLT
+ 441      00
+ 442 00a8 4889DF   		movq	%rbx, %rdi
+ 443              	.LEHB1:
+ 444 00ab E8000000 		call	_Unwind_Resume@PLT
+ 444      00
+ 445              	.LEHE1:
+ 446              		.cfi_endproc
+ 447              	.LFE1038:
+ 448              		.globl	__gxx_personality_v0
+ 449              		.section	.gcc_except_table,"a",@progbits
+ 450              	.LLSDA1038:
+ 451 0000 FF       		.byte	0xff
+ 452 0001 FF       		.byte	0xff
+ 453 0002 01       		.byte	0x1
+ 454 0003 08       		.uleb128 .LLSDACSE1038-.LLSDACSB1038
+ 455              	.LLSDACSB1038:
+ 456 0004 3F       		.uleb128 .LEHB0-.LFB1038
+ 457 0005 05       		.uleb128 .LEHE0-.LEHB0
+ 458 0006 59       		.uleb128 .L55-.LFB1038
+ 459 0007 00       		.uleb128 0
+ 460 0008 6B       		.uleb128 .LEHB1-.LFB1038
+ 461 0009 05       		.uleb128 .LEHE1-.LEHB1
+ 462 000a 00       		.uleb128 0
+ 463 000b 00       		.uleb128 0
+ 464              	.LLSDACSE1038:
+ 465              		.text
+ 467              		.align 2
+ 468              		.p2align 4,,15
+ 469              		.globl	_ZN8UnitTest4TestC2EPKcS2_S2_i
+ 471              	_ZN8UnitTest4TestC2EPKcS2_S2_i:
+ 472              	.LFB1040:
+ 473              		.cfi_startproc
+ 474 00b0 488B0500 		movq	_ZTVN8UnitTest4TestE@GOTPCREL(%rip), %rax
+ 474      000000
+ 475 00b7 53       		pushq	%rbx
+ 476              		.cfi_def_cfa_offset 16
+ 477              		.cfi_offset 3, -16
+ 478 00b8 4889FB   		movq	%rdi, %rbx
+ 479 00bb 488D7F08 		leaq	8(%rdi), %rdi
+ 480 00bf 4883C010 		addq	$16, %rax
+ 481 00c3 488947F8 		movq	%rax, -8(%rdi)
+ 482 00c7 E8000000 		call	_ZN8UnitTest11TestDetailsC1EPKcS2_S2_i@PLT
+ 482      00
+ 483 00cc 48C74328 		movq	$0, 40(%rbx)
+ 483      00000000 
+ 484 00d4 C6433000 		movb	$0, 48(%rbx)
+ 485 00d8 5B       		popq	%rbx
+ 486              		.cfi_def_cfa_offset 8
+ 487 00d9 C3       		ret
+ 488              		.cfi_endproc
+ 489              	.LFE1040:
+ 491              		.globl	_ZN8UnitTest4TestC1EPKcS2_S2_i
+ 492              		.set	_ZN8UnitTest4TestC1EPKcS2_S2_i,_ZN8UnitTest4TestC2EPKcS2_S2_i
+ 493              		.section	.rodata.str1.1,"aMS",@progbits,1
+ 494              	.LC0:
+ 495 0000 556E6861 		.string	"Unhandled system exception"
+ 495      6E646C65 
+ 495      64207379 
+ 495      7374656D 
+ 495      20657863 
+ 496              	.LC1:
+ 497 001b 556E6861 		.string	"Unhandled exception: "
+ 497      6E646C65 
+ 497      64206578 
+ 497      63657074 
+ 497      696F6E3A 
+ 498              	.LC2:
+ 499 0031 556E6861 		.string	"Unhandled exception: Crash!"
+ 499      6E646C65 
+ 499      64206578 
+ 499      63657074 
+ 499      696F6E3A 
+ 500              		.section	.text._ZN8UnitTest11ExecuteTestINS_4TestEEEvRT_RKNS_11TestDetailsE,"axG",@progbits,_ZN8Un
+ 501              		.p2align 4,,15
+ 502              		.weak	_ZN8UnitTest11ExecuteTestINS_4TestEEEvRT_RKNS_11TestDetailsE
+ 504              	_ZN8UnitTest11ExecuteTestINS_4TestEEEvRT_RKNS_11TestDetailsE:
+ 505              	.LFB1075:
+ 506              		.cfi_startproc
+ 507              		.cfi_personality 0x9b,DW.ref.__gxx_personality_v0
+ 508              		.cfi_lsda 0x1b,.LLSDA1075
+ 509 0000 4154     		pushq	%r12
+ 510              		.cfi_def_cfa_offset 16
+ 511              		.cfi_offset 12, -16
+ 512 0002 55       		pushq	%rbp
+ 513              		.cfi_def_cfa_offset 24
+ 514              		.cfi_offset 6, -24
+ 515 0003 53       		pushq	%rbx
+ 516              		.cfi_def_cfa_offset 32
+ 517              		.cfi_offset 3, -32
+ 518 0004 4889F3   		movq	%rsi, %rbx
+ 519 0007 4881EC70 		subq	$1136, %rsp
+ 519      040000
+ 520              		.cfi_def_cfa_offset 1168
+ 521 000e 48893C24 		movq	%rdi, (%rsp)
+ 522 0012 48897424 		movq	%rsi, 8(%rsp)
+ 522      08
+ 523              	.LEHB2:
+ 524 0017 E8000000 		call	_ZN8UnitTest11CurrentTest7DetailsEv@PLT
+ 524      00
+ 525              	.LEHE2:
+ 526 001c 488D7C24 		leaq	16(%rsp), %rdi
+ 526      10
+ 527 0021 488918   		movq	%rbx, (%rax)
+ 528              	.LEHB3:
+ 529 0024 E8000000 		call	_ZN8UnitTest16SignalTranslatorC1Ev@PLT
+ 529      00
+ 530              	.LEHE3:
+ 531 0029 488B0500 		movq	_ZN8UnitTest16SignalTranslator12s_jumpTargetE@GOTPCREL(%rip), %rax
+ 531      000000
+ 532 0030 BE010000 		movl	$1, %esi
+ 532      00
+ 533 0035 488B38   		movq	(%rax), %rdi
+ 534 0038 E8000000 		call	__sigsetjmp@PLT
+ 534      00
+ 535 003d 85C0     		testl	%eax, %eax
+ 536 003f 7520     		jne	.L96
+ 537 0041 488B3C24 		movq	(%rsp), %rdi
+ 538 0045 488B07   		movq	(%rdi), %rax
+ 539              	.LEHB4:
+ 540 0048 FF5010   		call	*16(%rax)
+ 541              	.LEHE4:
+ 542 004b 488D7C24 		leaq	16(%rsp), %rdi
+ 542      10
+ 543              	.LEHB5:
+ 544 0050 E8000000 		call	_ZN8UnitTest16SignalTranslatorD1Ev@PLT
+ 544      00
+ 545              	.LEHE5:
+ 546              	.L66:
+ 547 0055 4881C470 		addq	$1136, %rsp
+ 547      040000
+ 548              		.cfi_remember_state
+ 549              		.cfi_def_cfa_offset 32
+ 550 005c 5B       		popq	%rbx
+ 551              		.cfi_def_cfa_offset 24
+ 552 005d 5D       		popq	%rbp
+ 553              		.cfi_def_cfa_offset 16
+ 554 005e 415C     		popq	%r12
+ 555              		.cfi_def_cfa_offset 8
+ 556 0060 C3       		ret
+ 557              	.L96:
+ 558              		.cfi_restore_state
+ 559 0061 BF080000 		movl	$8, %edi
+ 559      00
+ 560 0066 E8000000 		call	__cxa_allocate_exception@PLT
+ 560      00
+ 561 006b 488D1500 		leaq	.LC0(%rip), %rdx
+ 561      000000
+ 562 0072 488B3500 		movq	_ZTIPKc@GOTPCREL(%rip), %rsi
+ 562      000000
+ 563 0079 4889C7   		movq	%rax, %rdi
+ 564 007c 488910   		movq	%rdx, (%rax)
+ 565 007f 31D2     		xorl	%edx, %edx
+ 566              	.LEHB6:
+ 567 0081 E8000000 		call	__cxa_throw@PLT
+ 567      00
+ 568              	.LEHE6:
+ 569              	.L83:
+ 570 0086 488D7C24 		leaq	16(%rsp), %rdi
+ 570      10
+ 571 008b 4889C5   		movq	%rax, %rbp
+ 572 008e 4889D3   		movq	%rdx, %rbx
+ 573 0091 E8000000 		call	_ZN8UnitTest16SignalTranslatorD1Ev@PLT
+ 573      00
+ 574 0096 4889EF   		movq	%rbp, %rdi
+ 575 0099 4889DA   		movq	%rbx, %rdx
+ 576              	.L69:
+ 577 009c 4883FA01 		cmpq	$1, %rdx
+ 578 00a0 0F844D02 		je	.L71
+ 578      0000
+ 579 00a6 4883FA02 		cmpq	$2, %rdx
+ 580 00aa 0F851602 		jne	.L97
+ 580      0000
+ 581 00b0 488D5C24 		leaq	112(%rsp), %rbx
+ 581      70
+ 582 00b5 E8000000 		call	__cxa_begin_catch@PLT
+ 582      00
+ 583 00ba 4889DF   		movq	%rbx, %rdi
+ 584 00bd 4889C5   		movq	%rax, %rbp
+ 585 00c0 E8000000 		call	_ZNSt8ios_baseC2Ev@PLT
+ 585      00
+ 586 00c5 488D0500 		leaq	24+_ZTCN8UnitTest15MemoryOutStreamE0_So(%rip), %rax
+ 586      000000
+ 587 00cc 31F6     		xorl	%esi, %esi
+ 588 00ce 4889DF   		movq	%rbx, %rdi
+ 589 00d1 48C78424 		movq	$0, 328(%rsp)
+ 589      48010000 
+ 589      00000000 
+ 590 00dd C6842450 		movb	$0, 336(%rsp)
+ 590      01000000 
+ 591 00e5 48894424 		movq	%rax, 16(%rsp)
+ 591      10
+ 592 00ea 488D0500 		leaq	64+_ZTCN8UnitTest15MemoryOutStreamE0_So(%rip), %rax
+ 592      000000
+ 593 00f1 C6842451 		movb	$0, 337(%rsp)
+ 593      01000000 
+ 594 00f9 48C78424 		movq	$0, 344(%rsp)
+ 594      58010000 
+ 594      00000000 
+ 595 0105 48C78424 		movq	$0, 352(%rsp)
+ 595      60010000 
+ 595      00000000 
+ 596 0111 48C78424 		movq	$0, 360(%rsp)
+ 596      68010000 
+ 596      00000000 
+ 597 011d 48C78424 		movq	$0, 368(%rsp)
+ 597      70010000 
+ 597      00000000 
+ 598 0129 48894424 		movq	%rax, 112(%rsp)
+ 598      70
+ 599              	.LEHB7:
+ 600 012e E8000000 		call	_ZNSt9basic_iosIcSt11char_traitsIcEE4initEPSt15basic_streambufIcS1_E@PLT
+ 600      00
+ 601              	.LEHE7:
+ 602 0133 488D0500 		leaq	24+_ZTCN8UnitTest15MemoryOutStreamE0_St19basic_ostringstreamIcSt11char_traitsIcESaIcEE(%rip),
+ 602      000000
+ 603 013a 488D7C24 		leaq	80(%rsp), %rdi
+ 603      50
+ 604 013f 48C74424 		movq	$0, 32(%rsp)
+ 604      20000000 
+ 604      00
+ 605 0148 48C74424 		movq	$0, 40(%rsp)
+ 605      28000000 
+ 605      00
+ 606 0151 48C74424 		movq	$0, 48(%rsp)
+ 606      30000000 
+ 606      00
+ 607 015a 488D5C24 		leaq	16(%rsp), %rbx
+ 607      10
+ 608 015f 48894424 		movq	%rax, 16(%rsp)
+ 608      10
+ 609 0164 488D0500 		leaq	64+_ZTCN8UnitTest15MemoryOutStreamE0_St19basic_ostringstreamIcSt11char_traitsIcESaIcEE(%rip),
+ 609      000000
+ 610 016b 48C74424 		movq	$0, 56(%rsp)
+ 610      38000000 
+ 610      00
+ 611 0174 48C74424 		movq	$0, 64(%rsp)
+ 611      40000000 
+ 611      00
+ 612 017d 48C74424 		movq	$0, 72(%rsp)
+ 612      48000000 
+ 612      00
+ 613 0186 48894424 		movq	%rax, 112(%rsp)
+ 613      70
+ 614 018b 488B0500 		movq	_ZTVSt15basic_streambufIcSt11char_traitsIcEE@GOTPCREL(%rip), %rax
+ 614      000000
+ 615 0192 4883C010 		addq	$16, %rax
+ 616 0196 48894424 		movq	%rax, 24(%rsp)
+ 616      18
+ 617 019b E8000000 		call	_ZNSt6localeC1Ev@PLT
+ 617      00
+ 618 01a0 488B0500 		movq	_ZTVSt15basic_stringbufIcSt11char_traitsIcESaIcEE@GOTPCREL(%rip), %rax
+ 618      000000
+ 619 01a7 488D7308 		leaq	8(%rbx), %rsi
+ 620 01ab C7442458 		movl	$16, 88(%rsp)
+ 620      10000000 
+ 621 01b3 4883C010 		addq	$16, %rax
+ 622 01b7 48894424 		movq	%rax, 24(%rsp)
+ 622      18
+ 623 01bc 488B0500 		movq	_ZNSs4_Rep20_S_empty_rep_storageE@GOTPCREL(%rip), %rax
+ 623      000000
+ 624 01c3 4883C018 		addq	$24, %rax
+ 625 01c7 48894424 		movq	%rax, 96(%rsp)
+ 625      60
+ 626 01cc 488B4424 		movq	16(%rsp), %rax
+ 626      10
+ 627 01d1 480358E8 		addq	-24(%rax), %rbx
+ 628 01d5 4889DF   		movq	%rbx, %rdi
+ 629              	.LEHB8:
+ 630 01d8 E8000000 		call	_ZNSt9basic_iosIcSt11char_traitsIcEE4initEPSt15basic_streambufIcS1_E@PLT
+ 630      00
+ 631              	.LEHE8:
+ 632 01dd 488B0500 		movq	_ZTVN8UnitTest15MemoryOutStreamE@GOTPCREL(%rip), %rax
+ 632      000000
+ 633 01e4 4889EF   		movq	%rbp, %rdi
+ 634 01e7 488D5018 		leaq	24(%rax), %rdx
+ 635 01eb 4883C040 		addq	$64, %rax
+ 636 01ef 48894424 		movq	%rax, 112(%rsp)
+ 636      70
+ 637 01f4 488B0500 		movq	_ZNSs4_Rep20_S_empty_rep_storageE@GOTPCREL(%rip), %rax
+ 637      000000
+ 638 01fb 48895424 		movq	%rdx, 16(%rsp)
+ 638      10
+ 639 0200 4883C018 		addq	$24, %rax
+ 640 0204 48894424 		movq	%rax, 104(%rsp)
+ 640      68
+ 641 0209 488B4500 		movq	0(%rbp), %rax
+ 642 020d FF5010   		call	*16(%rax)
+ 643 0210 488D7C24 		leaq	16(%rsp), %rdi
+ 643      10
+ 644 0215 488D3500 		leaq	.LC1(%rip), %rsi
+ 644      000000
+ 645 021c 4889C3   		movq	%rax, %rbx
+ 646              	.LEHB9:
+ 647 021f E8000000 		call	_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc@PLT
+ 647      00
+ 648 0224 4889DE   		movq	%rbx, %rsi
+ 649 0227 4889C7   		movq	%rax, %rdi
+ 650 022a E8000000 		call	_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc@PLT
+ 650      00
+ 651 022f 488D7C24 		leaq	16(%rsp), %rdi
+ 651      10
+ 652 0234 E8000000 		call	_ZNK8UnitTest15MemoryOutStream7GetTextEv@PLT
+ 652      00
+ 653 0239 4889C3   		movq	%rax, %rbx
+ 654 023c E8000000 		call	_ZN8UnitTest11CurrentTest7ResultsEv@PLT
+ 654      00
+ 655 0241 488B7424 		movq	8(%rsp), %rsi
+ 655      08
+ 656 0246 488B38   		movq	(%rax), %rdi
+ 657 0249 4889DA   		movq	%rbx, %rdx
+ 658 024c E8000000 		call	_ZN8UnitTest11TestResults13OnTestFailureERKNS_11TestDetailsEPKc@PLT
+ 658      00
+ 659              	.LEHE9:
+ 660 0251 488D7C24 		leaq	16(%rsp), %rdi
+ 660      10
+ 661              	.LEHB10:
+ 662 0256 E8000000 		call	_ZN8UnitTest15MemoryOutStreamD1Ev@PLT
+ 662      00
+ 663              	.LEHE10:
+ 664              	.L94:
+ 665 025b E8000000 		call	__cxa_end_catch@PLT
+ 665      00
+ 666 0260 E9F0FDFF 		jmp	.L66
+ 666      FF
+ 667              	.L82:
+ 668 0265 4889C7   		movq	%rax, %rdi
+ 669              		.p2align 4,,5
+ 670 0268 E92FFEFF 		jmp	.L69
+ 670      FF
+ 671              	.L85:
+ 672              	.L95:
+ 673 026d 4889C3   		movq	%rax, %rbx
+ 674              	.L75:
+ 675              		.p2align 4,,5
+ 676 0270 E8000000 		call	__cxa_end_catch@PLT
+ 676      00
+ 677 0275 4889DF   		movq	%rbx, %rdi
+ 678              	.LEHB11:
+ 679 0278 E8000000 		call	_Unwind_Resume@PLT
+ 679      00
+ 680              	.LEHE11:
+ 681              	.L86:
+ 682 027d 488D7C24 		leaq	16(%rsp), %rdi
+ 682      10
+ 683 0282 4889C3   		movq	%rax, %rbx
+ 684 0285 E8000000 		call	_ZN8UnitTest15MemoryOutStreamD1Ev@PLT
+ 684      00
+ 685 028a EBE4     		jmp	.L75
+ 686              	.L89:
+ 687 028c 488D7C24 		leaq	24(%rsp), %rdi
+ 687      18
+ 688 0291 4889C3   		movq	%rax, %rbx
+ 689 0294 E8000000 		call	_ZNSt15basic_stringbufIcSt11char_traitsIcESaIcEED1Ev@PLT
+ 689      00
+ 690 0299 488D0500 		leaq	24+_ZTCN8UnitTest15MemoryOutStreamE0_So(%rip), %rax
+ 690      000000
+ 691 02a0 48894424 		movq	%rax, 16(%rsp)
+ 691      10
+ 692              	.L80:
+ 693 02a5 488B0500 		movq	_ZTVSt9basic_iosIcSt11char_traitsIcEE@GOTPCREL(%rip), %rax
+ 693      000000
+ 694 02ac 488D7C24 		leaq	112(%rsp), %rdi
+ 694      70
+ 695 02b1 4883C010 		addq	$16, %rax
+ 696 02b5 48894424 		movq	%rax, 112(%rsp)
+ 696      70
+ 697 02ba E8000000 		call	_ZNSt8ios_baseD2Ev@PLT
+ 697      00
+ 698 02bf EBAF     		jmp	.L75
+ 699              	.L88:
+ 700 02c1 4889C3   		movq	%rax, %rbx
+ 701 02c4 EBDF     		jmp	.L80
+ 702              	.L97:
+ 703              		.p2align 4,,8
+ 704 02c6 E8000000 		call	__cxa_begin_catch@PLT
+ 704      00
+ 705 02cb 0F1F4400 		.p2align 4,,5
+ 705      00
+ 706              	.LEHB12:
+ 707 02d0 E8000000 		call	_ZN8UnitTest11CurrentTest7ResultsEv@PLT
+ 707      00
+ 708 02d5 488B7424 		movq	8(%rsp), %rsi
+ 708      08
+ 709 02da 488B38   		movq	(%rax), %rdi
+ 710 02dd 488D1500 		leaq	.LC2(%rip), %rdx
+ 710      000000
+ 711 02e4 E8000000 		call	_ZN8UnitTest11TestResults13OnTestFailureERKNS_11TestDetailsEPKc@PLT
+ 711      00
+ 712              	.LEHE12:
+ 713              	.LEHB13:
+ 714 02e9 E8000000 		call	__cxa_end_catch@PLT
+ 714      00
+ 715              	.LEHE13:
+ 716 02ee E962FDFF 		jmp	.L66
+ 716      FF
+ 717              	.L71:
+ 718              		.p2align 4,,8
+ 719 02f3 E8000000 		call	__cxa_begin_catch@PLT
+ 719      00
+ 720 02f8 4889C3   		movq	%rax, %rbx
+ 721 02fb 488B00   		movq	(%rax), %rax
+ 722 02fe 4889DF   		movq	%rbx, %rdi
+ 723 0301 FF5010   		call	*16(%rax)
+ 724 0304 4889DF   		movq	%rbx, %rdi
+ 725 0307 4889C5   		movq	%rax, %rbp
+ 726              	.LEHB14:
+ 727 030a E8000000 		call	_ZNK8UnitTest15AssertException10LineNumberEv@PLT
+ 727      00
+ 728 030f 4889DF   		movq	%rbx, %rdi
+ 729 0312 4189C4   		movl	%eax, %r12d
+ 730 0315 E8000000 		call	_ZNK8UnitTest15AssertException8FilenameEv@PLT
+ 730      00
+ 731 031a 488B5424 		movq	8(%rsp), %rdx
+ 731      08
+ 732 031f 488D7C24 		leaq	16(%rsp), %rdi
+ 732      10
+ 733 0324 4589E0   		movl	%r12d, %r8d
+ 734 0327 4889C1   		movq	%rax, %rcx
+ 735 032a 488B7208 		movq	8(%rdx), %rsi
+ 736 032e 488B12   		movq	(%rdx), %rdx
+ 737 0331 E8000000 		call	_ZN8UnitTest11TestDetailsC1EPKcS2_S2_i@PLT
+ 737      00
+ 738 0336 E8000000 		call	_ZN8UnitTest11CurrentTest7ResultsEv@PLT
+ 738      00
+ 739 033b 488B38   		movq	(%rax), %rdi
+ 740 033e 488D7424 		leaq	16(%rsp), %rsi
+ 740      10
+ 741 0343 4889EA   		movq	%rbp, %rdx
+ 742 0346 E8000000 		call	_ZN8UnitTest11TestResults13OnTestFailureERKNS_11TestDetailsEPKc@PLT
+ 742      00
+ 743              	.LEHE14:
+ 744 034b E90BFFFF 		jmp	.L94
+ 744      FF
+ 745              	.L87:
+ 746 0350 4889C3   		movq	%rax, %rbx
+ 747 0353 E8000000 		call	__cxa_end_catch@PLT
+ 747      00
+ 748 0358 4889DF   		movq	%rbx, %rdi
+ 749              	.LEHB15:
+ 750 035b E8000000 		call	_Unwind_Resume@PLT
+ 750      00
+ 751              	.LEHE15:
+ 752              	.L84:
+ 753 0360 E908FFFF 		jmp	.L95
+ 753      FF
+ 754              		.cfi_endproc
+ 755              	.LFE1075:
+ 756              		.section	.gcc_except_table
+ 757              		.align 4
+ 758              	.LLSDA1075:
+ 759 000c FF       		.byte	0xff
+ 760 000d 9B       		.byte	0x9b
+ 761 000e 65       		.uleb128 .LLSDATT1075-.LLSDATTD1075
+ 762              	.LLSDATTD1075:
+ 763 000f 01       		.byte	0x1
+ 764 0010 4C       		.uleb128 .LLSDACSE1075-.LLSDACSB1075
+ 765              	.LLSDACSB1075:
+ 766 0011 17       		.uleb128 .LEHB2-.LFB1075
+ 767 0012 05       		.uleb128 .LEHE2-.LEHB2
+ 768 0013 00       		.uleb128 0
+ 769 0014 00       		.uleb128 0
+ 770 0015 24       		.uleb128 .LEHB3-.LFB1075
+ 771 0016 05       		.uleb128 .LEHE3-.LEHB3
+ 772 0017 E504     		.uleb128 .L82-.LFB1075
+ 773 0019 05       		.uleb128 0x5
+ 774 001a 48       		.uleb128 .LEHB4-.LFB1075
+ 775 001b 03       		.uleb128 .LEHE4-.LEHB4
+ 776 001c 8601     		.uleb128 .L83-.LFB1075
+ 777 001e 07       		.uleb128 0x7
+ 778 001f 50       		.uleb128 .LEHB5-.LFB1075
+ 779 0020 05       		.uleb128 .LEHE5-.LEHB5
+ 780 0021 E504     		.uleb128 .L82-.LFB1075
+ 781 0023 05       		.uleb128 0x5
+ 782 0024 8101     		.uleb128 .LEHB6-.LFB1075
+ 783 0026 05       		.uleb128 .LEHE6-.LEHB6
+ 784 0027 8601     		.uleb128 .L83-.LFB1075
+ 785 0029 07       		.uleb128 0x7
+ 786 002a AE02     		.uleb128 .LEHB7-.LFB1075
+ 787 002c 05       		.uleb128 .LEHE7-.LEHB7
+ 788 002d C105     		.uleb128 .L88-.LFB1075
+ 789 002f 00       		.uleb128 0
+ 790 0030 D803     		.uleb128 .LEHB8-.LFB1075
+ 791 0032 05       		.uleb128 .LEHE8-.LEHB8
+ 792 0033 8C05     		.uleb128 .L89-.LFB1075
+ 793 0035 00       		.uleb128 0
+ 794 0036 9F04     		.uleb128 .LEHB9-.LFB1075
+ 795 0038 32       		.uleb128 .LEHE9-.LEHB9
+ 796 0039 FD04     		.uleb128 .L86-.LFB1075
+ 797 003b 00       		.uleb128 0
+ 798 003c D604     		.uleb128 .LEHB10-.LFB1075
+ 799 003e 05       		.uleb128 .LEHE10-.LEHB10
+ 800 003f ED04     		.uleb128 .L85-.LFB1075
+ 801 0041 00       		.uleb128 0
+ 802 0042 F804     		.uleb128 .LEHB11-.LFB1075
+ 803 0044 05       		.uleb128 .LEHE11-.LEHB11
+ 804 0045 00       		.uleb128 0
+ 805 0046 00       		.uleb128 0
+ 806 0047 D005     		.uleb128 .LEHB12-.LFB1075
+ 807 0049 19       		.uleb128 .LEHE12-.LEHB12
+ 808 004a D006     		.uleb128 .L87-.LFB1075
+ 809 004c 00       		.uleb128 0
+ 810 004d E905     		.uleb128 .LEHB13-.LFB1075
+ 811 004f 05       		.uleb128 .LEHE13-.LEHB13
+ 812 0050 00       		.uleb128 0
+ 813 0051 00       		.uleb128 0
+ 814 0052 8A06     		.uleb128 .LEHB14-.LFB1075
+ 815 0054 41       		.uleb128 .LEHE14-.LEHB14
+ 816 0055 E006     		.uleb128 .L84-.LFB1075
+ 817 0057 00       		.uleb128 0
+ 818 0058 DB06     		.uleb128 .LEHB15-.LFB1075
+ 819 005a 05       		.uleb128 .LEHE15-.LEHB15
+ 820 005b 00       		.uleb128 0
+ 821 005c 00       		.uleb128 0
+ 822              	.LLSDACSE1075:
+ 823 005d 03       		.byte	0x3
+ 824 005e 00       		.byte	0
+ 825 005f 02       		.byte	0x2
+ 826 0060 7D       		.byte	0x7d
+ 827 0061 01       		.byte	0x1
+ 828 0062 7D       		.byte	0x7d
+ 829 0063 00       		.byte	0
+ 830 0064 7D       		.byte	0x7d
+ 831 0065 000000   		.align 4
+ 832 0068 00000000 		.long	0
+ 833              	
+ 834 006c 00000000 		.long	DW.ref._ZTISt9exception-.
+ 835 0070 00000000 		.long	DW.ref._ZTIN8UnitTest15AssertExceptionE-.
+ 836              	.LLSDATT1075:
+ 837              		.section	.text._ZN8UnitTest11ExecuteTestINS_4TestEEEvRT_RKNS_11TestDetailsE,"axG",@progbits,_ZN8Un
+ 839              		.text
+ 840              		.align 2
+ 841 00da 660F1F44 		.p2align 4,,15
+ 841      0000
+ 842              		.globl	_ZN8UnitTest4Test3RunEv
+ 844              	_ZN8UnitTest4Test3RunEv:
+ 845              	.LFB1046:
+ 846              		.cfi_startproc
+ 847 00e0 488D7708 		leaq	8(%rdi), %rsi
+ 848 00e4 E9000000 		jmp	_ZN8UnitTest11ExecuteTestINS_4TestEEEvRT_RKNS_11TestDetailsE@PLT
+ 848      00
+ 849              		.cfi_endproc
+ 850              	.LFE1046:
+ 852              		.local	_ZZN8UnitTest4Test11GetTestListEvE6s_list
+ 853              		.comm	_ZZN8UnitTest4Test11GetTestListEvE6s_list,16,16
+ 854              		.weak	_ZTSN8UnitTest4TestE
+ 855              		.section	.rodata._ZTSN8UnitTest4TestE,"aG",@progbits,_ZTSN8UnitTest4TestE,comdat
+ 856              		.align 16
+ 859              	_ZTSN8UnitTest4TestE:
+ 860 0000 4E38556E 		.string	"N8UnitTest4TestE"
+ 860      69745465 
+ 860      73743454 
+ 860      65737445 
+ 860      00
+ 861              		.weak	_ZTIN8UnitTest4TestE
+ 862              		.section	.data.rel.ro._ZTIN8UnitTest4TestE,"awG",@progbits,_ZTIN8UnitTest4TestE,comdat
+ 863              		.align 16
+ 866              	_ZTIN8UnitTest4TestE:
+ 867 0000 00000000 		.quad	_ZTVN10__cxxabiv117__class_type_infoE+16
+ 867      00000000 
+ 868 0008 00000000 		.quad	_ZTSN8UnitTest4TestE
+ 868      00000000 
+ 869              		.weak	_ZTIN8UnitTest15MemoryOutStreamE
+ 870              		.section	.data.rel.ro._ZTIN8UnitTest15MemoryOutStreamE,"awG",@progbits,_ZTIN8UnitTest15MemoryOutSt
+ 871              		.align 16
+ 874              	_ZTIN8UnitTest15MemoryOutStreamE:
+ 875 0000 00000000 		.quad	_ZTVN10__cxxabiv120__si_class_type_infoE+16
+ 875      00000000 
+ 876 0008 00000000 		.quad	_ZTSN8UnitTest15MemoryOutStreamE
+ 876      00000000 
+ 877 0010 00000000 		.quad	_ZTISt19basic_ostringstreamIcSt11char_traitsIcESaIcEE
+ 877      00000000 
+ 878              		.weak	_ZTSN8UnitTest15MemoryOutStreamE
+ 879              		.section	.rodata._ZTSN8UnitTest15MemoryOutStreamE,"aG",@progbits,_ZTSN8UnitTest15MemoryOutStreamE,
+ 880              		.align 16
+ 883              	_ZTSN8UnitTest15MemoryOutStreamE:
+ 884 0000 4E38556E 		.string	"N8UnitTest15MemoryOutStreamE"
+ 884      69745465 
+ 884      73743135 
+ 884      4D656D6F 
+ 884      72794F75 
+ 885              		.hidden	_ZTCN8UnitTest15MemoryOutStreamE0_So
+ 886              		.weak	_ZTCN8UnitTest15MemoryOutStreamE0_So
+ 887              		.section	.data.rel.ro._ZTCN8UnitTest15MemoryOutStreamE0_So,"awG",@progbits,_ZTVN8UnitTest15MemoryO
+ 888              		.align 32
+ 891              	_ZTCN8UnitTest15MemoryOutStreamE0_So:
+ 892 0000 60000000 		.quad	96
+ 892      00000000 
+ 893 0008 00000000 		.quad	0
+ 893      00000000 
+ 894 0010 00000000 		.quad	_ZTISo
+ 894      00000000 
+ 895 0018 00000000 		.quad	_ZNSoD1Ev
+ 895      00000000 
+ 896 0020 00000000 		.quad	_ZNSoD0Ev
+ 896      00000000 
+ 897 0028 A0FFFFFF 		.quad	-96
+ 897      FFFFFFFF 
+ 898 0030 A0FFFFFF 		.quad	-96
+ 898      FFFFFFFF 
+ 899 0038 00000000 		.quad	_ZTISo
+ 899      00000000 
+ 900 0040 00000000 		.quad	_ZTv0_n24_NSoD1Ev
+ 900      00000000 
+ 901 0048 00000000 		.quad	_ZTv0_n24_NSoD0Ev
+ 901      00000000 
+ 902              		.hidden	_ZTCN8UnitTest15MemoryOutStreamE0_St19basic_ostringstreamIcSt11char_traitsIcESaIcEE
+ 903              		.weak	_ZTCN8UnitTest15MemoryOutStreamE0_St19basic_ostringstreamIcSt11char_traitsIcESaIcEE
+ 904              		.section	.data.rel.ro._ZTCN8UnitTest15MemoryOutStreamE0_St19basic_ostringstreamIcSt11char_traitsIc
+ 905              		.align 32
+ 908              	_ZTCN8UnitTest15MemoryOutStreamE0_St19basic_ostringstreamIcSt11char_traitsIcESaIcEE:
+ 909 0000 60000000 		.quad	96
+ 909      00000000 
+ 910 0008 00000000 		.quad	0
+ 910      00000000 
+ 911 0010 00000000 		.quad	_ZTISt19basic_ostringstreamIcSt11char_traitsIcESaIcEE
+ 911      00000000 
+ 912 0018 00000000 		.quad	_ZNSt19basic_ostringstreamIcSt11char_traitsIcESaIcEED1Ev
+ 912      00000000 
+ 913 0020 00000000 		.quad	_ZNSt19basic_ostringstreamIcSt11char_traitsIcESaIcEED0Ev
+ 913      00000000 
+ 914 0028 A0FFFFFF 		.quad	-96
+ 914      FFFFFFFF 
+ 915 0030 A0FFFFFF 		.quad	-96
+ 915      FFFFFFFF 
+ 916 0038 00000000 		.quad	_ZTISt19basic_ostringstreamIcSt11char_traitsIcESaIcEE
+ 916      00000000 
+ 917 0040 00000000 		.quad	_ZTv0_n24_NSt19basic_ostringstreamIcSt11char_traitsIcESaIcEED1Ev
+ 917      00000000 
+ 918 0048 00000000 		.quad	_ZTv0_n24_NSt19basic_ostringstreamIcSt11char_traitsIcESaIcEED0Ev
+ 918      00000000 
+ 919              		.weak	_ZTTN8UnitTest15MemoryOutStreamE
+ 920              		.section	.data.rel.ro._ZTTN8UnitTest15MemoryOutStreamE,"awG",@progbits,_ZTVN8UnitTest15MemoryOutSt
+ 921              		.align 32
+ 924              	_ZTTN8UnitTest15MemoryOutStreamE:
+ 925 0000 00000000 		.quad	_ZTVN8UnitTest15MemoryOutStreamE+24
+ 925      00000000 
+ 926 0008 00000000 		.quad	_ZTCN8UnitTest15MemoryOutStreamE0_St19basic_ostringstreamIcSt11char_traitsIcESaIcEE+24
+ 926      00000000 
+ 927 0010 00000000 		.quad	_ZTCN8UnitTest15MemoryOutStreamE0_So+24
+ 927      00000000 
+ 928 0018 00000000 		.quad	_ZTCN8UnitTest15MemoryOutStreamE0_So+64
+ 928      00000000 
+ 929 0020 00000000 		.quad	_ZTCN8UnitTest15MemoryOutStreamE0_St19basic_ostringstreamIcSt11char_traitsIcESaIcEE+64
+ 929      00000000 
+ 930 0028 00000000 		.quad	_ZTVN8UnitTest15MemoryOutStreamE+64
+ 930      00000000 
+ 931              		.weak	_ZTVN8UnitTest15MemoryOutStreamE
+ 932              		.section	.data.rel.ro._ZTVN8UnitTest15MemoryOutStreamE,"awG",@progbits,_ZTVN8UnitTest15MemoryOutSt
+ 933              		.align 32
+ 936              	_ZTVN8UnitTest15MemoryOutStreamE:
+ 937 0000 60000000 		.quad	96
+ 937      00000000 
+ 938 0008 00000000 		.quad	0
+ 938      00000000 
+ 939 0010 00000000 		.quad	_ZTIN8UnitTest15MemoryOutStreamE
+ 939      00000000 
+ 940 0018 00000000 		.quad	_ZN8UnitTest15MemoryOutStreamD1Ev
+ 940      00000000 
+ 941 0020 00000000 		.quad	_ZN8UnitTest15MemoryOutStreamD0Ev
+ 941      00000000 
+ 942 0028 A0FFFFFF 		.quad	-96
+ 942      FFFFFFFF 
+ 943 0030 A0FFFFFF 		.quad	-96
+ 943      FFFFFFFF 
+ 944 0038 00000000 		.quad	_ZTIN8UnitTest15MemoryOutStreamE
+ 944      00000000 
+ 945 0040 00000000 		.quad	_ZTv0_n24_N8UnitTest15MemoryOutStreamD1Ev
+ 945      00000000 
+ 946 0048 00000000 		.quad	_ZTv0_n24_N8UnitTest15MemoryOutStreamD0Ev
+ 946      00000000 
+ 947              		.weak	_ZTVN8UnitTest4TestE
+ 948              		.section	.data.rel.ro._ZTVN8UnitTest4TestE,"awG",@progbits,_ZTVN8UnitTest4TestE,comdat
+ 949              		.align 32
+ 952              	_ZTVN8UnitTest4TestE:
+ 953 0000 00000000 		.quad	0
+ 953      00000000 
+ 954 0008 00000000 		.quad	_ZTIN8UnitTest4TestE
+ 954      00000000 
+ 955 0010 00000000 		.quad	_ZN8UnitTest4TestD1Ev
+ 955      00000000 
+ 956 0018 00000000 		.quad	_ZN8UnitTest4TestD0Ev
+ 956      00000000 
+ 957 0020 00000000 		.quad	_ZNK8UnitTest4Test7RunImplEv
+ 957      00000000 
+ 958              		.local	_ZGVZN8UnitTest4Test11GetTestListEvE6s_list
+ 959              		.comm	_ZGVZN8UnitTest4Test11GetTestListEvE6s_list,8,16
+ 960              		.weakref	_ZL28__gthrw___pthread_key_createPjPFvPvE,__pthread_key_create
+ 961              		.hidden	DW.ref._ZTIN8UnitTest15AssertExceptionE
+ 962              		.weak	DW.ref._ZTIN8UnitTest15AssertExceptionE
+ 963              		.section	.data.DW.ref._ZTIN8UnitTest15AssertExceptionE,"awG",@progbits,DW.ref._ZTIN8UnitTest15Asse
+ 964              		.align 8
+ 967              	DW.ref._ZTIN8UnitTest15AssertExceptionE:
+ 968 0000 00000000 		.quad	_ZTIN8UnitTest15AssertExceptionE
+ 968      00000000 
+ 969              		.hidden	DW.ref._ZTISt9exception
+ 970              		.weak	DW.ref._ZTISt9exception
+ 971              		.section	.data.DW.ref._ZTISt9exception,"awG",@progbits,DW.ref._ZTISt9exception,comdat
+ 972              		.align 8
+ 975              	DW.ref._ZTISt9exception:
+ 976 0000 00000000 		.quad	_ZTISt9exception
+ 976      00000000 
+ 977              		.hidden	DW.ref.__gxx_personality_v0
+ 978              		.weak	DW.ref.__gxx_personality_v0
+ 979              		.section	.data.DW.ref.__gxx_personality_v0,"awG",@progbits,DW.ref.__gxx_personality_v0,comdat
+ 980              		.align 8
+ 983              	DW.ref.__gxx_personality_v0:
+ 984 0000 00000000 		.quad	__gxx_personality_v0
+ 984      00000000 
+ 985              		.ident	"GCC: (Ubuntu 4.8.4-2ubuntu1~14.04.3) 4.8.4"
+ 986              		.section	.note.GNU-stack,"",@progbits
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 Test.cpp
+     /tmp/ccDezgjE.s:7      .text:0000000000000000 _ZN8UnitTest4TestD2Ev
+     /tmp/ccDezgjE.s:952    .data.rel.ro._ZTVN8UnitTest4TestE:0000000000000000 _ZTVN8UnitTest4TestE
+     /tmp/ccDezgjE.s:7      .text:0000000000000000 _ZN8UnitTest4TestD1Ev
+     /tmp/ccDezgjE.s:23     .text:0000000000000010 _ZNK8UnitTest4Test7RunImplEv
+     /tmp/ccDezgjE.s:34     .text:0000000000000020 _ZN8UnitTest4TestD0Ev
+     /tmp/ccDezgjE.s:54     .text._ZNSt15basic_stringbufIcSt11char_traitsIcESaIcEED2Ev:0000000000000000 _ZNSt15basic_stringbufIcSt11char_traitsIcESaIcEED2Ev
+     /tmp/ccDezgjE.s:54     .text._ZNSt15basic_stringbufIcSt11char_traitsIcESaIcEED2Ev:0000000000000000 _ZNSt15basic_stringbufIcSt11char_traitsIcESaIcEED1Ev
+     /tmp/ccDezgjE.s:111    .text._ZNSt15basic_stringbufIcSt11char_traitsIcESaIcEED0Ev:0000000000000000 _ZNSt15basic_stringbufIcSt11char_traitsIcESaIcEED0Ev
+     /tmp/ccDezgjE.s:168    .text._ZN8UnitTest15MemoryOutStreamD1Ev:0000000000000000 _ZN8UnitTest15MemoryOutStreamD1Ev
+     /tmp/ccDezgjE.s:936    .data.rel.ro._ZTVN8UnitTest15MemoryOutStreamE:0000000000000000 _ZTVN8UnitTest15MemoryOutStreamE
+     /tmp/ccDezgjE.s:908    .data.rel.ro._ZTCN8UnitTest15MemoryOutStreamE0_St19basic_ostringstreamIcSt11char_traitsIcESaIcEE:0000000000000000 _ZTCN8UnitTest15MemoryOutStreamE0_St19basic_ostringstreamIcSt11char_traitsIcESaIcEE
+     /tmp/ccDezgjE.s:891    .data.rel.ro._ZTCN8UnitTest15MemoryOutStreamE0_So:0000000000000000 _ZTCN8UnitTest15MemoryOutStreamE0_So
+     /tmp/ccDezgjE.s:267    .text._ZN8UnitTest15MemoryOutStreamD1Ev:0000000000000120 _ZTv0_n24_N8UnitTest15MemoryOutStreamD1Ev
+     /tmp/ccDezgjE.s:281    .text._ZN8UnitTest15MemoryOutStreamD0Ev:0000000000000000 _ZN8UnitTest15MemoryOutStreamD0Ev
+     /tmp/ccDezgjE.s:382    .text._ZN8UnitTest15MemoryOutStreamD0Ev:0000000000000120 _ZTv0_n24_N8UnitTest15MemoryOutStreamD0Ev
+     /tmp/ccDezgjE.s:396    .text:0000000000000040 _ZN8UnitTest4Test11GetTestListEv
+     /tmp/ccDezgjE.s:983    .data.DW.ref.__gxx_personality_v0:0000000000000000 DW.ref.__gxx_personality_v0
+     /tmp/ccDezgjE.s:959    .bss:0000000000000010 _ZGVZN8UnitTest4Test11GetTestListEvE6s_list
+     /tmp/ccDezgjE.s:853    .bss:0000000000000000 _ZZN8UnitTest4Test11GetTestListEvE6s_list
+     /tmp/ccDezgjE.s:471    .text:00000000000000b0 _ZN8UnitTest4TestC2EPKcS2_S2_i
+     /tmp/ccDezgjE.s:471    .text:00000000000000b0 _ZN8UnitTest4TestC1EPKcS2_S2_i
+     /tmp/ccDezgjE.s:504    .text._ZN8UnitTest11ExecuteTestINS_4TestEEEvRT_RKNS_11TestDetailsE:0000000000000000 _ZN8UnitTest11ExecuteTestINS_4TestEEEvRT_RKNS_11TestDetailsE
+     /tmp/ccDezgjE.s:975    .data.DW.ref._ZTISt9exception:0000000000000000 DW.ref._ZTISt9exception
+     /tmp/ccDezgjE.s:967    .data.DW.ref._ZTIN8UnitTest15AssertExceptionE:0000000000000000 DW.ref._ZTIN8UnitTest15AssertExceptionE
+     /tmp/ccDezgjE.s:844    .text:00000000000000e0 _ZN8UnitTest4Test3RunEv
+     /tmp/ccDezgjE.s:859    .rodata._ZTSN8UnitTest4TestE:0000000000000000 _ZTSN8UnitTest4TestE
+     /tmp/ccDezgjE.s:866    .data.rel.ro._ZTIN8UnitTest4TestE:0000000000000000 _ZTIN8UnitTest4TestE
+     /tmp/ccDezgjE.s:874    .data.rel.ro._ZTIN8UnitTest15MemoryOutStreamE:0000000000000000 _ZTIN8UnitTest15MemoryOutStreamE
+     /tmp/ccDezgjE.s:883    .rodata._ZTSN8UnitTest15MemoryOutStreamE:0000000000000000 _ZTSN8UnitTest15MemoryOutStreamE
+     /tmp/ccDezgjE.s:924    .data.rel.ro._ZTTN8UnitTest15MemoryOutStreamE:0000000000000000 _ZTTN8UnitTest15MemoryOutStreamE
+     /tmp/ccDezgjE.s:494    .rodata.str1.1:0000000000000000 .LC0
+     /tmp/ccDezgjE.s:496    .rodata.str1.1:000000000000001b .LC1
+     /tmp/ccDezgjE.s:498    .rodata.str1.1:0000000000000031 .LC2
+                           .group:0000000000000000 _ZNSt15basic_stringbufIcSt11char_traitsIcESaIcEED5Ev
+
+UNDEFINED SYMBOLS
+_GLOBAL_OFFSET_TABLE_
+_ZdlPv
+_ZTVSt15basic_stringbufIcSt11char_traitsIcESaIcEE
+_ZNSs4_Rep20_S_empty_rep_storageE
+_ZTVSt15basic_streambufIcSt11char_traitsIcEE
+_ZNSt6localeD1Ev
+_ZNSs4_Rep10_M_destroyERKSaIcE
+_ZTVSt9basic_iosIcSt11char_traitsIcEE
+_ZNSt8ios_baseD2Ev
+__cxa_guard_acquire
+_ZN8UnitTest8TestListC1Ev
+__cxa_guard_release
+__cxa_guard_abort
+_Unwind_Resume
+__gxx_personality_v0
+_ZN8UnitTest11TestDetailsC1EPKcS2_S2_i
+_ZN8UnitTest11CurrentTest7DetailsEv
+_ZN8UnitTest16SignalTranslatorC1Ev
+_ZN8UnitTest16SignalTranslator12s_jumpTargetE
+__sigsetjmp
+_ZN8UnitTest16SignalTranslatorD1Ev
+__cxa_allocate_exception
+_ZTIPKc
+__cxa_throw
+__cxa_begin_catch
+_ZNSt8ios_baseC2Ev
+_ZNSt9basic_iosIcSt11char_traitsIcEE4initEPSt15basic_streambufIcS1_E
+_ZNSt6localeC1Ev
+_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+_ZNK8UnitTest15MemoryOutStream7GetTextEv
+_ZN8UnitTest11CurrentTest7ResultsEv
+_ZN8UnitTest11TestResults13OnTestFailureERKNS_11TestDetailsEPKc
+__cxa_end_catch
+_ZNK8UnitTest15AssertException10LineNumberEv
+_ZNK8UnitTest15AssertException8FilenameEv
+_ZTVN10__cxxabiv117__class_type_infoE
+_ZTVN10__cxxabiv120__si_class_type_infoE
+_ZTISt19basic_ostringstreamIcSt11char_traitsIcESaIcEE
+_ZTISo
+_ZNSoD1Ev
+_ZNSoD0Ev
+_ZTv0_n24_NSoD1Ev
+_ZTv0_n24_NSoD0Ev
+_ZNSt19basic_ostringstreamIcSt11char_traitsIcESaIcEED1Ev
+_ZNSt19basic_ostringstreamIcSt11char_traitsIcESaIcEED0Ev
+_ZTv0_n24_NSt19basic_ostringstreamIcSt11char_traitsIcESaIcEED1Ev
+_ZTv0_n24_NSt19basic_ostringstreamIcSt11char_traitsIcESaIcEED0Ev
+__pthread_key_create
+_ZTIN8UnitTest15AssertExceptionE
+_ZTISt9exception

@@ -1,0 +1,100 @@
+   1              		.file	"ReportAssert.cpp"
+   2              		.text
+   3              		.p2align 4,,15
+   4              		.globl	_ZN8UnitTest12ReportAssertEPKcS1_i
+   6              	_ZN8UnitTest12ReportAssertEPKcS1_i:
+   7              	.LFB6:
+   8              		.cfi_startproc
+   9              		.cfi_personality 0x9b,DW.ref.__gxx_personality_v0
+  10              		.cfi_lsda 0x1b,.LLSDA6
+  11 0000 4155     		pushq	%r13
+  12              		.cfi_def_cfa_offset 16
+  13              		.cfi_offset 13, -16
+  14 0002 4189D5   		movl	%edx, %r13d
+  15 0005 4154     		pushq	%r12
+  16              		.cfi_def_cfa_offset 24
+  17              		.cfi_offset 12, -24
+  18 0007 4989F4   		movq	%rsi, %r12
+  19 000a 55       		pushq	%rbp
+  20              		.cfi_def_cfa_offset 32
+  21              		.cfi_offset 6, -32
+  22 000b 4889FD   		movq	%rdi, %rbp
+  23 000e BF100300 		movl	$784, %edi
+  23      00
+  24 0013 53       		pushq	%rbx
+  25              		.cfi_def_cfa_offset 40
+  26              		.cfi_offset 3, -40
+  27 0014 4883EC08 		subq	$8, %rsp
+  28              		.cfi_def_cfa_offset 48
+  29 0018 E8000000 		call	__cxa_allocate_exception@PLT
+  29      00
+  30 001d 4489E9   		movl	%r13d, %ecx
+  31 0020 4C89E2   		movq	%r12, %rdx
+  32 0023 4889EE   		movq	%rbp, %rsi
+  33 0026 4889C7   		movq	%rax, %rdi
+  34 0029 4889C3   		movq	%rax, %rbx
+  35              	.LEHB0:
+  36 002c E8000000 		call	_ZN8UnitTest15AssertExceptionC1EPKcS2_i@PLT
+  36      00
+  37              	.LEHE0:
+  38 0031 488B1500 		movq	_ZN8UnitTest15AssertExceptionD1Ev@GOTPCREL(%rip), %rdx
+  38      000000
+  39 0038 488B3500 		movq	_ZTIN8UnitTest15AssertExceptionE@GOTPCREL(%rip), %rsi
+  39      000000
+  40 003f 4889DF   		movq	%rbx, %rdi
+  41              	.LEHB1:
+  42 0042 E8000000 		call	__cxa_throw@PLT
+  42      00
+  43              	.L3:
+  44 0047 4889C5   		movq	%rax, %rbp
+  45 004a 4889DF   		movq	%rbx, %rdi
+  46 004d E8000000 		call	__cxa_free_exception@PLT
+  46      00
+  47 0052 4889EF   		movq	%rbp, %rdi
+  48 0055 E8000000 		call	_Unwind_Resume@PLT
+  48      00
+  49              	.LEHE1:
+  50              		.cfi_endproc
+  51              	.LFE6:
+  52              		.globl	__gxx_personality_v0
+  53              		.section	.gcc_except_table,"a",@progbits
+  54              	.LLSDA6:
+  55 0000 FF       		.byte	0xff
+  56 0001 FF       		.byte	0xff
+  57 0002 01       		.byte	0x1
+  58 0003 08       		.uleb128 .LLSDACSE6-.LLSDACSB6
+  59              	.LLSDACSB6:
+  60 0004 2C       		.uleb128 .LEHB0-.LFB6
+  61 0005 05       		.uleb128 .LEHE0-.LEHB0
+  62 0006 47       		.uleb128 .L3-.LFB6
+  63 0007 00       		.uleb128 0
+  64 0008 42       		.uleb128 .LEHB1-.LFB6
+  65 0009 18       		.uleb128 .LEHE1-.LEHB1
+  66 000a 00       		.uleb128 0
+  67 000b 00       		.uleb128 0
+  68              	.LLSDACSE6:
+  69              		.text
+  71              		.hidden	DW.ref.__gxx_personality_v0
+  72              		.weak	DW.ref.__gxx_personality_v0
+  73              		.section	.data.DW.ref.__gxx_personality_v0,"awG",@progbits,DW.ref.__gxx_personality_v0,comdat
+  74              		.align 8
+  77              	DW.ref.__gxx_personality_v0:
+  78 0000 00000000 		.quad	__gxx_personality_v0
+  78      00000000 
+  79              		.ident	"GCC: (Ubuntu 4.8.4-2ubuntu1~14.04.3) 4.8.4"
+  80              		.section	.note.GNU-stack,"",@progbits
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 ReportAssert.cpp
+     /tmp/ccFuxNjF.s:6      .text:0000000000000000 _ZN8UnitTest12ReportAssertEPKcS1_i
+     /tmp/ccFuxNjF.s:77     .data.DW.ref.__gxx_personality_v0:0000000000000000 DW.ref.__gxx_personality_v0
+
+UNDEFINED SYMBOLS
+_GLOBAL_OFFSET_TABLE_
+__cxa_allocate_exception
+_ZN8UnitTest15AssertExceptionC1EPKcS2_i
+_ZN8UnitTest15AssertExceptionD1Ev
+_ZTIN8UnitTest15AssertExceptionE
+__cxa_throw
+__cxa_free_exception
+_Unwind_Resume
+__gxx_personality_v0

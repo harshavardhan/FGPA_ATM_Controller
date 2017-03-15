@@ -1,0 +1,223 @@
+   1              		.file	"TestList.cpp"
+   2              		.text
+   3              	.Ltext0:
+   4              		.align 2
+   5              		.globl	_ZN8UnitTest8TestListC2Ev
+   7              	_ZN8UnitTest8TestListC2Ev:
+   8              	.LFB1:
+   9              		.file 1 "TestList.cpp"
+   1:TestList.cpp  **** #include "TestList.h"
+   2:TestList.cpp  **** #include "Test.h"
+   3:TestList.cpp  **** 
+   4:TestList.cpp  **** #include <cassert>
+   5:TestList.cpp  **** 
+   6:TestList.cpp  **** namespace UnitTest {
+   7:TestList.cpp  **** 
+   8:TestList.cpp  **** TestList::TestList() 
+  10              		.loc 1 8 0
+  11              		.cfi_startproc
+  12 0000 55       		pushq	%rbp
+  13              		.cfi_def_cfa_offset 16
+  14              		.cfi_offset 6, -16
+  15 0001 4889E5   		movq	%rsp, %rbp
+  16              		.cfi_def_cfa_register 6
+  17 0004 48897DF8 		movq	%rdi, -8(%rbp)
+  18              	.LBB2:
+   9:TestList.cpp  ****     : m_head(0)
+  10:TestList.cpp  ****     , m_tail(0)
+  19              		.loc 1 10 0
+  20 0008 488B45F8 		movq	-8(%rbp), %rax
+  21 000c 48C70000 		movq	$0, (%rax)
+  21      000000
+  22 0013 488B45F8 		movq	-8(%rbp), %rax
+  23 0017 48C74008 		movq	$0, 8(%rax)
+  23      00000000 
+  24              	.LBE2:
+  11:TestList.cpp  **** {
+  12:TestList.cpp  **** }
+  25              		.loc 1 12 0
+  26 001f 5D       		popq	%rbp
+  27              		.cfi_def_cfa 7, 8
+  28 0020 C3       		ret
+  29              		.cfi_endproc
+  30              	.LFE1:
+  32              		.globl	_ZN8UnitTest8TestListC1Ev
+  33              		.set	_ZN8UnitTest8TestListC1Ev,_ZN8UnitTest8TestListC2Ev
+  34              		.section	.rodata
+  35              	.LC0:
+  36 0000 54657374 		.string	"TestList.cpp"
+  36      4C697374 
+  36      2E637070 
+  36      00
+  37              	.LC1:
+  38 000d 6D5F6865 		.string	"m_head == 0"
+  38      6164203D 
+  38      3D203000 
+  39              		.text
+  40 0021 90       		.align 2
+  41              		.globl	_ZN8UnitTest8TestList3AddEPNS_4TestE
+  43              	_ZN8UnitTest8TestList3AddEPNS_4TestE:
+  44              	.LFB3:
+  13:TestList.cpp  **** 
+  14:TestList.cpp  **** void TestList::Add(Test* test)
+  15:TestList.cpp  **** {
+  45              		.loc 1 15 0
+  46              		.cfi_startproc
+  47 0022 55       		pushq	%rbp
+  48              		.cfi_def_cfa_offset 16
+  49              		.cfi_offset 6, -16
+  50 0023 4889E5   		movq	%rsp, %rbp
+  51              		.cfi_def_cfa_register 6
+  52 0026 4883EC10 		subq	$16, %rsp
+  53 002a 48897DF8 		movq	%rdi, -8(%rbp)
+  54 002e 488975F0 		movq	%rsi, -16(%rbp)
+  55              	.LBB3:
+  16:TestList.cpp  ****     if (m_tail == 0)
+  56              		.loc 1 16 0
+  57 0032 488B45F8 		movq	-8(%rbp), %rax
+  58 0036 488B4008 		movq	8(%rax), %rax
+  59 003a 4885C0   		testq	%rax, %rax
+  60 003d 7544     		jne	.L3
+  17:TestList.cpp  ****     {
+  18:TestList.cpp  ****         assert(m_head == 0);
+  61              		.loc 1 18 0
+  62 003f 488B45F8 		movq	-8(%rbp), %rax
+  63 0043 488B00   		movq	(%rax), %rax
+  64 0046 4885C0   		testq	%rax, %rax
+  65 0049 741F     		je	.L4
+  66              		.loc 1 18 0 is_stmt 0 discriminator 1
+  67 004b 488D0D00 		leaq	_ZZN8UnitTest8TestList3AddEPNS_4TestEE19__PRETTY_FUNCTION__(%rip), %rcx
+  67      000000
+  68 0052 BA120000 		movl	$18, %edx
+  68      00
+  69 0057 488D3500 		leaq	.LC0(%rip), %rsi
+  69      000000
+  70 005e 488D3D00 		leaq	.LC1(%rip), %rdi
+  70      000000
+  71 0065 E8000000 		call	__assert_fail@PLT
+  71      00
+  72              	.L4:
+  19:TestList.cpp  ****         m_head = test;
+  73              		.loc 1 19 0 is_stmt 1
+  74 006a 488B45F8 		movq	-8(%rbp), %rax
+  75 006e 488B55F0 		movq	-16(%rbp), %rdx
+  76 0072 488910   		movq	%rdx, (%rax)
+  20:TestList.cpp  ****         m_tail = test;
+  77              		.loc 1 20 0
+  78 0075 488B45F8 		movq	-8(%rbp), %rax
+  79 0079 488B55F0 		movq	-16(%rbp), %rdx
+  80 007d 48895008 		movq	%rdx, 8(%rax)
+  81 0081 EB1C     		jmp	.L2
+  82              	.L3:
+  21:TestList.cpp  ****     }
+  22:TestList.cpp  ****     else
+  23:TestList.cpp  ****     {
+  24:TestList.cpp  ****         m_tail->next = test;
+  83              		.loc 1 24 0
+  84 0083 488B45F8 		movq	-8(%rbp), %rax
+  85 0087 488B4008 		movq	8(%rax), %rax
+  86 008b 488B55F0 		movq	-16(%rbp), %rdx
+  87 008f 48895028 		movq	%rdx, 40(%rax)
+  25:TestList.cpp  ****         m_tail = test;
+  88              		.loc 1 25 0
+  89 0093 488B45F8 		movq	-8(%rbp), %rax
+  90 0097 488B55F0 		movq	-16(%rbp), %rdx
+  91 009b 48895008 		movq	%rdx, 8(%rax)
+  92              	.L2:
+  93              	.LBE3:
+  26:TestList.cpp  ****     }
+  27:TestList.cpp  **** }
+  94              		.loc 1 27 0
+  95 009f C9       		leave
+  96              		.cfi_def_cfa 7, 8
+  97 00a0 C3       		ret
+  98              		.cfi_endproc
+  99              	.LFE3:
+ 101 00a1 90       		.align 2
+ 102              		.globl	_ZNK8UnitTest8TestList7GetHeadEv
+ 104              	_ZNK8UnitTest8TestList7GetHeadEv:
+ 105              	.LFB4:
+  28:TestList.cpp  **** 
+  29:TestList.cpp  **** Test* TestList::GetHead() const
+  30:TestList.cpp  **** {
+ 106              		.loc 1 30 0
+ 107              		.cfi_startproc
+ 108 00a2 55       		pushq	%rbp
+ 109              		.cfi_def_cfa_offset 16
+ 110              		.cfi_offset 6, -16
+ 111 00a3 4889E5   		movq	%rsp, %rbp
+ 112              		.cfi_def_cfa_register 6
+ 113 00a6 48897DF8 		movq	%rdi, -8(%rbp)
+  31:TestList.cpp  ****     return m_head;
+ 114              		.loc 1 31 0
+ 115 00aa 488B45F8 		movq	-8(%rbp), %rax
+ 116 00ae 488B00   		movq	(%rax), %rax
+  32:TestList.cpp  **** }
+ 117              		.loc 1 32 0
+ 118 00b1 5D       		popq	%rbp
+ 119              		.cfi_def_cfa 7, 8
+ 120 00b2 C3       		ret
+ 121              		.cfi_endproc
+ 122              	.LFE4:
+ 124 00b3 90       		.align 2
+ 125              		.globl	_ZN8UnitTest9ListAdderC2ERNS_8TestListEPNS_4TestE
+ 127              	_ZN8UnitTest9ListAdderC2ERNS_8TestListEPNS_4TestE:
+ 128              	.LFB6:
+  33:TestList.cpp  **** 
+  34:TestList.cpp  **** ListAdder::ListAdder(TestList& list, Test* test)
+ 129              		.loc 1 34 0
+ 130              		.cfi_startproc
+ 131 00b4 55       		pushq	%rbp
+ 132              		.cfi_def_cfa_offset 16
+ 133              		.cfi_offset 6, -16
+ 134 00b5 4889E5   		movq	%rsp, %rbp
+ 135              		.cfi_def_cfa_register 6
+ 136 00b8 4883EC20 		subq	$32, %rsp
+ 137 00bc 48897DF8 		movq	%rdi, -8(%rbp)
+ 138 00c0 488975F0 		movq	%rsi, -16(%rbp)
+ 139 00c4 488955E8 		movq	%rdx, -24(%rbp)
+ 140              	.LBB4:
+  35:TestList.cpp  **** {
+  36:TestList.cpp  ****     list.Add(test);
+ 141              		.loc 1 36 0
+ 142 00c8 488B55E8 		movq	-24(%rbp), %rdx
+ 143 00cc 488B45F0 		movq	-16(%rbp), %rax
+ 144 00d0 4889D6   		movq	%rdx, %rsi
+ 145 00d3 4889C7   		movq	%rax, %rdi
+ 146 00d6 E8000000 		call	_ZN8UnitTest8TestList3AddEPNS_4TestE@PLT
+ 146      00
+ 147              	.LBE4:
+  37:TestList.cpp  **** }
+ 148              		.loc 1 37 0
+ 149 00db C9       		leave
+ 150              		.cfi_def_cfa 7, 8
+ 151 00dc C3       		ret
+ 152              		.cfi_endproc
+ 153              	.LFE6:
+ 155              		.globl	_ZN8UnitTest9ListAdderC1ERNS_8TestListEPNS_4TestE
+ 156              		.set	_ZN8UnitTest9ListAdderC1ERNS_8TestListEPNS_4TestE,_ZN8UnitTest9ListAdderC2ERNS_8TestListEPNS_
+ 157              		.section	.rodata
+ 158 0019 00000000 		.align 32
+ 158      000000
+ 161              	_ZZN8UnitTest8TestList3AddEPNS_4TestEE19__PRETTY_FUNCTION__:
+ 162 0020 766F6964 		.string	"void UnitTest::TestList::Add(UnitTest::Test*)"
+ 162      20556E69 
+ 162      74546573 
+ 162      743A3A54 
+ 162      6573744C 
+ 163              		.text
+ 164              	.Letext0:
+ 165              		.file 2 "TestList.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 TestList.cpp
+     /tmp/ccHqdH58.s:7      .text:0000000000000000 _ZN8UnitTest8TestListC2Ev
+     /tmp/ccHqdH58.s:7      .text:0000000000000000 _ZN8UnitTest8TestListC1Ev
+     /tmp/ccHqdH58.s:43     .text:0000000000000022 _ZN8UnitTest8TestList3AddEPNS_4TestE
+     /tmp/ccHqdH58.s:161    .rodata:0000000000000020 _ZZN8UnitTest8TestList3AddEPNS_4TestEE19__PRETTY_FUNCTION__
+     /tmp/ccHqdH58.s:104    .text:00000000000000a2 _ZNK8UnitTest8TestList7GetHeadEv
+     /tmp/ccHqdH58.s:127    .text:00000000000000b4 _ZN8UnitTest9ListAdderC2ERNS_8TestListEPNS_4TestE
+     /tmp/ccHqdH58.s:127    .text:00000000000000b4 _ZN8UnitTest9ListAdderC1ERNS_8TestListEPNS_4TestE
+
+UNDEFINED SYMBOLS
+_GLOBAL_OFFSET_TABLE_
+__assert_fail

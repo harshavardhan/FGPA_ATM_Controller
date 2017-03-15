@@ -1,0 +1,6 @@
+setMode -bs
+setCable -port xsvf -file prom.xsvf
+addDevice -p 1 -file ${XILINX}/spartan3/data/xc3s200_ft256.bsd
+addDevice -p 2 -sprom xcf02s -file top_level.mcs
+program -p 2 -e -v
+quit

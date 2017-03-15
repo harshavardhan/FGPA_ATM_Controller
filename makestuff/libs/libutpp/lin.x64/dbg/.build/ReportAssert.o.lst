@@ -1,0 +1,111 @@
+   1              		.file	"ReportAssert.cpp"
+   2              		.text
+   3              	.Ltext0:
+   4              		.globl	_ZN8UnitTest12ReportAssertEPKcS1_i
+   6              	_ZN8UnitTest12ReportAssertEPKcS1_i:
+   7              	.LFB6:
+   8              		.file 1 "ReportAssert.cpp"
+   1:ReportAssert.cpp **** #include "AssertException.h"
+   2:ReportAssert.cpp **** 
+   3:ReportAssert.cpp **** namespace UnitTest {
+   4:ReportAssert.cpp **** 
+   5:ReportAssert.cpp **** void ReportAssert(char const* description, char const* filename, int lineNumber)
+   6:ReportAssert.cpp **** {
+   9              		.loc 1 6 0
+  10              		.cfi_startproc
+  11              		.cfi_personality 0x9b,DW.ref.__gxx_personality_v0
+  12              		.cfi_lsda 0x1b,.LLSDA6
+  13 0000 55       		pushq	%rbp
+  14              		.cfi_def_cfa_offset 16
+  15              		.cfi_offset 6, -16
+  16 0001 4889E5   		movq	%rsp, %rbp
+  17              		.cfi_def_cfa_register 6
+  18 0004 4154     		pushq	%r12
+  19 0006 53       		pushq	%rbx
+  20 0007 4883EC20 		subq	$32, %rsp
+  21              		.cfi_offset 12, -24
+  22              		.cfi_offset 3, -32
+  23 000b 48897DE8 		movq	%rdi, -24(%rbp)
+  24 000f 488975E0 		movq	%rsi, -32(%rbp)
+  25 0013 8955DC   		movl	%edx, -36(%rbp)
+   7:ReportAssert.cpp ****     throw AssertException(description, filename, lineNumber);
+  26              		.loc 1 7 0
+  27 0016 BF100300 		movl	$784, %edi
+  27      00
+  28 001b E8000000 		call	__cxa_allocate_exception@PLT
+  28      00
+  29 0020 4889C3   		movq	%rax, %rbx
+  30 0023 8B4DDC   		movl	-36(%rbp), %ecx
+  31 0026 488B55E0 		movq	-32(%rbp), %rdx
+  32 002a 488B45E8 		movq	-24(%rbp), %rax
+  33 002e 4889C6   		movq	%rax, %rsi
+  34 0031 4889DF   		movq	%rbx, %rdi
+  35              	.LEHB0:
+  36 0034 E8000000 		call	_ZN8UnitTest15AssertExceptionC1EPKcS2_i@PLT
+  36      00
+  37              	.LEHE0:
+  38              		.loc 1 7 0 is_stmt 0 discriminator 1
+  39 0039 488B0500 		movq	_ZN8UnitTest15AssertExceptionD1Ev@GOTPCREL(%rip), %rax
+  39      000000
+  40 0040 4889C2   		movq	%rax, %rdx
+  41 0043 488B0500 		movq	_ZTIN8UnitTest15AssertExceptionE@GOTPCREL(%rip), %rax
+  41      000000
+  42 004a 4889C6   		movq	%rax, %rsi
+  43 004d 4889DF   		movq	%rbx, %rdi
+  44              	.LEHB1:
+  45 0050 E8000000 		call	__cxa_throw@PLT
+  45      00
+  46              	.L3:
+  47 0055 4989C4   		movq	%rax, %r12
+  48              		.loc 1 7 0
+  49 0058 4889DF   		movq	%rbx, %rdi
+  50 005b E8000000 		call	__cxa_free_exception@PLT
+  50      00
+  51 0060 4C89E0   		movq	%r12, %rax
+  52 0063 4889C7   		movq	%rax, %rdi
+  53 0066 E8000000 		call	_Unwind_Resume@PLT
+  53      00
+  54              	.LEHE1:
+  55              		.cfi_endproc
+  56              	.LFE6:
+  57              		.globl	__gxx_personality_v0
+  58              		.section	.gcc_except_table,"a",@progbits
+  59              	.LLSDA6:
+  60 0000 FF       		.byte	0xff
+  61 0001 FF       		.byte	0xff
+  62 0002 01       		.byte	0x1
+  63 0003 08       		.uleb128 .LLSDACSE6-.LLSDACSB6
+  64              	.LLSDACSB6:
+  65 0004 34       		.uleb128 .LEHB0-.LFB6
+  66 0005 05       		.uleb128 .LEHE0-.LEHB0
+  67 0006 55       		.uleb128 .L3-.LFB6
+  68 0007 00       		.uleb128 0
+  69 0008 50       		.uleb128 .LEHB1-.LFB6
+  70 0009 1B       		.uleb128 .LEHE1-.LEHB1
+  71 000a 00       		.uleb128 0
+  72 000b 00       		.uleb128 0
+  73              	.LLSDACSE6:
+  74              		.text
+  76              	.Letext0:
+  77              		.file 2 "AssertException.h"
+ 320              		.align 8
+ 323              	DW.ref.__gxx_personality_v0:
+ 324 0000 00000000 		.quad	__gxx_personality_v0
+ 324      00000000 
+ 325              		.ident	"GCC: (Ubuntu 4.8.4-2ubuntu1~14.04.3) 4.8.4"
+ 326              		.section	.note.GNU-stack,"",@progbits
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 ReportAssert.cpp
+     /tmp/ccONuY1X.s:6      .text:0000000000000000 _ZN8UnitTest12ReportAssertEPKcS1_i
+     /tmp/ccONuY1X.s:323    .data.DW.ref.__gxx_personality_v0:0000000000000000 DW.ref.__gxx_personality_v0
+
+UNDEFINED SYMBOLS
+_GLOBAL_OFFSET_TABLE_
+__cxa_allocate_exception
+_ZN8UnitTest15AssertExceptionC1EPKcS2_i
+_ZN8UnitTest15AssertExceptionD1Ev
+_ZTIN8UnitTest15AssertExceptionE
+__cxa_throw
+__cxa_free_exception
+_Unwind_Resume
+__gxx_personality_v0

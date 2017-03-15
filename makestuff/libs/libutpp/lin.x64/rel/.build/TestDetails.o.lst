@@ -1,0 +1,45 @@
+   1              		.file	"TestDetails.cpp"
+   2              		.text
+   3              		.align 2
+   4              		.p2align 4,,15
+   5              		.globl	_ZN8UnitTest11TestDetailsC2EPKcS2_S2_i
+   7              	_ZN8UnitTest11TestDetailsC2EPKcS2_S2_i:
+   8              	.LFB1:
+   9              		.cfi_startproc
+  10 0000 488917   		movq	%rdx, (%rdi)
+  11 0003 48897708 		movq	%rsi, 8(%rdi)
+  12 0007 48894F10 		movq	%rcx, 16(%rdi)
+  13 000b 44894718 		movl	%r8d, 24(%rdi)
+  14 000f C3       		ret
+  15              		.cfi_endproc
+  16              	.LFE1:
+  18              		.globl	_ZN8UnitTest11TestDetailsC1EPKcS2_S2_i
+  19              		.set	_ZN8UnitTest11TestDetailsC1EPKcS2_S2_i,_ZN8UnitTest11TestDetailsC2EPKcS2_S2_i
+  20              		.align 2
+  21              		.p2align 4,,15
+  22              		.globl	_ZN8UnitTest11TestDetailsC2ERKS0_i
+  24              	_ZN8UnitTest11TestDetailsC2ERKS0_i:
+  25              	.LFB4:
+  26              		.cfi_startproc
+  27 0010 488B06   		movq	(%rsi), %rax
+  28 0013 488907   		movq	%rax, (%rdi)
+  29 0016 488B4608 		movq	8(%rsi), %rax
+  30 001a 48894708 		movq	%rax, 8(%rdi)
+  31 001e 488B4610 		movq	16(%rsi), %rax
+  32 0022 895718   		movl	%edx, 24(%rdi)
+  33 0025 48894710 		movq	%rax, 16(%rdi)
+  34 0029 C3       		ret
+  35              		.cfi_endproc
+  36              	.LFE4:
+  38              		.globl	_ZN8UnitTest11TestDetailsC1ERKS0_i
+  39              		.set	_ZN8UnitTest11TestDetailsC1ERKS0_i,_ZN8UnitTest11TestDetailsC2ERKS0_i
+  40              		.ident	"GCC: (Ubuntu 4.8.4-2ubuntu1~14.04.3) 4.8.4"
+  41              		.section	.note.GNU-stack,"",@progbits
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 TestDetails.cpp
+     /tmp/ccASqWqQ.s:7      .text:0000000000000000 _ZN8UnitTest11TestDetailsC2EPKcS2_S2_i
+     /tmp/ccASqWqQ.s:7      .text:0000000000000000 _ZN8UnitTest11TestDetailsC1EPKcS2_S2_i
+     /tmp/ccASqWqQ.s:24     .text:0000000000000010 _ZN8UnitTest11TestDetailsC2ERKS0_i
+     /tmp/ccASqWqQ.s:24     .text:0000000000000010 _ZN8UnitTest11TestDetailsC1ERKS0_i
+
+NO UNDEFINED SYMBOLS

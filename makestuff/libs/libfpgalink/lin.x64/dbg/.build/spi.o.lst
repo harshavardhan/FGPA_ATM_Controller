@@ -1,0 +1,1138 @@
+   1              		.file	"spi.c"
+   2              		.text
+   3              	.Ltext0:
+   5              	littleEndian32:
+   6              	.LFB3:
+   7              		.file 1 "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h"
+   1:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** /*
+   2:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h ****  * Copyright (C) 2009-2012 Chris McClelland
+   3:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h ****  *
+   4:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h ****  * This program is free software: you can redistribute it and/or modify
+   5:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h ****  * it under the terms of the GNU Lesser General Public License as published by
+   6:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h ****  * the Free Software Foundation, either version 3 of the License, or
+   7:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h ****  * (at your option) any later version.
+   8:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h ****  *
+   9:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h ****  * This program is distributed in the hope that it will be useful,
+  10:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h ****  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  11:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  12:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h ****  * GNU Lesser General Public License for more details.
+  13:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h ****  *
+  14:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h ****  * You should have received a copy of the GNU Lesser General Public License
+  15:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h ****  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  16:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h ****  */
+  17:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 
+  18:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #ifndef MAKESTUFF_H
+  19:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #define MAKESTUFF_H
+  20:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 
+  21:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #include <stddef.h>
+  22:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 
+  23:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #ifndef __cplusplus
+  24:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#ifdef WIN32
+  25:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		typedef char bool;
+  26:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		enum {
+  27:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 			false = 0,
+  28:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 			true = 1
+  29:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		};
+  30:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#else
+  31:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		#include <stdbool.h>
+  32:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#endif
+  33:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #endif
+  34:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 
+  35:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #ifdef WIN32
+  36:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#define WARN_UNUSED_RESULT
+  37:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#define DLLEXPORT(t) __declspec(dllexport) t __stdcall
+  38:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#define PFSZD "%Iu"
+  39:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#ifdef _WIN64
+  40:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		#define PFSZH "%016IX"
+  41:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		#define WORD_LENGTH 64
+  42:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#else
+  43:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		#define PFSZH "%08IX"
+  44:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		#define WORD_LENGTH 32
+  45:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#endif
+  46:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #else
+  47:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#define WARN_UNUSED_RESULT __attribute__((warn_unused_result))
+  48:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#define DLLEXPORT(t) t
+  49:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#define PFSZD "%zu"
+  50:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#ifdef __LP64__
+  51:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		#define PFSZH "%016zX"
+  52:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		#define WORD_LENGTH 64
+  53:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#else
+  54:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		#define PFSZH "%08zX"
+  55:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		#define WORD_LENGTH 32
+  56:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#endif
+  57:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #endif
+  58:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 
+  59:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #ifndef NULL
+  60:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#define NULL ((void*)0)
+  61:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #endif
+  62:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 
+  63:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** typedef unsigned char      uint8;
+  64:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** typedef unsigned short     uint16;
+  65:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #ifndef __cplusplus
+  66:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#ifndef SDCC
+  67:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		typedef unsigned long long uint64;
+  68:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#endif
+  69:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #endif
+  70:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 
+  71:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** typedef signed char        int8;
+  72:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** typedef signed short       int16;
+  73:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 
+  74:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #if (defined __AVR__ && defined __GNUC__) || defined SDCC
+  75:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	// The embedded platforms have sizeof(int) = 2, so use long
+  76:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	typedef signed long    int32;
+  77:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	typedef unsigned long  uint32;
+  78:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #else
+  79:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	// The i686 & x86_64 have sizeof(int) = 4
+  80:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	typedef signed int     int32;
+  81:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	typedef unsigned int   uint32;
+  82:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #endif
+  83:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 
+  84:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #ifndef __cplusplus
+  85:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#ifndef SDCC
+  86:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		typedef signed long long int64;
+  87:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#endif
+  88:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #endif
+  89:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 
+  90:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** typedef unsigned int       bitfield;
+  91:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 
+  92:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #if defined __GNUC__
+  93:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#define swap32(x) __builtin_bswap32(x)
+  94:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #elif defined WIN32
+  95:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#ifdef __cplusplus
+  96:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		extern "C"
+  97:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#endif
+  98:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	unsigned long  __cdecl _byteswap_ulong(unsigned long);
+  99:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#define swap32(x) _byteswap_ulong(x)
+ 100:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#ifndef __cplusplus
+ 101:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		#define inline __inline
+ 102:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#endif
+ 103:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #endif
+ 104:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #define swap16(x) ((uint16)((((x) & 0x00FF) << 8) | (((x) >> 8) & 0x00FF)))
+ 105:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 
+ 106:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** // The C standard requires this two-level indirection thing
+ 107:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #undef CONCAT
+ 108:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #define CONCAT_INTERNAL(x, y) x ## y
+ 109:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #define CONCAT(x, y) CONCAT_INTERNAL(x, y)
+ 110:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 
+ 111:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #define STR_INTERNAL(x) #x
+ 112:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #define STR(x) STR_INTERNAL(x)
+ 113:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 
+ 114:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** // The VA_NARGS() macro - count the number of arguments in a C99 variadic macro
+ 115:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #define VA_EXPAND(x) x
+ 116:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #define VA_NARGS(...) VA_EXPAND(VA_NARGS_INTERNAL(__VA_ARGS__, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
+ 117:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #define VA_NARGS_INTERNAL(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y
+ 118:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #define FAIL(code, label) { retVal = code; goto label; }
+ 119:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 
+ 120:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** // The CHECK_STATUS() macro - if condition is true, set a returnCode and jump to a label (exit,
+ 121:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** // cleanup etc). If liberror is included you can also give an error message.
+ 122:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #define CHECK_INTERNAL3(condition, code, label) if ( condition ) { FAIL(code, label); }
+ 123:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #define CHECK_INTERNAL4(condition, code, label, prefix) LIBERROR_IS_REQUIRED
+ 124:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #define CHECK_INTERNAL5(condition, code, label, ...) LIBERROR_IS_REQUIRED
+ 125:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #define CHECK_STATUS(...) VA_EXPAND(CONCAT(CHECK_INTERNAL, VA_NARGS(__VA_ARGS__))(__VA_ARGS__))
+ 126:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 
+ 127:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** #ifdef BYTE_ORDER
+ 128:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 	#if BYTE_ORDER == 1234
+ 129:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		// Little-endian machines
+ 130:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		static inline uint16 bigEndian16(uint16 x) {
+ 131:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 			return swap16(x);
+ 132:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		}
+ 133:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		static inline uint32 bigEndian32(uint32 x) {
+ 134:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 			return swap32(x);
+ 135:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		}
+ 136:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		static inline uint16 littleEndian16(uint16 x) {
+ 137:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 			return x;
+ 138:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		}
+ 139:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		static inline uint32 littleEndian32(uint32 x) {
+   8              		.loc 1 139 0
+   9              		.cfi_startproc
+  10 0000 55       		pushq	%rbp
+  11              		.cfi_def_cfa_offset 16
+  12              		.cfi_offset 6, -16
+  13 0001 4889E5   		movq	%rsp, %rbp
+  14              		.cfi_def_cfa_register 6
+  15 0004 897DFC   		movl	%edi, -4(%rbp)
+ 140:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 			return x;
+  16              		.loc 1 140 0
+  17 0007 8B45FC   		movl	-4(%rbp), %eax
+ 141:/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h **** 		}
+  18              		.loc 1 141 0
+  19 000a 5D       		popq	%rbp
+  20              		.cfi_def_cfa 7, 8
+  21 000b C3       		ret
+  22              		.cfi_endproc
+  23              	.LFE3:
+  25              		.section	.rodata
+  26              		.align 32
+  29              	swapTable:
+  30 0000 00       		.byte	0
+  31 0001 80       		.byte	-128
+  32 0002 40       		.byte	64
+  33 0003 C0       		.byte	-64
+  34 0004 20       		.byte	32
+  35 0005 A0       		.byte	-96
+  36 0006 60       		.byte	96
+  37 0007 E0       		.byte	-32
+  38 0008 10       		.byte	16
+  39 0009 90       		.byte	-112
+  40 000a 50       		.byte	80
+  41 000b D0       		.byte	-48
+  42 000c 30       		.byte	48
+  43 000d B0       		.byte	-80
+  44 000e 70       		.byte	112
+  45 000f F0       		.byte	-16
+  46 0010 08       		.byte	8
+  47 0011 88       		.byte	-120
+  48 0012 48       		.byte	72
+  49 0013 C8       		.byte	-56
+  50 0014 28       		.byte	40
+  51 0015 A8       		.byte	-88
+  52 0016 68       		.byte	104
+  53 0017 E8       		.byte	-24
+  54 0018 18       		.byte	24
+  55 0019 98       		.byte	-104
+  56 001a 58       		.byte	88
+  57 001b D8       		.byte	-40
+  58 001c 38       		.byte	56
+  59 001d B8       		.byte	-72
+  60 001e 78       		.byte	120
+  61 001f F8       		.byte	-8
+  62 0020 04       		.byte	4
+  63 0021 84       		.byte	-124
+  64 0022 44       		.byte	68
+  65 0023 C4       		.byte	-60
+  66 0024 24       		.byte	36
+  67 0025 A4       		.byte	-92
+  68 0026 64       		.byte	100
+  69 0027 E4       		.byte	-28
+  70 0028 14       		.byte	20
+  71 0029 94       		.byte	-108
+  72 002a 54       		.byte	84
+  73 002b D4       		.byte	-44
+  74 002c 34       		.byte	52
+  75 002d B4       		.byte	-76
+  76 002e 74       		.byte	116
+  77 002f F4       		.byte	-12
+  78 0030 0C       		.byte	12
+  79 0031 8C       		.byte	-116
+  80 0032 4C       		.byte	76
+  81 0033 CC       		.byte	-52
+  82 0034 2C       		.byte	44
+  83 0035 AC       		.byte	-84
+  84 0036 6C       		.byte	108
+  85 0037 EC       		.byte	-20
+  86 0038 1C       		.byte	28
+  87 0039 9C       		.byte	-100
+  88 003a 5C       		.byte	92
+  89 003b DC       		.byte	-36
+  90 003c 3C       		.byte	60
+  91 003d BC       		.byte	-68
+  92 003e 7C       		.byte	124
+  93 003f FC       		.byte	-4
+  94 0040 02       		.byte	2
+  95 0041 82       		.byte	-126
+  96 0042 42       		.byte	66
+  97 0043 C2       		.byte	-62
+  98 0044 22       		.byte	34
+  99 0045 A2       		.byte	-94
+ 100 0046 62       		.byte	98
+ 101 0047 E2       		.byte	-30
+ 102 0048 12       		.byte	18
+ 103 0049 92       		.byte	-110
+ 104 004a 52       		.byte	82
+ 105 004b D2       		.byte	-46
+ 106 004c 32       		.byte	50
+ 107 004d B2       		.byte	-78
+ 108 004e 72       		.byte	114
+ 109 004f F2       		.byte	-14
+ 110 0050 0A       		.byte	10
+ 111 0051 8A       		.byte	-118
+ 112 0052 4A       		.byte	74
+ 113 0053 CA       		.byte	-54
+ 114 0054 2A       		.byte	42
+ 115 0055 AA       		.byte	-86
+ 116 0056 6A       		.byte	106
+ 117 0057 EA       		.byte	-22
+ 118 0058 1A       		.byte	26
+ 119 0059 9A       		.byte	-102
+ 120 005a 5A       		.byte	90
+ 121 005b DA       		.byte	-38
+ 122 005c 3A       		.byte	58
+ 123 005d BA       		.byte	-70
+ 124 005e 7A       		.byte	122
+ 125 005f FA       		.byte	-6
+ 126 0060 06       		.byte	6
+ 127 0061 86       		.byte	-122
+ 128 0062 46       		.byte	70
+ 129 0063 C6       		.byte	-58
+ 130 0064 26       		.byte	38
+ 131 0065 A6       		.byte	-90
+ 132 0066 66       		.byte	102
+ 133 0067 E6       		.byte	-26
+ 134 0068 16       		.byte	22
+ 135 0069 96       		.byte	-106
+ 136 006a 56       		.byte	86
+ 137 006b D6       		.byte	-42
+ 138 006c 36       		.byte	54
+ 139 006d B6       		.byte	-74
+ 140 006e 76       		.byte	118
+ 141 006f F6       		.byte	-10
+ 142 0070 0E       		.byte	14
+ 143 0071 8E       		.byte	-114
+ 144 0072 4E       		.byte	78
+ 145 0073 CE       		.byte	-50
+ 146 0074 2E       		.byte	46
+ 147 0075 AE       		.byte	-82
+ 148 0076 6E       		.byte	110
+ 149 0077 EE       		.byte	-18
+ 150 0078 1E       		.byte	30
+ 151 0079 9E       		.byte	-98
+ 152 007a 5E       		.byte	94
+ 153 007b DE       		.byte	-34
+ 154 007c 3E       		.byte	62
+ 155 007d BE       		.byte	-66
+ 156 007e 7E       		.byte	126
+ 157 007f FE       		.byte	-2
+ 158 0080 01       		.byte	1
+ 159 0081 81       		.byte	-127
+ 160 0082 41       		.byte	65
+ 161 0083 C1       		.byte	-63
+ 162 0084 21       		.byte	33
+ 163 0085 A1       		.byte	-95
+ 164 0086 61       		.byte	97
+ 165 0087 E1       		.byte	-31
+ 166 0088 11       		.byte	17
+ 167 0089 91       		.byte	-111
+ 168 008a 51       		.byte	81
+ 169 008b D1       		.byte	-47
+ 170 008c 31       		.byte	49
+ 171 008d B1       		.byte	-79
+ 172 008e 71       		.byte	113
+ 173 008f F1       		.byte	-15
+ 174 0090 09       		.byte	9
+ 175 0091 89       		.byte	-119
+ 176 0092 49       		.byte	73
+ 177 0093 C9       		.byte	-55
+ 178 0094 29       		.byte	41
+ 179 0095 A9       		.byte	-87
+ 180 0096 69       		.byte	105
+ 181 0097 E9       		.byte	-23
+ 182 0098 19       		.byte	25
+ 183 0099 99       		.byte	-103
+ 184 009a 59       		.byte	89
+ 185 009b D9       		.byte	-39
+ 186 009c 39       		.byte	57
+ 187 009d B9       		.byte	-71
+ 188 009e 79       		.byte	121
+ 189 009f F9       		.byte	-7
+ 190 00a0 05       		.byte	5
+ 191 00a1 85       		.byte	-123
+ 192 00a2 45       		.byte	69
+ 193 00a3 C5       		.byte	-59
+ 194 00a4 25       		.byte	37
+ 195 00a5 A5       		.byte	-91
+ 196 00a6 65       		.byte	101
+ 197 00a7 E5       		.byte	-27
+ 198 00a8 15       		.byte	21
+ 199 00a9 95       		.byte	-107
+ 200 00aa 55       		.byte	85
+ 201 00ab D5       		.byte	-43
+ 202 00ac 35       		.byte	53
+ 203 00ad B5       		.byte	-75
+ 204 00ae 75       		.byte	117
+ 205 00af F5       		.byte	-11
+ 206 00b0 0D       		.byte	13
+ 207 00b1 8D       		.byte	-115
+ 208 00b2 4D       		.byte	77
+ 209 00b3 CD       		.byte	-51
+ 210 00b4 2D       		.byte	45
+ 211 00b5 AD       		.byte	-83
+ 212 00b6 6D       		.byte	109
+ 213 00b7 ED       		.byte	-19
+ 214 00b8 1D       		.byte	29
+ 215 00b9 9D       		.byte	-99
+ 216 00ba 5D       		.byte	93
+ 217 00bb DD       		.byte	-35
+ 218 00bc 3D       		.byte	61
+ 219 00bd BD       		.byte	-67
+ 220 00be 7D       		.byte	125
+ 221 00bf FD       		.byte	-3
+ 222 00c0 03       		.byte	3
+ 223 00c1 83       		.byte	-125
+ 224 00c2 43       		.byte	67
+ 225 00c3 C3       		.byte	-61
+ 226 00c4 23       		.byte	35
+ 227 00c5 A3       		.byte	-93
+ 228 00c6 63       		.byte	99
+ 229 00c7 E3       		.byte	-29
+ 230 00c8 13       		.byte	19
+ 231 00c9 93       		.byte	-109
+ 232 00ca 53       		.byte	83
+ 233 00cb D3       		.byte	-45
+ 234 00cc 33       		.byte	51
+ 235 00cd B3       		.byte	-77
+ 236 00ce 73       		.byte	115
+ 237 00cf F3       		.byte	-13
+ 238 00d0 0B       		.byte	11
+ 239 00d1 8B       		.byte	-117
+ 240 00d2 4B       		.byte	75
+ 241 00d3 CB       		.byte	-53
+ 242 00d4 2B       		.byte	43
+ 243 00d5 AB       		.byte	-85
+ 244 00d6 6B       		.byte	107
+ 245 00d7 EB       		.byte	-21
+ 246 00d8 1B       		.byte	27
+ 247 00d9 9B       		.byte	-101
+ 248 00da 5B       		.byte	91
+ 249 00db DB       		.byte	-37
+ 250 00dc 3B       		.byte	59
+ 251 00dd BB       		.byte	-69
+ 252 00de 7B       		.byte	123
+ 253 00df FB       		.byte	-5
+ 254 00e0 07       		.byte	7
+ 255 00e1 87       		.byte	-121
+ 256 00e2 47       		.byte	71
+ 257 00e3 C7       		.byte	-57
+ 258 00e4 27       		.byte	39
+ 259 00e5 A7       		.byte	-89
+ 260 00e6 67       		.byte	103
+ 261 00e7 E7       		.byte	-25
+ 262 00e8 17       		.byte	23
+ 263 00e9 97       		.byte	-105
+ 264 00ea 57       		.byte	87
+ 265 00eb D7       		.byte	-41
+ 266 00ec 37       		.byte	55
+ 267 00ed B7       		.byte	-73
+ 268 00ee 77       		.byte	119
+ 269 00ef F7       		.byte	-9
+ 270 00f0 0F       		.byte	15
+ 271 00f1 8F       		.byte	-113
+ 272 00f2 4F       		.byte	79
+ 273 00f3 CF       		.byte	-49
+ 274 00f4 2F       		.byte	47
+ 275 00f5 AF       		.byte	-81
+ 276 00f6 6F       		.byte	111
+ 277 00f7 EF       		.byte	-17
+ 278 00f8 1F       		.byte	31
+ 279 00f9 9F       		.byte	-97
+ 280 00fa 5F       		.byte	95
+ 281 00fb DF       		.byte	-33
+ 282 00fc 3F       		.byte	63
+ 283 00fd BF       		.byte	-65
+ 284 00fe 7F       		.byte	127
+ 285 00ff FF       		.byte	-1
+ 286              		.text
+ 287              		.globl	spiBitSwap
+ 289              	spiBitSwap:
+ 290              	.LFB4:
+ 291              		.file 2 "spi.c"
+   1:spi.c         **** /*
+   2:spi.c         ****  * Copyright (C) 2013 Chris McClelland
+   3:spi.c         ****  *
+   4:spi.c         ****  * This program is free software: you can redistribute it and/or modify
+   5:spi.c         ****  * it under the terms of the GNU Lesser General Public License as published by
+   6:spi.c         ****  * the Free Software Foundation, either version 3 of the License, or
+   7:spi.c         ****  * (at your option) any later version.
+   8:spi.c         ****  *
+   9:spi.c         ****  * This program is distributed in the hope that it will be useful,
+  10:spi.c         ****  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  11:spi.c         ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  12:spi.c         ****  * GNU Lesser General Public License for more details.
+  13:spi.c         ****  *
+  14:spi.c         ****  * You should have received a copy of the GNU Lesser General Public License
+  15:spi.c         ****  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  16:spi.c         ****  */
+  17:spi.c         **** #include <stdlib.h>
+  18:spi.c         **** #include <makestuff.h>
+  19:spi.c         **** #include <libusbwrap.h>
+  20:spi.c         **** #include <liberror.h>
+  21:spi.c         **** #include "private.h"
+  22:spi.c         **** #include "vendorCommands.h"
+  23:spi.c         **** 
+  24:spi.c         **** static const uint8 swapTable[] = {
+  25:spi.c         **** 	0x00, 0x80, 0x40, 0xC0, 0x20, 0xA0, 0x60, 0xE0, 0x10, 0x90, 0x50, 0xD0, 0x30, 0xB0, 0x70, 0xF0,
+  26:spi.c         **** 	0x08, 0x88, 0x48, 0xC8, 0x28, 0xA8, 0x68, 0xE8, 0x18, 0x98, 0x58, 0xD8, 0x38, 0xB8, 0x78, 0xF8,
+  27:spi.c         **** 	0x04, 0x84, 0x44, 0xC4, 0x24, 0xA4, 0x64, 0xE4, 0x14, 0x94, 0x54, 0xD4, 0x34, 0xB4, 0x74, 0xF4,
+  28:spi.c         **** 	0x0C, 0x8C, 0x4C, 0xCC, 0x2C, 0xAC, 0x6C, 0xEC, 0x1C, 0x9C, 0x5C, 0xDC, 0x3C, 0xBC, 0x7C, 0xFC,
+  29:spi.c         **** 	0x02, 0x82, 0x42, 0xC2, 0x22, 0xA2, 0x62, 0xE2, 0x12, 0x92, 0x52, 0xD2, 0x32, 0xB2, 0x72, 0xF2,
+  30:spi.c         **** 	0x0A, 0x8A, 0x4A, 0xCA, 0x2A, 0xAA, 0x6A, 0xEA, 0x1A, 0x9A, 0x5A, 0xDA, 0x3A, 0xBA, 0x7A, 0xFA,
+  31:spi.c         **** 	0x06, 0x86, 0x46, 0xC6, 0x26, 0xA6, 0x66, 0xE6, 0x16, 0x96, 0x56, 0xD6, 0x36, 0xB6, 0x76, 0xF6,
+  32:spi.c         **** 	0x0E, 0x8E, 0x4E, 0xCE, 0x2E, 0xAE, 0x6E, 0xEE, 0x1E, 0x9E, 0x5E, 0xDE, 0x3E, 0xBE, 0x7E, 0xFE,
+  33:spi.c         **** 	0x01, 0x81, 0x41, 0xC1, 0x21, 0xA1, 0x61, 0xE1, 0x11, 0x91, 0x51, 0xD1, 0x31, 0xB1, 0x71, 0xF1,
+  34:spi.c         **** 	0x09, 0x89, 0x49, 0xC9, 0x29, 0xA9, 0x69, 0xE9, 0x19, 0x99, 0x59, 0xD9, 0x39, 0xB9, 0x79, 0xF9,
+  35:spi.c         **** 	0x05, 0x85, 0x45, 0xC5, 0x25, 0xA5, 0x65, 0xE5, 0x15, 0x95, 0x55, 0xD5, 0x35, 0xB5, 0x75, 0xF5,
+  36:spi.c         **** 	0x0D, 0x8D, 0x4D, 0xCD, 0x2D, 0xAD, 0x6D, 0xED, 0x1D, 0x9D, 0x5D, 0xDD, 0x3D, 0xBD, 0x7D, 0xFD,
+  37:spi.c         **** 	0x03, 0x83, 0x43, 0xC3, 0x23, 0xA3, 0x63, 0xE3, 0x13, 0x93, 0x53, 0xD3, 0x33, 0xB3, 0x73, 0xF3,
+  38:spi.c         **** 	0x0B, 0x8B, 0x4B, 0xCB, 0x2B, 0xAB, 0x6B, 0xEB, 0x1B, 0x9B, 0x5B, 0xDB, 0x3B, 0xBB, 0x7B, 0xFB,
+  39:spi.c         **** 	0x07, 0x87, 0x47, 0xC7, 0x27, 0xA7, 0x67, 0xE7, 0x17, 0x97, 0x57, 0xD7, 0x37, 0xB7, 0x77, 0xF7,
+  40:spi.c         **** 	0x0F, 0x8F, 0x4F, 0xCF, 0x2F, 0xAF, 0x6F, 0xEF, 0x1F, 0x9F, 0x5F, 0xDF, 0x3F, 0xBF, 0x7F, 0xFF
+  41:spi.c         **** };
+  42:spi.c         **** 
+  43:spi.c         **** DLLEXPORT(void) spiBitSwap(uint32 length, uint8 *buffer) {
+ 292              		.loc 2 43 0
+ 293              		.cfi_startproc
+ 294 000c 55       		pushq	%rbp
+ 295              		.cfi_def_cfa_offset 16
+ 296              		.cfi_offset 6, -16
+ 297 000d 4889E5   		movq	%rsp, %rbp
+ 298              		.cfi_def_cfa_register 6
+ 299 0010 897DFC   		movl	%edi, -4(%rbp)
+ 300 0013 488975F0 		movq	%rsi, -16(%rbp)
+  44:spi.c         **** 	while ( length-- ) {
+ 301              		.loc 2 44 0
+ 302 0017 EB23     		jmp	.L4
+ 303              	.L5:
+  45:spi.c         **** 		*buffer = swapTable[*buffer];
+ 304              		.loc 2 45 0
+ 305 0019 488B45F0 		movq	-16(%rbp), %rax
+ 306 001d 0FB600   		movzbl	(%rax), %eax
+ 307 0020 0FB6C0   		movzbl	%al, %eax
+ 308 0023 4863D0   		movslq	%eax, %rdx
+ 309 0026 488D0500 		leaq	swapTable(%rip), %rax
+ 309      000000
+ 310 002d 0FB61402 		movzbl	(%rdx,%rax), %edx
+ 311 0031 488B45F0 		movq	-16(%rbp), %rax
+ 312 0035 8810     		movb	%dl, (%rax)
+  46:spi.c         **** 		buffer++;
+ 313              		.loc 2 46 0
+ 314 0037 488345F0 		addq	$1, -16(%rbp)
+ 314      01
+ 315              	.L4:
+  44:spi.c         **** 	while ( length-- ) {
+ 316              		.loc 2 44 0 discriminator 1
+ 317 003c 8B45FC   		movl	-4(%rbp), %eax
+ 318 003f 8D50FF   		leal	-1(%rax), %edx
+ 319 0042 8955FC   		movl	%edx, -4(%rbp)
+ 320 0045 85C0     		testl	%eax, %eax
+ 321 0047 75D0     		jne	.L5
+  47:spi.c         **** 	}
+  48:spi.c         **** }
+ 322              		.loc 2 48 0
+ 323 0049 5D       		popq	%rbp
+ 324              		.cfi_def_cfa 7, 8
+ 325 004a C3       		ret
+ 326              		.cfi_endproc
+ 327              	.LFE4:
+ 329              		.section	.rodata
+ 330              	.LC0:
+ 331 0100 73706953 		.string	"spiSend()"
+ 331      656E6428 
+ 331      2900
+ 332 010a 00000000 		.align 8
+ 332      0000
+ 333              	.LC1:
+ 334 0110 73706953 		.string	"spiSend(): device doesn't support SPI send"
+ 334      656E6428 
+ 334      293A2064 
+ 334      65766963 
+ 334      6520646F 
+ 335              		.text
+ 336              		.globl	spiSend
+ 338              	spiSend:
+ 339              	.LFB5:
+  49:spi.c         **** 
+  50:spi.c         **** DLLEXPORT(FLStatus) spiSend(
+  51:spi.c         **** 	struct FLContext *handle, uint32 length, const uint8 *buffer, uint8 bitOrder, const char **error)
+  52:spi.c         **** {
+ 340              		.loc 2 52 0
+ 341              		.cfi_startproc
+ 342 004b 55       		pushq	%rbp
+ 343              		.cfi_def_cfa_offset 16
+ 344              		.cfi_offset 6, -16
+ 345 004c 4889E5   		movq	%rsp, %rbp
+ 346              		.cfi_def_cfa_register 6
+ 347 004f 53       		pushq	%rbx
+ 348 0050 4883EC78 		subq	$120, %rsp
+ 349              		.cfi_offset 3, -24
+ 350 0054 48897DA8 		movq	%rdi, -88(%rbp)
+ 351 0058 8975A4   		movl	%esi, -92(%rbp)
+ 352 005b 48895598 		movq	%rdx, -104(%rbp)
+ 353 005f 89C8     		movl	%ecx, %eax
+ 354 0061 4C894590 		movq	%r8, -112(%rbp)
+ 355 0065 8845A0   		movb	%al, -96(%rbp)
+ 356              		.loc 2 52 0
+ 357 0068 64488B04 		movq	%fs:40, %rax
+ 357      25280000 
+ 357      00
+ 358 0071 488945E8 		movq	%rax, -24(%rbp)
+ 359 0075 31C0     		xorl	%eax, %eax
+  53:spi.c         **** 	FLStatus retVal = FL_SUCCESS;
+ 360              		.loc 2 53 0
+ 361 0077 C745B400 		movl	$0, -76(%rbp)
+ 361      000000
+  54:spi.c         **** 	USBStatus uStatus;
+  55:spi.c         **** 	uint8 *swapBuffer = NULL;
+ 362              		.loc 2 55 0
+ 363 007e 48C745C0 		movq	$0, -64(%rbp)
+ 363      00000000 
+  56:spi.c         **** 	const uint8 *data = buffer;
+ 364              		.loc 2 56 0
+ 365 0086 488B4598 		movq	-104(%rbp), %rax
+ 366 008a 488945C8 		movq	%rax, -56(%rbp)
+  57:spi.c         **** 	union {
+  58:spi.c         **** 		uint32 u32;
+  59:spi.c         **** 		uint8 bytes[4];
+  60:spi.c         **** 	} countUnion;
+  61:spi.c         **** 
+  62:spi.c         **** 	// Maybe make a bit-swapped copy of the data before sending it
+  63:spi.c         **** 	if ( bitOrder == SPI_MSBFIRST ) {
+ 367              		.loc 2 63 0
+ 368 008e 807DA000 		cmpb	$0, -96(%rbp)
+ 369 0092 0F859000 		jne	.L7
+ 369      0000
+ 370              	.LBB2:
+  64:spi.c         **** 		uint32 count = length;
+ 371              		.loc 2 64 0
+ 372 0098 8B45A4   		movl	-92(%rbp), %eax
+ 373 009b 8945BC   		movl	%eax, -68(%rbp)
+  65:spi.c         **** 		const uint8 *srcPtr = buffer;
+ 374              		.loc 2 65 0
+ 375 009e 488B4598 		movq	-104(%rbp), %rax
+ 376 00a2 488945D0 		movq	%rax, -48(%rbp)
+  66:spi.c         **** 		uint8 *dstPtr = swapBuffer = (uint8*)malloc(length);
+ 377              		.loc 2 66 0
+ 378 00a6 8B45A4   		movl	-92(%rbp), %eax
+ 379 00a9 4889C7   		movq	%rax, %rdi
+ 380 00ac E8000000 		call	malloc@PLT
+ 380      00
+ 381 00b1 488945C0 		movq	%rax, -64(%rbp)
+ 382 00b5 488B45C0 		movq	-64(%rbp), %rax
+ 383 00b9 488945D8 		movq	%rax, -40(%rbp)
+  67:spi.c         **** 		CHECK_STATUS(!swapBuffer, FL_ALLOC_ERR, cleanup, "spiSend()");
+ 384              		.loc 2 67 0
+ 385 00bd 48837DC0 		cmpq	$0, -64(%rbp)
+ 385      00
+ 386 00c2 751F     		jne	.L8
+ 387              		.loc 2 67 0 is_stmt 0 discriminator 1
+ 388 00c4 488B4590 		movq	-112(%rbp), %rax
+ 389 00c8 488D3500 		leaq	.LC0(%rip), %rsi
+ 389      000000
+ 390 00cf 4889C7   		movq	%rax, %rdi
+ 391 00d2 E8000000 		call	errPrefix@PLT
+ 391      00
+ 392 00d7 C745B401 		movl	$1, -76(%rbp)
+ 392      000000
+ 393 00de E9730100 		jmp	.L9
+ 393      00
+ 394              	.L8:
+  68:spi.c         **** 		while ( count-- ) {
+ 395              		.loc 2 68 0 is_stmt 1
+ 396 00e3 EB2E     		jmp	.L10
+ 397              	.L11:
+  69:spi.c         **** 			*dstPtr++ = swapTable[*srcPtr++];
+ 398              		.loc 2 69 0
+ 399 00e5 488B45D8 		movq	-40(%rbp), %rax
+ 400 00e9 488D5001 		leaq	1(%rax), %rdx
+ 401 00ed 488955D8 		movq	%rdx, -40(%rbp)
+ 402 00f1 488B55D0 		movq	-48(%rbp), %rdx
+ 403 00f5 488D4A01 		leaq	1(%rdx), %rcx
+ 404 00f9 48894DD0 		movq	%rcx, -48(%rbp)
+ 405 00fd 0FB612   		movzbl	(%rdx), %edx
+ 406 0100 0FB6D2   		movzbl	%dl, %edx
+ 407 0103 4863CA   		movslq	%edx, %rcx
+ 408 0106 488D1500 		leaq	swapTable(%rip), %rdx
+ 408      000000
+ 409 010d 0FB61411 		movzbl	(%rcx,%rdx), %edx
+ 410 0111 8810     		movb	%dl, (%rax)
+ 411              	.L10:
+  68:spi.c         **** 		while ( count-- ) {
+ 412              		.loc 2 68 0 discriminator 1
+ 413 0113 8B45BC   		movl	-68(%rbp), %eax
+ 414 0116 8D50FF   		leal	-1(%rax), %edx
+ 415 0119 8955BC   		movl	%edx, -68(%rbp)
+ 416 011c 85C0     		testl	%eax, %eax
+ 417 011e 75C5     		jne	.L11
+  70:spi.c         **** 		}
+  71:spi.c         **** 		data = swapBuffer;
+ 418              		.loc 2 71 0
+ 419 0120 488B45C0 		movq	-64(%rbp), %rax
+ 420 0124 488945C8 		movq	%rax, -56(%rbp)
+ 421              	.L7:
+ 422              	.LBE2:
+  72:spi.c         **** 	}
+  73:spi.c         **** 
+  74:spi.c         **** 	// Request the SPI send operation
+  75:spi.c         **** 	countUnion.u32 = littleEndian32(length);
+ 423              		.loc 2 75 0
+ 424 0128 8B45A4   		movl	-92(%rbp), %eax
+ 425 012b 89C7     		movl	%eax, %edi
+ 426 012d E8CEFEFF 		call	littleEndian32
+ 426      FF
+ 427 0132 8945E0   		movl	%eax, -32(%rbp)
+  76:spi.c         **** 	uStatus = usbControlWrite(
+ 428              		.loc 2 76 0
+ 429 0135 488B45A8 		movq	-88(%rbp), %rax
+ 430 0139 488B00   		movq	(%rax), %rax
+ 431 013c 488D55E0 		leaq	-32(%rbp), %rdx
+ 432 0140 48C74424 		movq	$0, 8(%rsp)
+ 432      08000000 
+ 432      00
+ 433 0149 C70424E8 		movl	$1000, (%rsp)
+ 433      030000
+ 434 0150 41B90400 		movl	$4, %r9d
+ 434      0000
+ 435 0156 4989D0   		movq	%rdx, %r8
+ 436 0159 B9060000 		movl	$6, %ecx
+ 436      00
+ 437 015e BA000000 		movl	$0, %edx
+ 437      00
+ 438 0163 BE810000 		movl	$129, %esi
+ 438      00
+ 439 0168 4889C7   		movq	%rax, %rdi
+ 440 016b E8000000 		call	usbControlWrite@PLT
+ 440      00
+ 441 0170 8945B8   		movl	%eax, -72(%rbp)
+  77:spi.c         **** 		handle->device, CMD_PROG_CLOCK_DATA, 0x0000, PROG_SPI_SEND,
+  78:spi.c         **** 		countUnion.bytes, 4, 1000, NULL);
+  79:spi.c         **** 	CHECK_STATUS(uStatus, FL_PROTOCOL_ERR, cleanup, "spiSend(): device doesn't support SPI send");
+ 442              		.loc 2 79 0
+ 443 0173 837DB800 		cmpl	$0, -72(%rbp)
+ 444 0177 741F     		je	.L12
+ 445              		.loc 2 79 0 is_stmt 0 discriminator 1
+ 446 0179 488B4590 		movq	-112(%rbp), %rax
+ 447 017d 488D3500 		leaq	.LC1(%rip), %rsi
+ 447      000000
+ 448 0184 4889C7   		movq	%rax, %rdi
+ 449 0187 E8000000 		call	errPrefix@PLT
+ 449      00
+ 450 018c C745B403 		movl	$3, -76(%rbp)
+ 450      000000
+ 451 0193 E9BE0000 		jmp	.L9
+ 451      00
+ 452              	.L12:
+  80:spi.c         **** 
+  81:spi.c         **** 	// You have to report it as 512 bytes, but make sure you never try to do a
+  82:spi.c         **** 	// packet larger than 64.
+  83:spi.c         **** 	// http://permalink.gmane.org/gmane.comp.lib.libusbx.devel/1312
+  84:spi.c         **** 	//
+  85:spi.c         **** 	while ( length >= 64 ) {
+ 453              		.loc 2 85 0 is_stmt 1
+ 454 0198 EB3C     		jmp	.L13
+ 455              	.L14:
+  86:spi.c         **** 		uStatus = usbBulkWrite(
+  87:spi.c         **** 			handle->device,
+  88:spi.c         **** 			handle->progOutEP,  // write to OUT endpoint
+ 456              		.loc 2 88 0
+ 457 019a 488B45A8 		movq	-88(%rbp), %rax
+ 458 019e 0FB64015 		movzbl	21(%rax), %eax
+  86:spi.c         **** 		uStatus = usbBulkWrite(
+ 459              		.loc 2 86 0
+ 460 01a2 0FB6F0   		movzbl	%al, %esi
+ 461 01a5 488B45A8 		movq	-88(%rbp), %rax
+ 462 01a9 488B00   		movq	(%rax), %rax
+ 463 01ac 488B4D90 		movq	-112(%rbp), %rcx
+ 464 01b0 488B55C8 		movq	-56(%rbp), %rdx
+ 465 01b4 4989C9   		movq	%rcx, %r9
+ 466 01b7 41B8FFFF 		movl	$-1, %r8d
+ 466      FFFF
+ 467 01bd B9400000 		movl	$64, %ecx
+ 467      00
+ 468 01c2 4889C7   		movq	%rax, %rdi
+ 469 01c5 E8000000 		call	usbBulkWrite@PLT
+ 469      00
+ 470 01ca 8945B8   		movl	%eax, -72(%rbp)
+  89:spi.c         **** 			data,               // write from send buffer
+  90:spi.c         **** 			64,                 // write this many bytes
+  91:spi.c         **** 			U32MAX,             // timeout in milliseconds
+  92:spi.c         **** 			error
+  93:spi.c         **** 		);
+  94:spi.c         **** 		data += 64;
+ 471              		.loc 2 94 0
+ 472 01cd 488345C8 		addq	$64, -56(%rbp)
+ 472      40
+  95:spi.c         **** 		length -= 64;
+ 473              		.loc 2 95 0
+ 474 01d2 836DA440 		subl	$64, -92(%rbp)
+ 475              	.L13:
+  85:spi.c         **** 		uStatus = usbBulkWrite(
+ 476              		.loc 2 85 0 discriminator 1
+ 477 01d6 837DA43F 		cmpl	$63, -92(%rbp)
+ 478 01da 77BE     		ja	.L14
+  96:spi.c         **** 	}
+  97:spi.c         **** 	if ( length ) {
+ 479              		.loc 2 97 0
+ 480 01dc 837DA400 		cmpl	$0, -92(%rbp)
+ 481 01e0 7474     		je	.L9
+  98:spi.c         **** 		CHECK_STATUS(uStatus, FL_USB_ERR, cleanup, "spiSend()");
+ 482              		.loc 2 98 0
+ 483 01e2 837DB800 		cmpl	$0, -72(%rbp)
+ 484 01e6 741C     		je	.L15
+ 485              		.loc 2 98 0 is_stmt 0 discriminator 1
+ 486 01e8 488B4590 		movq	-112(%rbp), %rax
+ 487 01ec 488D3500 		leaq	.LC0(%rip), %rsi
+ 487      000000
+ 488 01f3 4889C7   		movq	%rax, %rdi
+ 489 01f6 E8000000 		call	errPrefix@PLT
+ 489      00
+ 490 01fb C745B402 		movl	$2, -76(%rbp)
+ 490      000000
+ 491 0202 EB52     		jmp	.L9
+ 492              	.L15:
+  99:spi.c         **** 		uStatus = usbBulkWrite(
+ 100:spi.c         **** 			handle->device,
+ 101:spi.c         **** 			handle->progOutEP,  // write to OUT endpoint
+ 493              		.loc 2 101 0 is_stmt 1
+ 494 0204 488B45A8 		movq	-88(%rbp), %rax
+ 495 0208 0FB64015 		movzbl	21(%rax), %eax
+  99:spi.c         **** 		uStatus = usbBulkWrite(
+ 496              		.loc 2 99 0
+ 497 020c 0FB6F0   		movzbl	%al, %esi
+ 498 020f 488B45A8 		movq	-88(%rbp), %rax
+ 499 0213 488B00   		movq	(%rax), %rax
+ 500 0216 488B7D90 		movq	-112(%rbp), %rdi
+ 501 021a 8B4DA4   		movl	-92(%rbp), %ecx
+ 502 021d 488B55C8 		movq	-56(%rbp), %rdx
+ 503 0221 4989F9   		movq	%rdi, %r9
+ 504 0224 41B8FFFF 		movl	$-1, %r8d
+ 504      FFFF
+ 505 022a 4889C7   		movq	%rax, %rdi
+ 506 022d E8000000 		call	usbBulkWrite@PLT
+ 506      00
+ 507 0232 8945B8   		movl	%eax, -72(%rbp)
+ 102:spi.c         **** 			data,               // write from send buffer
+ 103:spi.c         **** 			length,             // write this many bytes
+ 104:spi.c         **** 			U32MAX,             // timeout in milliseconds
+ 105:spi.c         **** 			error
+ 106:spi.c         **** 		);
+ 107:spi.c         **** 		CHECK_STATUS(uStatus, FL_USB_ERR, cleanup, "spiSend()");
+ 508              		.loc 2 107 0
+ 509 0235 837DB800 		cmpl	$0, -72(%rbp)
+ 510 0239 741B     		je	.L9
+ 511              		.loc 2 107 0 is_stmt 0 discriminator 1
+ 512 023b 488B4590 		movq	-112(%rbp), %rax
+ 513 023f 488D3500 		leaq	.LC0(%rip), %rsi
+ 513      000000
+ 514 0246 4889C7   		movq	%rax, %rdi
+ 515 0249 E8000000 		call	errPrefix@PLT
+ 515      00
+ 516 024e C745B402 		movl	$2, -76(%rbp)
+ 516      000000
+ 517 0255 90       		nop
+ 518              	.L9:
+ 108:spi.c         **** 	}
+ 109:spi.c         **** cleanup:
+ 110:spi.c         **** 	free(swapBuffer);
+ 519              		.loc 2 110 0 is_stmt 1
+ 520 0256 488B45C0 		movq	-64(%rbp), %rax
+ 521 025a 4889C7   		movq	%rax, %rdi
+ 522 025d E8000000 		call	free@PLT
+ 522      00
+ 111:spi.c         **** 	return retVal;
+ 523              		.loc 2 111 0
+ 524 0262 8B45B4   		movl	-76(%rbp), %eax
+ 112:spi.c         **** }
+ 525              		.loc 2 112 0
+ 526 0265 488B5DE8 		movq	-24(%rbp), %rbx
+ 527 0269 6448331C 		xorq	%fs:40, %rbx
+ 527      25280000 
+ 527      00
+ 528 0272 7405     		je	.L17
+ 529 0274 E8000000 		call	__stack_chk_fail@PLT
+ 529      00
+ 530              	.L17:
+ 531 0279 4883C478 		addq	$120, %rsp
+ 532 027d 5B       		popq	%rbx
+ 533 027e 5D       		popq	%rbp
+ 534              		.cfi_def_cfa 7, 8
+ 535 027f C3       		ret
+ 536              		.cfi_endproc
+ 537              	.LFE5:
+ 539              		.section	.rodata
+ 540 013b 00000000 		.align 8
+ 540      00
+ 541              	.LC2:
+ 542 0140 73706952 		.string	"spiRecv(): device doesn't support SPI receive"
+ 542      65637628 
+ 542      293A2064 
+ 542      65766963 
+ 542      6520646F 
+ 543              	.LC3:
+ 544 016e 73706952 		.string	"spiRecv()"
+ 544      65637628 
+ 544      2900
+ 545              		.text
+ 546              		.globl	spiRecv
+ 548              	spiRecv:
+ 549              	.LFB6:
+ 113:spi.c         **** 
+ 114:spi.c         **** DLLEXPORT(FLStatus) spiRecv(
+ 115:spi.c         **** 	struct FLContext *handle, uint32 length, uint8 *buf, uint8 bitOrder, const char **error)
+ 116:spi.c         **** {
+ 550              		.loc 2 116 0
+ 551              		.cfi_startproc
+ 552 0280 55       		pushq	%rbp
+ 553              		.cfi_def_cfa_offset 16
+ 554              		.cfi_offset 6, -16
+ 555 0281 4889E5   		movq	%rsp, %rbp
+ 556              		.cfi_def_cfa_register 6
+ 557 0284 53       		pushq	%rbx
+ 558 0285 4883EC68 		subq	$104, %rsp
+ 559              		.cfi_offset 3, -24
+ 560 0289 48897DB8 		movq	%rdi, -72(%rbp)
+ 561 028d 8975B4   		movl	%esi, -76(%rbp)
+ 562 0290 488955A8 		movq	%rdx, -88(%rbp)
+ 563 0294 89C8     		movl	%ecx, %eax
+ 564 0296 4C8945A0 		movq	%r8, -96(%rbp)
+ 565 029a 8845B0   		movb	%al, -80(%rbp)
+ 566              		.loc 2 116 0
+ 567 029d 64488B04 		movq	%fs:40, %rax
+ 567      25280000 
+ 567      00
+ 568 02a6 488945E8 		movq	%rax, -24(%rbp)
+ 569 02aa 31C0     		xorl	%eax, %eax
+ 117:spi.c         **** 	FLStatus retVal = FL_SUCCESS;
+ 570              		.loc 2 117 0
+ 571 02ac C745CC00 		movl	$0, -52(%rbp)
+ 571      000000
+ 118:spi.c         **** 	USBStatus uStatus;
+ 119:spi.c         **** 	union {
+ 120:spi.c         **** 		uint32 u32;
+ 121:spi.c         **** 		uint8 bytes[4];
+ 122:spi.c         **** 	} countUnion;
+ 123:spi.c         **** 	uint32 count = length;
+ 572              		.loc 2 123 0
+ 573 02b3 8B45B4   		movl	-76(%rbp), %eax
+ 574 02b6 8945D0   		movl	%eax, -48(%rbp)
+ 124:spi.c         **** 	uint8 *ptr = buf;
+ 575              		.loc 2 124 0
+ 576 02b9 488B45A8 		movq	-88(%rbp), %rax
+ 577 02bd 488945D8 		movq	%rax, -40(%rbp)
+ 125:spi.c         **** 
+ 126:spi.c         **** 	// Request the SPI receive operation
+ 127:spi.c         **** 	countUnion.u32 = littleEndian32(length);
+ 578              		.loc 2 127 0
+ 579 02c1 8B45B4   		movl	-76(%rbp), %eax
+ 580 02c4 89C7     		movl	%eax, %edi
+ 581 02c6 E835FDFF 		call	littleEndian32
+ 581      FF
+ 582 02cb 8945E0   		movl	%eax, -32(%rbp)
+ 128:spi.c         **** 	uStatus = usbControlWrite(
+ 583              		.loc 2 128 0
+ 584 02ce 488B45B8 		movq	-72(%rbp), %rax
+ 585 02d2 488B00   		movq	(%rax), %rax
+ 586 02d5 488D55E0 		leaq	-32(%rbp), %rdx
+ 587 02d9 48C74424 		movq	$0, 8(%rsp)
+ 587      08000000 
+ 587      00
+ 588 02e2 C70424E8 		movl	$1000, (%rsp)
+ 588      030000
+ 589 02e9 41B90400 		movl	$4, %r9d
+ 589      0000
+ 590 02ef 4989D0   		movq	%rdx, %r8
+ 591 02f2 B9070000 		movl	$7, %ecx
+ 591      00
+ 592 02f7 BA000000 		movl	$0, %edx
+ 592      00
+ 593 02fc BE810000 		movl	$129, %esi
+ 593      00
+ 594 0301 4889C7   		movq	%rax, %rdi
+ 595 0304 E8000000 		call	usbControlWrite@PLT
+ 595      00
+ 596 0309 8945D4   		movl	%eax, -44(%rbp)
+ 129:spi.c         **** 		handle->device, CMD_PROG_CLOCK_DATA, 0x0000, PROG_SPI_RECV,
+ 130:spi.c         **** 		countUnion.bytes, 4, 1000, NULL);
+ 131:spi.c         **** 	CHECK_STATUS(uStatus, FL_PROTOCOL_ERR, cleanup, "spiRecv(): device doesn't support SPI receive");
+ 597              		.loc 2 131 0
+ 598 030c 837DD400 		cmpl	$0, -44(%rbp)
+ 599 0310 741F     		je	.L19
+ 600              		.loc 2 131 0 is_stmt 0 discriminator 1
+ 601 0312 488B45A0 		movq	-96(%rbp), %rax
+ 602 0316 488D3500 		leaq	.LC2(%rip), %rsi
+ 602      000000
+ 603 031d 4889C7   		movq	%rax, %rdi
+ 604 0320 E8000000 		call	errPrefix@PLT
+ 604      00
+ 605 0325 C745CC03 		movl	$3, -52(%rbp)
+ 605      000000
+ 606 032c E9FA0000 		jmp	.L20
+ 606      00
+ 607              	.L19:
+ 132:spi.c         **** 
+ 133:spi.c         **** 	// You have to report it as 512 bytes, but make sure you never try to do a
+ 134:spi.c         **** 	// packet larger than 64.
+ 135:spi.c         **** 	// http://permalink.gmane.org/gmane.comp.lib.libusbx.devel/1312
+ 136:spi.c         **** 	//
+ 137:spi.c         **** 	while ( count >= 64 ) {
+ 608              		.loc 2 137 0 is_stmt 1
+ 609 0331 EB61     		jmp	.L21
+ 610              	.L23:
+ 138:spi.c         **** 		uStatus = usbBulkRead(
+ 139:spi.c         **** 			handle->device,
+ 140:spi.c         **** 			handle->progInEP,  // read from IN endpoint
+ 611              		.loc 2 140 0
+ 612 0333 488B45B8 		movq	-72(%rbp), %rax
+ 613 0337 0FB64016 		movzbl	22(%rax), %eax
+ 138:spi.c         **** 		uStatus = usbBulkRead(
+ 614              		.loc 2 138 0
+ 615 033b 0FB6F0   		movzbl	%al, %esi
+ 616 033e 488B45B8 		movq	-72(%rbp), %rax
+ 617 0342 488B00   		movq	(%rax), %rax
+ 618 0345 488B4DA0 		movq	-96(%rbp), %rcx
+ 619 0349 488B55D8 		movq	-40(%rbp), %rdx
+ 620 034d 4989C9   		movq	%rcx, %r9
+ 621 0350 41B8FFFF 		movl	$-1, %r8d
+ 621      FFFF
+ 622 0356 B9400000 		movl	$64, %ecx
+ 622      00
+ 623 035b 4889C7   		movq	%rax, %rdi
+ 624 035e E8000000 		call	usbBulkRead@PLT
+ 624      00
+ 625 0363 8945D4   		movl	%eax, -44(%rbp)
+ 141:spi.c         **** 			ptr,               // read into receive buffer
+ 142:spi.c         **** 			64,                // read this many bytes
+ 143:spi.c         **** 			U32MAX,            // timeout in milliseconds
+ 144:spi.c         **** 			error
+ 145:spi.c         **** 		);
+ 146:spi.c         **** 		CHECK_STATUS(uStatus, FL_USB_ERR, cleanup, "spiRecv()");
+ 626              		.loc 2 146 0
+ 627 0366 837DD400 		cmpl	$0, -44(%rbp)
+ 628 036a 741F     		je	.L22
+ 629              		.loc 2 146 0 is_stmt 0 discriminator 1
+ 630 036c 488B45A0 		movq	-96(%rbp), %rax
+ 631 0370 488D3500 		leaq	.LC3(%rip), %rsi
+ 631      000000
+ 632 0377 4889C7   		movq	%rax, %rdi
+ 633 037a E8000000 		call	errPrefix@PLT
+ 633      00
+ 634 037f C745CC02 		movl	$2, -52(%rbp)
+ 634      000000
+ 635 0386 E9A00000 		jmp	.L20
+ 635      00
+ 636              	.L22:
+ 147:spi.c         **** 		ptr += 64;
+ 637              		.loc 2 147 0 is_stmt 1
+ 638 038b 488345D8 		addq	$64, -40(%rbp)
+ 638      40
+ 148:spi.c         **** 		count -= 64;
+ 639              		.loc 2 148 0
+ 640 0390 836DD040 		subl	$64, -48(%rbp)
+ 641              	.L21:
+ 137:spi.c         **** 		uStatus = usbBulkRead(
+ 642              		.loc 2 137 0 discriminator 1
+ 643 0394 837DD03F 		cmpl	$63, -48(%rbp)
+ 644 0398 7799     		ja	.L23
+ 149:spi.c         **** 	}
+ 150:spi.c         **** 	if ( count ) {
+ 645              		.loc 2 150 0
+ 646 039a 837DD000 		cmpl	$0, -48(%rbp)
+ 647 039e 7453     		je	.L24
+ 151:spi.c         **** 		uStatus = usbBulkRead(
+ 152:spi.c         **** 			handle->device,
+ 153:spi.c         **** 			handle->progInEP,  // read from IN endpoint
+ 648              		.loc 2 153 0
+ 649 03a0 488B45B8 		movq	-72(%rbp), %rax
+ 650 03a4 0FB64016 		movzbl	22(%rax), %eax
+ 151:spi.c         **** 		uStatus = usbBulkRead(
+ 651              		.loc 2 151 0
+ 652 03a8 0FB6F0   		movzbl	%al, %esi
+ 653 03ab 488B45B8 		movq	-72(%rbp), %rax
+ 654 03af 488B00   		movq	(%rax), %rax
+ 655 03b2 488B7DA0 		movq	-96(%rbp), %rdi
+ 656 03b6 8B4DD0   		movl	-48(%rbp), %ecx
+ 657 03b9 488B55D8 		movq	-40(%rbp), %rdx
+ 658 03bd 4989F9   		movq	%rdi, %r9
+ 659 03c0 41B8FFFF 		movl	$-1, %r8d
+ 659      FFFF
+ 660 03c6 4889C7   		movq	%rax, %rdi
+ 661 03c9 E8000000 		call	usbBulkRead@PLT
+ 661      00
+ 662 03ce 8945D4   		movl	%eax, -44(%rbp)
+ 154:spi.c         **** 			ptr,               // read into receive buffer
+ 155:spi.c         **** 			count,             // read this many bytes
+ 156:spi.c         **** 			U32MAX,            // timeout in milliseconds
+ 157:spi.c         **** 			error
+ 158:spi.c         **** 		);
+ 159:spi.c         **** 		CHECK_STATUS(uStatus, FL_USB_ERR, cleanup, "spiRecv()");
+ 663              		.loc 2 159 0
+ 664 03d1 837DD400 		cmpl	$0, -44(%rbp)
+ 665 03d5 741C     		je	.L24
+ 666              		.loc 2 159 0 is_stmt 0 discriminator 1
+ 667 03d7 488B45A0 		movq	-96(%rbp), %rax
+ 668 03db 488D3500 		leaq	.LC3(%rip), %rsi
+ 668      000000
+ 669 03e2 4889C7   		movq	%rax, %rdi
+ 670 03e5 E8000000 		call	errPrefix@PLT
+ 670      00
+ 671 03ea C745CC02 		movl	$2, -52(%rbp)
+ 671      000000
+ 672 03f1 EB38     		jmp	.L20
+ 673              	.L24:
+ 160:spi.c         **** 	}
+ 161:spi.c         **** 
+ 162:spi.c         **** 	// Maybe bitswap the data
+ 163:spi.c         **** 	if ( bitOrder == SPI_MSBFIRST ) {
+ 674              		.loc 2 163 0 is_stmt 1
+ 675 03f3 807DB000 		cmpb	$0, -80(%rbp)
+ 676 03f7 7532     		jne	.L20
+ 164:spi.c         **** 		while ( length-- ) {
+ 677              		.loc 2 164 0
+ 678 03f9 EB23     		jmp	.L25
+ 679              	.L26:
+ 165:spi.c         **** 			*buf = swapTable[*buf];
+ 680              		.loc 2 165 0
+ 681 03fb 488B45A8 		movq	-88(%rbp), %rax
+ 682 03ff 0FB600   		movzbl	(%rax), %eax
+ 683 0402 0FB6C0   		movzbl	%al, %eax
+ 684 0405 4863D0   		movslq	%eax, %rdx
+ 685 0408 488D0500 		leaq	swapTable(%rip), %rax
+ 685      000000
+ 686 040f 0FB61402 		movzbl	(%rdx,%rax), %edx
+ 687 0413 488B45A8 		movq	-88(%rbp), %rax
+ 688 0417 8810     		movb	%dl, (%rax)
+ 166:spi.c         **** 			buf++;
+ 689              		.loc 2 166 0
+ 690 0419 488345A8 		addq	$1, -88(%rbp)
+ 690      01
+ 691              	.L25:
+ 164:spi.c         **** 		while ( length-- ) {
+ 692              		.loc 2 164 0 discriminator 1
+ 693 041e 8B45B4   		movl	-76(%rbp), %eax
+ 694 0421 8D50FF   		leal	-1(%rax), %edx
+ 695 0424 8955B4   		movl	%edx, -76(%rbp)
+ 696 0427 85C0     		testl	%eax, %eax
+ 697 0429 75D0     		jne	.L26
+ 698              	.L20:
+ 167:spi.c         **** 		}
+ 168:spi.c         **** 	}
+ 169:spi.c         **** cleanup:
+ 170:spi.c         **** 	return retVal;
+ 699              		.loc 2 170 0
+ 700 042b 8B45CC   		movl	-52(%rbp), %eax
+ 171:spi.c         **** }
+ 701              		.loc 2 171 0
+ 702 042e 488B5DE8 		movq	-24(%rbp), %rbx
+ 703 0432 6448331C 		xorq	%fs:40, %rbx
+ 703      25280000 
+ 703      00
+ 704 043b 7405     		je	.L28
+ 705 043d E8000000 		call	__stack_chk_fail@PLT
+ 705      00
+ 706              	.L28:
+ 707 0442 4883C468 		addq	$104, %rsp
+ 708 0446 5B       		popq	%rbx
+ 709 0447 5D       		popq	%rbp
+ 710              		.cfi_def_cfa 7, 8
+ 711 0448 C3       		ret
+ 712              		.cfi_endproc
+ 713              	.LFE6:
+ 715              	.Letext0:
+ 716              		.file 3 "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/libs/libusbwrap/libusbwrap.h"
+ 717              		.file 4 "libfpgalink.h"
+ 718              		.file 5 "private.h"
+ 719              		.file 6 "vendorCommands.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 spi.c
+     /tmp/cc0EpPj8.s:5      .text:0000000000000000 littleEndian32
+     /tmp/cc0EpPj8.s:29     .rodata:0000000000000000 swapTable
+     /tmp/cc0EpPj8.s:289    .text:000000000000000c spiBitSwap
+     /tmp/cc0EpPj8.s:338    .text:000000000000004b spiSend
+     /tmp/cc0EpPj8.s:548    .text:0000000000000280 spiRecv
+
+UNDEFINED SYMBOLS
+_GLOBAL_OFFSET_TABLE_
+malloc
+errPrefix
+usbControlWrite
+usbBulkWrite
+free
+__stack_chk_fail
+usbBulkRead

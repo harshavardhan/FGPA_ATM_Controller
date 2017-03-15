@@ -1,0 +1,20 @@
+------------------ FPGALINK'S INTERFACE TO THE OUTSIDE WORLD -------------------
+
+This is an abstraction layer, with an internal-facing interface and an external-
+facing interface. There are several implementations, each of which share the
+same internal interface but differ in their external interface.
+
+The internal interface provides an address, or channel ID, which ranges from
+0-127, and a pair of 8-bit FIFO interfaces, one for reading and another for
+writing. Each has an active-high "valid" signal driven by the sender, and an
+active-high "ready" signal driven by the receiver. On a rising edge of the
+clock, if both valid and ready are high, the eight data bits are transferred
+from the sender to the receiver.
+
+The external interface differs depending on how the microcontroller implementing
+the CommFPGA protocol is wired to the FPGA. Currently there are three separate
+implementations:
+
+  FX2LP slave-FIFO interface (15 I/Os, ~45MB/s)
+  EPP interface (12 I/Os, ~330KB/s)
+  Synchronous serial interface (3 I/Os, ~650KB/s)

@@ -1,0 +1,139 @@
+   1              		.file	"TestResults.cpp"
+   2              		.text
+   3              		.align 2
+   4              		.p2align 4,,15
+   5              		.globl	_ZN8UnitTest11TestResultsC2EPNS_12TestReporterE
+   7              	_ZN8UnitTest11TestResultsC2EPNS_12TestReporterE:
+   8              	.LFB1:
+   9              		.cfi_startproc
+  10 0000 488937   		movq	%rsi, (%rdi)
+  11 0003 C7470800 		movl	$0, 8(%rdi)
+  11      000000
+  12 000a C7470C00 		movl	$0, 12(%rdi)
+  12      000000
+  13 0011 C7471000 		movl	$0, 16(%rdi)
+  13      000000
+  14 0018 C6471400 		movb	$0, 20(%rdi)
+  15 001c C3       		ret
+  16              		.cfi_endproc
+  17              	.LFE1:
+  19              		.globl	_ZN8UnitTest11TestResultsC1EPNS_12TestReporterE
+  20              		.set	_ZN8UnitTest11TestResultsC1EPNS_12TestReporterE,_ZN8UnitTest11TestResultsC2EPNS_12TestReporte
+  21 001d 90       		.align 2
+  22 001e 6690     		.p2align 4,,15
+  23              		.globl	_ZN8UnitTest11TestResults11OnTestStartERKNS_11TestDetailsE
+  25              	_ZN8UnitTest11TestResults11OnTestStartERKNS_11TestDetailsE:
+  26              	.LFB3:
+  27              		.cfi_startproc
+  28 0020 83470801 		addl	$1, 8(%rdi)
+  29 0024 C6471400 		movb	$0, 20(%rdi)
+  30 0028 488B3F   		movq	(%rdi), %rdi
+  31 002b 4885FF   		testq	%rdi, %rdi
+  32 002e 7410     		je	.L2
+  33 0030 488B07   		movq	(%rdi), %rax
+  34 0033 488B4010 		movq	16(%rax), %rax
+  35 0037 FFE0     		jmp	*%rax
+  36 0039 0F1F8000 		.p2align 4,,10
+  36      000000
+  37              		.p2align 3
+  38              	.L2:
+  39 0040 F3C3     		rep ret
+  40              		.cfi_endproc
+  41              	.LFE3:
+  43              		.align 2
+  44 0042 66666666 		.p2align 4,,15
+  44      662E0F1F 
+  44      84000000 
+  44      0000
+  45              		.globl	_ZN8UnitTest11TestResults13OnTestFailureERKNS_11TestDetailsEPKc
+  47              	_ZN8UnitTest11TestResults13OnTestFailureERKNS_11TestDetailsEPKc:
+  48              	.LFB4:
+  49              		.cfi_startproc
+  50 0050 83471001 		addl	$1, 16(%rdi)
+  51 0054 807F1400 		cmpb	$0, 20(%rdi)
+  52 0058 7508     		jne	.L6
+  53 005a 83470C01 		addl	$1, 12(%rdi)
+  54 005e C6471401 		movb	$1, 20(%rdi)
+  55              	.L6:
+  56 0062 488B3F   		movq	(%rdi), %rdi
+  57 0065 4885FF   		testq	%rdi, %rdi
+  58 0068 740E     		je	.L5
+  59 006a 488B07   		movq	(%rdi), %rax
+  60 006d 488B4018 		movq	24(%rax), %rax
+  61 0071 FFE0     		jmp	*%rax
+  62              		.p2align 4,,10
+  63 0073 0F1F4400 		.p2align 3
+  63      00
+  64              	.L5:
+  65 0078 F3C3     		rep ret
+  66              		.cfi_endproc
+  67              	.LFE4:
+  69              		.align 2
+  70 007a 660F1F44 		.p2align 4,,15
+  70      0000
+  71              		.globl	_ZN8UnitTest11TestResults12OnTestFinishERKNS_11TestDetailsEf
+  73              	_ZN8UnitTest11TestResults12OnTestFinishERKNS_11TestDetailsEf:
+  74              	.LFB5:
+  75              		.cfi_startproc
+  76 0080 488B3F   		movq	(%rdi), %rdi
+  77 0083 4885FF   		testq	%rdi, %rdi
+  78 0086 7410     		je	.L8
+  79 0088 488B07   		movq	(%rdi), %rax
+  80 008b 488B4020 		movq	32(%rax), %rax
+  81 008f FFE0     		jmp	*%rax
+  82              		.p2align 4,,10
+  83 0091 0F1F8000 		.p2align 3
+  83      000000
+  84              	.L8:
+  85 0098 F3C3     		rep ret
+  86              		.cfi_endproc
+  87              	.LFE5:
+  89              		.align 2
+  90 009a 660F1F44 		.p2align 4,,15
+  90      0000
+  91              		.globl	_ZNK8UnitTest11TestResults17GetTotalTestCountEv
+  93              	_ZNK8UnitTest11TestResults17GetTotalTestCountEv:
+  94              	.LFB6:
+  95              		.cfi_startproc
+  96 00a0 8B4708   		movl	8(%rdi), %eax
+  97 00a3 C3       		ret
+  98              		.cfi_endproc
+  99              	.LFE6:
+ 101              		.align 2
+ 102 00a4 6666662E 		.p2align 4,,15
+ 102      0F1F8400 
+ 102      00000000 
+ 103              		.globl	_ZNK8UnitTest11TestResults18GetFailedTestCountEv
+ 105              	_ZNK8UnitTest11TestResults18GetFailedTestCountEv:
+ 106              	.LFB7:
+ 107              		.cfi_startproc
+ 108 00b0 8B470C   		movl	12(%rdi), %eax
+ 109 00b3 C3       		ret
+ 110              		.cfi_endproc
+ 111              	.LFE7:
+ 113              		.align 2
+ 114 00b4 6666662E 		.p2align 4,,15
+ 114      0F1F8400 
+ 114      00000000 
+ 115              		.globl	_ZNK8UnitTest11TestResults15GetFailureCountEv
+ 117              	_ZNK8UnitTest11TestResults15GetFailureCountEv:
+ 118              	.LFB8:
+ 119              		.cfi_startproc
+ 120 00c0 8B4710   		movl	16(%rdi), %eax
+ 121 00c3 C3       		ret
+ 122              		.cfi_endproc
+ 123              	.LFE8:
+ 125              		.ident	"GCC: (Ubuntu 4.8.4-2ubuntu1~14.04.3) 4.8.4"
+ 126              		.section	.note.GNU-stack,"",@progbits
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 TestResults.cpp
+     /tmp/ccKFaVjX.s:7      .text:0000000000000000 _ZN8UnitTest11TestResultsC2EPNS_12TestReporterE
+     /tmp/ccKFaVjX.s:7      .text:0000000000000000 _ZN8UnitTest11TestResultsC1EPNS_12TestReporterE
+     /tmp/ccKFaVjX.s:25     .text:0000000000000020 _ZN8UnitTest11TestResults11OnTestStartERKNS_11TestDetailsE
+     /tmp/ccKFaVjX.s:47     .text:0000000000000050 _ZN8UnitTest11TestResults13OnTestFailureERKNS_11TestDetailsEPKc
+     /tmp/ccKFaVjX.s:73     .text:0000000000000080 _ZN8UnitTest11TestResults12OnTestFinishERKNS_11TestDetailsEf
+     /tmp/ccKFaVjX.s:93     .text:00000000000000a0 _ZNK8UnitTest11TestResults17GetTotalTestCountEv
+     /tmp/ccKFaVjX.s:105    .text:00000000000000b0 _ZNK8UnitTest11TestResults18GetFailedTestCountEv
+     /tmp/ccKFaVjX.s:117    .text:00000000000000c0 _ZNK8UnitTest11TestResults15GetFailureCountEv
+
+NO UNDEFINED SYMBOLS

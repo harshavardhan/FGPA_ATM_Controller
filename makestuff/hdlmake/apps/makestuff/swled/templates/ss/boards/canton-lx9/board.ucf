@@ -1,0 +1,66 @@
+#
+# Copyright (C) 2009-2012 Chris McClelland
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+#===============================================================================
+# USB interface
+#===============================================================================
+NET "sysClk_in"       LOC="P85"  | IOSTANDARD=LVTTL;   # 25MHz
+
+NET "serClk_in"       LOC="P11"  | IOSTANDARD=LVTTL;   # XCK: EXIO1
+NET "serData_in"      LOC="P12"  | IOSTANDARD=LVTTL;   # TXD: EXIO2
+NET "serData_out"     LOC="P14"  | IOSTANDARD=LVTTL;   # RXD: EXIO3
+
+#===============================================================================
+# On-board peripheral signals
+#===============================================================================
+NET "led_out<0>"      LOC="P1"   | IOSTANDARD=LVTTL;
+NET "led_out<1>"      LOC="P2"   | IOSTANDARD=LVTTL;
+NET "led_out<2>"      LOC="P5"   | IOSTANDARD=LVTTL;
+NET "led_out<3>"      LOC="P6"   | IOSTANDARD=LVTTL;
+NET "led_out<4>"      LOC="P7"   | IOSTANDARD=LVTTL;
+NET "led_out<5>"      LOC="P8"   | IOSTANDARD=LVTTL;
+NET "led_out<6>"      LOC="P9"   | IOSTANDARD=LVTTL;
+NET "led_out<7>"      LOC="P10"  | IOSTANDARD=LVTTL;
+
+NET "sseg_out<0>"     LOC="P15"  | IOSTANDARD=LVTTL;   # segment a: EXIO4
+NET "sseg_out<1>"     LOC="P16"  | IOSTANDARD=LVTTL;   # segment b: EXIO5
+NET "sseg_out<2>"     LOC="P17"  | IOSTANDARD=LVTTL;   # segment c: EXIO6
+NET "sseg_out<3>"     LOC="P21"  | IOSTANDARD=LVTTL;   # segment d: EXIO7
+NET "sseg_out<4>"     LOC="P22"  | IOSTANDARD=LVTTL;   # segment e: EXIO8
+NET "sseg_out<5>"     LOC="P23"  | IOSTANDARD=LVTTL;   # segment f: EXIO9
+NET "sseg_out<6>"     LOC="P24"  | IOSTANDARD=LVTTL;   # segment g: EXIO10
+NET "sseg_out<7>"     LOC="P26"  | IOSTANDARD=LVTTL;   # decimal point: EXIO11
+
+NET "anode_out<0>"    LOC="P27"  | IOSTANDARD=LVTTL;   # EXIO12
+NET "anode_out<1>"    LOC="P29"  | IOSTANDARD=LVTTL;   # EXIO13
+NET "anode_out<2>"    LOC="P30"  | IOSTANDARD=LVTTL;   # EXIO14
+NET "anode_out<3>"    LOC="P32"  | IOSTANDARD=LVTTL;   # EXIO15
+
+NET "sw_in<0>"        LOC="P79"  | IOSTANDARD=LVTTL;   # SW0: Key1
+NET "sw_in<1>"        LOC="P78"  | IOSTANDARD=LVTTL;   # SW1: Key2
+NET "sw_in<2>"        LOC="P33"  | IOSTANDARD=LVTTL;   # SW2: EXIO16
+NET "sw_in<3>"        LOC="P34"  | IOSTANDARD=LVTTL;   # SW3: EXIO17
+NET "sw_in<4>"        LOC="P35"  | IOSTANDARD=LVTTL;   # SW4: EXIO18
+NET "sw_in<5>"        LOC="P40"  | IOSTANDARD=LVTTL;   # SW5: EXIO19
+NET "sw_in<6>"        LOC="P41"  | IOSTANDARD=LVTTL;   # SW6: EXIO20
+NET "sw_in<7>"        LOC="P43"  | IOSTANDARD=LVTTL;   # SW7: EXIO21
+
+#===============================================================================
+# Timing constraint of 25MHz clock "sysClk_in"
+#===============================================================================
+NET "sysClk_in" TNM_NET = "sysClk_in";
+TIMESPEC "TS_clk" = PERIOD "sysClk_in" 40 ns HIGH 50 %;

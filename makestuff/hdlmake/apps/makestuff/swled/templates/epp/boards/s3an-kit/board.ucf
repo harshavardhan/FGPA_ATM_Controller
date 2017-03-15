@@ -1,0 +1,77 @@
+#
+# Copyright (C) 2009-2012 Chris McClelland
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+#===============================================================================
+# USB interface
+#===============================================================================
+NET "eppClk_in"       LOC="E12"  | IOSTANDARD=LVTTL;   # 50MHz
+
+NET "eppData_io<0>"   LOC="AA21" | IOSTANDARD=LVTTL;   # J18_IO1
+NET "eppData_io<1>"   LOC="AB21" | IOSTANDARD=LVTTL;   # J18_IO2
+NET "eppData_io<2>"   LOC="AA19" | IOSTANDARD=LVTTL;   # J18_IO3
+NET "eppData_io<3>"   LOC="AB19" | IOSTANDARD=LVTTL;   # J18_IO4
+
+NET "eppData_io<4>"   LOC="V14"  | IOSTANDARD=LVTTL;   # J19_IO1
+NET "eppData_io<5>"   LOC="V15"  | IOSTANDARD=LVTTL;   # J19_IO2
+NET "eppData_io<6>"   LOC="W16"  | IOSTANDARD=LVTTL;   # J19_IO3
+NET "eppData_io<7>"   LOC="V16"  | IOSTANDARD=LVTTL;   # J19_IO4
+
+NET "eppAddrStb_in"   LOC="Y18"  | IOSTANDARD=LVTTL;   # J20_IO1
+NET "eppDataStb_in"   LOC="W18"  | IOSTANDARD=LVTTL;   # J20_IO2
+NET "eppWrite_in"     LOC="V17"  | IOSTANDARD=LVTTL;   # J20_IO3
+NET "eppWait_out"     LOC="W17"  | IOSTANDARD=LVTTL;   # J20_IO4
+
+#===============================================================================
+# On-board peripheral signals
+#===============================================================================
+NET "led_out<0>"      LOC="R20"  | IOSTANDARD=LVTTL;   # LED0
+NET "led_out<1>"      LOC="T19"  | IOSTANDARD=LVTTL;   # LED1
+NET "led_out<2>"      LOC="U20"  | IOSTANDARD=LVTTL;   # LED2
+NET "led_out<3>"      LOC="U19"  | IOSTANDARD=LVTTL;   # LED3
+NET "led_out<4>"      LOC="V19"  | IOSTANDARD=LVTTL;   # LED4
+NET "led_out<5>"      LOC="V20"  | IOSTANDARD=LVTTL;   # LED5
+NET "led_out<6>"      LOC="Y22"  | IOSTANDARD=LVTTL;   # LED6
+NET "led_out<7>"      LOC="W21"  | IOSTANDARD=LVTTL;   # LED7
+
+NET "sseg_out<0>"     LOC="A13"  | IOSTANDARD=LVTTL;   # segment a (Mapped to FX2)
+NET "sseg_out<1>"     LOC="B13"  | IOSTANDARD=LVTTL;   # segment b
+NET "sseg_out<2>"     LOC="A14"  | IOSTANDARD=LVTTL;   # segment c
+NET "sseg_out<3>"     LOC="B15"  | IOSTANDARD=LVTTL;   # segment d
+NET "sseg_out<4>"     LOC="A15"  | IOSTANDARD=LVTTL;   # segment e
+NET "sseg_out<5>"     LOC="A16"  | IOSTANDARD=LVTTL;   # segment f
+NET "sseg_out<6>"     LOC="A17"  | IOSTANDARD=LVTTL;   # segment g
+NET "sseg_out<7>"     LOC="B17"  | IOSTANDARD=LVTTL;   # decimal point
+
+NET "anode_out<0>"    LOC="A18"  | IOSTANDARD=LVTTL;   # (Mapped to FX2)
+NET "anode_out<1>"    LOC="C18"  | IOSTANDARD=LVTTL;
+NET "anode_out<2>"    LOC="A19"  | IOSTANDARD=LVTTL;
+NET "anode_out<3>"    LOC="B19"  | IOSTANDARD=LVTTL;
+
+NET "sw_in<0>"        LOC="V8"   | IOSTANDARD=LVTTL;   # SW0
+NET "sw_in<1>"        LOC="U10"  | IOSTANDARD=LVTTL;   # SW1
+NET "sw_in<2>"        LOC="U8"   | IOSTANDARD=LVTTL;   # SW2
+NET "sw_in<3>"        LOC="T9"   | IOSTANDARD=LVTTL;   # SW3
+NET "sw_in<4>"        LOC="T14"  | IOSTANDARD=LVTTL;   # BTN_NORTH
+NET "sw_in<5>"        LOC="T16"  | IOSTANDARD=LVTTL;   # BTN_EAST
+NET "sw_in<6>"        LOC="T15"  | IOSTANDARD=LVTTL;   # BTN_SOUTH
+NET "sw_in<7>"        LOC="U15"  | IOSTANDARD=LVTTL;   # BTN_WEST
+
+#===============================================================================
+# Timing constraint of FX2 48MHz clock "eppClk_in"
+#===============================================================================
+NET "eppClk_in" TNM_NET = "eppClk_in";
+TIMESPEC "TS_clk" = PERIOD "eppClk_in" 20 ns HIGH 50 %;

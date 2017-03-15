@@ -1,0 +1,241 @@
+   1              		.file	"TestReporterStdout.cpp"
+   2              		.text
+   3              		.align 2
+   4              		.p2align 4,,15
+   5              		.globl	_ZN8UnitTest18TestReporterStdout15ReportTestStartERKNS_11TestDetailsE
+   7              	_ZN8UnitTest18TestReporterStdout15ReportTestStartERKNS_11TestDetailsE:
+   8              	.LFB31:
+   9              		.cfi_startproc
+  10 0000 F3C3     		rep ret
+  11              		.cfi_endproc
+  12              	.LFE31:
+  14              		.align 2
+  15 0002 66666666 		.p2align 4,,15
+  15      662E0F1F 
+  15      84000000 
+  15      0000
+  16              		.globl	_ZN8UnitTest18TestReporterStdout16ReportTestFinishERKNS_11TestDetailsEf
+  18              	_ZN8UnitTest18TestReporterStdout16ReportTestFinishERKNS_11TestDetailsEf:
+  19              	.LFB32:
+  20              		.cfi_startproc
+  21 0010 F3C3     		rep ret
+  22              		.cfi_endproc
+  23              	.LFE32:
+  25              		.section	.rodata.str1.8,"aMS",@progbits,1
+  26              		.align 8
+  27              	.LC0:
+  28 0000 25733A25 		.string	"%s:%d: error: Failure in %s: %s\n"
+  28      643A2065 
+  28      72726F72 
+  28      3A204661 
+  28      696C7572 
+  29              		.text
+  30              		.align 2
+  31 0012 66666666 		.p2align 4,,15
+  31      662E0F1F 
+  31      84000000 
+  31      0000
+  32              		.globl	_ZN8UnitTest18TestReporterStdout13ReportFailureERKNS_11TestDetailsEPKc
+  34              	_ZN8UnitTest18TestReporterStdout13ReportFailureERKNS_11TestDetailsEPKc:
+  35              	.LFB30:
+  36              		.cfi_startproc
+  37 0020 4989D1   		movq	%rdx, %r9
+  38 0023 8B4E18   		movl	24(%rsi), %ecx
+  39 0026 488B5610 		movq	16(%rsi), %rdx
+  40 002a 4C8B4608 		movq	8(%rsi), %r8
+  41 002e 488D3500 		leaq	.LC0(%rip), %rsi
+  41      000000
+  42 0035 BF010000 		movl	$1, %edi
+  42      00
+  43 003a 31C0     		xorl	%eax, %eax
+  44 003c E9000000 		jmp	__printf_chk@PLT
+  44      00
+  45              		.cfi_endproc
+  46              	.LFE30:
+  48              		.section	.rodata.str1.8
+  49 0021 00000000 		.align 8
+  49      000000
+  50              	.LC1:
+  51 0028 4641494C 		.string	"FAILURE: %d out of %d tests failed (%d failures).\n"
+  51      5552453A 
+  51      20256420 
+  51      6F757420 
+  51      6F662025 
+  52              		.section	.rodata.str1.1,"aMS",@progbits,1
+  53              	.LC2:
+  54 0000 53756363 		.string	"Success: %d tests passed.\n"
+  54      6573733A 
+  54      20256420 
+  54      74657374 
+  54      73207061 
+  55              	.LC3:
+  56 001b 54657374 		.string	"Test time: %.2f seconds.\n"
+  56      2074696D 
+  56      653A2025 
+  56      2E326620 
+  56      7365636F 
+  57              		.text
+  58 0041 90       		.align 2
+  59 0042 66666666 		.p2align 4,,15
+  59      662E0F1F 
+  59      84000000 
+  59      0000
+  60              		.globl	_ZN8UnitTest18TestReporterStdout13ReportSummaryEiiif
+  62              	_ZN8UnitTest18TestReporterStdout13ReportSummaryEiiif:
+  63              	.LFB33:
+  64              		.cfi_startproc
+  65 0050 4883EC18 		subq	$24, %rsp
+  66              		.cfi_def_cfa_offset 32
+  67 0054 85C9     		testl	%ecx, %ecx
+  68 0056 F30F1144 		movss	%xmm0, 12(%rsp)
+  68      240C
+  69 005c 7E42     		jle	.L5
+  70 005e 4189C8   		movl	%ecx, %r8d
+  71 0061 89F1     		movl	%esi, %ecx
+  72 0063 488D3500 		leaq	.LC1(%rip), %rsi
+  72      000000
+  73 006a BF010000 		movl	$1, %edi
+  73      00
+  74 006f 31C0     		xorl	%eax, %eax
+  75 0071 E8000000 		call	__printf_chk@PLT
+  75      00
+  76 0076 F30F1044 		movss	12(%rsp), %xmm0
+  76      240C
+  77              	.L6:
+  78 007c 0F14C0   		unpcklps	%xmm0, %xmm0
+  79 007f 488D3500 		leaq	.LC3(%rip), %rsi
+  79      000000
+  80 0086 BF010000 		movl	$1, %edi
+  80      00
+  81 008b B8010000 		movl	$1, %eax
+  81      00
+  82 0090 4883C418 		addq	$24, %rsp
+  83              		.cfi_remember_state
+  84              		.cfi_def_cfa_offset 8
+  85 0094 0F5AC0   		cvtps2pd	%xmm0, %xmm0
+  86 0097 E9000000 		jmp	__printf_chk@PLT
+  86      00
+  87 009c 0F1F4000 		.p2align 4,,10
+  88              		.p2align 3
+  89              	.L5:
+  90              		.cfi_restore_state
+  91 00a0 89F2     		movl	%esi, %edx
+  92 00a2 488D3500 		leaq	.LC2(%rip), %rsi
+  92      000000
+  93 00a9 BF010000 		movl	$1, %edi
+  93      00
+  94 00ae 31C0     		xorl	%eax, %eax
+  95 00b0 E8000000 		call	__printf_chk@PLT
+  95      00
+  96 00b5 F30F1044 		movss	12(%rsp), %xmm0
+  96      240C
+  97 00bb EBBF     		jmp	.L6
+  98              		.cfi_endproc
+  99              	.LFE33:
+ 101              		.section	.text._ZN8UnitTest18TestReporterStdoutD2Ev,"axG",@progbits,_ZN8UnitTest18TestReporterStdo
+ 102              		.align 2
+ 103              		.p2align 4,,15
+ 104              		.weak	_ZN8UnitTest18TestReporterStdoutD2Ev
+ 106              	_ZN8UnitTest18TestReporterStdoutD2Ev:
+ 107              	.LFB35:
+ 108              		.cfi_startproc
+ 109 0000 488B0500 		movq	_ZTVN8UnitTest18TestReporterStdoutE@GOTPCREL(%rip), %rax
+ 109      000000
+ 110 0007 4883C010 		addq	$16, %rax
+ 111 000b 488907   		movq	%rax, (%rdi)
+ 112 000e E9000000 		jmp	_ZN8UnitTest12TestReporterD2Ev@PLT
+ 112      00
+ 113              		.cfi_endproc
+ 114              	.LFE35:
+ 116              		.weak	_ZN8UnitTest18TestReporterStdoutD1Ev
+ 117              		.set	_ZN8UnitTest18TestReporterStdoutD1Ev,_ZN8UnitTest18TestReporterStdoutD2Ev
+ 118              		.section	.text._ZN8UnitTest18TestReporterStdoutD0Ev,"axG",@progbits,_ZN8UnitTest18TestReporterStdo
+ 119              		.align 2
+ 120              		.p2align 4,,15
+ 121              		.weak	_ZN8UnitTest18TestReporterStdoutD0Ev
+ 123              	_ZN8UnitTest18TestReporterStdoutD0Ev:
+ 124              	.LFB37:
+ 125              		.cfi_startproc
+ 126 0000 488B0500 		movq	_ZTVN8UnitTest18TestReporterStdoutE@GOTPCREL(%rip), %rax
+ 126      000000
+ 127 0007 53       		pushq	%rbx
+ 128              		.cfi_def_cfa_offset 16
+ 129              		.cfi_offset 3, -16
+ 130 0008 4889FB   		movq	%rdi, %rbx
+ 131 000b 4883C010 		addq	$16, %rax
+ 132 000f 488907   		movq	%rax, (%rdi)
+ 133 0012 E8000000 		call	_ZN8UnitTest12TestReporterD2Ev@PLT
+ 133      00
+ 134 0017 4889DF   		movq	%rbx, %rdi
+ 135 001a 5B       		popq	%rbx
+ 136              		.cfi_def_cfa_offset 8
+ 137 001b E9000000 		jmp	_ZdlPv@PLT
+ 137      00
+ 138              		.cfi_endproc
+ 139              	.LFE37:
+ 141              		.weak	_ZTSN8UnitTest18TestReporterStdoutE
+ 142              		.section	.rodata._ZTSN8UnitTest18TestReporterStdoutE,"aG",@progbits,_ZTSN8UnitTest18TestReporterSt
+ 143              		.align 32
+ 146              	_ZTSN8UnitTest18TestReporterStdoutE:
+ 147 0000 4E38556E 		.string	"N8UnitTest18TestReporterStdoutE"
+ 147      69745465 
+ 147      73743138 
+ 147      54657374 
+ 147      5265706F 
+ 148              		.weak	_ZTIN8UnitTest18TestReporterStdoutE
+ 149              		.section	.data.rel.ro._ZTIN8UnitTest18TestReporterStdoutE,"awG",@progbits,_ZTIN8UnitTest18TestRepo
+ 150              		.align 16
+ 153              	_ZTIN8UnitTest18TestReporterStdoutE:
+ 154 0000 00000000 		.quad	_ZTVN10__cxxabiv120__si_class_type_infoE+16
+ 154      00000000 
+ 155 0008 00000000 		.quad	_ZTSN8UnitTest18TestReporterStdoutE
+ 155      00000000 
+ 156 0010 00000000 		.quad	_ZTIN8UnitTest12TestReporterE
+ 156      00000000 
+ 157              		.weak	_ZTVN8UnitTest18TestReporterStdoutE
+ 158              		.section	.data.rel.ro._ZTVN8UnitTest18TestReporterStdoutE,"awG",@progbits,_ZTVN8UnitTest18TestRepo
+ 159              		.align 32
+ 162              	_ZTVN8UnitTest18TestReporterStdoutE:
+ 163 0000 00000000 		.quad	0
+ 163      00000000 
+ 164 0008 00000000 		.quad	_ZTIN8UnitTest18TestReporterStdoutE
+ 164      00000000 
+ 165 0010 00000000 		.quad	_ZN8UnitTest18TestReporterStdoutD1Ev
+ 165      00000000 
+ 166 0018 00000000 		.quad	_ZN8UnitTest18TestReporterStdoutD0Ev
+ 166      00000000 
+ 167 0020 00000000 		.quad	_ZN8UnitTest18TestReporterStdout15ReportTestStartERKNS_11TestDetailsE
+ 167      00000000 
+ 168 0028 00000000 		.quad	_ZN8UnitTest18TestReporterStdout13ReportFailureERKNS_11TestDetailsEPKc
+ 168      00000000 
+ 169 0030 00000000 		.quad	_ZN8UnitTest18TestReporterStdout16ReportTestFinishERKNS_11TestDetailsEf
+ 169      00000000 
+ 170 0038 00000000 		.quad	_ZN8UnitTest18TestReporterStdout13ReportSummaryEiiif
+ 170      00000000 
+ 171              		.ident	"GCC: (Ubuntu 4.8.4-2ubuntu1~14.04.3) 4.8.4"
+ 172              		.section	.note.GNU-stack,"",@progbits
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 TestReporterStdout.cpp
+     /tmp/ccIEu5KU.s:7      .text:0000000000000000 _ZN8UnitTest18TestReporterStdout15ReportTestStartERKNS_11TestDetailsE
+     /tmp/ccIEu5KU.s:18     .text:0000000000000010 _ZN8UnitTest18TestReporterStdout16ReportTestFinishERKNS_11TestDetailsEf
+     /tmp/ccIEu5KU.s:34     .text:0000000000000020 _ZN8UnitTest18TestReporterStdout13ReportFailureERKNS_11TestDetailsEPKc
+     /tmp/ccIEu5KU.s:62     .text:0000000000000050 _ZN8UnitTest18TestReporterStdout13ReportSummaryEiiif
+     /tmp/ccIEu5KU.s:106    .text._ZN8UnitTest18TestReporterStdoutD2Ev:0000000000000000 _ZN8UnitTest18TestReporterStdoutD2Ev
+     /tmp/ccIEu5KU.s:162    .data.rel.ro._ZTVN8UnitTest18TestReporterStdoutE:0000000000000000 _ZTVN8UnitTest18TestReporterStdoutE
+     /tmp/ccIEu5KU.s:106    .text._ZN8UnitTest18TestReporterStdoutD2Ev:0000000000000000 _ZN8UnitTest18TestReporterStdoutD1Ev
+     /tmp/ccIEu5KU.s:123    .text._ZN8UnitTest18TestReporterStdoutD0Ev:0000000000000000 _ZN8UnitTest18TestReporterStdoutD0Ev
+     /tmp/ccIEu5KU.s:146    .rodata._ZTSN8UnitTest18TestReporterStdoutE:0000000000000000 _ZTSN8UnitTest18TestReporterStdoutE
+     /tmp/ccIEu5KU.s:153    .data.rel.ro._ZTIN8UnitTest18TestReporterStdoutE:0000000000000000 _ZTIN8UnitTest18TestReporterStdoutE
+     /tmp/ccIEu5KU.s:27     .rodata.str1.8:0000000000000000 .LC0
+     /tmp/ccIEu5KU.s:50     .rodata.str1.8:0000000000000028 .LC1
+     /tmp/ccIEu5KU.s:55     .rodata.str1.1:000000000000001b .LC3
+     /tmp/ccIEu5KU.s:53     .rodata.str1.1:0000000000000000 .LC2
+                           .group:0000000000000000 _ZN8UnitTest18TestReporterStdoutD5Ev
+
+UNDEFINED SYMBOLS
+_GLOBAL_OFFSET_TABLE_
+__printf_chk
+_ZN8UnitTest12TestReporterD2Ev
+_ZdlPv
+_ZTVN10__cxxabiv120__si_class_type_infoE
+_ZTIN8UnitTest12TestReporterE

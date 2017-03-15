@@ -1,0 +1,77 @@
+set_global_assignment -name FAMILY "Cyclone III"
+set_global_assignment -name DEVICE EP3C16T144C8
+set_global_assignment -name TOP_LEVEL_ENTITY top_level
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION "11.0 SP1"
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "00:00:00 JANUARY 01, 2000"
+set_global_assignment -name LAST_QUARTUS_VERSION "11.0 SP1"
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 1
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "3.3-V LVTTL"
+set_global_assignment -name GENERATE_SVF_FILE ON
+set_global_assignment -name RESERVE_ALL_UNUSED_PINS "AS INPUT TRI-STATED WITH WEAK PULL-UP"
+set_global_assignment -name SDC_FILE top_level.sdc
+set_global_assignment -name CYCLONEII_RESERVE_NCEO_AFTER_CONFIGURATION "USE AS REGULAR IO"
+set_global_assignment -name RESERVE_ASDO_AFTER_CONFIGURATION "USE AS REGULAR IO"
+set_global_assignment -name OUTPUT_PIN_LOAD 10 -section_id "3.3-V LVTTL"
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+
+#===============================================================================
+# USB interface
+#===============================================================================
+set_location_assignment PIN_4   -to fx2Clk_in
+set_location_assignment PIN_101 -to fx2FifoSel_out
+
+set_location_assignment PIN_7   -to fx2Data_io[0]
+set_location_assignment PIN_103 -to fx2Data_io[1]
+set_location_assignment PIN_10  -to fx2Data_io[2]
+set_location_assignment PIN_11  -to fx2Data_io[3]
+set_location_assignment PIN_104 -to fx2Data_io[4]
+set_location_assignment PIN_28  -to fx2Data_io[5]
+set_location_assignment PIN_30  -to fx2Data_io[6]
+set_location_assignment PIN_31  -to fx2Data_io[7]
+
+set_location_assignment PIN_32  -to fx2Read_out
+set_location_assignment PIN_33  -to fx2GotData_in
+
+set_location_assignment PIN_39  -to fx2Write_out
+set_location_assignment PIN_42  -to fx2GotRoom_in
+set_location_assignment PIN_43  -to fx2PktEnd_out
+
+#===============================================================================
+# Peripheral signals
+#===============================================================================
+set_location_assignment PIN_44  -to led_out[0]
+set_location_assignment PIN_46  -to led_out[1]
+set_location_assignment PIN_49  -to led_out[2]
+set_location_assignment PIN_50  -to led_out[3]
+set_location_assignment PIN_51  -to led_out[4]
+set_location_assignment PIN_58  -to led_out[5]
+set_location_assignment PIN_59  -to led_out[6]
+set_location_assignment PIN_60  -to led_out[7]
+
+set_location_assignment PIN_61  -to sseg_out[0]  # segment a
+set_location_assignment PIN_64  -to sseg_out[1]  # segment b
+set_location_assignment PIN_65  -to sseg_out[2]  # segment c
+set_location_assignment PIN_66  -to sseg_out[3]  # segment d
+set_location_assignment PIN_67  -to sseg_out[4]  # segment e
+set_location_assignment PIN_68  -to sseg_out[5]  # segment f
+set_location_assignment PIN_69  -to sseg_out[6]  # segment g
+set_location_assignment PIN_71  -to sseg_out[7]  # decimal point
+
+set_location_assignment PIN_72  -to anode_out[0]
+set_location_assignment PIN_76  -to anode_out[1]
+set_location_assignment PIN_77  -to anode_out[2]
+set_location_assignment PIN_79  -to anode_out[3]
+
+set_location_assignment PIN_80  -to sw_in[0]
+set_location_assignment PIN_83  -to sw_in[1]
+set_location_assignment PIN_85  -to sw_in[2]
+set_location_assignment PIN_86  -to sw_in[3]
+set_location_assignment PIN_87  -to sw_in[4]
+set_location_assignment PIN_98  -to sw_in[5]
+set_location_assignment PIN_99  -to sw_in[6]
+set_location_assignment PIN_100 -to sw_in[7]

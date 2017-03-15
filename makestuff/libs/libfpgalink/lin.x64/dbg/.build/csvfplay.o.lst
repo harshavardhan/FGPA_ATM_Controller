@@ -1,0 +1,1539 @@
+   1              		.file	"csvfplay.c"
+   2              		.text
+   3              	.Ltext0:
+   4              		.section	.rodata
+   5              	.LC0:
+   6 0000 63737666 		.string	"csvfPlay()"
+   6      506C6179 
+   6      282900
+   7 000b 00000000 		.align 8
+   7      00
+   8              	.LC1:
+   9 0010 63737666 		.string	"csvfPlay(): XSDRTDO failed:\n  Got: %s\n  Mask: %s\n  Expecting: %s"
+   9      506C6179 
+   9      28293A20 
+   9      58534452 
+   9      54444F20 
+  10 0051 00000000 		.align 8
+  10      000000
+  11              	.LC2:
+  12 0058 63737666 		.string	"csvfPlay(): Unsupported command 0x%02X"
+  12      506C6179 
+  12      28293A20 
+  12      556E7375 
+  12      70706F72 
+  13              		.text
+  14              		.globl	csvfPlay
+  16              	csvfPlay:
+  17              	.LFB4:
+  18              		.file 1 "csvfplay.c"
+   1:csvfplay.c    **** /*
+   2:csvfplay.c    ****  * Copyright (C) 2009-2012 Chris McClelland
+   3:csvfplay.c    ****  *
+   4:csvfplay.c    ****  * This program is free software: you can redistribute it and/or modify
+   5:csvfplay.c    ****  * it under the terms of the GNU Lesser General Public License as published by
+   6:csvfplay.c    ****  * the Free Software Foundation, either version 3 of the License, or
+   7:csvfplay.c    ****  * (at your option) any later version.
+   8:csvfplay.c    ****  *
+   9:csvfplay.c    ****  * This program is distributed in the hope that it will be useful,
+  10:csvfplay.c    ****  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  11:csvfplay.c    ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  12:csvfplay.c    ****  * GNU Lesser General Public License for more details.
+  13:csvfplay.c    ****  *
+  14:csvfplay.c    ****  * You should have received a copy of the GNU Lesser General Public License
+  15:csvfplay.c    ****  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  16:csvfplay.c    ****  */
+  17:csvfplay.c    **** // Uncomment for help debugging JTAG issues
+  18:csvfplay.c    **** //#define DEBUG
+  19:csvfplay.c    **** 
+  20:csvfplay.c    **** #ifdef DEBUG
+  21:csvfplay.c    **** #include <stdio.h>
+  22:csvfplay.c    **** #endif
+  23:csvfplay.c    **** #include <stdlib.h>
+  24:csvfplay.c    **** #include <makestuff.h>
+  25:csvfplay.c    **** #include <liberror.h>
+  26:csvfplay.c    **** #include "private.h"
+  27:csvfplay.c    **** #include "vendorCommands.h"
+  28:csvfplay.c    **** #include "xsvf.h"
+  29:csvfplay.c    **** #include "csvfplay.h"
+  30:csvfplay.c    **** 
+  31:csvfplay.c    **** // ------------------------------------------------------------------------------------------------
+  32:csvfplay.c    **** // Declaration of private types & functions
+  33:csvfplay.c    **** // ------------------------------------------------------------------------------------------------
+  34:csvfplay.c    **** 
+  35:csvfplay.c    **** static void dumpSimple(const unsigned char *input, unsigned int length, char *p);
+  36:csvfplay.c    **** static bool tdoMatchFailed(
+  37:csvfplay.c    **** 	const uint8 *tdoData, const uint8 *tdoMask, const uint8 *tdoExpected, uint32 numBytes);
+  38:csvfplay.c    **** 
+  39:csvfplay.c    **** // ------------------------------------------------------------------------------------------------
+  40:csvfplay.c    **** // Public functions
+  41:csvfplay.c    **** // ------------------------------------------------------------------------------------------------
+  42:csvfplay.c    **** 
+  43:csvfplay.c    **** // Play the CSVF stream into the JTAG port.
+  44:csvfplay.c    **** //
+  45:csvfplay.c    **** FLStatus csvfPlay(struct FLContext *handle, const uint8 *csvfData, const char **error) {
+  19              		.loc 1 45 0
+  20              		.cfi_startproc
+  21 0000 55       		pushq	%rbp
+  22              		.cfi_def_cfa_offset 16
+  23              		.cfi_offset 6, -16
+  24 0001 4889E5   		movq	%rsp, %rbp
+  25              		.cfi_def_cfa_register 6
+  26 0004 53       		pushq	%rbx
+  27 0005 4881EC98 		subq	$20632, %rsp
+  27      500000
+  28              		.cfi_offset 3, -24
+  29 000c 4889BD78 		movq	%rdi, -20616(%rbp)
+  29      AFFFFF
+  30 0013 4889B570 		movq	%rsi, -20624(%rbp)
+  30      AFFFFF
+  31 001a 48899568 		movq	%rdx, -20632(%rbp)
+  31      AFFFFF
+  32              		.loc 1 45 0
+  33 0021 64488B04 		movq	%fs:40, %rax
+  33      25280000 
+  33      00
+  34 002a 488945E8 		movq	%rax, -24(%rbp)
+  35 002e 31C0     		xorl	%eax, %eax
+  46:csvfplay.c    **** 	FLStatus retVal = FL_SUCCESS;
+  36              		.loc 1 46 0
+  37 0030 C7858CAF 		movl	$0, -20596(%rbp)
+  37      FFFF0000 
+  37      0000
+  47:csvfplay.c    **** 	FLStatus fStatus;
+  48:csvfplay.c    **** 	uint8 thisByte, numBits;
+  49:csvfplay.c    **** 	uint32 numBytes;
+  50:csvfplay.c    **** 	uint8 *tdoPtr, *tdiPtr;
+  51:csvfplay.c    **** 	uint8 i;
+  52:csvfplay.c    **** 	uint32 xsdrSize = 0;
+  38              		.loc 1 52 0
+  39 003a C78594AF 		movl	$0, -20588(%rbp)
+  39      FFFF0000 
+  39      0000
+  53:csvfplay.c    **** 	uint32 xruntest = 0;
+  40              		.loc 1 53 0
+  41 0044 C78598AF 		movl	$0, -20584(%rbp)
+  41      FFFF0000 
+  41      0000
+  54:csvfplay.c    **** 	uint8 tdoMask[BUF_SIZE];
+  55:csvfplay.c    **** 	uint8 tdiData[BUF_SIZE];
+  56:csvfplay.c    **** 	uint8 tdoData[BUF_SIZE];
+  57:csvfplay.c    **** 	uint8 tdoExpected[BUF_SIZE];
+  58:csvfplay.c    **** 	
+  59:csvfplay.c    **** 	char data[BUF_SIZE*2+1];
+  60:csvfplay.c    **** 	char mask[BUF_SIZE*2+1];
+  61:csvfplay.c    **** 	char expected[BUF_SIZE*2+1];
+  62:csvfplay.c    **** 	
+  63:csvfplay.c    **** 	uint8 *tdiAll;
+  64:csvfplay.c    **** 	const uint8 *ptr = csvfData;
+  42              		.loc 1 64 0
+  43 004e 488B8570 		movq	-20624(%rbp), %rax
+  43      AFFFFF
+  44 0055 488985B0 		movq	%rax, -20560(%rbp)
+  44      AFFFFF
+  65:csvfplay.c    **** 
+  66:csvfplay.c    **** 	fStatus = jtagClockFSM(handle, 0x0000001F, 6, error);  // Reset TAP, goto Run-Test/Idle
+  45              		.loc 1 66 0
+  46 005c 488B9568 		movq	-20632(%rbp), %rdx
+  46      AFFFFF
+  47 0063 488B8578 		movq	-20616(%rbp), %rax
+  47      AFFFFF
+  48 006a 4889D1   		movq	%rdx, %rcx
+  49 006d BA060000 		movl	$6, %edx
+  49      00
+  50 0072 BE1F0000 		movl	$31, %esi
+  50      00
+  51 0077 4889C7   		movq	%rax, %rdi
+  52 007a E8000000 		call	jtagClockFSM@PLT
+  52      00
+  53 007f 89859CAF 		movl	%eax, -20580(%rbp)
+  53      FFFF
+  67:csvfplay.c    **** 	CHECK_STATUS(fStatus, fStatus, cleanup, "csvfPlay()");
+  54              		.loc 1 67 0
+  55 0085 83BD9CAF 		cmpl	$0, -20580(%rbp)
+  55      FFFF00
+  56 008c 7427     		je	.L2
+  57              		.loc 1 67 0 is_stmt 0 discriminator 1
+  58 008e 488B8568 		movq	-20632(%rbp), %rax
+  58      AFFFFF
+  59 0095 488D3500 		leaq	.LC0(%rip), %rsi
+  59      000000
+  60 009c 4889C7   		movq	%rax, %rdi
+  61 009f E8000000 		call	errPrefix@PLT
+  61      00
+  62 00a4 8B859CAF 		movl	-20580(%rbp), %eax
+  62      FFFF
+  63 00aa 89858CAF 		movl	%eax, -20596(%rbp)
+  63      FFFF
+  64 00b0 E9C70900 		jmp	.L3
+  64      00
+  65              	.L2:
+  68:csvfplay.c    **** 
+  69:csvfplay.c    **** 	thisByte = *ptr++;
+  66              		.loc 1 69 0 is_stmt 1
+  67 00b5 488B85B0 		movq	-20560(%rbp), %rax
+  67      AFFFFF
+  68 00bc 488D5001 		leaq	1(%rax), %rdx
+  69 00c0 488995B0 		movq	%rdx, -20560(%rbp)
+  69      AFFFFF
+  70 00c7 0FB600   		movzbl	(%rax), %eax
+  71 00ca 888589AF 		movb	%al, -20599(%rbp)
+  71      FFFF
+  70:csvfplay.c    **** 	while ( thisByte != XCOMPLETE ) {
+  72              		.loc 1 70 0
+  73 00d0 E99A0900 		jmp	.L4
+  73      00
+  74              	.L47:
+  71:csvfplay.c    **** 		switch ( thisByte ) {
+  75              		.loc 1 71 0
+  76 00d5 0FB68589 		movzbl	-20599(%rbp), %eax
+  76      AFFFFF
+  77 00dc 83F809   		cmpl	$9, %eax
+  78 00df 0F874109 		ja	.L5
+  78      0000
+  79 00e5 89C0     		movl	%eax, %eax
+  80 00e7 488D1485 		leaq	0(,%rax,4), %rdx
+  80      00000000 
+  81 00ef 488D0500 		leaq	.L7(%rip), %rax
+  81      000000
+  82 00f6 8B0402   		movl	(%rdx,%rax), %eax
+  83 00f9 4863D0   		movslq	%eax, %rdx
+  84 00fc 488D0500 		leaq	.L7(%rip), %rax
+  84      000000
+  85 0103 4801D0   		addq	%rdx, %rax
+  86 0106 FFE0     		jmp	*%rax
+  87              		.section	.rodata
+  88 007f 00       		.align 4
+  89              		.align 4
+  90              	.L7:
+  91 0080 00000000 		.long	.L5-.L7
+  92 0084 00000000 		.long	.L6-.L7
+  93 0088 00000000 		.long	.L8-.L7
+  94 008c 00000000 		.long	.L9-.L7
+  95 0090 00000000 		.long	.L10-.L7
+  96 0094 00000000 		.long	.L5-.L7
+  97 0098 00000000 		.long	.L5-.L7
+  98 009c 00000000 		.long	.L5-.L7
+  99 00a0 00000000 		.long	.L11-.L7
+ 100 00a4 00000000 		.long	.L12-.L7
+ 101              		.text
+ 102              	.L6:
+  72:csvfplay.c    **** 		case XTDOMASK:
+  73:csvfplay.c    **** 			#ifdef DEBUG
+  74:csvfplay.c    **** 				printf("XTDOMASK(");
+  75:csvfplay.c    **** 			#endif
+  76:csvfplay.c    **** 			numBytes = bitsToBytes(xsdrSize);
+ 103              		.loc 1 76 0
+ 104 0108 8B8594AF 		movl	-20588(%rbp), %eax
+ 104      FFFF
+ 105 010e C1E803   		shrl	$3, %eax
+ 106 0111 89C2     		movl	%eax, %edx
+ 107 0113 8B8594AF 		movl	-20588(%rbp), %eax
+ 107      FFFF
+ 108 0119 83E007   		andl	$7, %eax
+ 109 011c 85C0     		testl	%eax, %eax
+ 110 011e 7407     		je	.L13
+ 111              		.loc 1 76 0 is_stmt 0 discriminator 1
+ 112 0120 B8010000 		movl	$1, %eax
+ 112      00
+ 113 0125 EB05     		jmp	.L14
+ 114              	.L13:
+ 115              		.loc 1 76 0 discriminator 2
+ 116 0127 B8000000 		movl	$0, %eax
+ 116      00
+ 117              	.L14:
+ 118              		.loc 1 76 0 discriminator 3
+ 119 012c 01D0     		addl	%edx, %eax
+ 120 012e 898590AF 		movl	%eax, -20592(%rbp)
+ 120      FFFF
+  77:csvfplay.c    **** 			tdoPtr = tdoMask;
+ 121              		.loc 1 77 0 is_stmt 1 discriminator 3
+ 122 0134 488D85C0 		leaq	-20544(%rbp), %rax
+ 122      AFFFFF
+ 123 013b 488985A0 		movq	%rax, -20576(%rbp)
+ 123      AFFFFF
+  78:csvfplay.c    **** 			while ( numBytes-- ) {
+ 124              		.loc 1 78 0 discriminator 3
+ 125 0142 EB36     		jmp	.L15
+ 126              	.L16:
+  79:csvfplay.c    **** 				thisByte = *ptr++;
+ 127              		.loc 1 79 0
+ 128 0144 488B85B0 		movq	-20560(%rbp), %rax
+ 128      AFFFFF
+ 129 014b 488D5001 		leaq	1(%rax), %rdx
+ 130 014f 488995B0 		movq	%rdx, -20560(%rbp)
+ 130      AFFFFF
+ 131 0156 0FB600   		movzbl	(%rax), %eax
+ 132 0159 888589AF 		movb	%al, -20599(%rbp)
+ 132      FFFF
+  80:csvfplay.c    **** 				#ifdef DEBUG
+  81:csvfplay.c    **** 					printf("%02X", thisByte);
+  82:csvfplay.c    **** 				#endif
+  83:csvfplay.c    **** 				*tdoPtr++ = thisByte;
+ 133              		.loc 1 83 0
+ 134 015f 488B85A0 		movq	-20576(%rbp), %rax
+ 134      AFFFFF
+ 135 0166 488D5001 		leaq	1(%rax), %rdx
+ 136 016a 488995A0 		movq	%rdx, -20576(%rbp)
+ 136      AFFFFF
+ 137 0171 0FB69589 		movzbl	-20599(%rbp), %edx
+ 137      AFFFFF
+ 138 0178 8810     		movb	%dl, (%rax)
+ 139              	.L15:
+  78:csvfplay.c    **** 				thisByte = *ptr++;
+ 140              		.loc 1 78 0 discriminator 1
+ 141 017a 8B8590AF 		movl	-20592(%rbp), %eax
+ 141      FFFF
+ 142 0180 8D50FF   		leal	-1(%rax), %edx
+ 143 0183 899590AF 		movl	%edx, -20592(%rbp)
+ 143      FFFF
+ 144 0189 85C0     		testl	%eax, %eax
+ 145 018b 75B7     		jne	.L16
+  84:csvfplay.c    **** 			}
+  85:csvfplay.c    **** 			#ifdef DEBUG
+  86:csvfplay.c    **** 				printf(")\n");
+  87:csvfplay.c    **** 			#endif
+  88:csvfplay.c    **** 			break;
+ 146              		.loc 1 88 0
+ 147 018d E9C20800 		jmp	.L17
+ 147      00
+ 148              	.L10:
+  89:csvfplay.c    **** 
+  90:csvfplay.c    **** 		case XRUNTEST:
+  91:csvfplay.c    **** 			xruntest = *ptr++;
+ 149              		.loc 1 91 0
+ 150 0192 488B85B0 		movq	-20560(%rbp), %rax
+ 150      AFFFFF
+ 151 0199 488D5001 		leaq	1(%rax), %rdx
+ 152 019d 488995B0 		movq	%rdx, -20560(%rbp)
+ 152      AFFFFF
+ 153 01a4 0FB600   		movzbl	(%rax), %eax
+ 154 01a7 0FB6C0   		movzbl	%al, %eax
+ 155 01aa 898598AF 		movl	%eax, -20584(%rbp)
+ 155      FFFF
+  92:csvfplay.c    **** 			xruntest <<= 8;
+ 156              		.loc 1 92 0
+ 157 01b0 C1A598AF 		sall	$8, -20584(%rbp)
+ 157      FFFF08
+  93:csvfplay.c    **** 			xruntest |= *ptr++;
+ 158              		.loc 1 93 0
+ 159 01b7 488B85B0 		movq	-20560(%rbp), %rax
+ 159      AFFFFF
+ 160 01be 488D5001 		leaq	1(%rax), %rdx
+ 161 01c2 488995B0 		movq	%rdx, -20560(%rbp)
+ 161      AFFFFF
+ 162 01c9 0FB600   		movzbl	(%rax), %eax
+ 163 01cc 0FB6C0   		movzbl	%al, %eax
+ 164 01cf 098598AF 		orl	%eax, -20584(%rbp)
+ 164      FFFF
+  94:csvfplay.c    **** 			xruntest <<= 8;
+ 165              		.loc 1 94 0
+ 166 01d5 C1A598AF 		sall	$8, -20584(%rbp)
+ 166      FFFF08
+  95:csvfplay.c    **** 			xruntest |= *ptr++;
+ 167              		.loc 1 95 0
+ 168 01dc 488B85B0 		movq	-20560(%rbp), %rax
+ 168      AFFFFF
+ 169 01e3 488D5001 		leaq	1(%rax), %rdx
+ 170 01e7 488995B0 		movq	%rdx, -20560(%rbp)
+ 170      AFFFFF
+ 171 01ee 0FB600   		movzbl	(%rax), %eax
+ 172 01f1 0FB6C0   		movzbl	%al, %eax
+ 173 01f4 098598AF 		orl	%eax, -20584(%rbp)
+ 173      FFFF
+  96:csvfplay.c    **** 			xruntest <<= 8;
+ 174              		.loc 1 96 0
+ 175 01fa C1A598AF 		sall	$8, -20584(%rbp)
+ 175      FFFF08
+  97:csvfplay.c    **** 			xruntest |= *ptr++;
+ 176              		.loc 1 97 0
+ 177 0201 488B85B0 		movq	-20560(%rbp), %rax
+ 177      AFFFFF
+ 178 0208 488D5001 		leaq	1(%rax), %rdx
+ 179 020c 488995B0 		movq	%rdx, -20560(%rbp)
+ 179      AFFFFF
+ 180 0213 0FB600   		movzbl	(%rax), %eax
+ 181 0216 0FB6C0   		movzbl	%al, %eax
+ 182 0219 098598AF 		orl	%eax, -20584(%rbp)
+ 182      FFFF
+  98:csvfplay.c    **** 			#ifdef DEBUG
+  99:csvfplay.c    **** 				printf("XRUNTEST(%08X)\n", xruntest);
+ 100:csvfplay.c    **** 			#endif
+ 101:csvfplay.c    **** 			break;
+ 183              		.loc 1 101 0
+ 184 021f E9300800 		jmp	.L17
+ 184      00
+ 185              	.L8:
+ 102:csvfplay.c    **** 
+ 103:csvfplay.c    **** 		case XSIR:
+ 104:csvfplay.c    **** 			fStatus = jtagClockFSM(handle, 0x00000003, 4, error);  // -> Shift-IR
+ 186              		.loc 1 104 0
+ 187 0224 488B9568 		movq	-20632(%rbp), %rdx
+ 187      AFFFFF
+ 188 022b 488B8578 		movq	-20616(%rbp), %rax
+ 188      AFFFFF
+ 189 0232 4889D1   		movq	%rdx, %rcx
+ 190 0235 BA040000 		movl	$4, %edx
+ 190      00
+ 191 023a BE030000 		movl	$3, %esi
+ 191      00
+ 192 023f 4889C7   		movq	%rax, %rdi
+ 193 0242 E8000000 		call	jtagClockFSM@PLT
+ 193      00
+ 194 0247 89859CAF 		movl	%eax, -20580(%rbp)
+ 194      FFFF
+ 105:csvfplay.c    **** 			CHECK_STATUS(fStatus, fStatus, cleanup, "csvfPlay()");
+ 195              		.loc 1 105 0
+ 196 024d 83BD9CAF 		cmpl	$0, -20580(%rbp)
+ 196      FFFF00
+ 197 0254 7427     		je	.L18
+ 198              		.loc 1 105 0 is_stmt 0 discriminator 1
+ 199 0256 488B8568 		movq	-20632(%rbp), %rax
+ 199      AFFFFF
+ 200 025d 488D3500 		leaq	.LC0(%rip), %rsi
+ 200      000000
+ 201 0264 4889C7   		movq	%rax, %rdi
+ 202 0267 E8000000 		call	errPrefix@PLT
+ 202      00
+ 203 026c 8B859CAF 		movl	-20580(%rbp), %eax
+ 203      FFFF
+ 204 0272 89858CAF 		movl	%eax, -20596(%rbp)
+ 204      FFFF
+ 205 0278 E9FF0700 		jmp	.L3
+ 205      00
+ 206              	.L18:
+ 106:csvfplay.c    **** 			numBits = *ptr++;
+ 207              		.loc 1 106 0 is_stmt 1
+ 208 027d 488B85B0 		movq	-20560(%rbp), %rax
+ 208      AFFFFF
+ 209 0284 488D5001 		leaq	1(%rax), %rdx
+ 210 0288 488995B0 		movq	%rdx, -20560(%rbp)
+ 210      AFFFFF
+ 211 028f 0FB600   		movzbl	(%rax), %eax
+ 212 0292 88858BAF 		movb	%al, -20597(%rbp)
+ 212      FFFF
+ 107:csvfplay.c    **** 			#ifdef DEBUG
+ 108:csvfplay.c    **** 				printf("XSIR(%02X, ", numBits);
+ 109:csvfplay.c    **** 			#endif
+ 110:csvfplay.c    **** 				numBytes = bitsToBytes((uint32)numBits);
+ 213              		.loc 1 110 0
+ 214 0298 0FB6858B 		movzbl	-20597(%rbp), %eax
+ 214      AFFFFF
+ 215 029f C0E803   		shrb	$3, %al
+ 216 02a2 0FB6D0   		movzbl	%al, %edx
+ 217 02a5 0FB6858B 		movzbl	-20597(%rbp), %eax
+ 217      AFFFFF
+ 218 02ac 83E007   		andl	$7, %eax
+ 219 02af 85C0     		testl	%eax, %eax
+ 220 02b1 7407     		je	.L19
+ 221              		.loc 1 110 0 is_stmt 0 discriminator 1
+ 222 02b3 B8010000 		movl	$1, %eax
+ 222      00
+ 223 02b8 EB05     		jmp	.L20
+ 224              	.L19:
+ 225              		.loc 1 110 0 discriminator 2
+ 226 02ba B8000000 		movl	$0, %eax
+ 226      00
+ 227              	.L20:
+ 228              		.loc 1 110 0 discriminator 3
+ 229 02bf 01D0     		addl	%edx, %eax
+ 230 02c1 898590AF 		movl	%eax, -20592(%rbp)
+ 230      FFFF
+ 111:csvfplay.c    **** 			tdiPtr = tdiData;
+ 231              		.loc 1 111 0 is_stmt 1 discriminator 3
+ 232 02c7 488D85C0 		leaq	-18496(%rbp), %rax
+ 232      B7FFFF
+ 233 02ce 488985A8 		movq	%rax, -20568(%rbp)
+ 233      AFFFFF
+ 112:csvfplay.c    **** 			while ( numBytes-- ) {
+ 234              		.loc 1 112 0 discriminator 3
+ 235 02d5 EB36     		jmp	.L21
+ 236              	.L22:
+ 113:csvfplay.c    **** 				thisByte = *ptr++;
+ 237              		.loc 1 113 0
+ 238 02d7 488B85B0 		movq	-20560(%rbp), %rax
+ 238      AFFFFF
+ 239 02de 488D5001 		leaq	1(%rax), %rdx
+ 240 02e2 488995B0 		movq	%rdx, -20560(%rbp)
+ 240      AFFFFF
+ 241 02e9 0FB600   		movzbl	(%rax), %eax
+ 242 02ec 888589AF 		movb	%al, -20599(%rbp)
+ 242      FFFF
+ 114:csvfplay.c    **** 				#ifdef DEBUG
+ 115:csvfplay.c    **** 					printf("%02X", thisByte);
+ 116:csvfplay.c    **** 				#endif
+ 117:csvfplay.c    **** 				*tdiPtr++ = thisByte;
+ 243              		.loc 1 117 0
+ 244 02f2 488B85A8 		movq	-20568(%rbp), %rax
+ 244      AFFFFF
+ 245 02f9 488D5001 		leaq	1(%rax), %rdx
+ 246 02fd 488995A8 		movq	%rdx, -20568(%rbp)
+ 246      AFFFFF
+ 247 0304 0FB69589 		movzbl	-20599(%rbp), %edx
+ 247      AFFFFF
+ 248 030b 8810     		movb	%dl, (%rax)
+ 249              	.L21:
+ 112:csvfplay.c    **** 				thisByte = *ptr++;
+ 250              		.loc 1 112 0 discriminator 1
+ 251 030d 8B8590AF 		movl	-20592(%rbp), %eax
+ 251      FFFF
+ 252 0313 8D50FF   		leal	-1(%rax), %edx
+ 253 0316 899590AF 		movl	%edx, -20592(%rbp)
+ 253      FFFF
+ 254 031c 85C0     		testl	%eax, %eax
+ 255 031e 75B7     		jne	.L22
+ 118:csvfplay.c    **** 			}
+ 119:csvfplay.c    **** 			#ifdef DEBUG
+ 120:csvfplay.c    **** 				printf(")\n");
+ 121:csvfplay.c    **** 			#endif
+ 122:csvfplay.c    **** 			fStatus = jtagShiftInOnly(handle, numBits, tdiData, true, error);  // -> Exit1-DR
+ 256              		.loc 1 122 0
+ 257 0320 0FB6B58B 		movzbl	-20597(%rbp), %esi
+ 257      AFFFFF
+ 258 0327 488B8D68 		movq	-20632(%rbp), %rcx
+ 258      AFFFFF
+ 259 032e 488D95C0 		leaq	-18496(%rbp), %rdx
+ 259      B7FFFF
+ 260 0335 488B8578 		movq	-20616(%rbp), %rax
+ 260      AFFFFF
+ 261 033c 4989C8   		movq	%rcx, %r8
+ 262 033f B9010000 		movl	$1, %ecx
+ 262      00
+ 263 0344 4889C7   		movq	%rax, %rdi
+ 264 0347 E8000000 		call	jtagShiftInOnly@PLT
+ 264      00
+ 265 034c 89859CAF 		movl	%eax, -20580(%rbp)
+ 265      FFFF
+ 123:csvfplay.c    **** 			CHECK_STATUS(fStatus, fStatus, cleanup, "csvfPlay()");
+ 266              		.loc 1 123 0
+ 267 0352 83BD9CAF 		cmpl	$0, -20580(%rbp)
+ 267      FFFF00
+ 268 0359 7427     		je	.L23
+ 269              		.loc 1 123 0 is_stmt 0 discriminator 1
+ 270 035b 488B8568 		movq	-20632(%rbp), %rax
+ 270      AFFFFF
+ 271 0362 488D3500 		leaq	.LC0(%rip), %rsi
+ 271      000000
+ 272 0369 4889C7   		movq	%rax, %rdi
+ 273 036c E8000000 		call	errPrefix@PLT
+ 273      00
+ 274 0371 8B859CAF 		movl	-20580(%rbp), %eax
+ 274      FFFF
+ 275 0377 89858CAF 		movl	%eax, -20596(%rbp)
+ 275      FFFF
+ 276 037d E9FA0600 		jmp	.L3
+ 276      00
+ 277              	.L23:
+ 124:csvfplay.c    **** 			fStatus = jtagClockFSM(handle, 0x00000001, 2, error);  // -> Run-Test/Idle
+ 278              		.loc 1 124 0 is_stmt 1
+ 279 0382 488B9568 		movq	-20632(%rbp), %rdx
+ 279      AFFFFF
+ 280 0389 488B8578 		movq	-20616(%rbp), %rax
+ 280      AFFFFF
+ 281 0390 4889D1   		movq	%rdx, %rcx
+ 282 0393 BA020000 		movl	$2, %edx
+ 282      00
+ 283 0398 BE010000 		movl	$1, %esi
+ 283      00
+ 284 039d 4889C7   		movq	%rax, %rdi
+ 285 03a0 E8000000 		call	jtagClockFSM@PLT
+ 285      00
+ 286 03a5 89859CAF 		movl	%eax, -20580(%rbp)
+ 286      FFFF
+ 125:csvfplay.c    **** 			CHECK_STATUS(fStatus, fStatus, cleanup, "csvfPlay()");
+ 287              		.loc 1 125 0
+ 288 03ab 83BD9CAF 		cmpl	$0, -20580(%rbp)
+ 288      FFFF00
+ 289 03b2 7427     		je	.L24
+ 290              		.loc 1 125 0 is_stmt 0 discriminator 1
+ 291 03b4 488B8568 		movq	-20632(%rbp), %rax
+ 291      AFFFFF
+ 292 03bb 488D3500 		leaq	.LC0(%rip), %rsi
+ 292      000000
+ 293 03c2 4889C7   		movq	%rax, %rdi
+ 294 03c5 E8000000 		call	errPrefix@PLT
+ 294      00
+ 295 03ca 8B859CAF 		movl	-20580(%rbp), %eax
+ 295      FFFF
+ 296 03d0 89858CAF 		movl	%eax, -20596(%rbp)
+ 296      FFFF
+ 297 03d6 E9A10600 		jmp	.L3
+ 297      00
+ 298              	.L24:
+ 126:csvfplay.c    **** 			if ( xruntest ) {
+ 299              		.loc 1 126 0 is_stmt 1
+ 300 03db 83BD98AF 		cmpl	$0, -20584(%rbp)
+ 300      FFFF00
+ 301 03e2 7454     		je	.L25
+ 127:csvfplay.c    **** 				fStatus = jtagClocks(handle, xruntest, error);
+ 302              		.loc 1 127 0
+ 303 03e4 488B9568 		movq	-20632(%rbp), %rdx
+ 303      AFFFFF
+ 304 03eb 8B8D98AF 		movl	-20584(%rbp), %ecx
+ 304      FFFF
+ 305 03f1 488B8578 		movq	-20616(%rbp), %rax
+ 305      AFFFFF
+ 306 03f8 89CE     		movl	%ecx, %esi
+ 307 03fa 4889C7   		movq	%rax, %rdi
+ 308 03fd E8000000 		call	jtagClocks@PLT
+ 308      00
+ 309 0402 89859CAF 		movl	%eax, -20580(%rbp)
+ 309      FFFF
+ 128:csvfplay.c    **** 				CHECK_STATUS(fStatus, fStatus, cleanup, "csvfPlay()");
+ 310              		.loc 1 128 0
+ 311 0408 83BD9CAF 		cmpl	$0, -20580(%rbp)
+ 311      FFFF00
+ 312 040f 7427     		je	.L25
+ 313              		.loc 1 128 0 is_stmt 0 discriminator 1
+ 314 0411 488B8568 		movq	-20632(%rbp), %rax
+ 314      AFFFFF
+ 315 0418 488D3500 		leaq	.LC0(%rip), %rsi
+ 315      000000
+ 316 041f 4889C7   		movq	%rax, %rdi
+ 317 0422 E8000000 		call	errPrefix@PLT
+ 317      00
+ 318 0427 8B859CAF 		movl	-20580(%rbp), %eax
+ 318      FFFF
+ 319 042d 89858CAF 		movl	%eax, -20596(%rbp)
+ 319      FFFF
+ 320 0433 E9440600 		jmp	.L3
+ 320      00
+ 321              	.L25:
+ 129:csvfplay.c    **** 			}
+ 130:csvfplay.c    **** 			break;
+ 322              		.loc 1 130 0 is_stmt 1
+ 323 0438 E9170600 		jmp	.L17
+ 323      00
+ 324              	.L11:
+ 131:csvfplay.c    **** 
+ 132:csvfplay.c    **** 		case XSDRSIZE:
+ 133:csvfplay.c    **** 			xsdrSize = *ptr++;
+ 325              		.loc 1 133 0
+ 326 043d 488B85B0 		movq	-20560(%rbp), %rax
+ 326      AFFFFF
+ 327 0444 488D5001 		leaq	1(%rax), %rdx
+ 328 0448 488995B0 		movq	%rdx, -20560(%rbp)
+ 328      AFFFFF
+ 329 044f 0FB600   		movzbl	(%rax), %eax
+ 330 0452 0FB6C0   		movzbl	%al, %eax
+ 331 0455 898594AF 		movl	%eax, -20588(%rbp)
+ 331      FFFF
+ 134:csvfplay.c    **** 			xsdrSize <<= 8;
+ 332              		.loc 1 134 0
+ 333 045b C1A594AF 		sall	$8, -20588(%rbp)
+ 333      FFFF08
+ 135:csvfplay.c    **** 			xsdrSize |= *ptr++;
+ 334              		.loc 1 135 0
+ 335 0462 488B85B0 		movq	-20560(%rbp), %rax
+ 335      AFFFFF
+ 336 0469 488D5001 		leaq	1(%rax), %rdx
+ 337 046d 488995B0 		movq	%rdx, -20560(%rbp)
+ 337      AFFFFF
+ 338 0474 0FB600   		movzbl	(%rax), %eax
+ 339 0477 0FB6C0   		movzbl	%al, %eax
+ 340 047a 098594AF 		orl	%eax, -20588(%rbp)
+ 340      FFFF
+ 136:csvfplay.c    **** 			xsdrSize <<= 8;
+ 341              		.loc 1 136 0
+ 342 0480 C1A594AF 		sall	$8, -20588(%rbp)
+ 342      FFFF08
+ 137:csvfplay.c    **** 			xsdrSize |= *ptr++;
+ 343              		.loc 1 137 0
+ 344 0487 488B85B0 		movq	-20560(%rbp), %rax
+ 344      AFFFFF
+ 345 048e 488D5001 		leaq	1(%rax), %rdx
+ 346 0492 488995B0 		movq	%rdx, -20560(%rbp)
+ 346      AFFFFF
+ 347 0499 0FB600   		movzbl	(%rax), %eax
+ 348 049c 0FB6C0   		movzbl	%al, %eax
+ 349 049f 098594AF 		orl	%eax, -20588(%rbp)
+ 349      FFFF
+ 138:csvfplay.c    **** 			xsdrSize <<= 8;
+ 350              		.loc 1 138 0
+ 351 04a5 C1A594AF 		sall	$8, -20588(%rbp)
+ 351      FFFF08
+ 139:csvfplay.c    **** 			xsdrSize |= *ptr++;
+ 352              		.loc 1 139 0
+ 353 04ac 488B85B0 		movq	-20560(%rbp), %rax
+ 353      AFFFFF
+ 354 04b3 488D5001 		leaq	1(%rax), %rdx
+ 355 04b7 488995B0 		movq	%rdx, -20560(%rbp)
+ 355      AFFFFF
+ 356 04be 0FB600   		movzbl	(%rax), %eax
+ 357 04c1 0FB6C0   		movzbl	%al, %eax
+ 358 04c4 098594AF 		orl	%eax, -20588(%rbp)
+ 358      FFFF
+ 140:csvfplay.c    **** 			#ifdef DEBUG
+ 141:csvfplay.c    **** 				printf("XSDRSIZE(%08X)\n", xsdrSize);
+ 142:csvfplay.c    **** 			#endif
+ 143:csvfplay.c    **** 			break;
+ 359              		.loc 1 143 0
+ 360 04ca E9850500 		jmp	.L17
+ 360      00
+ 361              	.L12:
+ 144:csvfplay.c    **** 
+ 145:csvfplay.c    **** 		case XSDRTDO:
+ 146:csvfplay.c    **** 			numBytes = bitsToBytes(xsdrSize);
+ 362              		.loc 1 146 0
+ 363 04cf 8B8594AF 		movl	-20588(%rbp), %eax
+ 363      FFFF
+ 364 04d5 C1E803   		shrl	$3, %eax
+ 365 04d8 89C2     		movl	%eax, %edx
+ 366 04da 8B8594AF 		movl	-20588(%rbp), %eax
+ 366      FFFF
+ 367 04e0 83E007   		andl	$7, %eax
+ 368 04e3 85C0     		testl	%eax, %eax
+ 369 04e5 7407     		je	.L26
+ 370              		.loc 1 146 0 is_stmt 0 discriminator 1
+ 371 04e7 B8010000 		movl	$1, %eax
+ 371      00
+ 372 04ec EB05     		jmp	.L27
+ 373              	.L26:
+ 374              		.loc 1 146 0 discriminator 2
+ 375 04ee B8000000 		movl	$0, %eax
+ 375      00
+ 376              	.L27:
+ 377              		.loc 1 146 0 discriminator 3
+ 378 04f3 01D0     		addl	%edx, %eax
+ 379 04f5 898590AF 		movl	%eax, -20592(%rbp)
+ 379      FFFF
+ 147:csvfplay.c    **** 			tdiPtr = tdiData;
+ 380              		.loc 1 147 0 is_stmt 1 discriminator 3
+ 381 04fb 488D85C0 		leaq	-18496(%rbp), %rax
+ 381      B7FFFF
+ 382 0502 488985A8 		movq	%rax, -20568(%rbp)
+ 382      AFFFFF
+ 148:csvfplay.c    **** 			tdoPtr = tdoExpected;
+ 383              		.loc 1 148 0 discriminator 3
+ 384 0509 488D85C0 		leaq	-14400(%rbp), %rax
+ 384      C7FFFF
+ 385 0510 488985A0 		movq	%rax, -20576(%rbp)
+ 385      AFFFFF
+ 149:csvfplay.c    **** 			while ( numBytes-- ) {
+ 386              		.loc 1 149 0 discriminator 3
+ 387 0517 EB52     		jmp	.L28
+ 388              	.L29:
+ 150:csvfplay.c    **** 				*tdiPtr++ = *ptr++;
+ 389              		.loc 1 150 0
+ 390 0519 488B85A8 		movq	-20568(%rbp), %rax
+ 390      AFFFFF
+ 391 0520 488D5001 		leaq	1(%rax), %rdx
+ 392 0524 488995A8 		movq	%rdx, -20568(%rbp)
+ 392      AFFFFF
+ 393 052b 488B95B0 		movq	-20560(%rbp), %rdx
+ 393      AFFFFF
+ 394 0532 488D4A01 		leaq	1(%rdx), %rcx
+ 395 0536 48898DB0 		movq	%rcx, -20560(%rbp)
+ 395      AFFFFF
+ 396 053d 0FB612   		movzbl	(%rdx), %edx
+ 397 0540 8810     		movb	%dl, (%rax)
+ 151:csvfplay.c    **** 				*tdoPtr++ = *ptr++;
+ 398              		.loc 1 151 0
+ 399 0542 488B85A0 		movq	-20576(%rbp), %rax
+ 399      AFFFFF
+ 400 0549 488D5001 		leaq	1(%rax), %rdx
+ 401 054d 488995A0 		movq	%rdx, -20576(%rbp)
+ 401      AFFFFF
+ 402 0554 488B95B0 		movq	-20560(%rbp), %rdx
+ 402      AFFFFF
+ 403 055b 488D4A01 		leaq	1(%rdx), %rcx
+ 404 055f 48898DB0 		movq	%rcx, -20560(%rbp)
+ 404      AFFFFF
+ 405 0566 0FB612   		movzbl	(%rdx), %edx
+ 406 0569 8810     		movb	%dl, (%rax)
+ 407              	.L28:
+ 149:csvfplay.c    **** 			while ( numBytes-- ) {
+ 408              		.loc 1 149 0 discriminator 1
+ 409 056b 8B8590AF 		movl	-20592(%rbp), %eax
+ 409      FFFF
+ 410 0571 8D50FF   		leal	-1(%rax), %edx
+ 411 0574 899590AF 		movl	%edx, -20592(%rbp)
+ 411      FFFF
+ 412 057a 85C0     		testl	%eax, %eax
+ 413 057c 759B     		jne	.L29
+ 152:csvfplay.c    **** 			}
+ 153:csvfplay.c    **** 			numBytes = bitsToBytes(xsdrSize);
+ 414              		.loc 1 153 0
+ 415 057e 8B8594AF 		movl	-20588(%rbp), %eax
+ 415      FFFF
+ 416 0584 C1E803   		shrl	$3, %eax
+ 417 0587 89C2     		movl	%eax, %edx
+ 418 0589 8B8594AF 		movl	-20588(%rbp), %eax
+ 418      FFFF
+ 419 058f 83E007   		andl	$7, %eax
+ 420 0592 85C0     		testl	%eax, %eax
+ 421 0594 7407     		je	.L30
+ 422              		.loc 1 153 0 is_stmt 0 discriminator 1
+ 423 0596 B8010000 		movl	$1, %eax
+ 423      00
+ 424 059b EB05     		jmp	.L31
+ 425              	.L30:
+ 426              		.loc 1 153 0 discriminator 2
+ 427 059d B8000000 		movl	$0, %eax
+ 427      00
+ 428              	.L31:
+ 429              		.loc 1 153 0 discriminator 3
+ 430 05a2 01D0     		addl	%edx, %eax
+ 431 05a4 898590AF 		movl	%eax, -20592(%rbp)
+ 431      FFFF
+ 154:csvfplay.c    **** 			i = 0;
+ 432              		.loc 1 154 0 is_stmt 1 discriminator 3
+ 433 05aa C6858AAF 		movb	$0, -20598(%rbp)
+ 433      FFFF00
+ 434              	.L37:
+ 155:csvfplay.c    **** 			do {
+ 156:csvfplay.c    **** 				fStatus = jtagClockFSM(handle, 0x00000001, 3, error);  // -> Shift-DR
+ 435              		.loc 1 156 0
+ 436 05b1 488B9568 		movq	-20632(%rbp), %rdx
+ 436      AFFFFF
+ 437 05b8 488B8578 		movq	-20616(%rbp), %rax
+ 437      AFFFFF
+ 438 05bf 4889D1   		movq	%rdx, %rcx
+ 439 05c2 BA030000 		movl	$3, %edx
+ 439      00
+ 440 05c7 BE010000 		movl	$1, %esi
+ 440      00
+ 441 05cc 4889C7   		movq	%rax, %rdi
+ 442 05cf E8000000 		call	jtagClockFSM@PLT
+ 442      00
+ 443 05d4 89859CAF 		movl	%eax, -20580(%rbp)
+ 443      FFFF
+ 157:csvfplay.c    **** 				CHECK_STATUS(fStatus, fStatus, cleanup, "csvfPlay()");
+ 444              		.loc 1 157 0
+ 445 05da 83BD9CAF 		cmpl	$0, -20580(%rbp)
+ 445      FFFF00
+ 446 05e1 7427     		je	.L32
+ 447              		.loc 1 157 0 is_stmt 0 discriminator 1
+ 448 05e3 488B8568 		movq	-20632(%rbp), %rax
+ 448      AFFFFF
+ 449 05ea 488D3500 		leaq	.LC0(%rip), %rsi
+ 449      000000
+ 450 05f1 4889C7   		movq	%rax, %rdi
+ 451 05f4 E8000000 		call	errPrefix@PLT
+ 451      00
+ 452 05f9 8B859CAF 		movl	-20580(%rbp), %eax
+ 452      FFFF
+ 453 05ff 89858CAF 		movl	%eax, -20596(%rbp)
+ 453      FFFF
+ 454 0605 E9720400 		jmp	.L3
+ 454      00
+ 455              	.L32:
+ 158:csvfplay.c    **** 				fStatus = jtagShiftInOut(handle, xsdrSize, tdiData, tdoData, true, error);  // -> Exit1-DR
+ 456              		.loc 1 158 0 is_stmt 1
+ 457 060a 488BBD68 		movq	-20632(%rbp), %rdi
+ 457      AFFFFF
+ 458 0611 488D8DC0 		leaq	-16448(%rbp), %rcx
+ 458      BFFFFF
+ 459 0618 488D95C0 		leaq	-18496(%rbp), %rdx
+ 459      B7FFFF
+ 460 061f 8BB594AF 		movl	-20588(%rbp), %esi
+ 460      FFFF
+ 461 0625 488B8578 		movq	-20616(%rbp), %rax
+ 461      AFFFFF
+ 462 062c 4989F9   		movq	%rdi, %r9
+ 463 062f 41B80100 		movl	$1, %r8d
+ 463      0000
+ 464 0635 4889C7   		movq	%rax, %rdi
+ 465 0638 E8000000 		call	jtagShiftInOut@PLT
+ 465      00
+ 466 063d 89859CAF 		movl	%eax, -20580(%rbp)
+ 466      FFFF
+ 159:csvfplay.c    **** 				CHECK_STATUS(fStatus, fStatus, cleanup, "csvfPlay()");
+ 467              		.loc 1 159 0
+ 468 0643 83BD9CAF 		cmpl	$0, -20580(%rbp)
+ 468      FFFF00
+ 469 064a 7427     		je	.L33
+ 470              		.loc 1 159 0 is_stmt 0 discriminator 1
+ 471 064c 488B8568 		movq	-20632(%rbp), %rax
+ 471      AFFFFF
+ 472 0653 488D3500 		leaq	.LC0(%rip), %rsi
+ 472      000000
+ 473 065a 4889C7   		movq	%rax, %rdi
+ 474 065d E8000000 		call	errPrefix@PLT
+ 474      00
+ 475 0662 8B859CAF 		movl	-20580(%rbp), %eax
+ 475      FFFF
+ 476 0668 89858CAF 		movl	%eax, -20596(%rbp)
+ 476      FFFF
+ 477 066e E9090400 		jmp	.L3
+ 477      00
+ 478              	.L33:
+ 160:csvfplay.c    **** 				fStatus = jtagClockFSM(handle, 0x0000001A, 6, error);  // -> Run-Test/Idle
+ 479              		.loc 1 160 0 is_stmt 1
+ 480 0673 488B9568 		movq	-20632(%rbp), %rdx
+ 480      AFFFFF
+ 481 067a 488B8578 		movq	-20616(%rbp), %rax
+ 481      AFFFFF
+ 482 0681 4889D1   		movq	%rdx, %rcx
+ 483 0684 BA060000 		movl	$6, %edx
+ 483      00
+ 484 0689 BE1A0000 		movl	$26, %esi
+ 484      00
+ 485 068e 4889C7   		movq	%rax, %rdi
+ 486 0691 E8000000 		call	jtagClockFSM@PLT
+ 486      00
+ 487 0696 89859CAF 		movl	%eax, -20580(%rbp)
+ 487      FFFF
+ 161:csvfplay.c    **** 				CHECK_STATUS(fStatus, fStatus, cleanup, "csvfPlay()");
+ 488              		.loc 1 161 0
+ 489 069c 83BD9CAF 		cmpl	$0, -20580(%rbp)
+ 489      FFFF00
+ 490 06a3 7427     		je	.L34
+ 491              		.loc 1 161 0 is_stmt 0 discriminator 1
+ 492 06a5 488B8568 		movq	-20632(%rbp), %rax
+ 492      AFFFFF
+ 493 06ac 488D3500 		leaq	.LC0(%rip), %rsi
+ 493      000000
+ 494 06b3 4889C7   		movq	%rax, %rdi
+ 495 06b6 E8000000 		call	errPrefix@PLT
+ 495      00
+ 496 06bb 8B859CAF 		movl	-20580(%rbp), %eax
+ 496      FFFF
+ 497 06c1 89858CAF 		movl	%eax, -20596(%rbp)
+ 497      FFFF
+ 498 06c7 E9B00300 		jmp	.L3
+ 498      00
+ 499              	.L34:
+ 162:csvfplay.c    **** 				if ( xruntest ) {
+ 500              		.loc 1 162 0 is_stmt 1
+ 501 06cc 83BD98AF 		cmpl	$0, -20584(%rbp)
+ 501      FFFF00
+ 502 06d3 7454     		je	.L35
+ 163:csvfplay.c    **** 					fStatus = jtagClocks(handle, xruntest, error);
+ 503              		.loc 1 163 0
+ 504 06d5 488B9568 		movq	-20632(%rbp), %rdx
+ 504      AFFFFF
+ 505 06dc 8B8D98AF 		movl	-20584(%rbp), %ecx
+ 505      FFFF
+ 506 06e2 488B8578 		movq	-20616(%rbp), %rax
+ 506      AFFFFF
+ 507 06e9 89CE     		movl	%ecx, %esi
+ 508 06eb 4889C7   		movq	%rax, %rdi
+ 509 06ee E8000000 		call	jtagClocks@PLT
+ 509      00
+ 510 06f3 89859CAF 		movl	%eax, -20580(%rbp)
+ 510      FFFF
+ 164:csvfplay.c    **** 					CHECK_STATUS(fStatus, fStatus, cleanup, "csvfPlay()");
+ 511              		.loc 1 164 0
+ 512 06f9 83BD9CAF 		cmpl	$0, -20580(%rbp)
+ 512      FFFF00
+ 513 0700 7427     		je	.L35
+ 514              		.loc 1 164 0 is_stmt 0 discriminator 1
+ 515 0702 488B8568 		movq	-20632(%rbp), %rax
+ 515      AFFFFF
+ 516 0709 488D3500 		leaq	.LC0(%rip), %rsi
+ 516      000000
+ 517 0710 4889C7   		movq	%rax, %rdi
+ 518 0713 E8000000 		call	errPrefix@PLT
+ 518      00
+ 519 0718 8B859CAF 		movl	-20580(%rbp), %eax
+ 519      FFFF
+ 520 071e 89858CAF 		movl	%eax, -20596(%rbp)
+ 520      FFFF
+ 521 0724 E9530300 		jmp	.L3
+ 521      00
+ 522              	.L35:
+ 165:csvfplay.c    **** 				}
+ 166:csvfplay.c    **** 				i++;
+ 523              		.loc 1 166 0 is_stmt 1
+ 524 0729 0FB6858A 		movzbl	-20598(%rbp), %eax
+ 524      AFFFFF
+ 525 0730 83C001   		addl	$1, %eax
+ 526 0733 88858AAF 		movb	%al, -20598(%rbp)
+ 526      FFFF
+ 167:csvfplay.c    **** 				#ifdef DEBUG
+ 168:csvfplay.c    **** 					dumpSimple(tdoData, numBytes, data);
+ 169:csvfplay.c    **** 					dumpSimple(tdoMask, numBytes, mask);
+ 170:csvfplay.c    **** 					dumpSimple(tdoExpected, numBytes, expected);
+ 171:csvfplay.c    **** 					printf("XSDRTDO(attempt: %d; mask: %s; expecting: %s; got: %s)\n", i, mask, expected, data);
+ 172:csvfplay.c    **** 				#endif
+ 173:csvfplay.c    **** 			} while ( tdoMatchFailed(tdoData, tdoMask, tdoExpected, numBytes) && i < 32 );
+ 527              		.loc 1 173 0
+ 528 0739 8B8D90AF 		movl	-20592(%rbp), %ecx
+ 528      FFFF
+ 529 073f 488D95C0 		leaq	-14400(%rbp), %rdx
+ 529      C7FFFF
+ 530 0746 488DB5C0 		leaq	-20544(%rbp), %rsi
+ 530      AFFFFF
+ 531 074d 488D85C0 		leaq	-16448(%rbp), %rax
+ 531      BFFFFF
+ 532 0754 4889C7   		movq	%rax, %rdi
+ 533 0757 E8C70300 		call	tdoMatchFailed
+ 533      00
+ 534 075c 84C0     		testb	%al, %al
+ 535 075e 740D     		je	.L36
+ 536              		.loc 1 173 0 is_stmt 0 discriminator 1
+ 537 0760 80BD8AAF 		cmpb	$31, -20598(%rbp)
+ 537      FFFF1F
+ 538 0767 0F8644FE 		jbe	.L37
+ 538      FFFF
+ 539              	.L36:
+ 174:csvfplay.c    **** 
+ 175:csvfplay.c    **** 			if ( i == 32 ) {
+ 540              		.loc 1 175 0 is_stmt 1
+ 541 076d 80BD8AAF 		cmpb	$32, -20598(%rbp)
+ 541      FFFF20
+ 542 0774 0F859C00 		jne	.L38
+ 542      0000
+ 176:csvfplay.c    **** 				dumpSimple(tdoData, numBytes, data);
+ 543              		.loc 1 176 0
+ 544 077a 488D95C0 		leaq	-12352(%rbp), %rdx
+ 544      CFFFFF
+ 545 0781 8B8D90AF 		movl	-20592(%rbp), %ecx
+ 545      FFFF
+ 546 0787 488D85C0 		leaq	-16448(%rbp), %rax
+ 546      BFFFFF
+ 547 078e 89CE     		movl	%ecx, %esi
+ 548 0790 4889C7   		movq	%rax, %rdi
+ 549 0793 E8080300 		call	dumpSimple
+ 549      00
+ 177:csvfplay.c    **** 				dumpSimple(tdoMask, numBytes, mask);
+ 550              		.loc 1 177 0
+ 551 0798 488D95D0 		leaq	-8240(%rbp), %rdx
+ 551      DFFFFF
+ 552 079f 8B8D90AF 		movl	-20592(%rbp), %ecx
+ 552      FFFF
+ 553 07a5 488D85C0 		leaq	-20544(%rbp), %rax
+ 553      AFFFFF
+ 554 07ac 89CE     		movl	%ecx, %esi
+ 555 07ae 4889C7   		movq	%rax, %rdi
+ 556 07b1 E8EA0200 		call	dumpSimple
+ 556      00
+ 178:csvfplay.c    **** 				dumpSimple(tdoExpected, numBytes, expected);
+ 557              		.loc 1 178 0
+ 558 07b6 488D95E0 		leaq	-4128(%rbp), %rdx
+ 558      EFFFFF
+ 559 07bd 8B8D90AF 		movl	-20592(%rbp), %ecx
+ 559      FFFF
+ 560 07c3 488D85C0 		leaq	-14400(%rbp), %rax
+ 560      C7FFFF
+ 561 07ca 89CE     		movl	%ecx, %esi
+ 562 07cc 4889C7   		movq	%rax, %rdi
+ 563 07cf E8CC0200 		call	dumpSimple
+ 563      00
+ 179:csvfplay.c    **** 				CHECK_STATUS(
+ 564              		.loc 1 179 0
+ 565 07d4 488DB5E0 		leaq	-4128(%rbp), %rsi
+ 565      EFFFFF
+ 566 07db 488D8DD0 		leaq	-8240(%rbp), %rcx
+ 566      DFFFFF
+ 567 07e2 488D95C0 		leaq	-12352(%rbp), %rdx
+ 567      CFFFFF
+ 568 07e9 488B8568 		movq	-20632(%rbp), %rax
+ 568      AFFFFF
+ 569 07f0 4989F0   		movq	%rsi, %r8
+ 570 07f3 488D3500 		leaq	.LC1(%rip), %rsi
+ 570      000000
+ 571 07fa 4889C7   		movq	%rax, %rdi
+ 572 07fd B8000000 		movl	$0, %eax
+ 572      00
+ 573 0802 E8000000 		call	errRender@PLT
+ 573      00
+ 574 0807 C7858CAF 		movl	$18, -20596(%rbp)
+ 574      FFFF1200 
+ 574      0000
+ 575 0811 E9660200 		jmp	.L3
+ 575      00
+ 576              	.L38:
+ 180:csvfplay.c    **** 					true, FL_PROG_SVF_COMPARE, cleanup,
+ 181:csvfplay.c    **** 					"csvfPlay(): XSDRTDO failed:\n  Got: %s\n  Mask: %s\n  Expecting: %s",
+ 182:csvfplay.c    **** 					data, mask, expected);
+ 183:csvfplay.c    **** 			}
+ 184:csvfplay.c    **** 			break;
+ 577              		.loc 1 184 0
+ 578 0816 E9390200 		jmp	.L17
+ 578      00
+ 579              	.L9:
+ 185:csvfplay.c    **** 
+ 186:csvfplay.c    **** 		case XSDR:
+ 187:csvfplay.c    **** 			#ifdef DEBUG
+ 188:csvfplay.c    **** 				// TODO: Need to print actual TDO data too
+ 189:csvfplay.c    **** 				printf("XSDR(%08X)\n", xsdrSize);
+ 190:csvfplay.c    **** 			#endif
+ 191:csvfplay.c    **** 			fStatus = jtagClockFSM(handle, 0x00000001, 3, error);  // -> Shift-DR
+ 580              		.loc 1 191 0
+ 581 081b 488B9568 		movq	-20632(%rbp), %rdx
+ 581      AFFFFF
+ 582 0822 488B8578 		movq	-20616(%rbp), %rax
+ 582      AFFFFF
+ 583 0829 4889D1   		movq	%rdx, %rcx
+ 584 082c BA030000 		movl	$3, %edx
+ 584      00
+ 585 0831 BE010000 		movl	$1, %esi
+ 585      00
+ 586 0836 4889C7   		movq	%rax, %rdi
+ 587 0839 E8000000 		call	jtagClockFSM@PLT
+ 587      00
+ 588 083e 89859CAF 		movl	%eax, -20580(%rbp)
+ 588      FFFF
+ 192:csvfplay.c    **** 			CHECK_STATUS(fStatus, fStatus, cleanup, "csvfPlay()");
+ 589              		.loc 1 192 0
+ 590 0844 83BD9CAF 		cmpl	$0, -20580(%rbp)
+ 590      FFFF00
+ 591 084b 7427     		je	.L39
+ 592              		.loc 1 192 0 is_stmt 0 discriminator 1
+ 593 084d 488B8568 		movq	-20632(%rbp), %rax
+ 593      AFFFFF
+ 594 0854 488D3500 		leaq	.LC0(%rip), %rsi
+ 594      000000
+ 595 085b 4889C7   		movq	%rax, %rdi
+ 596 085e E8000000 		call	errPrefix@PLT
+ 596      00
+ 597 0863 8B859CAF 		movl	-20580(%rbp), %eax
+ 597      FFFF
+ 598 0869 89858CAF 		movl	%eax, -20596(%rbp)
+ 598      FFFF
+ 599 086f E9080200 		jmp	.L3
+ 599      00
+ 600              	.L39:
+ 193:csvfplay.c    **** 			numBytes = bitsToBytes(xsdrSize);
+ 601              		.loc 1 193 0 is_stmt 1
+ 602 0874 8B8594AF 		movl	-20588(%rbp), %eax
+ 602      FFFF
+ 603 087a C1E803   		shrl	$3, %eax
+ 604 087d 89C2     		movl	%eax, %edx
+ 605 087f 8B8594AF 		movl	-20588(%rbp), %eax
+ 605      FFFF
+ 606 0885 83E007   		andl	$7, %eax
+ 607 0888 85C0     		testl	%eax, %eax
+ 608 088a 7407     		je	.L40
+ 609              		.loc 1 193 0 is_stmt 0 discriminator 1
+ 610 088c B8010000 		movl	$1, %eax
+ 610      00
+ 611 0891 EB05     		jmp	.L41
+ 612              	.L40:
+ 613              		.loc 1 193 0 discriminator 2
+ 614 0893 B8000000 		movl	$0, %eax
+ 614      00
+ 615              	.L41:
+ 616              		.loc 1 193 0 discriminator 3
+ 617 0898 01D0     		addl	%edx, %eax
+ 618 089a 898590AF 		movl	%eax, -20592(%rbp)
+ 618      FFFF
+ 194:csvfplay.c    **** 			tdiAll = malloc(numBytes);
+ 619              		.loc 1 194 0 is_stmt 1 discriminator 3
+ 620 08a0 8B8590AF 		movl	-20592(%rbp), %eax
+ 620      FFFF
+ 621 08a6 4889C7   		movq	%rax, %rdi
+ 622 08a9 E8000000 		call	malloc@PLT
+ 622      00
+ 623 08ae 488985B8 		movq	%rax, -20552(%rbp)
+ 623      AFFFFF
+ 195:csvfplay.c    **** 			tdiPtr = tdiAll;
+ 624              		.loc 1 195 0 discriminator 3
+ 625 08b5 488B85B8 		movq	-20552(%rbp), %rax
+ 625      AFFFFF
+ 626 08bc 488985A8 		movq	%rax, -20568(%rbp)
+ 626      AFFFFF
+ 196:csvfplay.c    **** 			while ( numBytes-- ) {
+ 627              		.loc 1 196 0 discriminator 3
+ 628 08c3 EB29     		jmp	.L42
+ 629              	.L43:
+ 197:csvfplay.c    **** 				*tdiPtr++ = *ptr++;
+ 630              		.loc 1 197 0
+ 631 08c5 488B85A8 		movq	-20568(%rbp), %rax
+ 631      AFFFFF
+ 632 08cc 488D5001 		leaq	1(%rax), %rdx
+ 633 08d0 488995A8 		movq	%rdx, -20568(%rbp)
+ 633      AFFFFF
+ 634 08d7 488B95B0 		movq	-20560(%rbp), %rdx
+ 634      AFFFFF
+ 635 08de 488D4A01 		leaq	1(%rdx), %rcx
+ 636 08e2 48898DB0 		movq	%rcx, -20560(%rbp)
+ 636      AFFFFF
+ 637 08e9 0FB612   		movzbl	(%rdx), %edx
+ 638 08ec 8810     		movb	%dl, (%rax)
+ 639              	.L42:
+ 196:csvfplay.c    **** 			while ( numBytes-- ) {
+ 640              		.loc 1 196 0 discriminator 1
+ 641 08ee 8B8590AF 		movl	-20592(%rbp), %eax
+ 641      FFFF
+ 642 08f4 8D50FF   		leal	-1(%rax), %edx
+ 643 08f7 899590AF 		movl	%edx, -20592(%rbp)
+ 643      FFFF
+ 644 08fd 85C0     		testl	%eax, %eax
+ 645 08ff 75C4     		jne	.L43
+ 198:csvfplay.c    **** 			}
+ 199:csvfplay.c    **** 			fStatus = jtagShiftInOnly(handle, xsdrSize, tdiAll, true, error);  // -> Exit1-DR
+ 646              		.loc 1 199 0
+ 647 0901 488B8D68 		movq	-20632(%rbp), %rcx
+ 647      AFFFFF
+ 648 0908 488B95B8 		movq	-20552(%rbp), %rdx
+ 648      AFFFFF
+ 649 090f 8BB594AF 		movl	-20588(%rbp), %esi
+ 649      FFFF
+ 650 0915 488B8578 		movq	-20616(%rbp), %rax
+ 650      AFFFFF
+ 651 091c 4989C8   		movq	%rcx, %r8
+ 652 091f B9010000 		movl	$1, %ecx
+ 652      00
+ 653 0924 4889C7   		movq	%rax, %rdi
+ 654 0927 E8000000 		call	jtagShiftInOnly@PLT
+ 654      00
+ 655 092c 89859CAF 		movl	%eax, -20580(%rbp)
+ 655      FFFF
+ 200:csvfplay.c    **** 			free(tdiAll);
+ 656              		.loc 1 200 0
+ 657 0932 488B85B8 		movq	-20552(%rbp), %rax
+ 657      AFFFFF
+ 658 0939 4889C7   		movq	%rax, %rdi
+ 659 093c E8000000 		call	free@PLT
+ 659      00
+ 201:csvfplay.c    **** 			CHECK_STATUS(fStatus, fStatus, cleanup, "csvfPlay()");
+ 660              		.loc 1 201 0
+ 661 0941 83BD9CAF 		cmpl	$0, -20580(%rbp)
+ 661      FFFF00
+ 662 0948 7427     		je	.L44
+ 663              		.loc 1 201 0 is_stmt 0 discriminator 1
+ 664 094a 488B8568 		movq	-20632(%rbp), %rax
+ 664      AFFFFF
+ 665 0951 488D3500 		leaq	.LC0(%rip), %rsi
+ 665      000000
+ 666 0958 4889C7   		movq	%rax, %rdi
+ 667 095b E8000000 		call	errPrefix@PLT
+ 667      00
+ 668 0960 8B859CAF 		movl	-20580(%rbp), %eax
+ 668      FFFF
+ 669 0966 89858CAF 		movl	%eax, -20596(%rbp)
+ 669      FFFF
+ 670 096c E90B0100 		jmp	.L3
+ 670      00
+ 671              	.L44:
+ 202:csvfplay.c    **** 			fStatus = jtagClockFSM(handle, 0x00000001, 2, error);  // -> Run-Test/Idle
+ 672              		.loc 1 202 0 is_stmt 1
+ 673 0971 488B9568 		movq	-20632(%rbp), %rdx
+ 673      AFFFFF
+ 674 0978 488B8578 		movq	-20616(%rbp), %rax
+ 674      AFFFFF
+ 675 097f 4889D1   		movq	%rdx, %rcx
+ 676 0982 BA020000 		movl	$2, %edx
+ 676      00
+ 677 0987 BE010000 		movl	$1, %esi
+ 677      00
+ 678 098c 4889C7   		movq	%rax, %rdi
+ 679 098f E8000000 		call	jtagClockFSM@PLT
+ 679      00
+ 680 0994 89859CAF 		movl	%eax, -20580(%rbp)
+ 680      FFFF
+ 203:csvfplay.c    **** 			CHECK_STATUS(fStatus, fStatus, cleanup, "csvfPlay()");
+ 681              		.loc 1 203 0
+ 682 099a 83BD9CAF 		cmpl	$0, -20580(%rbp)
+ 682      FFFF00
+ 683 09a1 7427     		je	.L45
+ 684              		.loc 1 203 0 is_stmt 0 discriminator 1
+ 685 09a3 488B8568 		movq	-20632(%rbp), %rax
+ 685      AFFFFF
+ 686 09aa 488D3500 		leaq	.LC0(%rip), %rsi
+ 686      000000
+ 687 09b1 4889C7   		movq	%rax, %rdi
+ 688 09b4 E8000000 		call	errPrefix@PLT
+ 688      00
+ 689 09b9 8B859CAF 		movl	-20580(%rbp), %eax
+ 689      FFFF
+ 690 09bf 89858CAF 		movl	%eax, -20596(%rbp)
+ 690      FFFF
+ 691 09c5 E9B20000 		jmp	.L3
+ 691      00
+ 692              	.L45:
+ 204:csvfplay.c    **** 			if ( xruntest ) {
+ 693              		.loc 1 204 0 is_stmt 1
+ 694 09ca 83BD98AF 		cmpl	$0, -20584(%rbp)
+ 694      FFFF00
+ 695 09d1 7451     		je	.L46
+ 205:csvfplay.c    **** 				fStatus = jtagClocks(handle, xruntest, error);
+ 696              		.loc 1 205 0
+ 697 09d3 488B9568 		movq	-20632(%rbp), %rdx
+ 697      AFFFFF
+ 698 09da 8B8D98AF 		movl	-20584(%rbp), %ecx
+ 698      FFFF
+ 699 09e0 488B8578 		movq	-20616(%rbp), %rax
+ 699      AFFFFF
+ 700 09e7 89CE     		movl	%ecx, %esi
+ 701 09e9 4889C7   		movq	%rax, %rdi
+ 702 09ec E8000000 		call	jtagClocks@PLT
+ 702      00
+ 703 09f1 89859CAF 		movl	%eax, -20580(%rbp)
+ 703      FFFF
+ 206:csvfplay.c    **** 				CHECK_STATUS(fStatus, fStatus, cleanup, "csvfPlay()");
+ 704              		.loc 1 206 0
+ 705 09f7 83BD9CAF 		cmpl	$0, -20580(%rbp)
+ 705      FFFF00
+ 706 09fe 7424     		je	.L46
+ 707              		.loc 1 206 0 is_stmt 0 discriminator 1
+ 708 0a00 488B8568 		movq	-20632(%rbp), %rax
+ 708      AFFFFF
+ 709 0a07 488D3500 		leaq	.LC0(%rip), %rsi
+ 709      000000
+ 710 0a0e 4889C7   		movq	%rax, %rdi
+ 711 0a11 E8000000 		call	errPrefix@PLT
+ 711      00
+ 712 0a16 8B859CAF 		movl	-20580(%rbp), %eax
+ 712      FFFF
+ 713 0a1c 89858CAF 		movl	%eax, -20596(%rbp)
+ 713      FFFF
+ 714 0a22 EB58     		jmp	.L3
+ 715              	.L46:
+ 207:csvfplay.c    **** 			}
+ 208:csvfplay.c    **** 			break;
+ 716              		.loc 1 208 0 is_stmt 1
+ 717 0a24 EB2E     		jmp	.L17
+ 718              	.L5:
+ 209:csvfplay.c    **** 
+ 210:csvfplay.c    **** 		default:
+ 211:csvfplay.c    **** 			CHECK_STATUS(
+ 719              		.loc 1 211 0
+ 720 0a26 0FB69589 		movzbl	-20599(%rbp), %edx
+ 720      AFFFFF
+ 721 0a2d 488B8568 		movq	-20632(%rbp), %rax
+ 721      AFFFFF
+ 722 0a34 488D3500 		leaq	.LC2(%rip), %rsi
+ 722      000000
+ 723 0a3b 4889C7   		movq	%rax, %rdi
+ 724 0a3e B8000000 		movl	$0, %eax
+ 724      00
+ 725 0a43 E8000000 		call	errRender@PLT
+ 725      00
+ 726 0a48 C7858CAF 		movl	$19, -20596(%rbp)
+ 726      FFFF1300 
+ 726      0000
+ 727 0a52 EB28     		jmp	.L3
+ 728              	.L17:
+ 212:csvfplay.c    **** 				true, FL_PROG_SVF_UNKNOWN_CMD, cleanup,
+ 213:csvfplay.c    **** 				"csvfPlay(): Unsupported command 0x%02X", thisByte);
+ 214:csvfplay.c    **** 		}
+ 215:csvfplay.c    **** 		thisByte = *ptr++;
+ 729              		.loc 1 215 0
+ 730 0a54 488B85B0 		movq	-20560(%rbp), %rax
+ 730      AFFFFF
+ 731 0a5b 488D5001 		leaq	1(%rax), %rdx
+ 732 0a5f 488995B0 		movq	%rdx, -20560(%rbp)
+ 732      AFFFFF
+ 733 0a66 0FB600   		movzbl	(%rax), %eax
+ 734 0a69 888589AF 		movb	%al, -20599(%rbp)
+ 734      FFFF
+ 735              	.L4:
+  70:csvfplay.c    **** 		switch ( thisByte ) {
+ 736              		.loc 1 70 0 discriminator 1
+ 737 0a6f 80BD89AF 		cmpb	$0, -20599(%rbp)
+ 737      FFFF00
+ 738 0a76 0F8559F6 		jne	.L47
+ 738      FFFF
+ 739              	.L3:
+ 216:csvfplay.c    **** 	}
+ 217:csvfplay.c    **** cleanup:
+ 218:csvfplay.c    **** 	return retVal;
+ 740              		.loc 1 218 0
+ 741 0a7c 8B858CAF 		movl	-20596(%rbp), %eax
+ 741      FFFF
+ 219:csvfplay.c    **** }
+ 742              		.loc 1 219 0
+ 743 0a82 488B5DE8 		movq	-24(%rbp), %rbx
+ 744 0a86 6448331C 		xorq	%fs:40, %rbx
+ 744      25280000 
+ 744      00
+ 745 0a8f 7405     		je	.L49
+ 746 0a91 E8000000 		call	__stack_chk_fail@PLT
+ 746      00
+ 747              	.L49:
+ 748 0a96 4881C498 		addq	$20632, %rsp
+ 748      500000
+ 749 0a9d 5B       		popq	%rbx
+ 750 0a9e 5D       		popq	%rbp
+ 751              		.cfi_def_cfa 7, 8
+ 752 0a9f C3       		ret
+ 753              		.cfi_endproc
+ 754              	.LFE4:
+ 756              		.section	.rodata
+ 757              	.LC3:
+ 758 00a8 30313233 		.string	"0123456789ABCDEF"
+ 758      34353637 
+ 758      38394142 
+ 758      43444546 
+ 758      00
+ 759              		.section	.data.rel.ro.local,"aw",@progbits
+ 760              		.align 8
+ 763              	nibbles:
+ 764 0000 00000000 		.quad	.LC3
+ 764      00000000 
+ 765              		.text
+ 767              	dumpSimple:
+ 768              	.LFB5:
+ 220:csvfplay.c    **** 
+ 221:csvfplay.c    **** // ------------------------------------------------------------------------------------------------
+ 222:csvfplay.c    **** // Implementation of private functions
+ 223:csvfplay.c    **** // ------------------------------------------------------------------------------------------------
+ 224:csvfplay.c    **** 
+ 225:csvfplay.c    **** static const char *const nibbles = "0123456789ABCDEF";
+ 226:csvfplay.c    **** 
+ 227:csvfplay.c    **** // Dump some hex bytes to a buffer.
+ 228:csvfplay.c    **** //
+ 229:csvfplay.c    **** static void dumpSimple(const unsigned char *input, unsigned int length, char *p) {
+ 769              		.loc 1 229 0
+ 770              		.cfi_startproc
+ 771 0aa0 55       		pushq	%rbp
+ 772              		.cfi_def_cfa_offset 16
+ 773              		.cfi_offset 6, -16
+ 774 0aa1 4889E5   		movq	%rsp, %rbp
+ 775              		.cfi_def_cfa_register 6
+ 776 0aa4 48897DE8 		movq	%rdi, -24(%rbp)
+ 777 0aa8 8975E4   		movl	%esi, -28(%rbp)
+ 778 0aab 488955D8 		movq	%rdx, -40(%rbp)
+ 230:csvfplay.c    **** 	uint8 upperNibble, lowerNibble;
+ 231:csvfplay.c    **** 	while ( length ) {
+ 779              		.loc 1 231 0
+ 780 0aaf EB63     		jmp	.L51
+ 781              	.L52:
+ 232:csvfplay.c    **** 		upperNibble = lowerNibble = *input++;
+ 782              		.loc 1 232 0
+ 783 0ab1 488B45E8 		movq	-24(%rbp), %rax
+ 784 0ab5 488D5001 		leaq	1(%rax), %rdx
+ 785 0ab9 488955E8 		movq	%rdx, -24(%rbp)
+ 786 0abd 0FB600   		movzbl	(%rax), %eax
+ 787 0ac0 8845FE   		movb	%al, -2(%rbp)
+ 788 0ac3 0FB645FE 		movzbl	-2(%rbp), %eax
+ 789 0ac7 8845FF   		movb	%al, -1(%rbp)
+ 233:csvfplay.c    **** 		upperNibble >>= 4;
+ 790              		.loc 1 233 0
+ 791 0aca C06DFF04 		shrb	$4, -1(%rbp)
+ 234:csvfplay.c    **** 		lowerNibble &= 15;
+ 792              		.loc 1 234 0
+ 793 0ace 8065FE0F 		andb	$15, -2(%rbp)
+ 235:csvfplay.c    **** 		*p++ = nibbles[upperNibble];
+ 794              		.loc 1 235 0
+ 795 0ad2 488B45D8 		movq	-40(%rbp), %rax
+ 796 0ad6 488D5001 		leaq	1(%rax), %rdx
+ 797 0ada 488955D8 		movq	%rdx, -40(%rbp)
+ 798 0ade 488D0D00 		leaq	.LC3(%rip), %rcx
+ 798      000000
+ 799 0ae5 0FB655FF 		movzbl	-1(%rbp), %edx
+ 800 0ae9 4801CA   		addq	%rcx, %rdx
+ 801 0aec 0FB612   		movzbl	(%rdx), %edx
+ 802 0aef 8810     		movb	%dl, (%rax)
+ 236:csvfplay.c    **** 		*p++ = nibbles[lowerNibble];
+ 803              		.loc 1 236 0
+ 804 0af1 488B45D8 		movq	-40(%rbp), %rax
+ 805 0af5 488D5001 		leaq	1(%rax), %rdx
+ 806 0af9 488955D8 		movq	%rdx, -40(%rbp)
+ 807 0afd 488D0D00 		leaq	.LC3(%rip), %rcx
+ 807      000000
+ 808 0b04 0FB655FE 		movzbl	-2(%rbp), %edx
+ 809 0b08 4801CA   		addq	%rcx, %rdx
+ 810 0b0b 0FB612   		movzbl	(%rdx), %edx
+ 811 0b0e 8810     		movb	%dl, (%rax)
+ 237:csvfplay.c    **** 		--length;
+ 812              		.loc 1 237 0
+ 813 0b10 836DE401 		subl	$1, -28(%rbp)
+ 814              	.L51:
+ 231:csvfplay.c    **** 		upperNibble = lowerNibble = *input++;
+ 815              		.loc 1 231 0 discriminator 1
+ 816 0b14 837DE400 		cmpl	$0, -28(%rbp)
+ 817 0b18 7597     		jne	.L52
+ 238:csvfplay.c    **** 	}
+ 239:csvfplay.c    **** 	*p = '\0';
+ 818              		.loc 1 239 0
+ 819 0b1a 488B45D8 		movq	-40(%rbp), %rax
+ 820 0b1e C60000   		movb	$0, (%rax)
+ 240:csvfplay.c    **** }
+ 821              		.loc 1 240 0
+ 822 0b21 5D       		popq	%rbp
+ 823              		.cfi_def_cfa 7, 8
+ 824 0b22 C3       		ret
+ 825              		.cfi_endproc
+ 826              	.LFE5:
+ 829              	tdoMatchFailed:
+ 830              	.LFB6:
+ 241:csvfplay.c    **** 
+ 242:csvfplay.c    **** static bool tdoMatchFailed(
+ 243:csvfplay.c    **** 	const uint8 *tdoData, const uint8 *tdoMask, const uint8 *tdoExpected, uint32 numBytes)
+ 244:csvfplay.c    **** {
+ 831              		.loc 1 244 0
+ 832              		.cfi_startproc
+ 833 0b23 55       		pushq	%rbp
+ 834              		.cfi_def_cfa_offset 16
+ 835              		.cfi_offset 6, -16
+ 836 0b24 4889E5   		movq	%rsp, %rbp
+ 837              		.cfi_def_cfa_register 6
+ 838 0b27 48897DF8 		movq	%rdi, -8(%rbp)
+ 839 0b2b 488975F0 		movq	%rsi, -16(%rbp)
+ 840 0b2f 488955E8 		movq	%rdx, -24(%rbp)
+ 841 0b33 894DE4   		movl	%ecx, -28(%rbp)
+ 245:csvfplay.c    **** 	while ( numBytes-- ) {
+ 842              		.loc 1 245 0
+ 843 0b36 EB33     		jmp	.L54
+ 844              	.L57:
+ 246:csvfplay.c    **** 		if ( (*tdoData & *tdoMask) != (*tdoExpected & *tdoMask) ) {
+ 845              		.loc 1 246 0
+ 846 0b38 488B45F8 		movq	-8(%rbp), %rax
+ 847 0b3c 0FB610   		movzbl	(%rax), %edx
+ 848 0b3f 488B45E8 		movq	-24(%rbp), %rax
+ 849 0b43 0FB600   		movzbl	(%rax), %eax
+ 850 0b46 31C2     		xorl	%eax, %edx
+ 851 0b48 488B45F0 		movq	-16(%rbp), %rax
+ 852 0b4c 0FB600   		movzbl	(%rax), %eax
+ 853 0b4f 21D0     		andl	%edx, %eax
+ 854 0b51 84C0     		testb	%al, %al
+ 855 0b53 7407     		je	.L55
+ 247:csvfplay.c    **** 			return true;
+ 856              		.loc 1 247 0
+ 857 0b55 B8010000 		movl	$1, %eax
+ 857      00
+ 858 0b5a EB21     		jmp	.L56
+ 859              	.L55:
+ 248:csvfplay.c    **** 		}
+ 249:csvfplay.c    **** 		tdoData++;
+ 860              		.loc 1 249 0
+ 861 0b5c 488345F8 		addq	$1, -8(%rbp)
+ 861      01
+ 250:csvfplay.c    **** 		tdoExpected++;
+ 862              		.loc 1 250 0
+ 863 0b61 488345E8 		addq	$1, -24(%rbp)
+ 863      01
+ 251:csvfplay.c    **** 		tdoMask++;
+ 864              		.loc 1 251 0
+ 865 0b66 488345F0 		addq	$1, -16(%rbp)
+ 865      01
+ 866              	.L54:
+ 245:csvfplay.c    **** 		if ( (*tdoData & *tdoMask) != (*tdoExpected & *tdoMask) ) {
+ 867              		.loc 1 245 0 discriminator 1
+ 868 0b6b 8B45E4   		movl	-28(%rbp), %eax
+ 869 0b6e 8D50FF   		leal	-1(%rax), %edx
+ 870 0b71 8955E4   		movl	%edx, -28(%rbp)
+ 871 0b74 85C0     		testl	%eax, %eax
+ 872 0b76 75C0     		jne	.L57
+ 252:csvfplay.c    **** 	}
+ 253:csvfplay.c    **** 	return false;
+ 873              		.loc 1 253 0
+ 874 0b78 B8000000 		movl	$0, %eax
+ 874      00
+ 875              	.L56:
+ 254:csvfplay.c    **** }
+ 876              		.loc 1 254 0
+ 877 0b7d 5D       		popq	%rbp
+ 878              		.cfi_def_cfa 7, 8
+ 879 0b7e C3       		ret
+ 880              		.cfi_endproc
+ 881              	.LFE6:
+ 883              	.Letext0:
+ 884              		.file 2 "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h"
+ 885              		.file 3 "libfpgalink.h"
+ 886              		.file 4 "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/libs/libusbwrap/libusbwrap.h"
+ 887              		.file 5 "private.h"
+ 888              		.file 6 "xsvf.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 csvfplay.c
+     /tmp/ccKu8WGK.s:16     .text:0000000000000000 csvfPlay
+     /tmp/ccKu8WGK.s:829    .text:0000000000000b23 tdoMatchFailed
+     /tmp/ccKu8WGK.s:767    .text:0000000000000aa0 dumpSimple
+     /tmp/ccKu8WGK.s:763    .data.rel.ro.local:0000000000000000 nibbles
+
+UNDEFINED SYMBOLS
+_GLOBAL_OFFSET_TABLE_
+jtagClockFSM
+errPrefix
+jtagShiftInOnly
+jtagClocks
+jtagShiftInOut
+errRender
+malloc
+free
+__stack_chk_fail

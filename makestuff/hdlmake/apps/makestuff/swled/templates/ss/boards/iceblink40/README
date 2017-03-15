@@ -1,0 +1,6 @@
+There's something wrong with how comm_fpga_ss is synthesized by the Lattice
+tools. Firstly, writes don't work unless the reset_in branch of the first
+process is commented out (despite the fact that it should be optimised out
+anyway by the fact that top_level.vhdl clamps reset_in low). Secondly, for
+reasons I don't have time to investigate, reads return zero and leave the link
+in a bad state.

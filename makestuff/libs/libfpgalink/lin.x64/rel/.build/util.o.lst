@@ -1,0 +1,202 @@
+   1              		.file	"util.c"
+   2              		.text
+   3              		.p2align 4,,15
+   4              		.globl	flSleep
+   6              	flSleep:
+   7              	.LFB50:
+   8              		.cfi_startproc
+   9 0000 69FFE803 		imull	$1000, %edi, %edi
+   9      0000
+  10 0006 E9000000 		jmp	usleep@PLT
+  10      00
+  11              		.cfi_endproc
+  12              	.LFE50:
+  14              		.section	.rodata.str1.1,"aMS",@progbits,1
+  15              	.LC0:
+  16 0000 726200   		.string	"rb"
+  17              		.text
+  18 000b 0F1F4400 		.p2align 4,,15
+  18      00
+  19              		.globl	flLoadFile
+  21              	flLoadFile:
+  22              	.LFB51:
+  23              		.cfi_startproc
+  24 0010 4155     		pushq	%r13
+  25              		.cfi_def_cfa_offset 16
+  26              		.cfi_offset 13, -16
+  27 0012 4989F5   		movq	%rsi, %r13
+  28 0015 488D3500 		leaq	.LC0(%rip), %rsi
+  28      000000
+  29 001c 4154     		pushq	%r12
+  30              		.cfi_def_cfa_offset 24
+  31              		.cfi_offset 12, -24
+  32 001e 55       		pushq	%rbp
+  33              		.cfi_def_cfa_offset 32
+  34              		.cfi_offset 6, -32
+  35 001f 53       		pushq	%rbx
+  36              		.cfi_def_cfa_offset 40
+  37              		.cfi_offset 3, -40
+  38 0020 4883EC08 		subq	$8, %rsp
+  39              		.cfi_def_cfa_offset 48
+  40 0024 E8000000 		call	fopen@PLT
+  40      00
+  41 0029 4885C0   		testq	%rax, %rax
+  42 002c 4889C3   		movq	%rax, %rbx
+  43 002f 747F     		je	.L6
+  44 0031 31F6     		xorl	%esi, %esi
+  45 0033 BA020000 		movl	$2, %edx
+  45      00
+  46 0038 4889C7   		movq	%rax, %rdi
+  47 003b E8000000 		call	fseek@PLT
+  47      00
+  48 0040 4889DF   		movq	%rbx, %rdi
+  49 0043 E8000000 		call	ftell@PLT
+  49      00
+  50 0048 31D2     		xorl	%edx, %edx
+  51 004a 31F6     		xorl	%esi, %esi
+  52 004c 4889C5   		movq	%rax, %rbp
+  53 004f 4889DF   		movq	%rbx, %rdi
+  54 0052 E8000000 		call	fseek@PLT
+  54      00
+  55 0057 488D7D01 		leaq	1(%rbp), %rdi
+  56 005b E8000000 		call	malloc@PLT
+  56      00
+  57 0060 4885C0   		testq	%rax, %rax
+  58 0063 4989C4   		movq	%rax, %r12
+  59 0066 744C     		je	.L15
+  60 0068 4889D9   		movq	%rbx, %rcx
+  61 006b 4889EA   		movq	%rbp, %rdx
+  62 006e BE010000 		movl	$1, %esi
+  62      00
+  63 0073 4889C7   		movq	%rax, %rdi
+  64 0076 E8000000 		call	fread@PLT
+  64      00
+  65 007b 4839C5   		cmpq	%rax, %rbp
+  66 007e 7420     		je	.L16
+  67              	.L5:
+  68 0080 4889DF   		movq	%rbx, %rdi
+  69 0083 41C6042C 		movb	$0, (%r12,%rbp)
+  69      00
+  70 0088 E8000000 		call	fclose@PLT
+  70      00
+  71 008d 4C89E0   		movq	%r12, %rax
+  72              	.L3:
+  73 0090 4883C408 		addq	$8, %rsp
+  74              		.cfi_remember_state
+  75              		.cfi_def_cfa_offset 40
+  76 0094 5B       		popq	%rbx
+  77              		.cfi_def_cfa_offset 32
+  78 0095 5D       		popq	%rbp
+  79              		.cfi_def_cfa_offset 24
+  80 0096 415C     		popq	%r12
+  81              		.cfi_def_cfa_offset 16
+  82 0098 415D     		popq	%r13
+  83              		.cfi_def_cfa_offset 8
+  84 009a C3       		ret
+  85 009b 0F1F4400 		.p2align 4,,10
+  85      00
+  86              		.p2align 3
+  87              	.L16:
+  88              		.cfi_restore_state
+  89 00a0 4D85ED   		testq	%r13, %r13
+  90 00a3 74DB     		je	.L5
+  91 00a5 49896D00 		movq	%rbp, 0(%r13)
+  92 00a9 EBD5     		jmp	.L5
+  93 00ab 0F1F4400 		.p2align 4,,10
+  93      00
+  94              		.p2align 3
+  95              	.L6:
+  96 00b0 31C0     		xorl	%eax, %eax
+  97 00b2 EBDC     		jmp	.L3
+  98              	.L15:
+  99 00b4 4889DF   		movq	%rbx, %rdi
+ 100 00b7 E8000000 		call	fclose@PLT
+ 100      00
+ 101 00bc 31C0     		xorl	%eax, %eax
+ 102 00be EBD0     		jmp	.L3
+ 103              		.cfi_endproc
+ 104              	.LFE51:
+ 106              		.p2align 4,,15
+ 107              		.globl	flFreeFile
+ 109              	flFreeFile:
+ 110              	.LFB52:
+ 111              		.cfi_startproc
+ 112 00c0 E9000000 		jmp	free@PLT
+ 112      00
+ 113              		.cfi_endproc
+ 114              	.LFE52:
+ 116              		.section	.rodata.str1.1
+ 117              	.LC1:
+ 118 0003 666C426F 		.string	"flBootloader()"
+ 118      6F746C6F 
+ 118      61646572 
+ 118      282900
+ 119              		.text
+ 120 00c5 66662E0F 		.p2align 4,,15
+ 120      1F840000 
+ 120      000000
+ 121              		.globl	flBootloader
+ 123              	flBootloader:
+ 124              	.LFB53:
+ 125              		.cfi_startproc
+ 126 00d0 53       		pushq	%rbx
+ 127              		.cfi_def_cfa_offset 16
+ 128              		.cfi_offset 3, -16
+ 129 00d1 31D2     		xorl	%edx, %edx
+ 130 00d3 4531C9   		xorl	%r9d, %r9d
+ 131 00d6 4531C0   		xorl	%r8d, %r8d
+ 132 00d9 31C9     		xorl	%ecx, %ecx
+ 133 00db 4889F3   		movq	%rsi, %rbx
+ 134 00de 4883EC10 		subq	$16, %rsp
+ 135              		.cfi_def_cfa_offset 32
+ 136 00e2 48897424 		movq	%rsi, 8(%rsp)
+ 136      08
+ 137 00e7 C70424E8 		movl	$1000, (%rsp)
+ 137      030000
+ 138 00ee BE870000 		movl	$135, %esi
+ 138      00
+ 139 00f3 488B3F   		movq	(%rdi), %rdi
+ 140 00f6 E8000000 		call	usbControlWrite@PLT
+ 140      00
+ 141 00fb 31D2     		xorl	%edx, %edx
+ 142 00fd 85C0     		testl	%eax, %eax
+ 143 00ff 7414     		je	.L19
+ 144 0101 488D3500 		leaq	.LC1(%rip), %rsi
+ 144      000000
+ 145 0108 4889DF   		movq	%rbx, %rdi
+ 146 010b E8000000 		call	errPrefix@PLT
+ 146      00
+ 147 0110 BA020000 		movl	$2, %edx
+ 147      00
+ 148              	.L19:
+ 149 0115 4883C410 		addq	$16, %rsp
+ 150              		.cfi_def_cfa_offset 16
+ 151 0119 89D0     		movl	%edx, %eax
+ 152 011b 5B       		popq	%rbx
+ 153              		.cfi_def_cfa_offset 8
+ 154 011c C3       		ret
+ 155              		.cfi_endproc
+ 156              	.LFE53:
+ 158              		.ident	"GCC: (Ubuntu 4.8.4-2ubuntu1~14.04.3) 4.8.4"
+ 159              		.section	.note.GNU-stack,"",@progbits
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 util.c
+     /tmp/cc4aVYTq.s:6      .text:0000000000000000 flSleep
+     /tmp/cc4aVYTq.s:21     .text:0000000000000010 flLoadFile
+     /tmp/cc4aVYTq.s:109    .text:00000000000000c0 flFreeFile
+     /tmp/cc4aVYTq.s:123    .text:00000000000000d0 flBootloader
+     /tmp/cc4aVYTq.s:15     .rodata.str1.1:0000000000000000 .LC0
+     /tmp/cc4aVYTq.s:117    .rodata.str1.1:0000000000000003 .LC1
+
+UNDEFINED SYMBOLS
+_GLOBAL_OFFSET_TABLE_
+usleep
+fopen
+fseek
+ftell
+malloc
+fread
+fclose
+free
+usbControlWrite
+errPrefix

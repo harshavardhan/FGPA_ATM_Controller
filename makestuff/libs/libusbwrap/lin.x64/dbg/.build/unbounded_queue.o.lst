@@ -1,0 +1,640 @@
+   1              		.file	"unbounded_queue.c"
+   2              		.text
+   3              	.Ltext0:
+   4              		.globl	queueInit
+   6              	queueInit:
+   7              	.LFB5:
+   8              		.file 1 "unbounded_queue.c"
+   1:unbounded_queue.c **** #include <stdlib.h>
+   2:unbounded_queue.c **** #include <string.h>
+   3:unbounded_queue.c **** #include "unbounded_queue.h"
+   4:unbounded_queue.c **** #include <makestuff.h>
+   5:unbounded_queue.c **** #include "libusbwrap.h"
+   6:unbounded_queue.c **** 
+   7:unbounded_queue.c **** USBStatus queueInit(
+   8:unbounded_queue.c **** 	struct UnboundedQueue *self, size_t capacity, CreateFunc createFunc, DestroyFunc destroyFunc)
+   9:unbounded_queue.c **** {
+   9              		.loc 1 9 0
+  10              		.cfi_startproc
+  11 0000 55       		pushq	%rbp
+  12              		.cfi_def_cfa_offset 16
+  13              		.cfi_offset 6, -16
+  14 0001 4889E5   		movq	%rsp, %rbp
+  15              		.cfi_def_cfa_register 6
+  16 0004 4883EC40 		subq	$64, %rsp
+  17 0008 48897DD8 		movq	%rdi, -40(%rbp)
+  18 000c 488975D0 		movq	%rsi, -48(%rbp)
+  19 0010 488955C8 		movq	%rdx, -56(%rbp)
+  20 0014 48894DC0 		movq	%rcx, -64(%rbp)
+  10:unbounded_queue.c **** 	USBStatus retVal;
+  11:unbounded_queue.c **** 	size_t i;
+  12:unbounded_queue.c **** 	Item item;
+  13:unbounded_queue.c **** 	self->itemArray = (Item *)calloc(capacity, sizeof(Item));
+  21              		.loc 1 13 0
+  22 0018 488B45D0 		movq	-48(%rbp), %rax
+  23 001c BE080000 		movl	$8, %esi
+  23      00
+  24 0021 4889C7   		movq	%rax, %rdi
+  25 0024 E8000000 		call	calloc@PLT
+  25      00
+  26 0029 4889C2   		movq	%rax, %rdx
+  27 002c 488B45D8 		movq	-40(%rbp), %rax
+  28 0030 488910   		movq	%rdx, (%rax)
+  14:unbounded_queue.c **** 	CHECK_STATUS(self->itemArray == NULL, USB_ALLOC_ERR, exit);
+  29              		.loc 1 14 0
+  30 0033 488B45D8 		movq	-40(%rbp), %rax
+  31 0037 488B00   		movq	(%rax), %rax
+  32 003a 4885C0   		testq	%rax, %rax
+  33 003d 750C     		jne	.L2
+  34              		.loc 1 14 0 is_stmt 0 discriminator 1
+  35 003f C745EC0C 		movl	$12, -20(%rbp)
+  35      000000
+  36 0046 E9EB0000 		jmp	.L3
+  36      00
+  37              	.L2:
+  15:unbounded_queue.c **** 	self->capacity = capacity;
+  38              		.loc 1 15 0 is_stmt 1
+  39 004b 488B45D8 		movq	-40(%rbp), %rax
+  40 004f 488B55D0 		movq	-48(%rbp), %rdx
+  41 0053 48895008 		movq	%rdx, 8(%rax)
+  16:unbounded_queue.c **** 	self->putIndex = 0;
+  42              		.loc 1 16 0
+  43 0057 488B45D8 		movq	-40(%rbp), %rax
+  44 005b 48C74010 		movq	$0, 16(%rax)
+  44      00000000 
+  17:unbounded_queue.c **** 	self->takeIndex = 0;
+  45              		.loc 1 17 0
+  46 0063 488B45D8 		movq	-40(%rbp), %rax
+  47 0067 48C74018 		movq	$0, 24(%rax)
+  47      00000000 
+  18:unbounded_queue.c **** 	self->numItems = 0;
+  48              		.loc 1 18 0
+  49 006f 488B45D8 		movq	-40(%rbp), %rax
+  50 0073 48C74020 		movq	$0, 32(%rax)
+  50      00000000 
+  19:unbounded_queue.c **** 	self->createFunc = createFunc;
+  51              		.loc 1 19 0
+  52 007b 488B45D8 		movq	-40(%rbp), %rax
+  53 007f 488B55C8 		movq	-56(%rbp), %rdx
+  54 0083 48895028 		movq	%rdx, 40(%rax)
+  20:unbounded_queue.c **** 	self->destroyFunc = destroyFunc;
+  55              		.loc 1 20 0
+  56 0087 488B45D8 		movq	-40(%rbp), %rax
+  57 008b 488B55C0 		movq	-64(%rbp), %rdx
+  58 008f 48895030 		movq	%rdx, 48(%rax)
+  21:unbounded_queue.c **** 	for ( i = 0; i < capacity; i++ ) {
+  59              		.loc 1 21 0
+  60 0093 48C745F0 		movq	$0, -16(%rbp)
+  60      00000000 
+  61 009b EB41     		jmp	.L4
+  62              	.L7:
+  22:unbounded_queue.c **** 		item = (*createFunc)();
+  63              		.loc 1 22 0
+  64 009d 488B45C8 		movq	-56(%rbp), %rax
+  65 00a1 FFD0     		call	*%rax
+  66 00a3 488945F8 		movq	%rax, -8(%rbp)
+  23:unbounded_queue.c **** 		CHECK_STATUS(item == NULL, USB_ALLOC_ERR, cleanup);
+  67              		.loc 1 23 0
+  68 00a7 48837DF8 		cmpq	$0, -8(%rbp)
+  68      00
+  69 00ac 7512     		jne	.L5
+  70              		.loc 1 23 0 is_stmt 0 discriminator 1
+  71 00ae C745EC0C 		movl	$12, -20(%rbp)
+  71      000000
+  72 00b5 90       		nop
+  73              	.L6:
+  24:unbounded_queue.c **** 		self->itemArray[i] = item;
+  25:unbounded_queue.c **** 	}
+  26:unbounded_queue.c **** 	return USB_SUCCESS;
+  27:unbounded_queue.c **** cleanup:
+  28:unbounded_queue.c **** 	for ( i = 0; i < capacity; i++ ) {
+  74              		.loc 1 28 0 is_stmt 1 discriminator 1
+  75 00b6 48C745F0 		movq	$0, -16(%rbp)
+  75      00000000 
+  76 00be EB52     		jmp	.L9
+  77              	.L5:
+  24:unbounded_queue.c **** 		self->itemArray[i] = item;
+  78              		.loc 1 24 0
+  79 00c0 488B45D8 		movq	-40(%rbp), %rax
+  80 00c4 488B00   		movq	(%rax), %rax
+  81 00c7 488B55F0 		movq	-16(%rbp), %rdx
+  82 00cb 48C1E203 		salq	$3, %rdx
+  83 00cf 4801C2   		addq	%rax, %rdx
+  84 00d2 488B45F8 		movq	-8(%rbp), %rax
+  85 00d6 488902   		movq	%rax, (%rdx)
+  21:unbounded_queue.c **** 		item = (*createFunc)();
+  86              		.loc 1 21 0
+  87 00d9 488345F0 		addq	$1, -16(%rbp)
+  87      01
+  88              	.L4:
+  21:unbounded_queue.c **** 		item = (*createFunc)();
+  89              		.loc 1 21 0 is_stmt 0 discriminator 1
+  90 00de 488B45F0 		movq	-16(%rbp), %rax
+  91 00e2 483B45D0 		cmpq	-48(%rbp), %rax
+  92 00e6 72B5     		jb	.L7
+  26:unbounded_queue.c **** cleanup:
+  93              		.loc 1 26 0 is_stmt 1
+  94 00e8 B8000000 		movl	$0, %eax
+  94      00
+  95 00ed EB4A     		jmp	.L8
+  96              	.L10:
+  29:unbounded_queue.c **** 		(*destroyFunc)(self->itemArray[i]);
+  97              		.loc 1 29 0 discriminator 2
+  98 00ef 488B45D8 		movq	-40(%rbp), %rax
+  99 00f3 488B00   		movq	(%rax), %rax
+ 100 00f6 488B55F0 		movq	-16(%rbp), %rdx
+ 101 00fa 48C1E203 		salq	$3, %rdx
+ 102 00fe 4801D0   		addq	%rdx, %rax
+ 103 0101 488B10   		movq	(%rax), %rdx
+ 104 0104 488B45C0 		movq	-64(%rbp), %rax
+ 105 0108 4889D7   		movq	%rdx, %rdi
+ 106 010b FFD0     		call	*%rax
+  28:unbounded_queue.c **** 		(*destroyFunc)(self->itemArray[i]);
+ 107              		.loc 1 28 0 discriminator 2
+ 108 010d 488345F0 		addq	$1, -16(%rbp)
+ 108      01
+ 109              	.L9:
+  28:unbounded_queue.c **** 		(*destroyFunc)(self->itemArray[i]);
+ 110              		.loc 1 28 0 is_stmt 0 discriminator 1
+ 111 0112 488B45F0 		movq	-16(%rbp), %rax
+ 112 0116 483B45D0 		cmpq	-48(%rbp), %rax
+ 113 011a 72D3     		jb	.L10
+  30:unbounded_queue.c **** 	}
+  31:unbounded_queue.c **** 	free((void*)self->itemArray);
+ 114              		.loc 1 31 0 is_stmt 1
+ 115 011c 488B45D8 		movq	-40(%rbp), %rax
+ 116 0120 488B00   		movq	(%rax), %rax
+ 117 0123 4889C7   		movq	%rax, %rdi
+ 118 0126 E8000000 		call	free@PLT
+ 118      00
+  32:unbounded_queue.c **** 	self->itemArray = NULL;
+ 119              		.loc 1 32 0
+ 120 012b 488B45D8 		movq	-40(%rbp), %rax
+ 121 012f 48C70000 		movq	$0, (%rax)
+ 121      000000
+ 122              	.L3:
+  33:unbounded_queue.c **** exit:
+  34:unbounded_queue.c **** 	return retVal;
+ 123              		.loc 1 34 0
+ 124 0136 8B45EC   		movl	-20(%rbp), %eax
+ 125              	.L8:
+  35:unbounded_queue.c **** }
+ 126              		.loc 1 35 0
+ 127 0139 C9       		leave
+ 128              		.cfi_def_cfa 7, 8
+ 129 013a C3       		ret
+ 130              		.cfi_endproc
+ 131              	.LFE5:
+ 133              		.globl	queueDestroy
+ 135              	queueDestroy:
+ 136              	.LFB6:
+  36:unbounded_queue.c **** 
+  37:unbounded_queue.c **** void queueDestroy(struct UnboundedQueue *self) {
+ 137              		.loc 1 37 0
+ 138              		.cfi_startproc
+ 139 013b 55       		pushq	%rbp
+ 140              		.cfi_def_cfa_offset 16
+ 141              		.cfi_offset 6, -16
+ 142 013c 4889E5   		movq	%rsp, %rbp
+ 143              		.cfi_def_cfa_register 6
+ 144 013f 4883EC20 		subq	$32, %rsp
+ 145 0143 48897DE8 		movq	%rdi, -24(%rbp)
+  38:unbounded_queue.c **** 	if ( self->itemArray ) {
+ 146              		.loc 1 38 0
+ 147 0147 488B45E8 		movq	-24(%rbp), %rax
+ 148 014b 488B00   		movq	(%rax), %rax
+ 149 014e 4885C0   		testq	%rax, %rax
+ 150 0151 744E     		je	.L11
+ 151              	.LBB2:
+  39:unbounded_queue.c **** 		size_t i;
+  40:unbounded_queue.c **** 		for ( i = 0; i < self->capacity; i++ ) {
+ 152              		.loc 1 40 0
+ 153 0153 48C745F8 		movq	$0, -8(%rbp)
+ 153      00000000 
+ 154 015b EB27     		jmp	.L13
+ 155              	.L14:
+  41:unbounded_queue.c **** 			(*self->destroyFunc)(self->itemArray[i]);
+ 156              		.loc 1 41 0 discriminator 2
+ 157 015d 488B45E8 		movq	-24(%rbp), %rax
+ 158 0161 488B4030 		movq	48(%rax), %rax
+ 159 0165 488B55E8 		movq	-24(%rbp), %rdx
+ 160 0169 488B12   		movq	(%rdx), %rdx
+ 161 016c 488B4DF8 		movq	-8(%rbp), %rcx
+ 162 0170 48C1E103 		salq	$3, %rcx
+ 163 0174 4801CA   		addq	%rcx, %rdx
+ 164 0177 488B12   		movq	(%rdx), %rdx
+ 165 017a 4889D7   		movq	%rdx, %rdi
+ 166 017d FFD0     		call	*%rax
+  40:unbounded_queue.c **** 			(*self->destroyFunc)(self->itemArray[i]);
+ 167              		.loc 1 40 0 discriminator 2
+ 168 017f 488345F8 		addq	$1, -8(%rbp)
+ 168      01
+ 169              	.L13:
+  40:unbounded_queue.c **** 			(*self->destroyFunc)(self->itemArray[i]);
+ 170              		.loc 1 40 0 is_stmt 0 discriminator 1
+ 171 0184 488B45E8 		movq	-24(%rbp), %rax
+ 172 0188 488B4008 		movq	8(%rax), %rax
+ 173 018c 483B45F8 		cmpq	-8(%rbp), %rax
+ 174 0190 77CB     		ja	.L14
+  42:unbounded_queue.c **** 		}
+  43:unbounded_queue.c **** 		free((void*)self->itemArray);
+ 175              		.loc 1 43 0 is_stmt 1
+ 176 0192 488B45E8 		movq	-24(%rbp), %rax
+ 177 0196 488B00   		movq	(%rax), %rax
+ 178 0199 4889C7   		movq	%rax, %rdi
+ 179 019c E8000000 		call	free@PLT
+ 179      00
+ 180              	.L11:
+ 181              	.LBE2:
+  44:unbounded_queue.c **** 	}
+  45:unbounded_queue.c **** }
+ 182              		.loc 1 45 0
+ 183 01a1 C9       		leave
+ 184              		.cfi_def_cfa 7, 8
+ 185 01a2 C3       		ret
+ 186              		.cfi_endproc
+ 187              	.LFE6:
+ 189              		.globl	queuePut
+ 191              	queuePut:
+ 192              	.LFB7:
+  46:unbounded_queue.c **** 
+  47:unbounded_queue.c **** // Everything is preserved if a reallocation fails
+  48:unbounded_queue.c **** //
+  49:unbounded_queue.c **** USBStatus queuePut(struct UnboundedQueue *self, Item *item) {
+ 193              		.loc 1 49 0
+ 194              		.cfi_startproc
+ 195 01a3 55       		pushq	%rbp
+ 196              		.cfi_def_cfa_offset 16
+ 197              		.cfi_offset 6, -16
+ 198 01a4 4889E5   		movq	%rsp, %rbp
+ 199              		.cfi_def_cfa_register 6
+ 200 01a7 4883EC50 		subq	$80, %rsp
+ 201 01ab 48897DB8 		movq	%rdi, -72(%rbp)
+ 202 01af 488975B0 		movq	%rsi, -80(%rbp)
+  50:unbounded_queue.c **** 	USBStatus retVal = USB_SUCCESS;
+ 203              		.loc 1 50 0
+ 204 01b3 C745C400 		movl	$0, -60(%rbp)
+ 204      000000
+  51:unbounded_queue.c **** 	if ( self->numItems == self->capacity ) {
+ 205              		.loc 1 51 0
+ 206 01ba 488B45B8 		movq	-72(%rbp), %rax
+ 207 01be 488B5020 		movq	32(%rax), %rdx
+ 208 01c2 488B45B8 		movq	-72(%rbp), %rax
+ 209 01c6 488B4008 		movq	8(%rax), %rax
+ 210 01ca 4839C2   		cmpq	%rax, %rdx
+ 211 01cd 0F855601 		jne	.L16
+ 211      0000
+ 212              	.LBB3:
+  52:unbounded_queue.c **** 		size_t i;
+  53:unbounded_queue.c **** 		Item *newArray;
+  54:unbounded_queue.c **** 		Item *const ptr = self->itemArray + self->takeIndex;
+ 213              		.loc 1 54 0
+ 214 01d3 488B45B8 		movq	-72(%rbp), %rax
+ 215 01d7 488B10   		movq	(%rax), %rdx
+ 216 01da 488B45B8 		movq	-72(%rbp), %rax
+ 217 01de 488B4018 		movq	24(%rax), %rax
+ 218 01e2 48C1E003 		salq	$3, %rax
+ 219 01e6 4801D0   		addq	%rdx, %rax
+ 220 01e9 488945D0 		movq	%rax, -48(%rbp)
+  55:unbounded_queue.c **** 		const size_t firstHalfLength = self->capacity - self->takeIndex;
+ 221              		.loc 1 55 0
+ 222 01ed 488B45B8 		movq	-72(%rbp), %rax
+ 223 01f1 488B5008 		movq	8(%rax), %rdx
+ 224 01f5 488B45B8 		movq	-72(%rbp), %rax
+ 225 01f9 488B4018 		movq	24(%rax), %rax
+ 226 01fd 4829C2   		subq	%rax, %rdx
+ 227 0200 4889D0   		movq	%rdx, %rax
+ 228 0203 488945D8 		movq	%rax, -40(%rbp)
+  56:unbounded_queue.c **** 		const size_t secondHalfLength = self->takeIndex;
+ 229              		.loc 1 56 0
+ 230 0207 488B45B8 		movq	-72(%rbp), %rax
+ 231 020b 488B4018 		movq	24(%rax), %rax
+ 232 020f 488945E0 		movq	%rax, -32(%rbp)
+  57:unbounded_queue.c **** 		const size_t newCapacity = 2 * self->capacity;
+ 233              		.loc 1 57 0
+ 234 0213 488B45B8 		movq	-72(%rbp), %rax
+ 235 0217 488B4008 		movq	8(%rax), %rax
+ 236 021b 4801C0   		addq	%rax, %rax
+ 237 021e 488945E8 		movq	%rax, -24(%rbp)
+  58:unbounded_queue.c **** 		Item item;
+  59:unbounded_queue.c **** 		newArray = (Item *)calloc(newCapacity, sizeof(Item));
+ 238              		.loc 1 59 0
+ 239 0222 488B45E8 		movq	-24(%rbp), %rax
+ 240 0226 BE080000 		movl	$8, %esi
+ 240      00
+ 241 022b 4889C7   		movq	%rax, %rdi
+ 242 022e E8000000 		call	calloc@PLT
+ 242      00
+ 243 0233 488945F0 		movq	%rax, -16(%rbp)
+  60:unbounded_queue.c **** 		CHECK_STATUS(newArray == NULL, USB_ALLOC_ERR, cleanup);
+ 244              		.loc 1 60 0
+ 245 0237 48837DF0 		cmpq	$0, -16(%rbp)
+ 245      00
+ 246 023c 750C     		jne	.L17
+ 247              		.loc 1 60 0 is_stmt 0 discriminator 1
+ 248 023e C745C40C 		movl	$12, -60(%rbp)
+ 248      000000
+ 249 0245 E9FF0000 		jmp	.L18
+ 249      00
+ 250              	.L17:
+  61:unbounded_queue.c **** 		memcpy((void*)newArray, ptr, firstHalfLength * sizeof(Item));
+ 251              		.loc 1 61 0 is_stmt 1
+ 252 024a 488B45D8 		movq	-40(%rbp), %rax
+ 253 024e 488D14C5 		leaq	0(,%rax,8), %rdx
+ 253      00000000 
+ 254 0256 488B4DD0 		movq	-48(%rbp), %rcx
+ 255 025a 488B45F0 		movq	-16(%rbp), %rax
+ 256 025e 4889CE   		movq	%rcx, %rsi
+ 257 0261 4889C7   		movq	%rax, %rdi
+ 258 0264 E8000000 		call	memcpy@PLT
+ 258      00
+  62:unbounded_queue.c **** 		if ( secondHalfLength ) {
+ 259              		.loc 1 62 0
+ 260 0269 48837DE0 		cmpq	$0, -32(%rbp)
+ 260      00
+ 261 026e 7431     		je	.L19
+  63:unbounded_queue.c **** 			memcpy(
+ 262              		.loc 1 63 0
+ 263 0270 488B45E0 		movq	-32(%rbp), %rax
+ 264 0274 488D14C5 		leaq	0(,%rax,8), %rdx
+ 264      00000000 
+  64:unbounded_queue.c **** 				(void*)(newArray + firstHalfLength),
+  65:unbounded_queue.c **** 				self->itemArray,
+ 265              		.loc 1 65 0
+ 266 027c 488B45B8 		movq	-72(%rbp), %rax
+ 267 0280 488B00   		movq	(%rax), %rax
+  64:unbounded_queue.c **** 				(void*)(newArray + firstHalfLength),
+ 268              		.loc 1 64 0
+ 269 0283 488B4DD8 		movq	-40(%rbp), %rcx
+ 270 0287 488D34CD 		leaq	0(,%rcx,8), %rsi
+ 270      00000000 
+  63:unbounded_queue.c **** 			memcpy(
+ 271              		.loc 1 63 0
+ 272 028f 488B4DF0 		movq	-16(%rbp), %rcx
+ 273 0293 4801F1   		addq	%rsi, %rcx
+ 274 0296 4889C6   		movq	%rax, %rsi
+ 275 0299 4889CF   		movq	%rcx, %rdi
+ 276 029c E8000000 		call	memcpy@PLT
+ 276      00
+ 277              	.L19:
+  66:unbounded_queue.c **** 				secondHalfLength * sizeof(Item)
+  67:unbounded_queue.c **** 			);
+  68:unbounded_queue.c **** 		}
+  69:unbounded_queue.c **** 		for ( i = self->capacity; i < newCapacity; i++ ) {
+ 278              		.loc 1 69 0
+ 279 02a1 488B45B8 		movq	-72(%rbp), %rax
+ 280 02a5 488B4008 		movq	8(%rax), %rax
+ 281 02a9 488945C8 		movq	%rax, -56(%rbp)
+ 282 02ad EB3D     		jmp	.L20
+ 283              	.L22:
+  70:unbounded_queue.c **** 			item = (*self->createFunc)();
+ 284              		.loc 1 70 0
+ 285 02af 488B45B8 		movq	-72(%rbp), %rax
+ 286 02b3 488B4028 		movq	40(%rax), %rax
+ 287 02b7 FFD0     		call	*%rax
+ 288 02b9 488945F8 		movq	%rax, -8(%rbp)
+  71:unbounded_queue.c **** 			CHECK_STATUS(item == NULL, USB_ALLOC_ERR, cleanup);
+ 289              		.loc 1 71 0
+ 290 02bd 48837DF8 		cmpq	$0, -8(%rbp)
+ 290      00
+ 291 02c2 7509     		jne	.L21
+ 292              		.loc 1 71 0 is_stmt 0 discriminator 1
+ 293 02c4 C745C40C 		movl	$12, -60(%rbp)
+ 293      000000
+ 294 02cb EB7C     		jmp	.L18
+ 295              	.L21:
+  72:unbounded_queue.c **** 			newArray[i] = item;
+ 296              		.loc 1 72 0 is_stmt 1
+ 297 02cd 488B45C8 		movq	-56(%rbp), %rax
+ 298 02d1 488D14C5 		leaq	0(,%rax,8), %rdx
+ 298      00000000 
+ 299 02d9 488B45F0 		movq	-16(%rbp), %rax
+ 300 02dd 4801C2   		addq	%rax, %rdx
+ 301 02e0 488B45F8 		movq	-8(%rbp), %rax
+ 302 02e4 488902   		movq	%rax, (%rdx)
+  69:unbounded_queue.c **** 			item = (*self->createFunc)();
+ 303              		.loc 1 69 0
+ 304 02e7 488345C8 		addq	$1, -56(%rbp)
+ 304      01
+ 305              	.L20:
+  69:unbounded_queue.c **** 			item = (*self->createFunc)();
+ 306              		.loc 1 69 0 is_stmt 0 discriminator 1
+ 307 02ec 488B45C8 		movq	-56(%rbp), %rax
+ 308 02f0 483B45E8 		cmpq	-24(%rbp), %rax
+ 309 02f4 72B9     		jb	.L22
+  73:unbounded_queue.c **** 		}
+  74:unbounded_queue.c **** 		self->itemArray = newArray;
+ 310              		.loc 1 74 0 is_stmt 1
+ 311 02f6 488B45B8 		movq	-72(%rbp), %rax
+ 312 02fa 488B55F0 		movq	-16(%rbp), %rdx
+ 313 02fe 488910   		movq	%rdx, (%rax)
+  75:unbounded_queue.c **** 		self->takeIndex = 0;
+ 314              		.loc 1 75 0
+ 315 0301 488B45B8 		movq	-72(%rbp), %rax
+ 316 0305 48C74018 		movq	$0, 24(%rax)
+ 316      00000000 
+  76:unbounded_queue.c **** 		self->putIndex = self->capacity;
+ 317              		.loc 1 76 0
+ 318 030d 488B45B8 		movq	-72(%rbp), %rax
+ 319 0311 488B5008 		movq	8(%rax), %rdx
+ 320 0315 488B45B8 		movq	-72(%rbp), %rax
+ 321 0319 48895010 		movq	%rdx, 16(%rax)
+  77:unbounded_queue.c **** 		self->capacity = newCapacity;
+ 322              		.loc 1 77 0
+ 323 031d 488B45B8 		movq	-72(%rbp), %rax
+ 324 0321 488B55E8 		movq	-24(%rbp), %rdx
+ 325 0325 48895008 		movq	%rdx, 8(%rax)
+ 326              	.L16:
+ 327              	.LBE3:
+  78:unbounded_queue.c **** 	}
+  79:unbounded_queue.c **** 	*item = self->itemArray[self->putIndex];
+ 328              		.loc 1 79 0
+ 329 0329 488B45B8 		movq	-72(%rbp), %rax
+ 330 032d 488B10   		movq	(%rax), %rdx
+ 331 0330 488B45B8 		movq	-72(%rbp), %rax
+ 332 0334 488B4010 		movq	16(%rax), %rax
+ 333 0338 48C1E003 		salq	$3, %rax
+ 334 033c 4801D0   		addq	%rdx, %rax
+ 335 033f 488B10   		movq	(%rax), %rdx
+ 336 0342 488B45B0 		movq	-80(%rbp), %rax
+ 337 0346 488910   		movq	%rdx, (%rax)
+ 338              	.L18:
+  80:unbounded_queue.c **** cleanup:
+  81:unbounded_queue.c **** 	return retVal;
+ 339              		.loc 1 81 0
+ 340 0349 8B45C4   		movl	-60(%rbp), %eax
+  82:unbounded_queue.c **** }
+ 341              		.loc 1 82 0
+ 342 034c C9       		leave
+ 343              		.cfi_def_cfa 7, 8
+ 344 034d C3       		ret
+ 345              		.cfi_endproc
+ 346              	.LFE7:
+ 348              		.globl	queueCommitPut
+ 350              	queueCommitPut:
+ 351              	.LFB8:
+  83:unbounded_queue.c **** 
+  84:unbounded_queue.c **** void queueCommitPut(struct UnboundedQueue *self) {
+ 352              		.loc 1 84 0
+ 353              		.cfi_startproc
+ 354 034e 55       		pushq	%rbp
+ 355              		.cfi_def_cfa_offset 16
+ 356              		.cfi_offset 6, -16
+ 357 034f 4889E5   		movq	%rsp, %rbp
+ 358              		.cfi_def_cfa_register 6
+ 359 0352 48897DF8 		movq	%rdi, -8(%rbp)
+  85:unbounded_queue.c **** 	self->numItems++;
+ 360              		.loc 1 85 0
+ 361 0356 488B45F8 		movq	-8(%rbp), %rax
+ 362 035a 488B4020 		movq	32(%rax), %rax
+ 363 035e 488D5001 		leaq	1(%rax), %rdx
+ 364 0362 488B45F8 		movq	-8(%rbp), %rax
+ 365 0366 48895020 		movq	%rdx, 32(%rax)
+  86:unbounded_queue.c **** 	self->putIndex++;
+ 366              		.loc 1 86 0
+ 367 036a 488B45F8 		movq	-8(%rbp), %rax
+ 368 036e 488B4010 		movq	16(%rax), %rax
+ 369 0372 488D5001 		leaq	1(%rax), %rdx
+ 370 0376 488B45F8 		movq	-8(%rbp), %rax
+ 371 037a 48895010 		movq	%rdx, 16(%rax)
+  87:unbounded_queue.c **** 	if ( self->putIndex == self->capacity ) {
+ 372              		.loc 1 87 0
+ 373 037e 488B45F8 		movq	-8(%rbp), %rax
+ 374 0382 488B5010 		movq	16(%rax), %rdx
+ 375 0386 488B45F8 		movq	-8(%rbp), %rax
+ 376 038a 488B4008 		movq	8(%rax), %rax
+ 377 038e 4839C2   		cmpq	%rax, %rdx
+ 378 0391 750C     		jne	.L24
+  88:unbounded_queue.c **** 		self->putIndex = 0;
+ 379              		.loc 1 88 0
+ 380 0393 488B45F8 		movq	-8(%rbp), %rax
+ 381 0397 48C74010 		movq	$0, 16(%rax)
+ 381      00000000 
+ 382              	.L24:
+  89:unbounded_queue.c **** 	}
+  90:unbounded_queue.c **** }
+ 383              		.loc 1 90 0
+ 384 039f 5D       		popq	%rbp
+ 385              		.cfi_def_cfa 7, 8
+ 386 03a0 C3       		ret
+ 387              		.cfi_endproc
+ 388              	.LFE8:
+ 390              		.globl	queueTake
+ 392              	queueTake:
+ 393              	.LFB9:
+  91:unbounded_queue.c **** 
+  92:unbounded_queue.c **** USBStatus queueTake(struct UnboundedQueue *self, Item *item) {
+ 394              		.loc 1 92 0
+ 395              		.cfi_startproc
+ 396 03a1 55       		pushq	%rbp
+ 397              		.cfi_def_cfa_offset 16
+ 398              		.cfi_offset 6, -16
+ 399 03a2 4889E5   		movq	%rsp, %rbp
+ 400              		.cfi_def_cfa_register 6
+ 401 03a5 48897DE8 		movq	%rdi, -24(%rbp)
+ 402 03a9 488975E0 		movq	%rsi, -32(%rbp)
+  93:unbounded_queue.c **** 	USBStatus retVal = 0;
+ 403              		.loc 1 93 0
+ 404 03ad C745FC00 		movl	$0, -4(%rbp)
+ 404      000000
+  94:unbounded_queue.c **** 	CHECK_STATUS(self->numItems == 0, USB_EMPTY_QUEUE, cleanup);
+ 405              		.loc 1 94 0
+ 406 03b4 488B45E8 		movq	-24(%rbp), %rax
+ 407 03b8 488B4020 		movq	32(%rax), %rax
+ 408 03bc 4885C0   		testq	%rax, %rax
+ 409 03bf 7509     		jne	.L27
+ 410              		.loc 1 94 0 is_stmt 0 discriminator 1
+ 411 03c1 C745FC0D 		movl	$13, -4(%rbp)
+ 411      000000
+ 412 03c8 EB20     		jmp	.L28
+ 413              	.L27:
+  95:unbounded_queue.c **** 	*item = self->itemArray[self->takeIndex];
+ 414              		.loc 1 95 0 is_stmt 1
+ 415 03ca 488B45E8 		movq	-24(%rbp), %rax
+ 416 03ce 488B10   		movq	(%rax), %rdx
+ 417 03d1 488B45E8 		movq	-24(%rbp), %rax
+ 418 03d5 488B4018 		movq	24(%rax), %rax
+ 419 03d9 48C1E003 		salq	$3, %rax
+ 420 03dd 4801D0   		addq	%rdx, %rax
+ 421 03e0 488B10   		movq	(%rax), %rdx
+ 422 03e3 488B45E0 		movq	-32(%rbp), %rax
+ 423 03e7 488910   		movq	%rdx, (%rax)
+ 424              	.L28:
+  96:unbounded_queue.c **** cleanup:
+  97:unbounded_queue.c **** 	return retVal;
+ 425              		.loc 1 97 0
+ 426 03ea 8B45FC   		movl	-4(%rbp), %eax
+  98:unbounded_queue.c **** }
+ 427              		.loc 1 98 0
+ 428 03ed 5D       		popq	%rbp
+ 429              		.cfi_def_cfa 7, 8
+ 430 03ee C3       		ret
+ 431              		.cfi_endproc
+ 432              	.LFE9:
+ 434              		.globl	queueCommitTake
+ 436              	queueCommitTake:
+ 437              	.LFB10:
+  99:unbounded_queue.c **** 
+ 100:unbounded_queue.c **** void queueCommitTake(struct UnboundedQueue *self) {
+ 438              		.loc 1 100 0
+ 439              		.cfi_startproc
+ 440 03ef 55       		pushq	%rbp
+ 441              		.cfi_def_cfa_offset 16
+ 442              		.cfi_offset 6, -16
+ 443 03f0 4889E5   		movq	%rsp, %rbp
+ 444              		.cfi_def_cfa_register 6
+ 445 03f3 48897DF8 		movq	%rdi, -8(%rbp)
+ 101:unbounded_queue.c **** 	self->numItems--;
+ 446              		.loc 1 101 0
+ 447 03f7 488B45F8 		movq	-8(%rbp), %rax
+ 448 03fb 488B4020 		movq	32(%rax), %rax
+ 449 03ff 488D50FF 		leaq	-1(%rax), %rdx
+ 450 0403 488B45F8 		movq	-8(%rbp), %rax
+ 451 0407 48895020 		movq	%rdx, 32(%rax)
+ 102:unbounded_queue.c **** 	self->takeIndex++;
+ 452              		.loc 1 102 0
+ 453 040b 488B45F8 		movq	-8(%rbp), %rax
+ 454 040f 488B4018 		movq	24(%rax), %rax
+ 455 0413 488D5001 		leaq	1(%rax), %rdx
+ 456 0417 488B45F8 		movq	-8(%rbp), %rax
+ 457 041b 48895018 		movq	%rdx, 24(%rax)
+ 103:unbounded_queue.c **** 	if ( self->takeIndex == self->capacity ) {
+ 458              		.loc 1 103 0
+ 459 041f 488B45F8 		movq	-8(%rbp), %rax
+ 460 0423 488B5018 		movq	24(%rax), %rdx
+ 461 0427 488B45F8 		movq	-8(%rbp), %rax
+ 462 042b 488B4008 		movq	8(%rax), %rax
+ 463 042f 4839C2   		cmpq	%rax, %rdx
+ 464 0432 750C     		jne	.L30
+ 104:unbounded_queue.c **** 		self->takeIndex = 0;
+ 465              		.loc 1 104 0
+ 466 0434 488B45F8 		movq	-8(%rbp), %rax
+ 467 0438 48C74018 		movq	$0, 24(%rax)
+ 467      00000000 
+ 468              	.L30:
+ 105:unbounded_queue.c **** 	}
+ 106:unbounded_queue.c **** }
+ 469              		.loc 1 106 0
+ 470 0440 5D       		popq	%rbp
+ 471              		.cfi_def_cfa 7, 8
+ 472 0441 C3       		ret
+ 473              		.cfi_endproc
+ 474              	.LFE10:
+ 476              	.Letext0:
+ 477              		.file 2 "/usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h"
+ 478              		.file 3 "libusbwrap.h"
+ 479              		.file 4 "unbounded_queue.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 unbounded_queue.c
+     /tmp/ccsbykeR.s:6      .text:0000000000000000 queueInit
+     /tmp/ccsbykeR.s:135    .text:000000000000013b queueDestroy
+     /tmp/ccsbykeR.s:191    .text:00000000000001a3 queuePut
+     /tmp/ccsbykeR.s:350    .text:000000000000034e queueCommitPut
+     /tmp/ccsbykeR.s:392    .text:00000000000003a1 queueTake
+     /tmp/ccsbykeR.s:436    .text:00000000000003ef queueCommitTake
+
+UNDEFINED SYMBOLS
+_GLOBAL_OFFSET_TABLE_
+calloc
+free
+memcpy

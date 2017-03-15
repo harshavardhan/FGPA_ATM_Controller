@@ -1,0 +1,1268 @@
+   1              		.file	"fx2.c"
+   2              		.section	.rodata.str1.1,"aMS",@progbits,1
+   3              	.LC0:
+   4 0000 2E686578 		.string	".hex"
+   4      00
+   5              	.LC1:
+   6 0005 2E696878 		.string	".ihx"
+   6      00
+   7              	.LC2:
+   8 000a 666C4C6F 		.string	"flLoadCustomFirmware()"
+   8      61644375 
+   8      73746F6D 
+   8      4669726D 
+   8      77617265 
+   9              		.section	.rodata.str1.8,"aMS",@progbits,1
+  10              		.align 8
+  11              	.LC3:
+  12 0000 666C4C6F 		.string	"flLoadCustomFirmware(): Filename should have .hex or .ihx extension"
+  12      61644375 
+  12      73746F6D 
+  12      4669726D 
+  12      77617265 
+  13              		.text
+  14              		.p2align 4,,15
+  15              		.globl	flLoadCustomFirmware
+  17              	flLoadCustomFirmware:
+  18              	.LFB49:
+  19              		.cfi_startproc
+  20 0000 4154     		pushq	%r12
+  21              		.cfi_def_cfa_offset 16
+  22              		.cfi_offset 12, -16
+  23 0002 4989FC   		movq	%rdi, %r12
+  24 0005 4889F7   		movq	%rsi, %rdi
+  25 0008 55       		pushq	%rbp
+  26              		.cfi_def_cfa_offset 24
+  27              		.cfi_offset 6, -24
+  28 0009 4889D5   		movq	%rdx, %rbp
+  29 000c 53       		pushq	%rbx
+  30              		.cfi_def_cfa_offset 32
+  31              		.cfi_offset 3, -32
+  32 000d 4889F3   		movq	%rsi, %rbx
+  33 0010 4883EC30 		subq	$48, %rsp
+  34              		.cfi_def_cfa_offset 80
+  35 0014 48C74424 		movq	$0, 16(%rsp)
+  35      10000000 
+  35      00
+  36 001d 48C74424 		movq	$0, 24(%rsp)
+  36      18000000 
+  36      00
+  37 0026 48C74424 		movq	$0, 32(%rsp)
+  37      20000000 
+  37      00
+  38 002f 48C74424 		movq	$0, 40(%rsp)
+  38      28000000 
+  38      00
+  39 0038 48C70424 		movq	$0, (%rsp)
+  39      00000000 
+  40 0040 E8000000 		call	strlen@PLT
+  40      00
+  41 0045 488D4403 		leaq	-4(%rbx,%rax), %rax
+  41      FC
+  42 004a 488D3500 		leaq	.LC0(%rip), %rsi
+  42      000000
+  43 0051 B9050000 		movl	$5, %ecx
+  43      00
+  44 0056 4889C7   		movq	%rax, %rdi
+  45 0059 F3A6     		repz cmpsb
+  46 005b 7413     		je	.L2
+  47 005d 488D3500 		leaq	.LC1(%rip), %rsi
+  47      000000
+  48 0064 B9050000 		movl	$5, %ecx
+  48      00
+  49 0069 4889C7   		movq	%rax, %rdi
+  50 006c F3A6     		repz cmpsb
+  51 006e 7560     		jne	.L26
+  52              	.L2:
+  53 0070 31C9     		xorl	%ecx, %ecx
+  54 0072 31D2     		xorl	%edx, %edx
+  55 0074 4989E9   		movq	%rbp, %r9
+  56 0077 4989E0   		movq	%rsp, %r8
+  57 007a BE010000 		movl	$1, %esi
+  57      00
+  58 007f 4C89E7   		movq	%r12, %rdi
+  59 0082 E8000000 		call	usbOpenDevice@PLT
+  59      00
+  60 0087 85C0     		testl	%eax, %eax
+  61 0089 7465     		je	.L27
+  62 008b 488D3500 		leaq	.LC2(%rip), %rsi
+  62      000000
+  63 0092 4C8D6424 		leaq	16(%rsp), %r12
+  63      10
+  64 0097 4889EF   		movq	%rbp, %rdi
+  65 009a BB020000 		movl	$2, %ebx
+  65      00
+  66 009f E8000000 		call	errPrefix@PLT
+  66      00
+  67              	.L4:
+  68 00a4 4C89E7   		movq	%r12, %rdi
+  69 00a7 E8000000 		call	bufDestroy@PLT
+  69      00
+  70 00ac 488B3C24 		movq	(%rsp), %rdi
+  71 00b0 4885FF   		testq	%rdi, %rdi
+  72 00b3 7407     		je	.L14
+  73 00b5 31F6     		xorl	%esi, %esi
+  74 00b7 E8000000 		call	usbCloseDevice@PLT
+  74      00
+  75              	.L14:
+  76 00bc 4883C430 		addq	$48, %rsp
+  77              		.cfi_remember_state
+  78              		.cfi_def_cfa_offset 32
+  79 00c0 89D8     		movl	%ebx, %eax
+  80 00c2 5B       		popq	%rbx
+  81              		.cfi_def_cfa_offset 24
+  82 00c3 5D       		popq	%rbp
+  83              		.cfi_def_cfa_offset 16
+  84 00c4 415C     		popq	%r12
+  85              		.cfi_def_cfa_offset 8
+  86 00c6 C3       		ret
+  87 00c7 660F1F84 		.p2align 4,,10
+  87      00000000 
+  87      00
+  88              		.p2align 3
+  89              	.L26:
+  90              		.cfi_restore_state
+  91 00d0 488D3500 		leaq	.LC3(%rip), %rsi
+  91      000000
+  92 00d7 4889EF   		movq	%rbp, %rdi
+  93 00da BB060000 		movl	$6, %ebx
+  93      00
+  94 00df 4C8D6424 		leaq	16(%rsp), %r12
+  94      10
+  95 00e4 E8000000 		call	errPrefix@PLT
+  95      00
+  96 00e9 EBB9     		jmp	.L4
+  97 00eb 0F1F4400 		.p2align 4,,10
+  97      00
+  98              		.p2align 3
+  99              	.L27:
+ 100 00f0 4C8D6424 		leaq	16(%rsp), %r12
+ 100      10
+ 101 00f5 31D2     		xorl	%edx, %edx
+ 102 00f7 4889E9   		movq	%rbp, %rcx
+ 103 00fa BE002000 		movl	$8192, %esi
+ 103      00
+ 104 00ff 4C89E7   		movq	%r12, %rdi
+ 105 0102 E8000000 		call	bufInitialise@PLT
+ 105      00
+ 106 0107 85C0     		testl	%eax, %eax
+ 107 0109 741D     		je	.L5
+ 108 010b 488D3500 		leaq	.LC2(%rip), %rsi
+ 108      000000
+ 109 0112 4889EF   		movq	%rbp, %rdi
+ 110 0115 BB010000 		movl	$1, %ebx
+ 110      00
+ 111 011a E8000000 		call	errPrefix@PLT
+ 111      00
+ 112 011f EB83     		jmp	.L4
+ 113              		.p2align 4,,10
+ 114 0121 0F1F8000 		.p2align 3
+ 114      000000
+ 115              	.L5:
+ 116 0128 31F6     		xorl	%esi, %esi
+ 117 012a 4889E9   		movq	%rbp, %rcx
+ 118 012d 4889DA   		movq	%rbx, %rdx
+ 119 0130 4C89E7   		movq	%r12, %rdi
+ 120 0133 E8000000 		call	bufReadFromIntelHexFile@PLT
+ 120      00
+ 121 0138 85C0     		testl	%eax, %eax
+ 122 013a 7419     		je	.L6
+ 123 013c 488D3500 		leaq	.LC2(%rip), %rsi
+ 123      000000
+ 124 0143 4889EF   		movq	%rbp, %rdi
+ 125 0146 BB060000 		movl	$6, %ebx
+ 125      00
+ 126 014b E8000000 		call	errPrefix@PLT
+ 126      00
+ 127 0150 E94FFFFF 		jmp	.L4
+ 127      FF
+ 128              	.L6:
+ 129 0155 8B542418 		movl	24(%rsp), %edx
+ 130 0159 488B7424 		movq	16(%rsp), %rsi
+ 130      10
+ 131 015e 4889E9   		movq	%rbp, %rcx
+ 132 0161 488B3C24 		movq	(%rsp), %rdi
+ 133 0165 31DB     		xorl	%ebx, %ebx
+ 134 0167 E8000000 		call	fx2WriteRAM@PLT
+ 134      00
+ 135 016c 85C0     		testl	%eax, %eax
+ 136 016e 0F8430FF 		je	.L4
+ 136      FFFF
+ 137 0174 488D3500 		leaq	.LC2(%rip), %rsi
+ 137      000000
+ 138 017b 4889EF   		movq	%rbp, %rdi
+ 139 017e B305     		movb	$5, %bl
+ 140 0180 E8000000 		call	errPrefix@PLT
+ 140      00
+ 141 0185 E91AFFFF 		jmp	.L4
+ 141      FF
+ 142              		.cfi_endproc
+ 143              	.LFE49:
+ 145              		.section	.rodata.str1.1
+ 146              	.LC4:
+ 147 0021 2E696963 		.string	".iic"
+ 147      00
+ 148              		.section	.rodata.str1.8
+ 149 0044 00000000 		.align 8
+ 150              	.LC5:
+ 151 0048 666C466C 		.string	"flFlashCustomFirmware(): Filename should have .hex, .ihx or .iic extension"
+ 151      61736843 
+ 151      7573746F 
+ 151      6D466972 
+ 151      6D776172 
+ 152              		.section	.rodata.str1.1
+ 153              	.LC6:
+ 154 0026 666C466C 		.string	"flFlashCustomFirmware()"
+ 154      61736843 
+ 154      7573746F 
+ 154      6D466972 
+ 154      6D776172 
+ 155              		.text
+ 156 018a 660F1F44 		.p2align 4,,15
+ 156      0000
+ 157              		.globl	flFlashCustomFirmware
+ 159              	flFlashCustomFirmware:
+ 160              	.LFB50:
+ 161              		.cfi_startproc
+ 162 0190 4157     		pushq	%r15
+ 163              		.cfi_def_cfa_offset 16
+ 164              		.cfi_offset 15, -16
+ 165 0192 4156     		pushq	%r14
+ 166              		.cfi_def_cfa_offset 24
+ 167              		.cfi_offset 14, -24
+ 168 0194 4989FE   		movq	%rdi, %r14
+ 169 0197 4889F7   		movq	%rsi, %rdi
+ 170 019a 4155     		pushq	%r13
+ 171              		.cfi_def_cfa_offset 32
+ 172              		.cfi_offset 13, -32
+ 173 019c 4154     		pushq	%r12
+ 174              		.cfi_def_cfa_offset 40
+ 175              		.cfi_offset 12, -40
+ 176 019e 4989D4   		movq	%rdx, %r12
+ 177 01a1 55       		pushq	%rbp
+ 178              		.cfi_def_cfa_offset 48
+ 179              		.cfi_offset 6, -48
+ 180 01a2 4889F5   		movq	%rsi, %rbp
+ 181 01a5 53       		pushq	%rbx
+ 182              		.cfi_def_cfa_offset 56
+ 183              		.cfi_offset 3, -56
+ 184 01a6 4883EC68 		subq	$104, %rsp
+ 185              		.cfi_def_cfa_offset 160
+ 186 01aa 48C70424 		movq	$0, (%rsp)
+ 186      00000000 
+ 187 01b2 48C74424 		movq	$0, 8(%rsp)
+ 187      08000000 
+ 187      00
+ 188 01bb 48C74424 		movq	$0, 16(%rsp)
+ 188      10000000 
+ 188      00
+ 189 01c4 48C74424 		movq	$0, 24(%rsp)
+ 189      18000000 
+ 189      00
+ 190 01cd 48C74424 		movq	$0, 32(%rsp)
+ 190      20000000 
+ 190      00
+ 191 01d6 48C74424 		movq	$0, 40(%rsp)
+ 191      28000000 
+ 191      00
+ 192 01df 48C74424 		movq	$0, 48(%rsp)
+ 192      30000000 
+ 192      00
+ 193 01e8 48C74424 		movq	$0, 56(%rsp)
+ 193      38000000 
+ 193      00
+ 194 01f1 48C74424 		movq	$0, 64(%rsp)
+ 194      40000000 
+ 194      00
+ 195 01fa 48C74424 		movq	$0, 72(%rsp)
+ 195      48000000 
+ 195      00
+ 196 0203 48C74424 		movq	$0, 80(%rsp)
+ 196      50000000 
+ 196      00
+ 197 020c 48C74424 		movq	$0, 88(%rsp)
+ 197      58000000 
+ 197      00
+ 198 0215 E8000000 		call	strlen@PLT
+ 198      00
+ 199 021a 488D4405 		leaq	-4(%rbp,%rax), %rax
+ 199      FC
+ 200 021f 488D3500 		leaq	.LC0(%rip), %rsi
+ 200      000000
+ 201 0226 B9050000 		movl	$5, %ecx
+ 201      00
+ 202 022b 4889C7   		movq	%rax, %rdi
+ 203 022e F3A6     		repz cmpsb
+ 204 0230 747E     		je	.L29
+ 205 0232 488D3500 		leaq	.LC1(%rip), %rsi
+ 205      000000
+ 206 0239 B9050000 		movl	$5, %ecx
+ 206      00
+ 207 023e 4889C7   		movq	%rax, %rdi
+ 208 0241 F3A6     		repz cmpsb
+ 209 0243 746B     		je	.L29
+ 210 0245 488D3500 		leaq	.LC4(%rip), %rsi
+ 210      000000
+ 211 024c B9050000 		movl	$5, %ecx
+ 211      00
+ 212 0251 4889C7   		movq	%rax, %rdi
+ 213 0254 F3A6     		repz cmpsb
+ 214 0256 0F847C01 		je	.L30
+ 214      0000
+ 215 025c 488D3500 		leaq	.LC5(%rip), %rsi
+ 215      000000
+ 216 0263 4C8D7C24 		leaq	32(%rsp), %r15
+ 216      20
+ 217 0268 488D5C24 		leaq	64(%rsp), %rbx
+ 217      40
+ 218 026d 4C89E7   		movq	%r12, %rdi
+ 219 0270 BD050000 		movl	$5, %ebp
+ 219      00
+ 220 0275 4989E5   		movq	%rsp, %r13
+ 221 0278 E8000000 		call	errPrefix@PLT
+ 221      00
+ 222              	.L31:
+ 223 027d 4889DF   		movq	%rbx, %rdi
+ 224 0280 E8000000 		call	bufDestroy@PLT
+ 224      00
+ 225 0285 4C89FF   		movq	%r15, %rdi
+ 226 0288 E8000000 		call	bufDestroy@PLT
+ 226      00
+ 227 028d 4C89EF   		movq	%r13, %rdi
+ 228 0290 E8000000 		call	bufDestroy@PLT
+ 228      00
+ 229 0295 4883C468 		addq	$104, %rsp
+ 230              		.cfi_remember_state
+ 231              		.cfi_def_cfa_offset 56
+ 232 0299 89E8     		movl	%ebp, %eax
+ 233 029b 5B       		popq	%rbx
+ 234              		.cfi_def_cfa_offset 48
+ 235 029c 5D       		popq	%rbp
+ 236              		.cfi_def_cfa_offset 40
+ 237 029d 415C     		popq	%r12
+ 238              		.cfi_def_cfa_offset 32
+ 239 029f 415D     		popq	%r13
+ 240              		.cfi_def_cfa_offset 24
+ 241 02a1 415E     		popq	%r14
+ 242              		.cfi_def_cfa_offset 16
+ 243 02a3 415F     		popq	%r15
+ 244              		.cfi_def_cfa_offset 8
+ 245 02a5 C3       		ret
+ 246 02a6 662E0F1F 		.p2align 4,,10
+ 246      84000000 
+ 246      0000
+ 247              		.p2align 3
+ 248              	.L29:
+ 249              		.cfi_restore_state
+ 250 02b0 488D5C24 		leaq	64(%rsp), %rbx
+ 250      40
+ 251 02b5 31D2     		xorl	%edx, %edx
+ 252 02b7 4C89E1   		movq	%r12, %rcx
+ 253 02ba BE002000 		movl	$8192, %esi
+ 253      00
+ 254 02bf 4889DF   		movq	%rbx, %rdi
+ 255 02c2 E8000000 		call	bufInitialise@PLT
+ 255      00
+ 256 02c7 85C0     		testl	%eax, %eax
+ 257 02c9 7565     		jne	.L57
+ 258 02cb 31D2     		xorl	%edx, %edx
+ 259 02cd 4C89E1   		movq	%r12, %rcx
+ 260 02d0 BE002000 		movl	$8192, %esi
+ 260      00
+ 261 02d5 4889E7   		movq	%rsp, %rdi
+ 262 02d8 4989E5   		movq	%rsp, %r13
+ 263 02db E8000000 		call	bufInitialise@PLT
+ 263      00
+ 264 02e0 85C0     		testl	%eax, %eax
+ 265 02e2 754F     		jne	.L58
+ 266 02e4 4C8D7C24 		leaq	32(%rsp), %r15
+ 266      20
+ 267 02e9 31D2     		xorl	%edx, %edx
+ 268 02eb 4C89E1   		movq	%r12, %rcx
+ 269 02ee BE002000 		movl	$8192, %esi
+ 269      00
+ 270 02f3 4C89FF   		movq	%r15, %rdi
+ 271 02f6 E8000000 		call	bufInitialise@PLT
+ 271      00
+ 272 02fb 85C0     		testl	%eax, %eax
+ 273 02fd 7539     		jne	.L32
+ 274 02ff 4C89E1   		movq	%r12, %rcx
+ 275 0302 4889EA   		movq	%rbp, %rdx
+ 276 0305 4C89FE   		movq	%r15, %rsi
+ 277 0308 4889E7   		movq	%rsp, %rdi
+ 278 030b E8000000 		call	bufReadFromIntelHexFile@PLT
+ 278      00
+ 279 0310 85C0     		testl	%eax, %eax
+ 280 0312 743D     		je	.L33
+ 281              	.L36:
+ 282 0314 488D3500 		leaq	.LC6(%rip), %rsi
+ 282      000000
+ 283 031b 4C89E7   		movq	%r12, %rdi
+ 284 031e BD060000 		movl	$6, %ebp
+ 284      00
+ 285 0323 E8000000 		call	errPrefix@PLT
+ 285      00
+ 286 0328 E950FFFF 		jmp	.L31
+ 286      FF
+ 287 032d 0F1F00   		.p2align 4,,10
+ 288              		.p2align 3
+ 289              	.L57:
+ 290 0330 4989E5   		movq	%rsp, %r13
+ 291              	.L58:
+ 292 0333 4C8D7C24 		leaq	32(%rsp), %r15
+ 292      20
+ 293              	.L32:
+ 294 0338 488D3500 		leaq	.LC6(%rip), %rsi
+ 294      000000
+ 295 033f 4C89E7   		movq	%r12, %rdi
+ 296 0342 BD010000 		movl	$1, %ebp
+ 296      00
+ 297 0347 E8000000 		call	errPrefix@PLT
+ 297      00
+ 298 034c E92CFFFF 		jmp	.L31
+ 298      FF
+ 299              	.L33:
+ 300 0351 31C9     		xorl	%ecx, %ecx
+ 301 0353 31D2     		xorl	%edx, %edx
+ 302 0355 31F6     		xorl	%esi, %esi
+ 303 0357 41B80100 		movl	$1, %r8d
+ 303      0000
+ 304 035d 4889DF   		movq	%rbx, %rdi
+ 305 0360 E8000000 		call	i2cInitialise@PLT
+ 305      00
+ 306 0365 4C89E1   		movq	%r12, %rcx
+ 307 0368 4C89FA   		movq	%r15, %rdx
+ 308 036b 4889E6   		movq	%rsp, %rsi
+ 309 036e 4889DF   		movq	%rbx, %rdi
+ 310 0371 E8000000 		call	i2cWritePromRecords@PLT
+ 310      00
+ 311 0376 85C0     		testl	%eax, %eax
+ 312 0378 741F     		je	.L34
+ 313 037a 660F1F44 		.p2align 4,,10
+ 313      0000
+ 314              		.p2align 3
+ 315              	.L37:
+ 316 0380 488D3500 		leaq	.LC6(%rip), %rsi
+ 316      000000
+ 317 0387 4C89E7   		movq	%r12, %rdi
+ 318 038a BD050000 		movl	$5, %ebp
+ 318      00
+ 319 038f E8000000 		call	errPrefix@PLT
+ 319      00
+ 320 0394 E9E4FEFF 		jmp	.L31
+ 320      FF
+ 321              	.L34:
+ 322 0399 4C89E6   		movq	%r12, %rsi
+ 323 039c 4889DF   		movq	%rbx, %rdi
+ 324 039f BD050000 		movl	$5, %ebp
+ 324      00
+ 325 03a4 E8000000 		call	i2cFinalise@PLT
+ 325      00
+ 326 03a9 85C0     		testl	%eax, %eax
+ 327 03ab 0F85CCFE 		jne	.L31
+ 327      FFFF
+ 328              		.p2align 4,,10
+ 329 03b1 0F1F8000 		.p2align 3
+ 329      000000
+ 330              	.L35:
+ 331 03b8 8B542448 		movl	72(%rsp), %edx
+ 332 03bc 488B7424 		movq	64(%rsp), %rsi
+ 332      40
+ 333 03c1 4C89E1   		movq	%r12, %rcx
+ 334 03c4 498B3E   		movq	(%r14), %rdi
+ 335 03c7 31ED     		xorl	%ebp, %ebp
+ 336 03c9 E8000000 		call	fx2WriteEEPROM@PLT
+ 336      00
+ 337 03ce 85C0     		testl	%eax, %eax
+ 338 03d0 0F84A7FE 		je	.L31
+ 338      FFFF
+ 339 03d6 EBA8     		jmp	.L37
+ 340              	.L30:
+ 341 03d8 488D5C24 		leaq	64(%rsp), %rbx
+ 341      40
+ 342 03dd 31D2     		xorl	%edx, %edx
+ 343 03df 4C89E1   		movq	%r12, %rcx
+ 344 03e2 BE002000 		movl	$8192, %esi
+ 344      00
+ 345 03e7 4889DF   		movq	%rbx, %rdi
+ 346 03ea E8000000 		call	bufInitialise@PLT
+ 346      00
+ 347 03ef 85C0     		testl	%eax, %eax
+ 348 03f1 0F8539FF 		jne	.L57
+ 348      FFFF
+ 349 03f7 4C89E2   		movq	%r12, %rdx
+ 350 03fa 4889EE   		movq	%rbp, %rsi
+ 351 03fd 4889DF   		movq	%rbx, %rdi
+ 352 0400 E8000000 		call	bufAppendFromBinaryFile@PLT
+ 352      00
+ 353 0405 85C0     		testl	%eax, %eax
+ 354 0407 4989E5   		movq	%rsp, %r13
+ 355 040a 4C8D7C24 		leaq	32(%rsp), %r15
+ 355      20
+ 356 040f 74A7     		je	.L35
+ 357 0411 E9FEFEFF 		jmp	.L36
+ 357      FF
+ 358              		.cfi_endproc
+ 359              	.LFE50:
+ 361              		.section	.rodata.str1.8
+ 362 0093 00000000 		.align 8
+ 362      00
+ 363              	.LC7:
+ 364 0098 666C5361 		.string	"flSaveFirmware(): Filename should have .iic extension"
+ 364      76654669 
+ 364      726D7761 
+ 364      72652829 
+ 364      3A204669 
+ 365              		.section	.rodata.str1.1
+ 366              	.LC8:
+ 367 003e 666C5361 		.string	"flSaveFirmware()"
+ 367      76654669 
+ 367      726D7761 
+ 367      72652829 
+ 367      00
+ 368              		.text
+ 369 0416 662E0F1F 		.p2align 4,,15
+ 369      84000000 
+ 369      0000
+ 370              		.globl	flSaveFirmware
+ 372              	flSaveFirmware:
+ 373              	.LFB51:
+ 374              		.cfi_startproc
+ 375 0420 4156     		pushq	%r14
+ 376              		.cfi_def_cfa_offset 16
+ 377              		.cfi_offset 14, -16
+ 378 0422 4155     		pushq	%r13
+ 379              		.cfi_def_cfa_offset 24
+ 380              		.cfi_offset 13, -24
+ 381 0424 4989FD   		movq	%rdi, %r13
+ 382 0427 4889D7   		movq	%rdx, %rdi
+ 383 042a 4154     		pushq	%r12
+ 384              		.cfi_def_cfa_offset 32
+ 385              		.cfi_offset 12, -32
+ 386 042c 4989CC   		movq	%rcx, %r12
+ 387 042f 55       		pushq	%rbp
+ 388              		.cfi_def_cfa_offset 40
+ 389              		.cfi_offset 6, -40
+ 390 0430 89F5     		movl	%esi, %ebp
+ 391 0432 53       		pushq	%rbx
+ 392              		.cfi_def_cfa_offset 48
+ 393              		.cfi_offset 3, -48
+ 394 0433 4889D3   		movq	%rdx, %rbx
+ 395 0436 4883EC20 		subq	$32, %rsp
+ 396              		.cfi_def_cfa_offset 80
+ 397 043a 48C70424 		movq	$0, (%rsp)
+ 397      00000000 
+ 398 0442 48C74424 		movq	$0, 8(%rsp)
+ 398      08000000 
+ 398      00
+ 399 044b 48C74424 		movq	$0, 16(%rsp)
+ 399      10000000 
+ 399      00
+ 400 0454 48C74424 		movq	$0, 24(%rsp)
+ 400      18000000 
+ 400      00
+ 401 045d E8000000 		call	strlen@PLT
+ 401      00
+ 402 0462 488D3500 		leaq	.LC4(%rip), %rsi
+ 402      000000
+ 403 0469 488D7C03 		leaq	-4(%rbx,%rax), %rdi
+ 403      FC
+ 404 046e B9050000 		movl	$5, %ecx
+ 404      00
+ 405 0473 F3A6     		repz cmpsb
+ 406 0475 7431     		je	.L60
+ 407 0477 488D3500 		leaq	.LC7(%rip), %rsi
+ 407      000000
+ 408 047e 4C89E7   		movq	%r12, %rdi
+ 409 0481 BB050000 		movl	$5, %ebx
+ 409      00
+ 410 0486 4889E5   		movq	%rsp, %rbp
+ 411 0489 E8000000 		call	errPrefix@PLT
+ 411      00
+ 412              	.L61:
+ 413 048e 4889EF   		movq	%rbp, %rdi
+ 414 0491 E8000000 		call	bufDestroy@PLT
+ 414      00
+ 415 0496 4883C420 		addq	$32, %rsp
+ 416              		.cfi_remember_state
+ 417              		.cfi_def_cfa_offset 48
+ 418 049a 89D8     		movl	%ebx, %eax
+ 419 049c 5B       		popq	%rbx
+ 420              		.cfi_def_cfa_offset 40
+ 421 049d 5D       		popq	%rbp
+ 422              		.cfi_def_cfa_offset 32
+ 423 049e 415C     		popq	%r12
+ 424              		.cfi_def_cfa_offset 24
+ 425 04a0 415D     		popq	%r13
+ 426              		.cfi_def_cfa_offset 16
+ 427 04a2 415E     		popq	%r14
+ 428              		.cfi_def_cfa_offset 8
+ 429 04a4 C3       		ret
+ 430              		.p2align 4,,10
+ 431 04a5 0F1F00   		.p2align 3
+ 432              	.L60:
+ 433              		.cfi_restore_state
+ 434 04a8 4189EE   		movl	%ebp, %r14d
+ 435 04ab 31D2     		xorl	%edx, %edx
+ 436 04ad 4C89E1   		movq	%r12, %rcx
+ 437 04b0 41C1E607 		sall	$7, %r14d
+ 438 04b4 4889E7   		movq	%rsp, %rdi
+ 439 04b7 4889E5   		movq	%rsp, %rbp
+ 440 04ba 4489F6   		movl	%r14d, %esi
+ 441 04bd E8000000 		call	bufInitialise@PLT
+ 441      00
+ 442 04c2 85C0     		testl	%eax, %eax
+ 443 04c4 756A     		jne	.L67
+ 444 04c6 498B7D00 		movq	0(%r13), %rdi
+ 445 04ca 4C89E1   		movq	%r12, %rcx
+ 446 04cd 4889E2   		movq	%rsp, %rdx
+ 447 04d0 4489F6   		movl	%r14d, %esi
+ 448 04d3 E8000000 		call	fx2ReadEEPROM@PLT
+ 448      00
+ 449 04d8 85C0     		testl	%eax, %eax
+ 450 04da 741C     		je	.L63
+ 451 04dc 488D3500 		leaq	.LC8(%rip), %rsi
+ 451      000000
+ 452 04e3 4C89E7   		movq	%r12, %rdi
+ 453 04e6 BB050000 		movl	$5, %ebx
+ 453      00
+ 454 04eb E8000000 		call	errPrefix@PLT
+ 454      00
+ 455 04f0 EB9C     		jmp	.L61
+ 456              		.p2align 4,,10
+ 457 04f2 660F1F44 		.p2align 3
+ 457      0000
+ 458              	.L63:
+ 459 04f8 488B4C24 		movq	8(%rsp), %rcx
+ 459      08
+ 460 04fd 31D2     		xorl	%edx, %edx
+ 461 04ff 4889DE   		movq	%rbx, %rsi
+ 462 0502 4D89E0   		movq	%r12, %r8
+ 463 0505 4889E7   		movq	%rsp, %rdi
+ 464 0508 31DB     		xorl	%ebx, %ebx
+ 465 050a E8000000 		call	bufWriteBinaryFile@PLT
+ 465      00
+ 466 050f 85C0     		testl	%eax, %eax
+ 467 0511 0F8477FF 		je	.L61
+ 467      FFFF
+ 468 0517 488D3500 		leaq	.LC8(%rip), %rsi
+ 468      000000
+ 469 051e 4C89E7   		movq	%r12, %rdi
+ 470 0521 B306     		movb	$6, %bl
+ 471 0523 E8000000 		call	errPrefix@PLT
+ 471      00
+ 472 0528 E961FFFF 		jmp	.L61
+ 472      FF
+ 473 052d 0F1F00   		.p2align 4,,10
+ 474              		.p2align 3
+ 475              	.L67:
+ 476 0530 488D3500 		leaq	.LC8(%rip), %rsi
+ 476      000000
+ 477 0537 4C89E7   		movq	%r12, %rdi
+ 478 053a BB010000 		movl	$1, %ebx
+ 478      00
+ 479 053f E8000000 		call	errPrefix@PLT
+ 479      00
+ 480 0544 E945FFFF 		jmp	.L61
+ 480      FF
+ 481              		.cfi_endproc
+ 482              	.LFE51:
+ 484              		.section	.rodata.str1.1
+ 485              	.LC9:
+ 486 004f 636F7079 		.string	"copyFirmwareAndRewriteIDs()"
+ 486      4669726D 
+ 486      77617265 
+ 486      416E6452 
+ 486      65777269 
+ 487              		.text
+ 488 0549 0F1F8000 		.p2align 4,,15
+ 488      000000
+ 489              		.globl	copyFirmwareAndRewriteIDs
+ 491              	copyFirmwareAndRewriteIDs:
+ 492              	.LFB52:
+ 493              		.cfi_startproc
+ 494 0550 4157     		pushq	%r15
+ 495              		.cfi_def_cfa_offset 16
+ 496              		.cfi_offset 15, -16
+ 497 0552 4D89CF   		movq	%r9, %r15
+ 498 0555 4156     		pushq	%r14
+ 499              		.cfi_def_cfa_offset 24
+ 500              		.cfi_offset 14, -24
+ 501 0557 4189F6   		movl	%esi, %r14d
+ 502 055a 4155     		pushq	%r13
+ 503              		.cfi_def_cfa_offset 32
+ 504              		.cfi_offset 13, -32
+ 505 055c 4189D5   		movl	%edx, %r13d
+ 506 055f 4154     		pushq	%r12
+ 507              		.cfi_def_cfa_offset 40
+ 508              		.cfi_offset 12, -40
+ 509 0561 4189CC   		movl	%ecx, %r12d
+ 510 0564 4C89C9   		movq	%r9, %rcx
+ 511 0567 55       		pushq	%rbp
+ 512              		.cfi_def_cfa_offset 48
+ 513              		.cfi_offset 6, -48
+ 514 0568 4C89C5   		movq	%r8, %rbp
+ 515 056b 53       		pushq	%rbx
+ 516              		.cfi_def_cfa_offset 56
+ 517              		.cfi_offset 3, -56
+ 518 056c 4889FB   		movq	%rdi, %rbx
+ 519 056f 4883EC08 		subq	$8, %rsp
+ 520              		.cfi_def_cfa_offset 64
+ 521 0573 0FB75708 		movzwl	8(%rdi), %edx
+ 522 0577 488B37   		movq	(%rdi), %rsi
+ 523 057a 4C89C7   		movq	%r8, %rdi
+ 524 057d E8000000 		call	bufAppendBlock@PLT
+ 524      00
+ 525 0582 85C0     		testl	%eax, %eax
+ 526 0584 7572     		jne	.L72
+ 527              	.L70:
+ 528 0586 0FB7430A 		movzwl	10(%rbx), %eax
+ 529 058a 488B5500 		movq	0(%rbp), %rdx
+ 530 058e 44883402 		movb	%r14b, (%rdx,%rax)
+ 531 0592 0FB7430A 		movzwl	10(%rbx), %eax
+ 532 0596 6641C1EE 		shrw	$8, %r14w
+ 532      08
+ 533 059b 488B5500 		movq	0(%rbp), %rdx
+ 534 059f 44887402 		movb	%r14b, 1(%rdx,%rax)
+ 534      01
+ 535 05a4 0FB7430A 		movzwl	10(%rbx), %eax
+ 536 05a8 488B5500 		movq	0(%rbp), %rdx
+ 537 05ac 44886C02 		movb	%r13b, 2(%rdx,%rax)
+ 537      02
+ 538 05b1 0FB7430A 		movzwl	10(%rbx), %eax
+ 539 05b5 6641C1ED 		shrw	$8, %r13w
+ 539      08
+ 540 05ba 488B5500 		movq	0(%rbp), %rdx
+ 541 05be 44886C02 		movb	%r13b, 3(%rdx,%rax)
+ 541      03
+ 542 05c3 0FB7430A 		movzwl	10(%rbx), %eax
+ 543 05c7 488B5500 		movq	0(%rbp), %rdx
+ 544 05cb 44886402 		movb	%r12b, 4(%rdx,%rax)
+ 544      04
+ 545 05d0 0FB7430A 		movzwl	10(%rbx), %eax
+ 546 05d4 6641C1EC 		shrw	$8, %r12w
+ 546      08
+ 547 05d9 488B5500 		movq	0(%rbp), %rdx
+ 548 05dd 44886402 		movb	%r12b, 5(%rdx,%rax)
+ 548      05
+ 549 05e2 4883C408 		addq	$8, %rsp
+ 550              		.cfi_remember_state
+ 551              		.cfi_def_cfa_offset 56
+ 552 05e6 31C0     		xorl	%eax, %eax
+ 553 05e8 5B       		popq	%rbx
+ 554              		.cfi_def_cfa_offset 48
+ 555 05e9 5D       		popq	%rbp
+ 556              		.cfi_def_cfa_offset 40
+ 557 05ea 415C     		popq	%r12
+ 558              		.cfi_def_cfa_offset 32
+ 559 05ec 415D     		popq	%r13
+ 560              		.cfi_def_cfa_offset 24
+ 561 05ee 415E     		popq	%r14
+ 562              		.cfi_def_cfa_offset 16
+ 563 05f0 415F     		popq	%r15
+ 564              		.cfi_def_cfa_offset 8
+ 565 05f2 C3       		ret
+ 566              		.p2align 4,,10
+ 567 05f3 0F1F4400 		.p2align 3
+ 567      00
+ 568              	.L72:
+ 569              		.cfi_restore_state
+ 570 05f8 488D3500 		leaq	.LC9(%rip), %rsi
+ 570      000000
+ 571 05ff 4C89FF   		movq	%r15, %rdi
+ 572 0602 E8000000 		call	errPrefix@PLT
+ 572      00
+ 573 0607 4883C408 		addq	$8, %rsp
+ 574              		.cfi_def_cfa_offset 56
+ 575 060b B8010000 		movl	$1, %eax
+ 575      00
+ 576 0610 5B       		popq	%rbx
+ 577              		.cfi_def_cfa_offset 48
+ 578 0611 5D       		popq	%rbp
+ 579              		.cfi_def_cfa_offset 40
+ 580 0612 415C     		popq	%r12
+ 581              		.cfi_def_cfa_offset 32
+ 582 0614 415D     		popq	%r13
+ 583              		.cfi_def_cfa_offset 24
+ 584 0616 415E     		popq	%r14
+ 585              		.cfi_def_cfa_offset 16
+ 586 0618 415F     		popq	%r15
+ 587              		.cfi_def_cfa_offset 8
+ 588 061a C3       		ret
+ 589              		.cfi_endproc
+ 590              	.LFE52:
+ 592              		.section	.rodata.str1.8
+ 593 00ce 0000     		.align 8
+ 594              	.LC10:
+ 595 00d0 666C4C6F 		.string	"flLoadStandardFirmware(): The supplied VID:PID:DID \"%s\" is invalid; it should look like
+ 595      61645374 
+ 595      616E6461 
+ 595      72644669 
+ 595      726D7761 
+ 596              		.section	.rodata.str1.1
+ 597              	.LC11:
+ 598 006b 666C4C6F 		.string	"flLoadStandardFirmware()"
+ 598      61645374 
+ 598      616E6461 
+ 598      72644669 
+ 598      726D7761 
+ 599              		.text
+ 600 061b 0F1F4400 		.p2align 4,,15
+ 600      00
+ 601              		.globl	flLoadStandardFirmware
+ 603              	flLoadStandardFirmware:
+ 604              	.LFB47:
+ 605              		.cfi_startproc
+ 606 0620 4157     		pushq	%r15
+ 607              		.cfi_def_cfa_offset 16
+ 608              		.cfi_offset 15, -16
+ 609 0622 4989FF   		movq	%rdi, %r15
+ 610 0625 4889F7   		movq	%rsi, %rdi
+ 611 0628 4156     		pushq	%r14
+ 612              		.cfi_def_cfa_offset 24
+ 613              		.cfi_offset 14, -24
+ 614 062a 4155     		pushq	%r13
+ 615              		.cfi_def_cfa_offset 32
+ 616              		.cfi_offset 13, -32
+ 617 062c 4154     		pushq	%r12
+ 618              		.cfi_def_cfa_offset 40
+ 619              		.cfi_offset 12, -40
+ 620 062e 55       		pushq	%rbp
+ 621              		.cfi_def_cfa_offset 48
+ 622              		.cfi_offset 6, -48
+ 623 062f 4889D5   		movq	%rdx, %rbp
+ 624 0632 53       		pushq	%rbx
+ 625              		.cfi_def_cfa_offset 56
+ 626              		.cfi_offset 3, -56
+ 627 0633 4889F3   		movq	%rsi, %rbx
+ 628 0636 4883EC38 		subq	$56, %rsp
+ 629              		.cfi_def_cfa_offset 112
+ 630 063a 48C74424 		movq	$0, 16(%rsp)
+ 630      10000000 
+ 630      00
+ 631 0643 48C74424 		movq	$0, 24(%rsp)
+ 631      18000000 
+ 631      00
+ 632 064c 48C74424 		movq	$0, 32(%rsp)
+ 632      20000000 
+ 632      00
+ 633 0655 48C74424 		movq	$0, 40(%rsp)
+ 633      28000000 
+ 633      00
+ 634 065e 48C70424 		movq	$0, (%rsp)
+ 634      00000000 
+ 635 0666 E8000000 		call	usbValidateVidPid@PLT
+ 635      00
+ 636 066b 84C0     		testb	%al, %al
+ 637 066d 7551     		jne	.L74
+ 638 066f 4889DA   		movq	%rbx, %rdx
+ 639 0672 488D3500 		leaq	.LC10(%rip), %rsi
+ 639      000000
+ 640 0679 488D5C24 		leaq	16(%rsp), %rbx
+ 640      10
+ 641 067e 4889EF   		movq	%rbp, %rdi
+ 642 0681 41BC0200 		movl	$2, %r12d
+ 642      0000
+ 643 0687 E8000000 		call	errRender@PLT
+ 643      00
+ 644              	.L75:
+ 645 068c 4889DF   		movq	%rbx, %rdi
+ 646 068f E8000000 		call	bufDestroy@PLT
+ 646      00
+ 647 0694 488B3C24 		movq	(%rsp), %rdi
+ 648 0698 4885FF   		testq	%rdi, %rdi
+ 649 069b 7407     		je	.L80
+ 650 069d 31F6     		xorl	%esi, %esi
+ 651 069f E8000000 		call	usbCloseDevice@PLT
+ 651      00
+ 652              	.L80:
+ 653 06a4 4883C438 		addq	$56, %rsp
+ 654              		.cfi_remember_state
+ 655              		.cfi_def_cfa_offset 56
+ 656 06a8 4489E0   		movl	%r12d, %eax
+ 657 06ab 5B       		popq	%rbx
+ 658              		.cfi_def_cfa_offset 48
+ 659 06ac 5D       		popq	%rbp
+ 660              		.cfi_def_cfa_offset 40
+ 661 06ad 415C     		popq	%r12
+ 662              		.cfi_def_cfa_offset 32
+ 663 06af 415D     		popq	%r13
+ 664              		.cfi_def_cfa_offset 24
+ 665 06b1 415E     		popq	%r14
+ 666              		.cfi_def_cfa_offset 16
+ 667 06b3 415F     		popq	%r15
+ 668              		.cfi_def_cfa_offset 8
+ 669 06b5 C3       		ret
+ 670 06b6 662E0F1F 		.p2align 4,,10
+ 670      84000000 
+ 670      0000
+ 671              		.p2align 3
+ 672              	.L74:
+ 673              		.cfi_restore_state
+ 674 06c0 31F6     		xorl	%esi, %esi
+ 675 06c2 BA100000 		movl	$16, %edx
+ 675      00
+ 676 06c7 4889DF   		movq	%rbx, %rdi
+ 677 06ca E8000000 		call	strtoul@PLT
+ 677      00
+ 678 06cf 488D7B05 		leaq	5(%rbx), %rdi
+ 679 06d3 31F6     		xorl	%esi, %esi
+ 680 06d5 BA100000 		movl	$16, %edx
+ 680      00
+ 681 06da 4989C5   		movq	%rax, %r13
+ 682 06dd 4531E4   		xorl	%r12d, %r12d
+ 683 06e0 E8000000 		call	strtoul@PLT
+ 683      00
+ 684 06e5 4889DF   		movq	%rbx, %rdi
+ 685 06e8 4989C6   		movq	%rax, %r14
+ 686 06eb E8000000 		call	strlen@PLT
+ 686      00
+ 687 06f0 4883F80E 		cmpq	$14, %rax
+ 688 06f4 0F84EE00 		je	.L89
+ 688      0000
+ 689              	.L76:
+ 690 06fa 31C9     		xorl	%ecx, %ecx
+ 691 06fc 31D2     		xorl	%edx, %edx
+ 692 06fe 4989E9   		movq	%rbp, %r9
+ 693 0701 4989E0   		movq	%rsp, %r8
+ 694 0704 BE010000 		movl	$1, %esi
+ 694      00
+ 695 0709 4C89FF   		movq	%r15, %rdi
+ 696 070c E8000000 		call	usbOpenDevice@PLT
+ 696      00
+ 697 0711 85C0     		testl	%eax, %eax
+ 698 0713 7423     		je	.L77
+ 699 0715 488D3500 		leaq	.LC11(%rip), %rsi
+ 699      000000
+ 700 071c 4889EF   		movq	%rbp, %rdi
+ 701 071f 41BC0200 		movl	$2, %r12d
+ 701      0000
+ 702 0725 488D5C24 		leaq	16(%rsp), %rbx
+ 702      10
+ 703 072a E8000000 		call	errPrefix@PLT
+ 703      00
+ 704 072f E958FFFF 		jmp	.L75
+ 704      FF
+ 705              		.p2align 4,,10
+ 706 0734 0F1F4000 		.p2align 3
+ 707              	.L77:
+ 708 0738 488D5C24 		leaq	16(%rsp), %rbx
+ 708      10
+ 709 073d 31D2     		xorl	%edx, %edx
+ 710 073f 4889E9   		movq	%rbp, %rcx
+ 711 0742 BE004000 		movl	$16384, %esi
+ 711      00
+ 712 0747 4889DF   		movq	%rbx, %rdi
+ 713 074a E8000000 		call	bufInitialise@PLT
+ 713      00
+ 714 074f 85C0     		testl	%eax, %eax
+ 715 0751 741D     		je	.L78
+ 716 0753 488D3500 		leaq	.LC11(%rip), %rsi
+ 716      000000
+ 717 075a 4889EF   		movq	%rbp, %rdi
+ 718 075d 41BC0100 		movl	$1, %r12d
+ 718      0000
+ 719 0763 E8000000 		call	errPrefix@PLT
+ 719      00
+ 720 0768 E91FFFFF 		jmp	.L75
+ 720      FF
+ 721 076d 0F1F00   		.p2align 4,,10
+ 722              		.p2align 3
+ 723              	.L78:
+ 724 0770 488B3D00 		movq	ramFirmware@GOTPCREL(%rip), %rdi
+ 724      000000
+ 725 0777 410FB7CC 		movzwl	%r12w, %ecx
+ 726 077b 410FB7D6 		movzwl	%r14w, %edx
+ 727 077f 410FB7F5 		movzwl	%r13w, %esi
+ 728 0783 4989E9   		movq	%rbp, %r9
+ 729 0786 4989D8   		movq	%rbx, %r8
+ 730 0789 E8000000 		call	copyFirmwareAndRewriteIDs@PLT
+ 730      00
+ 731 078e 85C0     		testl	%eax, %eax
+ 732 0790 4189C4   		movl	%eax, %r12d
+ 733 0793 753B     		jne	.L90
+ 734 0795 8B542418 		movl	24(%rsp), %edx
+ 735 0799 488B7424 		movq	16(%rsp), %rsi
+ 735      10
+ 736 079e 4889E9   		movq	%rbp, %rcx
+ 737 07a1 488B3C24 		movq	(%rsp), %rdi
+ 738 07a5 E8000000 		call	fx2WriteRAM@PLT
+ 738      00
+ 739 07aa 85C0     		testl	%eax, %eax
+ 740 07ac 0F84DAFE 		je	.L75
+ 740      FFFF
+ 741 07b2 488D3500 		leaq	.LC11(%rip), %rsi
+ 741      000000
+ 742 07b9 4889EF   		movq	%rbp, %rdi
+ 743 07bc 41BC0500 		movl	$5, %r12d
+ 743      0000
+ 744 07c2 E8000000 		call	errPrefix@PLT
+ 744      00
+ 745 07c7 E9C0FEFF 		jmp	.L75
+ 745      FF
+ 746 07cc 0F1F4000 		.p2align 4,,10
+ 747              		.p2align 3
+ 748              	.L90:
+ 749 07d0 488D3500 		leaq	.LC11(%rip), %rsi
+ 749      000000
+ 750 07d7 4889EF   		movq	%rbp, %rdi
+ 751 07da E8000000 		call	errPrefix@PLT
+ 751      00
+ 752 07df E9A8FEFF 		jmp	.L75
+ 752      FF
+ 753              		.p2align 4,,10
+ 754 07e4 0F1F4000 		.p2align 3
+ 755              	.L89:
+ 756 07e8 488D7B0A 		leaq	10(%rbx), %rdi
+ 757 07ec BA100000 		movl	$16, %edx
+ 757      00
+ 758 07f1 31F6     		xorl	%esi, %esi
+ 759 07f3 E8000000 		call	strtoul@PLT
+ 759      00
+ 760 07f8 4189C4   		movl	%eax, %r12d
+ 761 07fb E9FAFEFF 		jmp	.L76
+ 761      FF
+ 762              		.cfi_endproc
+ 763              	.LFE47:
+ 765              		.section	.rodata.str1.8
+ 766 0144 00000000 		.align 8
+ 767              	.LC12:
+ 768 0148 666C466C 		.string	"flFlashStandardFirmware(): The supplied new VID:PID \"%s\" is invalid; it should look lik
+ 768      61736853 
+ 768      74616E64 
+ 768      61726446 
+ 768      69726D77 
+ 769              		.section	.rodata.str1.1
+ 770              	.LC13:
+ 771 0084 666C466C 		.string	"flFlashStandardFirmware()"
+ 771      61736853 
+ 771      74616E64 
+ 771      61726446 
+ 771      69726D77 
+ 772              		.text
+ 773              		.p2align 4,,15
+ 774              		.globl	flFlashStandardFirmware
+ 776              	flFlashStandardFirmware:
+ 777              	.LFB48:
+ 778              		.cfi_startproc
+ 779 0800 4157     		pushq	%r15
+ 780              		.cfi_def_cfa_offset 16
+ 781              		.cfi_offset 15, -16
+ 782 0802 4156     		pushq	%r14
+ 783              		.cfi_def_cfa_offset 24
+ 784              		.cfi_offset 14, -24
+ 785 0804 4155     		pushq	%r13
+ 786              		.cfi_def_cfa_offset 32
+ 787              		.cfi_offset 13, -32
+ 788 0806 4154     		pushq	%r12
+ 789              		.cfi_def_cfa_offset 40
+ 790              		.cfi_offset 12, -40
+ 791 0808 4989FC   		movq	%rdi, %r12
+ 792 080b 4889F7   		movq	%rsi, %rdi
+ 793 080e 55       		pushq	%rbp
+ 794              		.cfi_def_cfa_offset 48
+ 795              		.cfi_offset 6, -48
+ 796 080f 4889D5   		movq	%rdx, %rbp
+ 797 0812 53       		pushq	%rbx
+ 798              		.cfi_def_cfa_offset 56
+ 799              		.cfi_offset 3, -56
+ 800 0813 4889F3   		movq	%rsi, %rbx
+ 801 0816 4883EC28 		subq	$40, %rsp
+ 802              		.cfi_def_cfa_offset 96
+ 803 081a 48C70424 		movq	$0, (%rsp)
+ 803      00000000 
+ 804 0822 48C74424 		movq	$0, 8(%rsp)
+ 804      08000000 
+ 804      00
+ 805 082b 48C74424 		movq	$0, 16(%rsp)
+ 805      10000000 
+ 805      00
+ 806 0834 48C74424 		movq	$0, 24(%rsp)
+ 806      18000000 
+ 806      00
+ 807 083d E8000000 		call	usbValidateVidPid@PLT
+ 807      00
+ 808 0842 84C0     		testb	%al, %al
+ 809 0844 753A     		jne	.L92
+ 810 0846 488D3500 		leaq	.LC12(%rip), %rsi
+ 810      000000
+ 811 084d 4889DA   		movq	%rbx, %rdx
+ 812 0850 4889EF   		movq	%rbp, %rdi
+ 813 0853 41BD0200 		movl	$2, %r13d
+ 813      0000
+ 814 0859 4889E3   		movq	%rsp, %rbx
+ 815 085c E8000000 		call	errRender@PLT
+ 815      00
+ 816              	.L93:
+ 817 0861 4889DF   		movq	%rbx, %rdi
+ 818 0864 E8000000 		call	bufDestroy@PLT
+ 818      00
+ 819 0869 4883C428 		addq	$40, %rsp
+ 820              		.cfi_remember_state
+ 821              		.cfi_def_cfa_offset 56
+ 822 086d 4489E8   		movl	%r13d, %eax
+ 823 0870 5B       		popq	%rbx
+ 824              		.cfi_def_cfa_offset 48
+ 825 0871 5D       		popq	%rbp
+ 826              		.cfi_def_cfa_offset 40
+ 827 0872 415C     		popq	%r12
+ 828              		.cfi_def_cfa_offset 32
+ 829 0874 415D     		popq	%r13
+ 830              		.cfi_def_cfa_offset 24
+ 831 0876 415E     		popq	%r14
+ 832              		.cfi_def_cfa_offset 16
+ 833 0878 415F     		popq	%r15
+ 834              		.cfi_def_cfa_offset 8
+ 835 087a C3       		ret
+ 836 087b 0F1F4400 		.p2align 4,,10
+ 836      00
+ 837              		.p2align 3
+ 838              	.L92:
+ 839              		.cfi_restore_state
+ 840 0880 31F6     		xorl	%esi, %esi
+ 841 0882 BA100000 		movl	$16, %edx
+ 841      00
+ 842 0887 4889DF   		movq	%rbx, %rdi
+ 843 088a E8000000 		call	strtoul@PLT
+ 843      00
+ 844 088f 488D7B05 		leaq	5(%rbx), %rdi
+ 845 0893 31F6     		xorl	%esi, %esi
+ 846 0895 BA100000 		movl	$16, %edx
+ 846      00
+ 847 089a 4989C6   		movq	%rax, %r14
+ 848 089d 4531ED   		xorl	%r13d, %r13d
+ 849 08a0 E8000000 		call	strtoul@PLT
+ 849      00
+ 850 08a5 4889DF   		movq	%rbx, %rdi
+ 851 08a8 4989C7   		movq	%rax, %r15
+ 852 08ab E8000000 		call	strlen@PLT
+ 852      00
+ 853 08b0 4883F80E 		cmpq	$14, %rax
+ 854 08b4 0F84AE00 		je	.L102
+ 854      0000
+ 855              	.L94:
+ 856 08ba 31D2     		xorl	%edx, %edx
+ 857 08bc 4889E9   		movq	%rbp, %rcx
+ 858 08bf BE004000 		movl	$16384, %esi
+ 858      00
+ 859 08c4 4889E7   		movq	%rsp, %rdi
+ 860 08c7 4889E3   		movq	%rsp, %rbx
+ 861 08ca E8000000 		call	bufInitialise@PLT
+ 861      00
+ 862 08cf 85C0     		testl	%eax, %eax
+ 863 08d1 7575     		jne	.L103
+ 864 08d3 488B3D00 		movq	eepromNoBootFirmware@GOTPCREL(%rip), %rdi
+ 864      000000
+ 865 08da 410FB7CD 		movzwl	%r13w, %ecx
+ 866 08de 410FB7D7 		movzwl	%r15w, %edx
+ 867 08e2 410FB7F6 		movzwl	%r14w, %esi
+ 868 08e6 4989E9   		movq	%rbp, %r9
+ 869 08e9 4989E0   		movq	%rsp, %r8
+ 870 08ec E8000000 		call	copyFirmwareAndRewriteIDs@PLT
+ 870      00
+ 871 08f1 85C0     		testl	%eax, %eax
+ 872 08f3 4189C5   		movl	%eax, %r13d
+ 873 08f6 7538     		jne	.L104
+ 874 08f8 8B542408 		movl	8(%rsp), %edx
+ 875 08fc 488B3424 		movq	(%rsp), %rsi
+ 876 0900 4889E9   		movq	%rbp, %rcx
+ 877 0903 498B3C24 		movq	(%r12), %rdi
+ 878 0907 E8000000 		call	fx2WriteEEPROM@PLT
+ 878      00
+ 879 090c 85C0     		testl	%eax, %eax
+ 880 090e 0F844DFF 		je	.L93
+ 880      FFFF
+ 881 0914 488D3500 		leaq	.LC13(%rip), %rsi
+ 881      000000
+ 882 091b 4889EF   		movq	%rbp, %rdi
+ 883 091e 41BD0500 		movl	$5, %r13d
+ 883      0000
+ 884 0924 E8000000 		call	errPrefix@PLT
+ 884      00
+ 885 0929 E933FFFF 		jmp	.L93
+ 885      FF
+ 886 092e 6690     		.p2align 4,,10
+ 887              		.p2align 3
+ 888              	.L104:
+ 889 0930 488D3500 		leaq	.LC13(%rip), %rsi
+ 889      000000
+ 890 0937 4889EF   		movq	%rbp, %rdi
+ 891 093a E8000000 		call	errPrefix@PLT
+ 891      00
+ 892 093f E91DFFFF 		jmp	.L93
+ 892      FF
+ 893              		.p2align 4,,10
+ 894 0944 0F1F4000 		.p2align 3
+ 895              	.L103:
+ 896 0948 488D3500 		leaq	.LC13(%rip), %rsi
+ 896      000000
+ 897 094f 4889EF   		movq	%rbp, %rdi
+ 898 0952 41BD0100 		movl	$1, %r13d
+ 898      0000
+ 899 0958 E8000000 		call	errPrefix@PLT
+ 899      00
+ 900 095d E9FFFEFF 		jmp	.L93
+ 900      FF
+ 901              		.p2align 4,,10
+ 902 0962 660F1F44 		.p2align 3
+ 902      0000
+ 903              	.L102:
+ 904 0968 488D7B0A 		leaq	10(%rbx), %rdi
+ 905 096c BA100000 		movl	$16, %edx
+ 905      00
+ 906 0971 31F6     		xorl	%esi, %esi
+ 907 0973 E8000000 		call	strtoul@PLT
+ 907      00
+ 908 0978 4189C5   		movl	%eax, %r13d
+ 909 097b E93AFFFF 		jmp	.L94
+ 909      FF
+ 910              		.cfi_endproc
+ 911              	.LFE48:
+ 913              		.ident	"GCC: (Ubuntu 4.8.4-2ubuntu1~14.04.3) 4.8.4"
+ 914              		.section	.note.GNU-stack,"",@progbits
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 fx2.c
+     /tmp/cclIDAlA.s:17     .text:0000000000000000 flLoadCustomFirmware
+     /tmp/cclIDAlA.s:159    .text:0000000000000190 flFlashCustomFirmware
+     /tmp/cclIDAlA.s:372    .text:0000000000000420 flSaveFirmware
+     /tmp/cclIDAlA.s:491    .text:0000000000000550 copyFirmwareAndRewriteIDs
+     /tmp/cclIDAlA.s:603    .text:0000000000000620 flLoadStandardFirmware
+     /tmp/cclIDAlA.s:776    .text:0000000000000800 flFlashStandardFirmware
+     /tmp/cclIDAlA.s:3      .rodata.str1.1:0000000000000000 .LC0
+     /tmp/cclIDAlA.s:5      .rodata.str1.1:0000000000000005 .LC1
+     /tmp/cclIDAlA.s:7      .rodata.str1.1:000000000000000a .LC2
+     /tmp/cclIDAlA.s:11     .rodata.str1.8:0000000000000000 .LC3
+     /tmp/cclIDAlA.s:146    .rodata.str1.1:0000000000000021 .LC4
+     /tmp/cclIDAlA.s:150    .rodata.str1.8:0000000000000048 .LC5
+     /tmp/cclIDAlA.s:153    .rodata.str1.1:0000000000000026 .LC6
+     /tmp/cclIDAlA.s:363    .rodata.str1.8:0000000000000098 .LC7
+     /tmp/cclIDAlA.s:366    .rodata.str1.1:000000000000003e .LC8
+     /tmp/cclIDAlA.s:485    .rodata.str1.1:000000000000004f .LC9
+     /tmp/cclIDAlA.s:594    .rodata.str1.8:00000000000000d0 .LC10
+     /tmp/cclIDAlA.s:597    .rodata.str1.1:000000000000006b .LC11
+     /tmp/cclIDAlA.s:767    .rodata.str1.8:0000000000000148 .LC12
+     /tmp/cclIDAlA.s:770    .rodata.str1.1:0000000000000084 .LC13
+
+UNDEFINED SYMBOLS
+_GLOBAL_OFFSET_TABLE_
+strlen
+usbOpenDevice
+errPrefix
+bufDestroy
+usbCloseDevice
+bufInitialise
+bufReadFromIntelHexFile
+fx2WriteRAM
+i2cInitialise
+i2cWritePromRecords
+i2cFinalise
+fx2WriteEEPROM
+bufAppendFromBinaryFile
+fx2ReadEEPROM
+bufWriteBinaryFile
+bufAppendBlock
+usbValidateVidPid
+errRender
+strtoul
+ramFirmware
+eepromNoBootFirmware

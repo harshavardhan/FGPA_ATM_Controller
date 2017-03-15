@@ -1,0 +1,8 @@
+The build process builds two separate firmwares:
+
+   * A RAM firmware which renumerates on startup
+   * An EEPROM firmware which does not renumerate on startup
+
+The latter firmware may be customised with board-specific initialisation:
+
+  make clean; make FLAGS="-DEEPROM -DBSP=aes220" DID=0003

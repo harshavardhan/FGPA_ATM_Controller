@@ -1,0 +1,18 @@
+--------------------------- SWITCHES & LEDS EXAMPLES ---------------------------
+
+CKSUM:
+    Keep a running 16-bit checksum of bytes written to channel 0 in registers
+    connected to channels 1 & 2. The checksum is also displayed on the 7-segment
+    display, and the last byte written is shown on the eight LEDs. Reading from
+    channel 0 yields the state of the eight switches.
+
+FIFO:
+    Channel 0 is connected to two FIFOs:
+    (a) A "producer" FIFO whose other end connects to an upcounter whose speed
+        is controlled by switches 0-3 (1111=slow, 0000=fast).
+    (b) A "consumer" FIFO whose other end connects to the eight LEDs, and whose
+        speed is controlled by switches 4-7 (1111=slow, 0000=fast).
+    Channel 1 & 2 return the consumer and producer FIFO depths, respectively.
+
+Both examples use the same board-level I/O: eight switches, eight LEDs and a
+4-digit 7-segment display.

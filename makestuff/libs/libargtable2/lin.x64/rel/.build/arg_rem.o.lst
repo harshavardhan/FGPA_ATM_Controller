@@ -1,0 +1,62 @@
+   1              		.file	"arg_rem.c"
+   2              		.text
+   3              		.p2align 4,,15
+   4              		.globl	arg_rem
+   6              	arg_rem:
+   7              	.LFB23:
+   8              		.cfi_startproc
+   9 0000 55       		pushq	%rbp
+  10              		.cfi_def_cfa_offset 16
+  11              		.cfi_offset 6, -16
+  12 0001 4889F5   		movq	%rsi, %rbp
+  13 0004 53       		pushq	%rbx
+  14              		.cfi_def_cfa_offset 24
+  15              		.cfi_offset 3, -24
+  16 0005 4889FB   		movq	%rdi, %rbx
+  17 0008 BF600000 		movl	$96, %edi
+  17      00
+  18 000d 4883EC08 		subq	$8, %rsp
+  19              		.cfi_def_cfa_offset 32
+  20 0011 E8000000 		call	malloc@PLT
+  20      00
+  21 0016 4885C0   		testq	%rax, %rax
+  22 0019 744D     		je	.L2
+  23 001b C60000   		movb	$0, (%rax)
+  24 001e 48C74008 		movq	$0, 8(%rax)
+  24      00000000 
+  25 0026 48C74010 		movq	$0, 16(%rax)
+  25      00000000 
+  26 002e 48895818 		movq	%rbx, 24(%rax)
+  27 0032 48896820 		movq	%rbp, 32(%rax)
+  28 0036 C7402801 		movl	$1, 40(%rax)
+  28      000000
+  29 003d C7402C01 		movl	$1, 44(%rax)
+  29      000000
+  30 0044 48894030 		movq	%rax, 48(%rax)
+  31 0048 48C74038 		movq	$0, 56(%rax)
+  31      00000000 
+  32 0050 48C74040 		movq	$0, 64(%rax)
+  32      00000000 
+  33 0058 48C74048 		movq	$0, 72(%rax)
+  33      00000000 
+  34 0060 48C74050 		movq	$0, 80(%rax)
+  34      00000000 
+  35              	.L2:
+  36 0068 4883C408 		addq	$8, %rsp
+  37              		.cfi_def_cfa_offset 24
+  38 006c 5B       		popq	%rbx
+  39              		.cfi_def_cfa_offset 16
+  40 006d 5D       		popq	%rbp
+  41              		.cfi_def_cfa_offset 8
+  42 006e C3       		ret
+  43              		.cfi_endproc
+  44              	.LFE23:
+  46              		.ident	"GCC: (Ubuntu 4.8.4-2ubuntu1~14.04.3) 4.8.4"
+  47              		.section	.note.GNU-stack,"",@progbits
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 arg_rem.c
+     /tmp/ccIZjFS1.s:6      .text:0000000000000000 arg_rem
+
+UNDEFINED SYMBOLS
+_GLOBAL_OFFSET_TABLE_
+malloc

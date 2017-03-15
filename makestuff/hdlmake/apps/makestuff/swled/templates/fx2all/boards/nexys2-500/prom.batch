@@ -1,0 +1,6 @@
+setMode -bs
+setCable -port xsvf -file prom.xsvf
+addDevice -p 1 -file ${XILINX}/spartan3e/data/xc3s500e_fg320.bsd
+addDevice -p 2 -sprom xcf04s -file top_level.mcs
+program -p 2 -e -v
+quit

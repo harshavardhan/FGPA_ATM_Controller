@@ -1,0 +1,76 @@
+   1              		.file	"CurrentTest.cpp"
+   2              		.text
+   3              	.Ltext0:
+   4              		.globl	_ZN8UnitTest11CurrentTest7ResultsEv
+   6              	_ZN8UnitTest11CurrentTest7ResultsEv:
+   7              	.LFB0:
+   8              		.file 1 "CurrentTest.cpp"
+   1:CurrentTest.cpp **** #include "CurrentTest.h"
+   2:CurrentTest.cpp **** #include <cstddef>
+   3:CurrentTest.cpp **** 
+   4:CurrentTest.cpp **** namespace UnitTest {
+   5:CurrentTest.cpp **** 
+   6:CurrentTest.cpp **** TestResults*& CurrentTest::Results()
+   7:CurrentTest.cpp **** {
+   9              		.loc 1 7 0
+  10              		.cfi_startproc
+  11 0000 55       		pushq	%rbp
+  12              		.cfi_def_cfa_offset 16
+  13              		.cfi_offset 6, -16
+  14 0001 4889E5   		movq	%rsp, %rbp
+  15              		.cfi_def_cfa_register 6
+  16              	.LBB2:
+   8:CurrentTest.cpp **** 	static TestResults* testResults = NULL;
+   9:CurrentTest.cpp **** 	return testResults;
+  17              		.loc 1 9 0
+  18 0004 488D0500 		leaq	_ZZN8UnitTest11CurrentTest7ResultsEvE11testResults(%rip), %rax
+  18      000000
+  19              	.LBE2:
+  10:CurrentTest.cpp **** }
+  20              		.loc 1 10 0
+  21 000b 5D       		popq	%rbp
+  22              		.cfi_def_cfa 7, 8
+  23 000c C3       		ret
+  24              		.cfi_endproc
+  25              	.LFE0:
+  27              		.globl	_ZN8UnitTest11CurrentTest7DetailsEv
+  29              	_ZN8UnitTest11CurrentTest7DetailsEv:
+  30              	.LFB1:
+  11:CurrentTest.cpp **** 
+  12:CurrentTest.cpp **** const TestDetails*& CurrentTest::Details()
+  13:CurrentTest.cpp **** {
+  31              		.loc 1 13 0
+  32              		.cfi_startproc
+  33 000d 55       		pushq	%rbp
+  34              		.cfi_def_cfa_offset 16
+  35              		.cfi_offset 6, -16
+  36 000e 4889E5   		movq	%rsp, %rbp
+  37              		.cfi_def_cfa_register 6
+  38              	.LBB3:
+  14:CurrentTest.cpp **** 	static const TestDetails* testDetails = NULL;
+  15:CurrentTest.cpp **** 	return testDetails;
+  39              		.loc 1 15 0
+  40 0011 488D0500 		leaq	_ZZN8UnitTest11CurrentTest7DetailsEvE11testDetails(%rip), %rax
+  40      000000
+  41              	.LBE3:
+  16:CurrentTest.cpp **** }
+  42              		.loc 1 16 0
+  43 0018 5D       		popq	%rbp
+  44              		.cfi_def_cfa 7, 8
+  45 0019 C3       		ret
+  46              		.cfi_endproc
+  47              	.LFE1:
+  49              		.local	_ZZN8UnitTest11CurrentTest7ResultsEvE11testResults
+  50              		.comm	_ZZN8UnitTest11CurrentTest7ResultsEvE11testResults,8,8
+  51              		.local	_ZZN8UnitTest11CurrentTest7DetailsEvE11testDetails
+  52              		.comm	_ZZN8UnitTest11CurrentTest7DetailsEvE11testDetails,8,8
+  53              	.Letext0:
+  54              		.file 2 "CurrentTest.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 CurrentTest.cpp
+     /tmp/ccNxe1Yv.s:6      .text:0000000000000000 _ZN8UnitTest11CurrentTest7ResultsEv
+     /tmp/ccNxe1Yv.s:50     .bss:0000000000000000 _ZZN8UnitTest11CurrentTest7ResultsEvE11testResults
+     /tmp/ccNxe1Yv.s:29     .text:000000000000000d _ZN8UnitTest11CurrentTest7DetailsEv
+     /tmp/ccNxe1Yv.s:52     .bss:0000000000000008 _ZZN8UnitTest11CurrentTest7DetailsEvE11testDetails
+
+NO UNDEFINED SYMBOLS

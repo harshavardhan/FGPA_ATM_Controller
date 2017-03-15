@@ -1,0 +1,269 @@
+   1              		.file	"conv.c"
+   2              		.text
+   3              	.Ltext0:
+   4              		.globl	getHexNibble
+   6              	getHexNibble:
+   7              	.LFB4:
+   8              		.file 1 "conv.c"
+   1:conv.c        **** /*
+   2:conv.c        ****  * Copyright (C) 2009-2012 Chris McClelland
+   3:conv.c        ****  *
+   4:conv.c        ****  * This program is free software: you can redistribute it and/or modify
+   5:conv.c        ****  * it under the terms of the GNU Lesser General Public License as published by
+   6:conv.c        ****  * the Free Software Foundation, either version 3 of the License, or
+   7:conv.c        ****  * (at your option) any later version.
+   8:conv.c        ****  *
+   9:conv.c        ****  * This program is distributed in the hope that it will be useful,
+  10:conv.c        ****  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  11:conv.c        ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  12:conv.c        ****  * GNU Lesser General Public License for more details.
+  13:conv.c        ****  *
+  14:conv.c        ****  * You should have received a copy of the GNU Lesser General Public License
+  15:conv.c        ****  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  16:conv.c        ****  */
+  17:conv.c        **** #include "conv.h"
+  18:conv.c        **** 
+  19:conv.c        **** // Updates *outputNibble with the nibble represented by the supplied ascii hex digit.
+  20:conv.c        **** // Return false on success or true for illegal char.
+  21:conv.c        **** //
+  22:conv.c        **** bool getHexNibble(char hexDigit, uint8 *outputNibble) {
+   9              		.loc 1 22 0
+  10              		.cfi_startproc
+  11 0000 55       		pushq	%rbp
+  12              		.cfi_def_cfa_offset 16
+  13              		.cfi_offset 6, -16
+  14 0001 4889E5   		movq	%rsp, %rbp
+  15              		.cfi_def_cfa_register 6
+  16 0004 89F8     		movl	%edi, %eax
+  17 0006 488975F0 		movq	%rsi, -16(%rbp)
+  18 000a 8845FC   		movb	%al, -4(%rbp)
+  23:conv.c        **** 	if ( hexDigit >= '0' && hexDigit <= '9' ) {
+  19              		.loc 1 23 0
+  20 000d 807DFC2F 		cmpb	$47, -4(%rbp)
+  21 0011 7E1A     		jle	.L2
+  22              		.loc 1 23 0 is_stmt 0 discriminator 1
+  23 0013 807DFC39 		cmpb	$57, -4(%rbp)
+  24 0017 7F14     		jg	.L2
+  24:conv.c        **** 		*outputNibble = (uint8)(hexDigit - '0');
+  25              		.loc 1 24 0 is_stmt 1
+  26 0019 0FB645FC 		movzbl	-4(%rbp), %eax
+  27 001d 8D50D0   		leal	-48(%rax), %edx
+  28 0020 488B45F0 		movq	-16(%rbp), %rax
+  29 0024 8810     		movb	%dl, (%rax)
+  25:conv.c        **** 		return false;
+  30              		.loc 1 25 0
+  31 0026 B8000000 		movl	$0, %eax
+  31      00
+  32 002b EB45     		jmp	.L3
+  33              	.L2:
+  26:conv.c        **** 	} else if ( hexDigit >= 'a' && hexDigit <= 'f' ) {
+  34              		.loc 1 26 0
+  35 002d 807DFC60 		cmpb	$96, -4(%rbp)
+  36 0031 7E1A     		jle	.L4
+  37              		.loc 1 26 0 is_stmt 0 discriminator 1
+  38 0033 807DFC66 		cmpb	$102, -4(%rbp)
+  39 0037 7F14     		jg	.L4
+  27:conv.c        **** 		*outputNibble = (uint8)(hexDigit - 'a' + 10);
+  40              		.loc 1 27 0 is_stmt 1
+  41 0039 0FB645FC 		movzbl	-4(%rbp), %eax
+  42 003d 8D50A9   		leal	-87(%rax), %edx
+  43 0040 488B45F0 		movq	-16(%rbp), %rax
+  44 0044 8810     		movb	%dl, (%rax)
+  28:conv.c        **** 		return false;
+  45              		.loc 1 28 0
+  46 0046 B8000000 		movl	$0, %eax
+  46      00
+  47 004b EB25     		jmp	.L3
+  48              	.L4:
+  29:conv.c        **** 	} else if ( hexDigit >= 'A' && hexDigit <= 'F' ) {
+  49              		.loc 1 29 0
+  50 004d 807DFC40 		cmpb	$64, -4(%rbp)
+  51 0051 7E1A     		jle	.L5
+  52              		.loc 1 29 0 is_stmt 0 discriminator 1
+  53 0053 807DFC46 		cmpb	$70, -4(%rbp)
+  54 0057 7F14     		jg	.L5
+  30:conv.c        **** 		*outputNibble = (uint8)(hexDigit - 'A' + 10);
+  55              		.loc 1 30 0 is_stmt 1
+  56 0059 0FB645FC 		movzbl	-4(%rbp), %eax
+  57 005d 8D50C9   		leal	-55(%rax), %edx
+  58 0060 488B45F0 		movq	-16(%rbp), %rax
+  59 0064 8810     		movb	%dl, (%rax)
+  31:conv.c        **** 		return false;
+  60              		.loc 1 31 0
+  61 0066 B8000000 		movl	$0, %eax
+  61      00
+  62 006b EB05     		jmp	.L3
+  63              	.L5:
+  32:conv.c        **** 	} else {
+  33:conv.c        **** 		return true;
+  64              		.loc 1 33 0
+  65 006d B8010000 		movl	$1, %eax
+  65      00
+  66              	.L3:
+  34:conv.c        **** 	}
+  35:conv.c        **** }
+  67              		.loc 1 35 0
+  68 0072 5D       		popq	%rbp
+  69              		.cfi_def_cfa 7, 8
+  70 0073 C3       		ret
+  71              		.cfi_endproc
+  72              	.LFE4:
+  74              		.globl	getHexByte
+  76              	getHexByte:
+  77              	.LFB5:
+  36:conv.c        **** 
+  37:conv.c        **** // Updates *outputByte with the byte represented by the two ascii hex digits pointed to by hexDigit
+  38:conv.c        **** // Return false on success or true for illegal char.
+  39:conv.c        **** //
+  40:conv.c        **** bool getHexByte(const char *hexDigitPair, uint8 *outputByte) {
+  78              		.loc 1 40 0
+  79              		.cfi_startproc
+  80 0074 55       		pushq	%rbp
+  81              		.cfi_def_cfa_offset 16
+  82              		.cfi_offset 6, -16
+  83 0075 4889E5   		movq	%rsp, %rbp
+  84              		.cfi_def_cfa_register 6
+  85 0078 4883EC20 		subq	$32, %rsp
+  86 007c 48897DE8 		movq	%rdi, -24(%rbp)
+  87 0080 488975E0 		movq	%rsi, -32(%rbp)
+  41:conv.c        **** 	uint8 upperNibble;
+  42:conv.c        **** 	uint8 lowerNibble;
+  43:conv.c        **** 	if ( !getHexNibble(hexDigitPair[0], &upperNibble) && !getHexNibble(hexDigitPair[1], &lowerNibble) 
+  88              		.loc 1 43 0
+  89 0084 488B45E8 		movq	-24(%rbp), %rax
+  90 0088 0FB600   		movzbl	(%rax), %eax
+  91 008b 0FBEC0   		movsbl	%al, %eax
+  92 008e 488D55FE 		leaq	-2(%rbp), %rdx
+  93 0092 4889D6   		movq	%rdx, %rsi
+  94 0095 89C7     		movl	%eax, %edi
+  95 0097 E8000000 		call	getHexNibble@PLT
+  95      00
+  96 009c 83F001   		xorl	$1, %eax
+  97 009f 84C0     		testb	%al, %al
+  98 00a1 7444     		je	.L7
+  99              		.loc 1 43 0 is_stmt 0 discriminator 1
+ 100 00a3 488B45E8 		movq	-24(%rbp), %rax
+ 101 00a7 4883C001 		addq	$1, %rax
+ 102 00ab 0FB600   		movzbl	(%rax), %eax
+ 103 00ae 0FBEC0   		movsbl	%al, %eax
+ 104 00b1 488D55FF 		leaq	-1(%rbp), %rdx
+ 105 00b5 4889D6   		movq	%rdx, %rsi
+ 106 00b8 89C7     		movl	%eax, %edi
+ 107 00ba E8000000 		call	getHexNibble@PLT
+ 107      00
+ 108 00bf 83F001   		xorl	$1, %eax
+ 109 00c2 84C0     		testb	%al, %al
+ 110 00c4 7421     		je	.L7
+  44:conv.c        **** 		*outputByte = (uint8)((upperNibble << 4) | lowerNibble);
+ 111              		.loc 1 44 0 is_stmt 1
+ 112 00c6 0FB645FE 		movzbl	-2(%rbp), %eax
+ 113 00ca 0FB6C0   		movzbl	%al, %eax
+ 114 00cd C1E004   		sall	$4, %eax
+ 115 00d0 89C2     		movl	%eax, %edx
+ 116 00d2 0FB645FF 		movzbl	-1(%rbp), %eax
+ 117 00d6 09D0     		orl	%edx, %eax
+ 118 00d8 89C2     		movl	%eax, %edx
+ 119 00da 488B45E0 		movq	-32(%rbp), %rax
+ 120 00de 8810     		movb	%dl, (%rax)
+  45:conv.c        **** 		return false;
+ 121              		.loc 1 45 0
+ 122 00e0 B8000000 		movl	$0, %eax
+ 122      00
+ 123 00e5 EB05     		jmp	.L9
+ 124              	.L7:
+  46:conv.c        **** 	} else {
+  47:conv.c        **** 		return true;
+ 125              		.loc 1 47 0
+ 126 00e7 B8010000 		movl	$1, %eax
+ 126      00
+ 127              	.L9:
+  48:conv.c        **** 	}
+  49:conv.c        **** }
+ 128              		.loc 1 49 0
+ 129 00ec C9       		leave
+ 130              		.cfi_def_cfa 7, 8
+ 131 00ed C3       		ret
+ 132              		.cfi_endproc
+ 133              	.LFE5:
+ 135              		.section	.rodata
+ 136              	.LC0:
+ 137 0000 30313233 		.string	"0123456789ABCDEF"
+ 137      34353637 
+ 137      38394142 
+ 137      43444546 
+ 137      00
+ 138              		.text
+ 139              		.globl	getHexUpperNibble
+ 141              	getHexUpperNibble:
+ 142              	.LFB6:
+  50:conv.c        **** 
+  51:conv.c        **** // Return the ascii hex digit representing the most significant nibble of the supplied byte.
+  52:conv.c        **** //
+  53:conv.c        **** char getHexUpperNibble(uint8 byte) {
+ 143              		.loc 1 53 0
+ 144              		.cfi_startproc
+ 145 00ee 55       		pushq	%rbp
+ 146              		.cfi_def_cfa_offset 16
+ 147              		.cfi_offset 6, -16
+ 148 00ef 4889E5   		movq	%rsp, %rbp
+ 149              		.cfi_def_cfa_register 6
+ 150 00f2 89F8     		movl	%edi, %eax
+ 151 00f4 8845FC   		movb	%al, -4(%rbp)
+  54:conv.c        **** 	return "0123456789ABCDEF"[byte >> 4];
+ 152              		.loc 1 54 0
+ 153 00f7 0FB645FC 		movzbl	-4(%rbp), %eax
+ 154 00fb C0E804   		shrb	$4, %al
+ 155 00fe 0FB6C0   		movzbl	%al, %eax
+ 156 0101 4863D0   		movslq	%eax, %rdx
+ 157 0104 488D0500 		leaq	.LC0(%rip), %rax
+ 157      000000
+ 158 010b 0FB60402 		movzbl	(%rdx,%rax), %eax
+  55:conv.c        **** }
+ 159              		.loc 1 55 0
+ 160 010f 5D       		popq	%rbp
+ 161              		.cfi_def_cfa 7, 8
+ 162 0110 C3       		ret
+ 163              		.cfi_endproc
+ 164              	.LFE6:
+ 166              		.globl	getHexLowerNibble
+ 168              	getHexLowerNibble:
+ 169              	.LFB7:
+  56:conv.c        **** 
+  57:conv.c        **** // Return the ascii hex digit representing the least significant nibble of the supplied byte.
+  58:conv.c        **** //
+  59:conv.c        **** char getHexLowerNibble(uint8 byte) {
+ 170              		.loc 1 59 0
+ 171              		.cfi_startproc
+ 172 0111 55       		pushq	%rbp
+ 173              		.cfi_def_cfa_offset 16
+ 174              		.cfi_offset 6, -16
+ 175 0112 4889E5   		movq	%rsp, %rbp
+ 176              		.cfi_def_cfa_register 6
+ 177 0115 89F8     		movl	%edi, %eax
+ 178 0117 8845FC   		movb	%al, -4(%rbp)
+  60:conv.c        **** 	return "0123456789ABCDEF"[byte & 0x0F];
+ 179              		.loc 1 60 0
+ 180 011a 0FB645FC 		movzbl	-4(%rbp), %eax
+ 181 011e 83E00F   		andl	$15, %eax
+ 182 0121 4863D0   		movslq	%eax, %rdx
+ 183 0124 488D0500 		leaq	.LC0(%rip), %rax
+ 183      000000
+ 184 012b 0FB60402 		movzbl	(%rdx,%rax), %eax
+  61:conv.c        **** }
+ 185              		.loc 1 61 0
+ 186 012f 5D       		popq	%rbp
+ 187              		.cfi_def_cfa 7, 8
+ 188 0130 C3       		ret
+ 189              		.cfi_endproc
+ 190              	.LFE7:
+ 192              	.Letext0:
+ 193              		.file 2 "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 conv.c
+     /tmp/ccewdUAz.s:6      .text:0000000000000000 getHexNibble
+     /tmp/ccewdUAz.s:76     .text:0000000000000074 getHexByte
+     /tmp/ccewdUAz.s:141    .text:00000000000000ee getHexUpperNibble
+     /tmp/ccewdUAz.s:168    .text:0000000000000111 getHexLowerNibble
+
+UNDEFINED SYMBOLS
+_GLOBAL_OFFSET_TABLE_

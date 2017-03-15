@@ -1,0 +1,56 @@
+   1              		.file	"misc.c"
+   2              		.text
+   3              	.Ltext0:
+   4              		.globl	usbFreeError
+   6              	usbFreeError:
+   7              	.LFB4:
+   8              		.file 1 "misc.c"
+   1:misc.c        **** /*
+   2:misc.c        ****  * Copyright (C) 2009-2012 Chris McClelland
+   3:misc.c        ****  *
+   4:misc.c        ****  * This program is free software: you can redistribute it and/or modify
+   5:misc.c        ****  * it under the terms of the GNU Lesser General Public License as published by
+   6:misc.c        ****  * the Free Software Foundation, either version 3 of the License, or
+   7:misc.c        ****  * (at your option) any later version.
+   8:misc.c        ****  *
+   9:misc.c        ****  * This program is distributed in the hope that it will be useful,
+  10:misc.c        ****  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  11:misc.c        ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  12:misc.c        ****  * GNU Lesser General Public License for more details.
+  13:misc.c        ****  *
+  14:misc.c        ****  * You should have received a copy of the GNU Lesser General Public License
+  15:misc.c        ****  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  16:misc.c        ****  */
+  17:misc.c        **** #include <liberror.h>
+  18:misc.c        **** 
+  19:misc.c        **** DLLEXPORT(void) usbFreeError(const char *err) {
+   9              		.loc 1 19 0
+  10              		.cfi_startproc
+  11 0000 55       		pushq	%rbp
+  12              		.cfi_def_cfa_offset 16
+  13              		.cfi_offset 6, -16
+  14 0001 4889E5   		movq	%rsp, %rbp
+  15              		.cfi_def_cfa_register 6
+  16 0004 4883EC10 		subq	$16, %rsp
+  17 0008 48897DF8 		movq	%rdi, -8(%rbp)
+  20:misc.c        **** 	errFree(err);
+  18              		.loc 1 20 0
+  19 000c 488B45F8 		movq	-8(%rbp), %rax
+  20 0010 4889C7   		movq	%rax, %rdi
+  21 0013 E8000000 		call	errFree@PLT
+  21      00
+  21:misc.c        **** }
+  22              		.loc 1 21 0
+  23 0018 C9       		leave
+  24              		.cfi_def_cfa 7, 8
+  25 0019 C3       		ret
+  26              		.cfi_endproc
+  27              	.LFE4:
+  29              	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 misc.c
+     /tmp/ccAVaFKP.s:6      .text:0000000000000000 usbFreeError
+
+UNDEFINED SYMBOLS
+_GLOBAL_OFFSET_TABLE_
+errFree

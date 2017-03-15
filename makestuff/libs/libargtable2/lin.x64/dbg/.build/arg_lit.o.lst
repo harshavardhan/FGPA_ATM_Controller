@@ -1,0 +1,508 @@
+   1              		.file	"arg_lit.c"
+   2              		.text
+   3              	.Ltext0:
+   5              	resetfn:
+   6              	.LFB0:
+   7              		.file 1 "arg_lit.c"
+   1:arg_lit.c     **** /*********************************************************************
+   2:arg_lit.c     **** This file is part of the argtable2 library.
+   3:arg_lit.c     **** Copyright (C) 1998-2001,2003-2011 Stewart Heitmann
+   4:arg_lit.c     **** sheitmann@users.sourceforge.net
+   5:arg_lit.c     **** 
+   6:arg_lit.c     **** The argtable2 library is free software; you can redistribute it and/or
+   7:arg_lit.c     **** modify it under the terms of the GNU Library General Public License as
+   8:arg_lit.c     **** published by the Free Software Foundation; either version 2 of the
+   9:arg_lit.c     **** License, or (at your option) any later version.
+  10:arg_lit.c     **** 
+  11:arg_lit.c     **** This software is distributed in the hope that it will be useful,
+  12:arg_lit.c     **** but WITHOUT ANY WARRANTY; without even the implied warranty of
+  13:arg_lit.c     **** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  14:arg_lit.c     **** Library General Public License for more details.
+  15:arg_lit.c     **** 
+  16:arg_lit.c     **** You should have received a copy of the GNU Library General Public
+  17:arg_lit.c     **** License along with this library; if not, write to the Free Software
+  18:arg_lit.c     **** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+  19:arg_lit.c     **** USA.
+  20:arg_lit.c     **** **********************************************************************/
+  21:arg_lit.c     **** 
+  22:arg_lit.c     **** /* config.h must be included before anything else */
+  23:arg_lit.c     **** #ifdef HAVE_CONFIG_H
+  24:arg_lit.c     **** #include "config.h"
+  25:arg_lit.c     **** #endif
+  26:arg_lit.c     **** 
+  27:arg_lit.c     **** #ifdef HAVE_STDLIB_H
+  28:arg_lit.c     **** #include <stdlib.h>
+  29:arg_lit.c     **** #endif
+  30:arg_lit.c     **** 
+  31:arg_lit.c     **** #include "argtable2.h"
+  32:arg_lit.c     **** 
+  33:arg_lit.c     **** /* local error codes */
+  34:arg_lit.c     **** enum {EMINCOUNT=1,EMAXCOUNT};
+  35:arg_lit.c     **** 
+  36:arg_lit.c     **** static void resetfn(struct arg_lit *parent)
+  37:arg_lit.c     ****     {
+   8              		.loc 1 37 0
+   9              		.cfi_startproc
+  10 0000 55       		pushq	%rbp
+  11              		.cfi_def_cfa_offset 16
+  12              		.cfi_offset 6, -16
+  13 0001 4889E5   		movq	%rsp, %rbp
+  14              		.cfi_def_cfa_register 6
+  15 0004 48897DF8 		movq	%rdi, -8(%rbp)
+  38:arg_lit.c     ****     /*printf("%s:resetfn(%p)\n",__FILE__,parent);*/
+  39:arg_lit.c     ****     parent->count = 0;
+  16              		.loc 1 39 0
+  17 0008 488B45F8 		movq	-8(%rbp), %rax
+  18 000c C7406000 		movl	$0, 96(%rax)
+  18      000000
+  40:arg_lit.c     ****     }
+  19              		.loc 1 40 0
+  20 0013 5D       		popq	%rbp
+  21              		.cfi_def_cfa 7, 8
+  22 0014 C3       		ret
+  23              		.cfi_endproc
+  24              	.LFE0:
+  27              	scanfn:
+  28              	.LFB1:
+  41:arg_lit.c     **** 
+  42:arg_lit.c     **** static int scanfn(struct arg_lit *parent, const char *argval)
+  43:arg_lit.c     ****     {
+  29              		.loc 1 43 0
+  30              		.cfi_startproc
+  31 0015 55       		pushq	%rbp
+  32              		.cfi_def_cfa_offset 16
+  33              		.cfi_offset 6, -16
+  34 0016 4889E5   		movq	%rsp, %rbp
+  35              		.cfi_def_cfa_register 6
+  36 0019 48897DE8 		movq	%rdi, -24(%rbp)
+  37 001d 488975E0 		movq	%rsi, -32(%rbp)
+  44:arg_lit.c     ****     int errorcode = 0;
+  38              		.loc 1 44 0
+  39 0021 C745FC00 		movl	$0, -4(%rbp)
+  39      000000
+  45:arg_lit.c     ****     if (parent->count < parent->hdr.maxcount )
+  40              		.loc 1 45 0
+  41 0028 488B45E8 		movq	-24(%rbp), %rax
+  42 002c 8B5060   		movl	96(%rax), %edx
+  43 002f 488B45E8 		movq	-24(%rbp), %rax
+  44 0033 8B402C   		movl	44(%rax), %eax
+  45 0036 39C2     		cmpl	%eax, %edx
+  46 0038 7D13     		jge	.L3
+  46:arg_lit.c     ****         parent->count++;
+  47              		.loc 1 46 0
+  48 003a 488B45E8 		movq	-24(%rbp), %rax
+  49 003e 8B4060   		movl	96(%rax), %eax
+  50 0041 8D5001   		leal	1(%rax), %edx
+  51 0044 488B45E8 		movq	-24(%rbp), %rax
+  52 0048 895060   		movl	%edx, 96(%rax)
+  53 004b EB07     		jmp	.L4
+  54              	.L3:
+  47:arg_lit.c     ****     else
+  48:arg_lit.c     ****         errorcode = EMAXCOUNT;
+  55              		.loc 1 48 0
+  56 004d C745FC02 		movl	$2, -4(%rbp)
+  56      000000
+  57              	.L4:
+  49:arg_lit.c     ****     /*printf("%s:scanfn(%p,%s) returns %d\n",__FILE__,parent,argval,errorcode);*/
+  50:arg_lit.c     ****     return errorcode;
+  58              		.loc 1 50 0
+  59 0054 8B45FC   		movl	-4(%rbp), %eax
+  51:arg_lit.c     ****     }
+  60              		.loc 1 51 0
+  61 0057 5D       		popq	%rbp
+  62              		.cfi_def_cfa 7, 8
+  63 0058 C3       		ret
+  64              		.cfi_endproc
+  65              	.LFE1:
+  68              	checkfn:
+  69              	.LFB2:
+  52:arg_lit.c     **** 
+  53:arg_lit.c     **** static int checkfn(struct arg_lit *parent)
+  54:arg_lit.c     ****     {
+  70              		.loc 1 54 0
+  71              		.cfi_startproc
+  72 0059 55       		pushq	%rbp
+  73              		.cfi_def_cfa_offset 16
+  74              		.cfi_offset 6, -16
+  75 005a 4889E5   		movq	%rsp, %rbp
+  76              		.cfi_def_cfa_register 6
+  77 005d 48897DE8 		movq	%rdi, -24(%rbp)
+  55:arg_lit.c     ****     int errorcode = (parent->count < parent->hdr.mincount) ? EMINCOUNT : 0;
+  78              		.loc 1 55 0
+  79 0061 488B45E8 		movq	-24(%rbp), %rax
+  80 0065 8B5060   		movl	96(%rax), %edx
+  81 0068 488B45E8 		movq	-24(%rbp), %rax
+  82 006c 8B4028   		movl	40(%rax), %eax
+  83 006f 39C2     		cmpl	%eax, %edx
+  84 0071 0F9CC0   		setl	%al
+  85 0074 0FB6C0   		movzbl	%al, %eax
+  86 0077 8945FC   		movl	%eax, -4(%rbp)
+  56:arg_lit.c     ****     /*printf("%s:checkfn(%p) returns %d\n",__FILE__,parent,errorcode);*/
+  57:arg_lit.c     ****     return errorcode;
+  87              		.loc 1 57 0
+  88 007a 8B45FC   		movl	-4(%rbp), %eax
+  58:arg_lit.c     ****     }
+  89              		.loc 1 58 0
+  90 007d 5D       		popq	%rbp
+  91              		.cfi_def_cfa 7, 8
+  92 007e C3       		ret
+  93              		.cfi_endproc
+  94              	.LFE2:
+  96              		.section	.rodata
+  97              	.LC0:
+  98 0000 25733A20 		.string	"%s: missing option "
+  98      6D697373 
+  98      696E6720 
+  98      6F707469 
+  98      6F6E2000 
+  99              	.LC1:
+ 100 0014 0A00     		.string	"\n"
+ 101              	.LC2:
+ 102 0016 25733A20 		.string	"%s: extraneous option "
+ 102      65787472 
+ 102      616E656F 
+ 102      7573206F 
+ 102      7074696F 
+ 103              		.text
+ 105              	errorfn:
+ 106              	.LFB3:
+  59:arg_lit.c     **** 
+  60:arg_lit.c     **** static void errorfn(struct arg_lit *parent, FILE *fp, int errorcode, const char *argval, const char
+  61:arg_lit.c     ****     {
+ 107              		.loc 1 61 0
+ 108              		.cfi_startproc
+ 109 007f 55       		pushq	%rbp
+ 110              		.cfi_def_cfa_offset 16
+ 111              		.cfi_offset 6, -16
+ 112 0080 4889E5   		movq	%rsp, %rbp
+ 113              		.cfi_def_cfa_register 6
+ 114 0083 4883EC50 		subq	$80, %rsp
+ 115 0087 48897DD8 		movq	%rdi, -40(%rbp)
+ 116 008b 488975D0 		movq	%rsi, -48(%rbp)
+ 117 008f 8955CC   		movl	%edx, -52(%rbp)
+ 118 0092 48894DC0 		movq	%rcx, -64(%rbp)
+ 119 0096 4C8945B8 		movq	%r8, -72(%rbp)
+  62:arg_lit.c     ****     const char *shortopts = parent->hdr.shortopts;
+ 120              		.loc 1 62 0
+ 121 009a 488B45D8 		movq	-40(%rbp), %rax
+ 122 009e 488B4008 		movq	8(%rax), %rax
+ 123 00a2 488945E8 		movq	%rax, -24(%rbp)
+  63:arg_lit.c     ****     const char *longopts  = parent->hdr.longopts;
+ 124              		.loc 1 63 0
+ 125 00a6 488B45D8 		movq	-40(%rbp), %rax
+ 126 00aa 488B4010 		movq	16(%rax), %rax
+ 127 00ae 488945F0 		movq	%rax, -16(%rbp)
+  64:arg_lit.c     ****     const char *datatype  = parent->hdr.datatype;
+ 128              		.loc 1 64 0
+ 129 00b2 488B45D8 		movq	-40(%rbp), %rax
+ 130 00b6 488B4018 		movq	24(%rax), %rax
+ 131 00ba 488945F8 		movq	%rax, -8(%rbp)
+  65:arg_lit.c     **** 
+  66:arg_lit.c     ****     switch(errorcode)
+ 132              		.loc 1 66 0
+ 133 00be 8B45CC   		movl	-52(%rbp), %eax
+ 134 00c1 83F801   		cmpl	$1, %eax
+ 135 00c4 740A     		je	.L10
+ 136 00c6 83F802   		cmpl	$2, %eax
+ 137 00c9 7453     		je	.L11
+ 138 00cb E98A0000 		jmp	.L8
+ 138      00
+ 139              	.L10:
+  67:arg_lit.c     ****         {
+  68:arg_lit.c     ****         case EMINCOUNT:
+  69:arg_lit.c     ****             fprintf(fp,"%s: missing option ",progname);
+ 140              		.loc 1 69 0
+ 141 00d0 488B55B8 		movq	-72(%rbp), %rdx
+ 142 00d4 488B45D0 		movq	-48(%rbp), %rax
+ 143 00d8 488D3500 		leaq	.LC0(%rip), %rsi
+ 143      000000
+ 144 00df 4889C7   		movq	%rax, %rdi
+ 145 00e2 B8000000 		movl	$0, %eax
+ 145      00
+ 146 00e7 E8000000 		call	fprintf@PLT
+ 146      00
+  70:arg_lit.c     ****             arg_print_option(fp,shortopts,longopts,datatype,"\n");
+ 147              		.loc 1 70 0
+ 148 00ec 488B4DF8 		movq	-8(%rbp), %rcx
+ 149 00f0 488B55F0 		movq	-16(%rbp), %rdx
+ 150 00f4 488B75E8 		movq	-24(%rbp), %rsi
+ 151 00f8 488B45D0 		movq	-48(%rbp), %rax
+ 152 00fc 4C8D0500 		leaq	.LC1(%rip), %r8
+ 152      000000
+ 153 0103 4889C7   		movq	%rax, %rdi
+ 154 0106 E8000000 		call	arg_print_option@PLT
+ 154      00
+  71:arg_lit.c     ****             fprintf(fp,"\n");
+ 155              		.loc 1 71 0
+ 156 010b 488B45D0 		movq	-48(%rbp), %rax
+ 157 010f 4889C6   		movq	%rax, %rsi
+ 158 0112 BF0A0000 		movl	$10, %edi
+ 158      00
+ 159 0117 E8000000 		call	fputc@PLT
+ 159      00
+  72:arg_lit.c     ****             break;
+ 160              		.loc 1 72 0
+ 161 011c EB3C     		jmp	.L8
+ 162              	.L11:
+  73:arg_lit.c     **** 
+  74:arg_lit.c     ****         case EMAXCOUNT:
+  75:arg_lit.c     ****             fprintf(fp,"%s: extraneous option ",progname);
+ 163              		.loc 1 75 0
+ 164 011e 488B55B8 		movq	-72(%rbp), %rdx
+ 165 0122 488B45D0 		movq	-48(%rbp), %rax
+ 166 0126 488D3500 		leaq	.LC2(%rip), %rsi
+ 166      000000
+ 167 012d 4889C7   		movq	%rax, %rdi
+ 168 0130 B8000000 		movl	$0, %eax
+ 168      00
+ 169 0135 E8000000 		call	fprintf@PLT
+ 169      00
+  76:arg_lit.c     ****             arg_print_option(fp,shortopts,longopts,datatype,"\n");
+ 170              		.loc 1 76 0
+ 171 013a 488B4DF8 		movq	-8(%rbp), %rcx
+ 172 013e 488B55F0 		movq	-16(%rbp), %rdx
+ 173 0142 488B75E8 		movq	-24(%rbp), %rsi
+ 174 0146 488B45D0 		movq	-48(%rbp), %rax
+ 175 014a 4C8D0500 		leaq	.LC1(%rip), %r8
+ 175      000000
+ 176 0151 4889C7   		movq	%rax, %rdi
+ 177 0154 E8000000 		call	arg_print_option@PLT
+ 177      00
+  77:arg_lit.c     ****             break;
+ 178              		.loc 1 77 0
+ 179 0159 90       		nop
+ 180              	.L8:
+  78:arg_lit.c     ****         }
+  79:arg_lit.c     ****     }
+ 181              		.loc 1 79 0
+ 182 015a C9       		leave
+ 183              		.cfi_def_cfa 7, 8
+ 184 015b C3       		ret
+ 185              		.cfi_endproc
+ 186              	.LFE3:
+ 188              		.globl	arg_lit0
+ 190              	arg_lit0:
+ 191              	.LFB4:
+  80:arg_lit.c     **** 
+  81:arg_lit.c     **** struct arg_lit* arg_lit0(const char* shortopts,
+  82:arg_lit.c     ****                          const char* longopts,
+  83:arg_lit.c     ****                          const char* glossary)
+  84:arg_lit.c     ****     {return arg_litn(shortopts,longopts,0,1,glossary);}
+ 192              		.loc 1 84 0
+ 193              		.cfi_startproc
+ 194 015c 55       		pushq	%rbp
+ 195              		.cfi_def_cfa_offset 16
+ 196              		.cfi_offset 6, -16
+ 197 015d 4889E5   		movq	%rsp, %rbp
+ 198              		.cfi_def_cfa_register 6
+ 199 0160 4883EC20 		subq	$32, %rsp
+ 200 0164 48897DF8 		movq	%rdi, -8(%rbp)
+ 201 0168 488975F0 		movq	%rsi, -16(%rbp)
+ 202 016c 488955E8 		movq	%rdx, -24(%rbp)
+ 203              		.loc 1 84 0
+ 204 0170 488B55E8 		movq	-24(%rbp), %rdx
+ 205 0174 488B75F0 		movq	-16(%rbp), %rsi
+ 206 0178 488B45F8 		movq	-8(%rbp), %rax
+ 207 017c 4989D0   		movq	%rdx, %r8
+ 208 017f B9010000 		movl	$1, %ecx
+ 208      00
+ 209 0184 BA000000 		movl	$0, %edx
+ 209      00
+ 210 0189 4889C7   		movq	%rax, %rdi
+ 211 018c E8000000 		call	arg_litn@PLT
+ 211      00
+ 212 0191 C9       		leave
+ 213              		.cfi_def_cfa 7, 8
+ 214 0192 C3       		ret
+ 215              		.cfi_endproc
+ 216              	.LFE4:
+ 218              		.globl	arg_lit1
+ 220              	arg_lit1:
+ 221              	.LFB5:
+  85:arg_lit.c     **** 
+  86:arg_lit.c     **** struct arg_lit* arg_lit1(const char* shortopts,
+  87:arg_lit.c     ****                          const char* longopts,
+  88:arg_lit.c     ****                          const char* glossary)
+  89:arg_lit.c     ****     {return arg_litn(shortopts,longopts,1,1,glossary);}
+ 222              		.loc 1 89 0
+ 223              		.cfi_startproc
+ 224 0193 55       		pushq	%rbp
+ 225              		.cfi_def_cfa_offset 16
+ 226              		.cfi_offset 6, -16
+ 227 0194 4889E5   		movq	%rsp, %rbp
+ 228              		.cfi_def_cfa_register 6
+ 229 0197 4883EC20 		subq	$32, %rsp
+ 230 019b 48897DF8 		movq	%rdi, -8(%rbp)
+ 231 019f 488975F0 		movq	%rsi, -16(%rbp)
+ 232 01a3 488955E8 		movq	%rdx, -24(%rbp)
+ 233              		.loc 1 89 0
+ 234 01a7 488B55E8 		movq	-24(%rbp), %rdx
+ 235 01ab 488B75F0 		movq	-16(%rbp), %rsi
+ 236 01af 488B45F8 		movq	-8(%rbp), %rax
+ 237 01b3 4989D0   		movq	%rdx, %r8
+ 238 01b6 B9010000 		movl	$1, %ecx
+ 238      00
+ 239 01bb BA010000 		movl	$1, %edx
+ 239      00
+ 240 01c0 4889C7   		movq	%rax, %rdi
+ 241 01c3 E8000000 		call	arg_litn@PLT
+ 241      00
+ 242 01c8 C9       		leave
+ 243              		.cfi_def_cfa 7, 8
+ 244 01c9 C3       		ret
+ 245              		.cfi_endproc
+ 246              	.LFE5:
+ 248              		.globl	arg_litn
+ 250              	arg_litn:
+ 251              	.LFB6:
+  90:arg_lit.c     **** 
+  91:arg_lit.c     **** 
+  92:arg_lit.c     **** struct arg_lit* arg_litn(const char* shortopts,
+  93:arg_lit.c     ****                          const char* longopts,
+  94:arg_lit.c     ****                          int mincount,
+  95:arg_lit.c     ****                          int maxcount,
+  96:arg_lit.c     ****                          const char *glossary)
+  97:arg_lit.c     ****     {
+ 252              		.loc 1 97 0
+ 253              		.cfi_startproc
+ 254 01ca 55       		pushq	%rbp
+ 255              		.cfi_def_cfa_offset 16
+ 256              		.cfi_offset 6, -16
+ 257 01cb 4889E5   		movq	%rsp, %rbp
+ 258              		.cfi_def_cfa_register 6
+ 259 01ce 4883EC30 		subq	$48, %rsp
+ 260 01d2 48897DE8 		movq	%rdi, -24(%rbp)
+ 261 01d6 488975E0 		movq	%rsi, -32(%rbp)
+ 262 01da 8955DC   		movl	%edx, -36(%rbp)
+ 263 01dd 894DD8   		movl	%ecx, -40(%rbp)
+ 264 01e0 4C8945D0 		movq	%r8, -48(%rbp)
+  98:arg_lit.c     **** 	struct arg_lit *result;
+  99:arg_lit.c     **** 
+ 100:arg_lit.c     **** 	/* foolproof things by ensuring maxcount is not less than mincount */
+ 101:arg_lit.c     **** 	maxcount = (maxcount<mincount) ? mincount : maxcount;
+ 265              		.loc 1 101 0
+ 266 01e4 8B45DC   		movl	-36(%rbp), %eax
+ 267 01e7 3945D8   		cmpl	%eax, -40(%rbp)
+ 268 01ea 0F4D45D8 		cmovge	-40(%rbp), %eax
+ 269 01ee 8945D8   		movl	%eax, -40(%rbp)
+ 102:arg_lit.c     **** 
+ 103:arg_lit.c     ****     result = (struct arg_lit*)malloc(sizeof(struct arg_lit));
+ 270              		.loc 1 103 0
+ 271 01f1 BF680000 		movl	$104, %edi
+ 271      00
+ 272 01f6 E8000000 		call	malloc@PLT
+ 272      00
+ 273 01fb 488945F8 		movq	%rax, -8(%rbp)
+ 104:arg_lit.c     ****     if (result)
+ 274              		.loc 1 104 0
+ 275 01ff 48837DF8 		cmpq	$0, -8(%rbp)
+ 275      00
+ 276 0204 0F849E00 		je	.L17
+ 276      0000
+ 105:arg_lit.c     ****         {
+ 106:arg_lit.c     ****         /* init the arg_hdr struct */
+ 107:arg_lit.c     ****         result->hdr.flag      = 0;
+ 277              		.loc 1 107 0
+ 278 020a 488B45F8 		movq	-8(%rbp), %rax
+ 279 020e C60000   		movb	$0, (%rax)
+ 108:arg_lit.c     ****         result->hdr.shortopts = shortopts;
+ 280              		.loc 1 108 0
+ 281 0211 488B45F8 		movq	-8(%rbp), %rax
+ 282 0215 488B55E8 		movq	-24(%rbp), %rdx
+ 283 0219 48895008 		movq	%rdx, 8(%rax)
+ 109:arg_lit.c     ****         result->hdr.longopts  = longopts;
+ 284              		.loc 1 109 0
+ 285 021d 488B45F8 		movq	-8(%rbp), %rax
+ 286 0221 488B55E0 		movq	-32(%rbp), %rdx
+ 287 0225 48895010 		movq	%rdx, 16(%rax)
+ 110:arg_lit.c     ****         result->hdr.datatype  = NULL;
+ 288              		.loc 1 110 0
+ 289 0229 488B45F8 		movq	-8(%rbp), %rax
+ 290 022d 48C74018 		movq	$0, 24(%rax)
+ 290      00000000 
+ 111:arg_lit.c     ****         result->hdr.glossary  = glossary;
+ 291              		.loc 1 111 0
+ 292 0235 488B45F8 		movq	-8(%rbp), %rax
+ 293 0239 488B55D0 		movq	-48(%rbp), %rdx
+ 294 023d 48895020 		movq	%rdx, 32(%rax)
+ 112:arg_lit.c     ****         result->hdr.mincount  = mincount;
+ 295              		.loc 1 112 0
+ 296 0241 488B45F8 		movq	-8(%rbp), %rax
+ 297 0245 8B55DC   		movl	-36(%rbp), %edx
+ 298 0248 895028   		movl	%edx, 40(%rax)
+ 113:arg_lit.c     ****         result->hdr.maxcount  = maxcount;
+ 299              		.loc 1 113 0
+ 300 024b 488B45F8 		movq	-8(%rbp), %rax
+ 301 024f 8B55D8   		movl	-40(%rbp), %edx
+ 302 0252 89502C   		movl	%edx, 44(%rax)
+ 114:arg_lit.c     ****         result->hdr.parent    = result;
+ 303              		.loc 1 114 0
+ 304 0255 488B45F8 		movq	-8(%rbp), %rax
+ 305 0259 488B55F8 		movq	-8(%rbp), %rdx
+ 306 025d 48895030 		movq	%rdx, 48(%rax)
+ 115:arg_lit.c     ****         result->hdr.resetfn   = (arg_resetfn*)resetfn;
+ 307              		.loc 1 115 0
+ 308 0261 488B45F8 		movq	-8(%rbp), %rax
+ 309 0265 488D1594 		leaq	resetfn(%rip), %rdx
+ 309      FDFFFF
+ 310 026c 48895038 		movq	%rdx, 56(%rax)
+ 116:arg_lit.c     ****         result->hdr.scanfn    = (arg_scanfn*)scanfn;
+ 311              		.loc 1 116 0
+ 312 0270 488B45F8 		movq	-8(%rbp), %rax
+ 313 0274 488D159A 		leaq	scanfn(%rip), %rdx
+ 313      FDFFFF
+ 314 027b 48895040 		movq	%rdx, 64(%rax)
+ 117:arg_lit.c     ****         result->hdr.checkfn   = (arg_checkfn*)checkfn;
+ 315              		.loc 1 117 0
+ 316 027f 488B45F8 		movq	-8(%rbp), %rax
+ 317 0283 488D15CF 		leaq	checkfn(%rip), %rdx
+ 317      FDFFFF
+ 318 028a 48895048 		movq	%rdx, 72(%rax)
+ 118:arg_lit.c     ****         result->hdr.errorfn   = (arg_errorfn*)errorfn;
+ 319              		.loc 1 118 0
+ 320 028e 488B45F8 		movq	-8(%rbp), %rax
+ 321 0292 488D15E6 		leaq	errorfn(%rip), %rdx
+ 321      FDFFFF
+ 322 0299 48895050 		movq	%rdx, 80(%rax)
+ 119:arg_lit.c     **** 
+ 120:arg_lit.c     ****         /* init local variables */
+ 121:arg_lit.c     ****         result->count = 0;
+ 323              		.loc 1 121 0
+ 324 029d 488B45F8 		movq	-8(%rbp), %rax
+ 325 02a1 C7406000 		movl	$0, 96(%rax)
+ 325      000000
+ 326              	.L17:
+ 122:arg_lit.c     ****         }
+ 123:arg_lit.c     ****     /*printf("arg_litn() returns %p\n",result);*/
+ 124:arg_lit.c     ****     return result;
+ 327              		.loc 1 124 0
+ 328 02a8 488B45F8 		movq	-8(%rbp), %rax
+ 125:arg_lit.c     ****     }
+ 329              		.loc 1 125 0
+ 330 02ac C9       		leave
+ 331              		.cfi_def_cfa 7, 8
+ 332 02ad C3       		ret
+ 333              		.cfi_endproc
+ 334              	.LFE6:
+ 336              	.Letext0:
+ 337              		.file 2 "/usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h"
+ 338              		.file 3 "/usr/include/x86_64-linux-gnu/bits/types.h"
+ 339              		.file 4 "/usr/include/stdio.h"
+ 340              		.file 5 "/usr/include/libio.h"
+ 341              		.file 6 "argtable2.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 arg_lit.c
+     /tmp/ccAM46Mo.s:5      .text:0000000000000000 resetfn
+     /tmp/ccAM46Mo.s:27     .text:0000000000000015 scanfn
+     /tmp/ccAM46Mo.s:68     .text:0000000000000059 checkfn
+     /tmp/ccAM46Mo.s:105    .text:000000000000007f errorfn
+     /tmp/ccAM46Mo.s:190    .text:000000000000015c arg_lit0
+     /tmp/ccAM46Mo.s:250    .text:00000000000001ca arg_litn
+     /tmp/ccAM46Mo.s:220    .text:0000000000000193 arg_lit1
+
+UNDEFINED SYMBOLS
+_GLOBAL_OFFSET_TABLE_
+fprintf
+arg_print_option
+fputc
+malloc

@@ -1,0 +1,71 @@
+#
+# Copyright (C) 2013 Chris McClelland
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+#===============================================================================
+# USB interface
+#===============================================================================
+set_io sysClk_in     13  # SYSCLK: 333kHz, 3.33MHz, 33.3MHz etc
+
+set_io eppData_io[0] 42  # AVR PD0
+set_io eppData_io[1] 41  # AVR PD1
+set_io eppData_io[2] 40  # AVR PD2
+set_io eppData_io[3] 37  # AVR PD3
+set_io eppData_io[4] 36  # AVR PD4
+set_io eppData_io[5] 34  # AVR PD5
+set_io eppData_io[6] 30  # AVR PD6
+set_io eppData_io[7] 29  # AVR PD7
+
+set_io eppAddrStb_in 26  # AVR PC4
+set_io eppDataStb_in 27  # AVR PC5
+set_io eppWrite_in   28  # AVR PC6
+set_io eppWait_out   33  # AVR PC7
+
+
+#===============================================================================
+# Peripheral signals
+#===============================================================================
+set_io led_out[0] 59  # LED1
+set_io led_out[1] 56  # LED2
+set_io led_out[2] 53  # LED3
+set_io led_out[3] 51  # LED4
+set_io led_out[4] 86  # J2 PIN 15 (J2 top row, left-to-right)
+set_io led_out[5] 83  # J2 PIN 13
+set_io led_out[6] 81  # J2 PIN 11
+set_io led_out[7] 79  # J2 PIN 9
+
+set_io anode_out[0] 74  # J2 PIN 7:  digit 1
+set_io anode_out[1] 72  # J2 PIN 5:  digit 2
+set_io anode_out[2] 69  # J2 PIN 3:  digit 3
+set_io anode_out[3] 66  # J2 PIN 1:  digit 4
+
+set_io sseg_out[0]  87  # J2 PIN 16: segment a (J2 bottom row, left-to-right)
+set_io sseg_out[1]  85  # J2 PIN 14: segment b
+set_io sseg_out[2]  82  # J2 PIN 12: segment c
+set_io sseg_out[3]  80  # J2 PIN 10: segment d
+set_io sseg_out[4]  78  # J2 PIN 8:  segment e
+set_io sseg_out[5]  73  # J2 PIN 6:  segment f
+set_io sseg_out[6]  71  # J2 PIN 4:  segment g
+set_io sseg_out[7]  68  # J2 PIN 2:  decimal point
+
+set_io sw_in[0] 60 -pullup yes  # BTN1
+set_io sw_in[1] 57 -pullup yes  # BTN2
+set_io sw_in[2] 54 -pullup yes  # BTN3
+set_io sw_in[3] 52 -pullup yes  # BTN4
+set_io sw_in[4] 96 -pullup yes  # J4 PIN 7 (J4 top row, rightmost four pins)
+set_io sw_in[5] 94 -pullup yes  # J4 PIN 5
+set_io sw_in[6] 91 -pullup yes  # J4 PIN 3
+set_io sw_in[7] 89 -pullup yes  # J4 PIN 1

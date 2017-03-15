@@ -1,0 +1,167 @@
+   1              		.file	"MemoryOutStream.cpp"
+   2              		.text
+   3              	.Ltext0:
+   4              		.align 2
+   5              		.globl	_ZNK8UnitTest15MemoryOutStream7GetTextEv
+   7              	_ZNK8UnitTest15MemoryOutStream7GetTextEv:
+   8              	.LFB1007:
+   9              		.file 1 "MemoryOutStream.cpp"
+   1:MemoryOutStream.cpp **** #include "MemoryOutStream.h"
+   2:MemoryOutStream.cpp **** 
+   3:MemoryOutStream.cpp **** #ifndef UNITTEST_USE_CUSTOM_STREAMS
+   4:MemoryOutStream.cpp **** 
+   5:MemoryOutStream.cpp **** 
+   6:MemoryOutStream.cpp **** namespace UnitTest {
+   7:MemoryOutStream.cpp **** 
+   8:MemoryOutStream.cpp **** char const* MemoryOutStream::GetText() const
+   9:MemoryOutStream.cpp **** {
+  10              		.loc 1 9 0
+  11              		.cfi_startproc
+  12              		.cfi_personality 0x9b,DW.ref.__gxx_personality_v0
+  13              		.cfi_lsda 0x1b,.LLSDA1007
+  14 0000 55       		pushq	%rbp
+  15              		.cfi_def_cfa_offset 16
+  16              		.cfi_offset 6, -16
+  17 0001 4889E5   		movq	%rsp, %rbp
+  18              		.cfi_def_cfa_register 6
+  19 0004 53       		pushq	%rbx
+  20 0005 4883EC28 		subq	$40, %rsp
+  21              		.cfi_offset 3, -24
+  22 0009 48897DD8 		movq	%rdi, -40(%rbp)
+  10:MemoryOutStream.cpp ****     m_text = this->str();
+  23              		.loc 1 10 0
+  24 000d 488B55D8 		movq	-40(%rbp), %rdx
+  25 0011 488D45E0 		leaq	-32(%rbp), %rax
+  26 0015 4889D6   		movq	%rdx, %rsi
+  27 0018 4889C7   		movq	%rax, %rdi
+  28              	.LEHB0:
+  29 001b E8000000 		call	_ZNKSt19basic_ostringstreamIcSt11char_traitsIcESaIcEE3strEv@PLT
+  29      00
+  30              	.LEHE0:
+  31 0020 488B45D8 		movq	-40(%rbp), %rax
+  32 0024 488D5058 		leaq	88(%rax), %rdx
+  33 0028 488D45E0 		leaq	-32(%rbp), %rax
+  34 002c 4889C6   		movq	%rax, %rsi
+  35 002f 4889D7   		movq	%rdx, %rdi
+  36              	.LEHB1:
+  37 0032 E8000000 		call	_ZNSsaSERKSs@PLT
+  37      00
+  38              	.LEHE1:
+  39              		.loc 1 10 0 is_stmt 0 discriminator 1
+  40 0037 488D45E0 		leaq	-32(%rbp), %rax
+  41 003b 4889C7   		movq	%rax, %rdi
+  42              	.LEHB2:
+  43 003e E8000000 		call	_ZNSsD1Ev@PLT
+  43      00
+  11:MemoryOutStream.cpp ****     return m_text.c_str();
+  44              		.loc 1 11 0 is_stmt 1 discriminator 1
+  45 0043 488B45D8 		movq	-40(%rbp), %rax
+  46 0047 4883C058 		addq	$88, %rax
+  47 004b 4889C7   		movq	%rax, %rdi
+  48 004e E8000000 		call	_ZNKSs5c_strEv@PLT
+  48      00
+  49              	.LEHE2:
+  50 0053 EB1A     		jmp	.L5
+  51              	.L4:
+  52 0055 4889C3   		movq	%rax, %rbx
+  10:MemoryOutStream.cpp ****     m_text = this->str();
+  53              		.loc 1 10 0
+  54 0058 488D45E0 		leaq	-32(%rbp), %rax
+  55 005c 4889C7   		movq	%rax, %rdi
+  56 005f E8000000 		call	_ZNSsD1Ev@PLT
+  56      00
+  57 0064 4889D8   		movq	%rbx, %rax
+  58 0067 4889C7   		movq	%rax, %rdi
+  59              	.LEHB3:
+  60 006a E8000000 		call	_Unwind_Resume@PLT
+  60      00
+  61              	.LEHE3:
+  62              	.L5:
+  12:MemoryOutStream.cpp **** }
+  63              		.loc 1 12 0
+  64 006f 4883C428 		addq	$40, %rsp
+  65 0073 5B       		popq	%rbx
+  66 0074 5D       		popq	%rbp
+  67              		.cfi_def_cfa 7, 8
+  68 0075 C3       		ret
+  69              		.cfi_endproc
+  70              	.LFE1007:
+  71              		.globl	__gxx_personality_v0
+  72              		.section	.gcc_except_table,"a",@progbits
+  73              	.LLSDA1007:
+  74 0000 FF       		.byte	0xff
+  75 0001 FF       		.byte	0xff
+  76 0002 01       		.byte	0x1
+  77 0003 10       		.uleb128 .LLSDACSE1007-.LLSDACSB1007
+  78              	.LLSDACSB1007:
+  79 0004 1B       		.uleb128 .LEHB0-.LFB1007
+  80 0005 05       		.uleb128 .LEHE0-.LEHB0
+  81 0006 00       		.uleb128 0
+  82 0007 00       		.uleb128 0
+  83 0008 32       		.uleb128 .LEHB1-.LFB1007
+  84 0009 05       		.uleb128 .LEHE1-.LEHB1
+  85 000a 55       		.uleb128 .L4-.LFB1007
+  86 000b 00       		.uleb128 0
+  87 000c 3E       		.uleb128 .LEHB2-.LFB1007
+  88 000d 15       		.uleb128 .LEHE2-.LEHB2
+  89 000e 00       		.uleb128 0
+  90 000f 00       		.uleb128 0
+  91 0010 6A       		.uleb128 .LEHB3-.LFB1007
+  92 0011 05       		.uleb128 .LEHE3-.LEHB3
+  93 0012 00       		.uleb128 0
+  94 0013 00       		.uleb128 0
+  95              	.LLSDACSE1007:
+  96              		.text
+  98              		.section	.data.rel.ro.local,"aw",@progbits
+  99              		.align 8
+ 102              	_ZZL18__gthread_active_pvE20__gthread_active_ptr:
+ 103 0000 00000000 		.quad	_ZL28__gthrw___pthread_key_createPjPFvPvE
+ 103      00000000 
+ 104              		.weakref	_ZL28__gthrw___pthread_key_createPjPFvPvE,__pthread_key_create
+ 105              		.text
+ 106              	.Letext0:
+ 107              		.file 2 "<built-in>"
+ 108              		.file 3 "/usr/include/stdio.h"
+ 109              		.file 4 "/usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h"
+ 110              		.file 5 "/usr/include/wchar.h"
+ 111              		.file 6 "/usr/include/c++/4.8/cwchar"
+ 112              		.file 7 "/usr/include/c++/4.8/bits/char_traits.h"
+ 113              		.file 8 "/usr/include/x86_64-linux-gnu/c++/4.8/bits/c++config.h"
+ 114              		.file 9 "/usr/include/c++/4.8/clocale"
+ 115              		.file 10 "/usr/include/c++/4.8/bits/allocator.h"
+ 116              		.file 11 "/usr/include/c++/4.8/bits/basic_string.h"
+ 117              		.file 12 "/usr/include/c++/4.8/bits/basic_string.tcc"
+ 118              		.file 13 "/usr/include/c++/4.8/bits/stringfwd.h"
+ 119              		.file 14 "/usr/include/c++/4.8/cwctype"
+ 120              		.file 15 "/usr/include/c++/4.8/bits/stl_iterator_base_types.h"
+ 121              		.file 16 "/usr/include/time.h"
+ 122              		.file 17 "/usr/include/c++/4.8/ext/new_allocator.h"
+ 123              		.file 18 "/usr/include/c++/4.8/ext/numeric_traits.h"
+ 124              		.file 19 "/usr/include/c++/4.8/bits/stl_iterator.h"
+ 125              		.file 20 "/usr/include/c++/4.8/debug/debug.h"
+ 126              		.file 21 "/usr/include/locale.h"
+ 127              		.file 22 "/usr/include/x86_64-linux-gnu/bits/types.h"
+ 128              		.file 23 "/usr/include/x86_64-linux-gnu/c++/4.8/bits/atomic_word.h"
+ 129              		.file 24 "/usr/include/wctype.h"
+ 130              		.file 25 "MemoryOutStream.h"
+ 7771              		.align 8
+ 7774              	DW.ref.__gxx_personality_v0:
+ 7775 0000 00000000 		.quad	__gxx_personality_v0
+ 7775      00000000 
+ 7776              		.ident	"GCC: (Ubuntu 4.8.4-2ubuntu1~14.04.3) 4.8.4"
+ 7777              		.section	.note.GNU-stack,"",@progbits
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 MemoryOutStream.cpp
+     /tmp/ccjqFYYO.s:7      .text:0000000000000000 _ZNK8UnitTest15MemoryOutStream7GetTextEv
+     /tmp/ccjqFYYO.s:7774   .data.DW.ref.__gxx_personality_v0:0000000000000000 DW.ref.__gxx_personality_v0
+     /tmp/ccjqFYYO.s:102    .data.rel.ro.local:0000000000000000 _ZZL18__gthread_active_pvE20__gthread_active_ptr
+
+UNDEFINED SYMBOLS
+_GLOBAL_OFFSET_TABLE_
+_ZNKSt19basic_ostringstreamIcSt11char_traitsIcESaIcEE3strEv
+_ZNSsaSERKSs
+_ZNSsD1Ev
+_ZNKSs5c_strEv
+_Unwind_Resume
+__gxx_personality_v0
+__pthread_key_create

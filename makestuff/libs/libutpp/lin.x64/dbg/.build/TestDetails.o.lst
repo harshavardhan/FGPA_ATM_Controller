@@ -1,0 +1,112 @@
+   1              		.file	"TestDetails.cpp"
+   2              		.text
+   3              	.Ltext0:
+   4              		.align 2
+   5              		.globl	_ZN8UnitTest11TestDetailsC2EPKcS2_S2_i
+   7              	_ZN8UnitTest11TestDetailsC2EPKcS2_S2_i:
+   8              	.LFB1:
+   9              		.file 1 "TestDetails.cpp"
+   1:TestDetails.cpp **** #include "TestDetails.h"
+   2:TestDetails.cpp **** 
+   3:TestDetails.cpp **** namespace UnitTest {
+   4:TestDetails.cpp **** 
+   5:TestDetails.cpp **** TestDetails::TestDetails(char const* testName_, char const* suiteName_, char const* filename_, int 
+  10              		.loc 1 5 0
+  11              		.cfi_startproc
+  12 0000 55       		pushq	%rbp
+  13              		.cfi_def_cfa_offset 16
+  14              		.cfi_offset 6, -16
+  15 0001 4889E5   		movq	%rsp, %rbp
+  16              		.cfi_def_cfa_register 6
+  17 0004 48897DF8 		movq	%rdi, -8(%rbp)
+  18 0008 488975F0 		movq	%rsi, -16(%rbp)
+  19 000c 488955E8 		movq	%rdx, -24(%rbp)
+  20 0010 48894DE0 		movq	%rcx, -32(%rbp)
+  21 0014 448945DC 		movl	%r8d, -36(%rbp)
+  22              	.LBB2:
+   6:TestDetails.cpp ****     : suiteName(suiteName_)
+   7:TestDetails.cpp ****     , testName(testName_)
+   8:TestDetails.cpp ****     , filename(filename_)
+   9:TestDetails.cpp ****     , lineNumber(lineNumber_)
+  23              		.loc 1 9 0
+  24 0018 488B45F8 		movq	-8(%rbp), %rax
+  25 001c 488B55E8 		movq	-24(%rbp), %rdx
+  26 0020 488910   		movq	%rdx, (%rax)
+  27 0023 488B45F8 		movq	-8(%rbp), %rax
+  28 0027 488B55F0 		movq	-16(%rbp), %rdx
+  29 002b 48895008 		movq	%rdx, 8(%rax)
+  30 002f 488B45F8 		movq	-8(%rbp), %rax
+  31 0033 488B55E0 		movq	-32(%rbp), %rdx
+  32 0037 48895010 		movq	%rdx, 16(%rax)
+  33 003b 488B45F8 		movq	-8(%rbp), %rax
+  34 003f 8B55DC   		movl	-36(%rbp), %edx
+  35 0042 895018   		movl	%edx, 24(%rax)
+  36              	.LBE2:
+  10:TestDetails.cpp **** {
+  11:TestDetails.cpp **** }
+  37              		.loc 1 11 0
+  38 0045 5D       		popq	%rbp
+  39              		.cfi_def_cfa 7, 8
+  40 0046 C3       		ret
+  41              		.cfi_endproc
+  42              	.LFE1:
+  44              		.globl	_ZN8UnitTest11TestDetailsC1EPKcS2_S2_i
+  45              		.set	_ZN8UnitTest11TestDetailsC1EPKcS2_S2_i,_ZN8UnitTest11TestDetailsC2EPKcS2_S2_i
+  46 0047 90       		.align 2
+  47              		.globl	_ZN8UnitTest11TestDetailsC2ERKS0_i
+  49              	_ZN8UnitTest11TestDetailsC2ERKS0_i:
+  50              	.LFB4:
+  12:TestDetails.cpp **** 
+  13:TestDetails.cpp **** TestDetails::TestDetails(const TestDetails& details, int lineNumber_)
+  51              		.loc 1 13 0
+  52              		.cfi_startproc
+  53 0048 55       		pushq	%rbp
+  54              		.cfi_def_cfa_offset 16
+  55              		.cfi_offset 6, -16
+  56 0049 4889E5   		movq	%rsp, %rbp
+  57              		.cfi_def_cfa_register 6
+  58 004c 48897DF8 		movq	%rdi, -8(%rbp)
+  59 0050 488975F0 		movq	%rsi, -16(%rbp)
+  60 0054 8955EC   		movl	%edx, -20(%rbp)
+  61              	.LBB3:
+  14:TestDetails.cpp ****     : suiteName(details.suiteName)
+  15:TestDetails.cpp ****     , testName(details.testName)
+  16:TestDetails.cpp ****     , filename(details.filename)
+  17:TestDetails.cpp ****     , lineNumber(lineNumber_)
+  62              		.loc 1 17 0
+  63 0057 488B45F0 		movq	-16(%rbp), %rax
+  64 005b 488B10   		movq	(%rax), %rdx
+  65 005e 488B45F8 		movq	-8(%rbp), %rax
+  66 0062 488910   		movq	%rdx, (%rax)
+  67 0065 488B45F0 		movq	-16(%rbp), %rax
+  68 0069 488B5008 		movq	8(%rax), %rdx
+  69 006d 488B45F8 		movq	-8(%rbp), %rax
+  70 0071 48895008 		movq	%rdx, 8(%rax)
+  71 0075 488B45F0 		movq	-16(%rbp), %rax
+  72 0079 488B5010 		movq	16(%rax), %rdx
+  73 007d 488B45F8 		movq	-8(%rbp), %rax
+  74 0081 48895010 		movq	%rdx, 16(%rax)
+  75 0085 488B45F8 		movq	-8(%rbp), %rax
+  76 0089 8B55EC   		movl	-20(%rbp), %edx
+  77 008c 895018   		movl	%edx, 24(%rax)
+  78              	.LBE3:
+  18:TestDetails.cpp **** {
+  19:TestDetails.cpp **** }
+  79              		.loc 1 19 0
+  80 008f 5D       		popq	%rbp
+  81              		.cfi_def_cfa 7, 8
+  82 0090 C3       		ret
+  83              		.cfi_endproc
+  84              	.LFE4:
+  86              		.globl	_ZN8UnitTest11TestDetailsC1ERKS0_i
+  87              		.set	_ZN8UnitTest11TestDetailsC1ERKS0_i,_ZN8UnitTest11TestDetailsC2ERKS0_i
+  88              	.Letext0:
+  89              		.file 2 "TestDetails.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 TestDetails.cpp
+     /tmp/ccSwsMea.s:7      .text:0000000000000000 _ZN8UnitTest11TestDetailsC2EPKcS2_S2_i
+     /tmp/ccSwsMea.s:7      .text:0000000000000000 _ZN8UnitTest11TestDetailsC1EPKcS2_S2_i
+     /tmp/ccSwsMea.s:49     .text:0000000000000048 _ZN8UnitTest11TestDetailsC2ERKS0_i
+     /tmp/ccSwsMea.s:49     .text:0000000000000048 _ZN8UnitTest11TestDetailsC1ERKS0_i
+
+NO UNDEFINED SYMBOLS

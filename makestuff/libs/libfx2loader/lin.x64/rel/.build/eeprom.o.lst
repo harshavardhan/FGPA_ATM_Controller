@@ -1,0 +1,373 @@
+   1              		.file	"eeprom.c"
+   2              		.section	.rodata.str1.8,"aMS",@progbits,1
+   3              		.align 8
+   4              	.LC0:
+   5 0000 66783257 		.string	"fx2WriteEEPROM(): This firmware does not seem to support EEPROM operations - try loading 
+   5      72697465 
+   5      45455052 
+   5      4F4D2829 
+   5      3A205468 
+   6              		.text
+   7              		.p2align 4,,15
+   8              		.globl	fx2WriteEEPROM
+  10              	fx2WriteEEPROM:
+  11              	.LFB17:
+  12              		.cfi_startproc
+  13 0000 4157     		pushq	%r15
+  14              		.cfi_def_cfa_offset 16
+  15              		.cfi_offset 15, -16
+  16 0002 4989F7   		movq	%rsi, %r15
+  17 0005 4156     		pushq	%r14
+  18              		.cfi_def_cfa_offset 24
+  19              		.cfi_offset 14, -24
+  20 0007 4155     		pushq	%r13
+  21              		.cfi_def_cfa_offset 32
+  22              		.cfi_offset 13, -32
+  23 0009 4189D5   		movl	%edx, %r13d
+  24 000c 4154     		pushq	%r12
+  25              		.cfi_def_cfa_offset 40
+  26              		.cfi_offset 12, -40
+  27 000e 4989CC   		movq	%rcx, %r12
+  28 0011 55       		pushq	%rbp
+  29              		.cfi_def_cfa_offset 48
+  30              		.cfi_offset 6, -48
+  31 0012 53       		pushq	%rbx
+  32              		.cfi_def_cfa_offset 56
+  33              		.cfi_offset 3, -56
+  34 0013 4883EC28 		subq	$40, %rsp
+  35              		.cfi_def_cfa_offset 96
+  36 0017 81FA0010 		cmpl	$4096, %edx
+  36      0000
+  37 001d 48897C24 		movq	%rdi, 16(%rsp)
+  37      10
+  38 0022 0F86C200 		jbe	.L9
+  38      0000
+  39 0028 31C0     		xorl	%eax, %eax
+  40 002a 31DB     		xorl	%ebx, %ebx
+  41 002c 31ED     		xorl	%ebp, %ebp
+  42 002e 66894424 		movw	%ax, 30(%rsp)
+  42      1E
+  43 0033 EB25     		jmp	.L7
+  44              		.p2align 4,,10
+  45 0035 0F1F00   		.p2align 3
+  46              	.L3:
+  47 0038 4181ED00 		subl	$4096, %r13d
+  47      100000
+  48 003f 4981C700 		addq	$4096, %r15
+  48      100000
+  49 0046 6681C300 		addw	$4096, %bx
+  49      10
+  50 004b 0F84A000 		je	.L12
+  50      0000
+  51              	.L5:
+  52 0051 4181FD00 		cmpl	$4096, %r13d
+  52      100000
+  53 0058 7656     		jbe	.L13
+  54              	.L7:
+  55 005a 488B7C24 		movq	16(%rsp), %rdi
+  55      10
+  56 005f 0FB7D3   		movzwl	%bx, %edx
+  57 0062 4C896424 		movq	%r12, 8(%rsp)
+  57      08
+  58 0067 C7042488 		movl	$5000, (%rsp)
+  58      130000
+  59 006e 41B90010 		movl	$4096, %r9d
+  59      0000
+  60 0074 4D89F8   		movq	%r15, %r8
+  61 0077 89E9     		movl	%ebp, %ecx
+  62 0079 BEA20000 		movl	$162, %esi
+  62      00
+  63 007e 4189EE   		movl	%ebp, %r14d
+  64 0081 E8000000 		call	usbControlWrite@PLT
+  64      00
+  65 0086 85C0     		testl	%eax, %eax
+  66 0088 74AE     		je	.L3
+  67              	.L8:
+  68              	.L4:
+  69 008a 488D3500 		leaq	.LC0(%rip), %rsi
+  69      000000
+  70 0091 4C89E7   		movq	%r12, %rdi
+  71 0094 E8000000 		call	errPrefix@PLT
+  71      00
+  72 0099 4883C428 		addq	$40, %rsp
+  73              		.cfi_remember_state
+  74              		.cfi_def_cfa_offset 56
+  75 009d B8010000 		movl	$1, %eax
+  75      00
+  76 00a2 5B       		popq	%rbx
+  77              		.cfi_def_cfa_offset 48
+  78 00a3 5D       		popq	%rbp
+  79              		.cfi_def_cfa_offset 40
+  80 00a4 415C     		popq	%r12
+  81              		.cfi_def_cfa_offset 32
+  82 00a6 415D     		popq	%r13
+  83              		.cfi_def_cfa_offset 24
+  84 00a8 415E     		popq	%r14
+  85              		.cfi_def_cfa_offset 16
+  86 00aa 415F     		popq	%r15
+  87              		.cfi_def_cfa_offset 8
+  88 00ac C3       		ret
+  89 00ad 0F1F00   		.p2align 4,,10
+  90              		.p2align 3
+  91              	.L13:
+  92              		.cfi_restore_state
+  93 00b0 0FB7D3   		movzwl	%bx, %edx
+  94              	.L2:
+  95 00b3 488B7C24 		movq	16(%rsp), %rdi
+  95      10
+  96 00b8 4C896424 		movq	%r12, 8(%rsp)
+  96      08
+  97 00bd 4589E9   		movl	%r13d, %r9d
+  98 00c0 C7042488 		movl	$5000, (%rsp)
+  98      130000
+  99 00c7 4D89F8   		movq	%r15, %r8
+ 100 00ca 4489F1   		movl	%r14d, %ecx
+ 101 00cd BEA20000 		movl	$162, %esi
+ 101      00
+ 102 00d2 E8000000 		call	usbControlWrite@PLT
+ 102      00
+ 103 00d7 85C0     		testl	%eax, %eax
+ 104 00d9 75AF     		jne	.L8
+ 105 00db 4883C428 		addq	$40, %rsp
+ 106              		.cfi_remember_state
+ 107              		.cfi_def_cfa_offset 56
+ 108 00df 5B       		popq	%rbx
+ 109              		.cfi_def_cfa_offset 48
+ 110 00e0 5D       		popq	%rbp
+ 111              		.cfi_def_cfa_offset 40
+ 112 00e1 415C     		popq	%r12
+ 113              		.cfi_def_cfa_offset 32
+ 114 00e3 415D     		popq	%r13
+ 115              		.cfi_def_cfa_offset 24
+ 116 00e5 415E     		popq	%r14
+ 117              		.cfi_def_cfa_offset 16
+ 118 00e7 415F     		popq	%r15
+ 119              		.cfi_def_cfa_offset 8
+ 120 00e9 C3       		ret
+ 121              	.L9:
+ 122              		.cfi_restore_state
+ 123 00ea 31D2     		xorl	%edx, %edx
+ 124 00ec 4531F6   		xorl	%r14d, %r14d
+ 125 00ef EBC2     		jmp	.L2
+ 126              	.L12:
+ 127 00f1 66834424 		addw	$1, 30(%rsp)
+ 127      1E01
+ 128 00f7 0FB76C24 		movzwl	30(%rsp), %ebp
+ 128      1E
+ 129 00fc 4189EE   		movl	%ebp, %r14d
+ 130 00ff E94DFFFF 		jmp	.L5
+ 130      FF
+ 131              		.cfi_endproc
+ 132              	.LFE17:
+ 134              		.section	.rodata.str1.1,"aMS",@progbits,1
+ 135              	.LC1:
+ 136 0000 66783252 		.string	"fx2ReadEEPROM()"
+ 136      65616445 
+ 136      4550524F 
+ 136      4D282900 
+ 137              		.text
+ 138 0104 6666662E 		.p2align 4,,15
+ 138      0F1F8400 
+ 138      00000000 
+ 139              		.globl	fx2ReadEEPROM
+ 141              	fx2ReadEEPROM:
+ 142              	.LFB18:
+ 143              		.cfi_startproc
+ 144 0110 4157     		pushq	%r15
+ 145              		.cfi_def_cfa_offset 16
+ 146              		.cfi_offset 15, -16
+ 147 0112 4156     		pushq	%r14
+ 148              		.cfi_def_cfa_offset 24
+ 149              		.cfi_offset 14, -24
+ 150 0114 4155     		pushq	%r13
+ 151              		.cfi_def_cfa_offset 32
+ 152              		.cfi_offset 13, -32
+ 153 0116 4189F5   		movl	%esi, %r13d
+ 154 0119 4154     		pushq	%r12
+ 155              		.cfi_def_cfa_offset 40
+ 156              		.cfi_offset 12, -40
+ 157 011b 4989CC   		movq	%rcx, %r12
+ 158 011e 55       		pushq	%rbp
+ 159              		.cfi_def_cfa_offset 48
+ 160              		.cfi_offset 6, -48
+ 161 011f 53       		pushq	%rbx
+ 162              		.cfi_def_cfa_offset 56
+ 163              		.cfi_offset 3, -56
+ 164 0120 4889D3   		movq	%rdx, %rbx
+ 165 0123 89F2     		movl	%esi, %edx
+ 166 0125 31F6     		xorl	%esi, %esi
+ 167 0127 4883EC28 		subq	$40, %rsp
+ 168              		.cfi_def_cfa_offset 96
+ 169 012b 48897C24 		movq	%rdi, 16(%rsp)
+ 169      10
+ 170 0130 4889DF   		movq	%rbx, %rdi
+ 171 0133 E8000000 		call	bufAppendConst@PLT
+ 171      00
+ 172 0138 85C0     		testl	%eax, %eax
+ 173 013a 0F859800 		jne	.L25
+ 173      0000
+ 174 0140 4181FD00 		cmpl	$4096, %r13d
+ 174      100000
+ 175 0147 4C8B3B   		movq	(%rbx), %r15
+ 176 014a 0F86EA00 		jbe	.L23
+ 176      0000
+ 177 0150 31C0     		xorl	%eax, %eax
+ 178 0152 31DB     		xorl	%ebx, %ebx
+ 179 0154 31ED     		xorl	%ebp, %ebp
+ 180 0156 66894424 		movw	%ax, 30(%rsp)
+ 180      1E
+ 181 015b EB25     		jmp	.L21
+ 182 015d 0F1F00   		.p2align 4,,10
+ 183              		.p2align 3
+ 184              	.L18:
+ 185 0160 4181ED00 		subl	$4096, %r13d
+ 185      100000
+ 186 0167 4981C700 		addq	$4096, %r15
+ 186      100000
+ 187 016e 6681C300 		addw	$4096, %bx
+ 187      10
+ 188 0173 0F84C800 		je	.L26
+ 188      0000
+ 189              	.L19:
+ 190 0179 4181FD00 		cmpl	$4096, %r13d
+ 190      100000
+ 191 0180 767E     		jbe	.L27
+ 192              	.L21:
+ 193 0182 488B7C24 		movq	16(%rsp), %rdi
+ 193      10
+ 194 0187 0FB7D3   		movzwl	%bx, %edx
+ 195 018a 4C896424 		movq	%r12, 8(%rsp)
+ 195      08
+ 196 018f C7042488 		movl	$5000, (%rsp)
+ 196      130000
+ 197 0196 41B90010 		movl	$4096, %r9d
+ 197      0000
+ 198 019c 4D89F8   		movq	%r15, %r8
+ 199 019f 89E9     		movl	%ebp, %ecx
+ 200 01a1 BEA20000 		movl	$162, %esi
+ 200      00
+ 201 01a6 4189EE   		movl	%ebp, %r14d
+ 202 01a9 E8000000 		call	usbControlRead@PLT
+ 202      00
+ 203 01ae 85C0     		testl	%eax, %eax
+ 204 01b0 74AE     		je	.L18
+ 205              	.L22:
+ 206              	.L16:
+ 207 01b2 488D3500 		leaq	.LC0(%rip), %rsi
+ 207      000000
+ 208 01b9 4C89E7   		movq	%r12, %rdi
+ 209 01bc E8000000 		call	errPrefix@PLT
+ 209      00
+ 210 01c1 4883C428 		addq	$40, %rsp
+ 211              		.cfi_remember_state
+ 212              		.cfi_def_cfa_offset 56
+ 213 01c5 B8010000 		movl	$1, %eax
+ 213      00
+ 214 01ca 5B       		popq	%rbx
+ 215              		.cfi_def_cfa_offset 48
+ 216 01cb 5D       		popq	%rbp
+ 217              		.cfi_def_cfa_offset 40
+ 218 01cc 415C     		popq	%r12
+ 219              		.cfi_def_cfa_offset 32
+ 220 01ce 415D     		popq	%r13
+ 221              		.cfi_def_cfa_offset 24
+ 222 01d0 415E     		popq	%r14
+ 223              		.cfi_def_cfa_offset 16
+ 224 01d2 415F     		popq	%r15
+ 225              		.cfi_def_cfa_offset 8
+ 226 01d4 C3       		ret
+ 227              		.p2align 4,,10
+ 228 01d5 0F1F00   		.p2align 3
+ 229              	.L25:
+ 230              		.cfi_restore_state
+ 231 01d8 488D3500 		leaq	.LC1(%rip), %rsi
+ 231      000000
+ 232 01df 4C89E7   		movq	%r12, %rdi
+ 233 01e2 E8000000 		call	errPrefix@PLT
+ 233      00
+ 234 01e7 4883C428 		addq	$40, %rsp
+ 235              		.cfi_remember_state
+ 236              		.cfi_def_cfa_offset 56
+ 237 01eb B8020000 		movl	$2, %eax
+ 237      00
+ 238 01f0 5B       		popq	%rbx
+ 239              		.cfi_def_cfa_offset 48
+ 240 01f1 5D       		popq	%rbp
+ 241              		.cfi_def_cfa_offset 40
+ 242 01f2 415C     		popq	%r12
+ 243              		.cfi_def_cfa_offset 32
+ 244 01f4 415D     		popq	%r13
+ 245              		.cfi_def_cfa_offset 24
+ 246 01f6 415E     		popq	%r14
+ 247              		.cfi_def_cfa_offset 16
+ 248 01f8 415F     		popq	%r15
+ 249              		.cfi_def_cfa_offset 8
+ 250 01fa C3       		ret
+ 251 01fb 0F1F4400 		.p2align 4,,10
+ 251      00
+ 252              		.p2align 3
+ 253              	.L27:
+ 254              		.cfi_restore_state
+ 255 0200 0FB7D3   		movzwl	%bx, %edx
+ 256              	.L17:
+ 257 0203 488B7C24 		movq	16(%rsp), %rdi
+ 257      10
+ 258 0208 4C896424 		movq	%r12, 8(%rsp)
+ 258      08
+ 259 020d 4589E9   		movl	%r13d, %r9d
+ 260 0210 C7042488 		movl	$5000, (%rsp)
+ 260      130000
+ 261 0217 4D89F8   		movq	%r15, %r8
+ 262 021a 4489F1   		movl	%r14d, %ecx
+ 263 021d BEA20000 		movl	$162, %esi
+ 263      00
+ 264 0222 E8000000 		call	usbControlRead@PLT
+ 264      00
+ 265 0227 85C0     		testl	%eax, %eax
+ 266 0229 7587     		jne	.L22
+ 267 022b 4883C428 		addq	$40, %rsp
+ 268              		.cfi_remember_state
+ 269              		.cfi_def_cfa_offset 56
+ 270 022f 5B       		popq	%rbx
+ 271              		.cfi_def_cfa_offset 48
+ 272 0230 5D       		popq	%rbp
+ 273              		.cfi_def_cfa_offset 40
+ 274 0231 415C     		popq	%r12
+ 275              		.cfi_def_cfa_offset 32
+ 276 0233 415D     		popq	%r13
+ 277              		.cfi_def_cfa_offset 24
+ 278 0235 415E     		popq	%r14
+ 279              		.cfi_def_cfa_offset 16
+ 280 0237 415F     		popq	%r15
+ 281              		.cfi_def_cfa_offset 8
+ 282 0239 C3       		ret
+ 283              	.L23:
+ 284              		.cfi_restore_state
+ 285 023a 31D2     		xorl	%edx, %edx
+ 286 023c 4531F6   		xorl	%r14d, %r14d
+ 287 023f EBC2     		jmp	.L17
+ 288              	.L26:
+ 289 0241 66834424 		addw	$1, 30(%rsp)
+ 289      1E01
+ 290 0247 0FB76C24 		movzwl	30(%rsp), %ebp
+ 290      1E
+ 291 024c 4189EE   		movl	%ebp, %r14d
+ 292 024f E925FFFF 		jmp	.L19
+ 292      FF
+ 293              		.cfi_endproc
+ 294              	.LFE18:
+ 296              		.ident	"GCC: (Ubuntu 4.8.4-2ubuntu1~14.04.3) 4.8.4"
+ 297              		.section	.note.GNU-stack,"",@progbits
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 eeprom.c
+     /tmp/ccQ31J98.s:10     .text:0000000000000000 fx2WriteEEPROM
+     /tmp/ccQ31J98.s:141    .text:0000000000000110 fx2ReadEEPROM
+     /tmp/ccQ31J98.s:4      .rodata.str1.8:0000000000000000 .LC0
+     /tmp/ccQ31J98.s:135    .rodata.str1.1:0000000000000000 .LC1
+
+UNDEFINED SYMBOLS
+_GLOBAL_OFFSET_TABLE_
+usbControlWrite
+errPrefix
+bufAppendConst
+usbControlRead

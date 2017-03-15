@@ -1,0 +1,2403 @@
+   1              		.file	"hexio.c"
+   2              		.text
+   3              	.Ltext0:
+   4              		.section	.rodata
+   5              		.align 8
+   6              	.LC0:
+   7 0000 62756650 		.string	"bufProcessLine(): Junk start code at line %lu"
+   7      726F6365 
+   7      73734C69 
+   7      6E652829 
+   7      3A204A75 
+   8 002e 0000     		.align 8
+   9              	.LC1:
+  10 0030 62756650 		.string	"bufProcessLine(): Junk byte count at line %lu"
+  10      726F6365 
+  10      73734C69 
+  10      6E652829 
+  10      3A204A75 
+  11 005e 0000     		.align 8
+  12              	.LC2:
+  13 0060 62756650 		.string	"bufProcessLine(): Junk address MSB at line %lu"
+  13      726F6365 
+  13      73734C69 
+  13      6E652829 
+  13      3A204A75 
+  14 008f 00       		.align 8
+  15              	.LC3:
+  16 0090 62756650 		.string	"bufProcessLine(): Junk address LSB at line %lu"
+  16      726F6365 
+  16      73734C69 
+  16      6E652829 
+  16      3A204A75 
+  17 00bf 00       		.align 8
+  18              	.LC4:
+  19 00c0 62756650 		.string	"bufProcessLine(): Junk record type at line %lu"
+  19      726F6365 
+  19      73734C69 
+  19      6E652829 
+  19      3A204A75 
+  20 00ef 00       		.align 8
+  21              	.LC5:
+  22 00f0 62756650 		.string	"bufProcessLine(): Junk data byte %d at line %lu"
+  22      726F6365 
+  22      73734C69 
+  22      6E652829 
+  22      3A204A75 
+  23              		.align 8
+  24              	.LC6:
+  25 0120 62756650 		.string	"bufProcessLine(): Junk checksum at line %lu"
+  25      726F6365 
+  25      73734C69 
+  25      6E652829 
+  25      3A204A75 
+  26 014c 00000000 		.align 8
+  27              	.LC7:
+  28 0150 62756650 		.string	"bufProcessLine(): Read checksum 0x%02X differs from calculated checksum 0x%02X at line %l
+  28      726F6365 
+  28      73734C69 
+  28      6E652829 
+  28      3A205265 
+  29              	.LC8:
+  30 01ab 3A253032 		.string	":%02X%04X%02X"
+  30      58253034 
+  30      58253032 
+  30      5800
+  31              	.LC9:
+  32 01b9 25303258 		.string	"%02X"
+  32      00
+  33 01be 0000     		.align 8
+  34              	.LC10:
+  35 01c0 62756650 		.string	"bufProcessLine(): Some corruption detected at line %lu - some junk at the end of the line
+  35      726F6365 
+  35      73734C69 
+  35      6E652829 
+  35      3A20536F 
+  36 0223 00000000 		.align 8
+  36      00
+  37              	.LC11:
+  38 0228 62756650 		.string	"bufProcessLine(): Record type START_SEG_RECORD not supported at line %lu"
+  38      726F6365 
+  38      73734C69 
+  38      6E652829 
+  38      3A205265 
+  39 0271 00000000 		.align 8
+  39      000000
+  40              	.LC12:
+  41 0278 62756650 		.string	"bufProcessLine(): Record type EXT_LIN_RECORD, not supported at line %lu"
+  41      726F6365 
+  41      73734C69 
+  41      6E652829 
+  41      3A205265 
+  42              		.align 8
+  43              	.LC13:
+  44 02c0 62756650 		.string	"bufProcessLine(): Record type START_LIN_RECORD, not supported at line %lu"
+  44      726F6365 
+  44      73734C69 
+  44      6E652829 
+  44      3A205265 
+  45              	.LC14:
+  46 030a 62756650 		.string	"bufProcessLine()"
+  46      726F6365 
+  46      73734C69 
+  46      6E652829 
+  46      00
+  47 031b 00000000 		.align 8
+  47      00
+  48              	.LC15:
+  49 0320 62756650 		.string	"bufProcessLine(): For record type EXT_SEG_RECORD, address must be 0x0000 and byteCount mu
+  49      726F6365 
+  49      73734C69 
+  49      6E652829 
+  49      3A20466F 
+  50              		.align 8
+  51              	.LC16:
+  52 0390 62756650 		.string	"bufProcessLine(): Record type 0x%02X not supported at line %lu"
+  52      726F6365 
+  52      73734C69 
+  52      6E652829 
+  52      3A205265 
+  53              		.text
+  54              		.globl	bufProcessLine
+  56              	bufProcessLine:
+  57              	.LFB4:
+  58              		.file 1 "hexio.c"
+   1:hexio.c       **** /*
+   2:hexio.c       ****  * Copyright (C) 2009-2012 Chris McClelland
+   3:hexio.c       ****  *
+   4:hexio.c       ****  * This program is free software: you can redistribute it and/or modify
+   5:hexio.c       ****  * it under the terms of the GNU Lesser General Public License as published by
+   6:hexio.c       ****  * the Free Software Foundation, either version 3 of the License, or
+   7:hexio.c       ****  * (at your option) any later version.
+   8:hexio.c       ****  *
+   9:hexio.c       ****  * This program is distributed in the hope that it will be useful,
+  10:hexio.c       ****  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  11:hexio.c       ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  12:hexio.c       ****  * GNU Lesser General Public License for more details.
+  13:hexio.c       ****  *
+  14:hexio.c       ****  * You should have received a copy of the GNU Lesser General Public License
+  15:hexio.c       ****  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  16:hexio.c       ****  */
+  17:hexio.c       **** 
+  18:hexio.c       **** // Utility functions for reading and writing Intel Hex records. The data is stored in the "data"
+  19:hexio.c       **** // buffer, and a bitmap of the runs covered by the Intel Hex file is stored in the "writeMap"
+  20:hexio.c       **** // buffer. You would think that the "writeMap" buffer is not necessary (why not just assume blocks
+  21:hexio.c       **** // of four or more zeros should not appear in the file?). Unfortunately you cannot always assume
+  22:hexio.c       **** // such "holes" will have been properly initialised by the target system. In short, given a binary
+  23:hexio.c       **** // file, there's no way to tell which runs of zeros must be zero, and which are "don't care".
+  24:hexio.c       **** //
+  25:hexio.c       **** #include <stdio.h>
+  26:hexio.c       **** #include <string.h>
+  27:hexio.c       **** #include <liberror.h>
+  28:hexio.c       **** #include "libbuffer.h"
+  29:hexio.c       **** #include "conv.h"
+  30:hexio.c       **** #include "private.h"
+  31:hexio.c       **** 
+  32:hexio.c       **** #define LINE_MAX 512
+  33:hexio.c       **** 
+  34:hexio.c       **** typedef enum {
+  35:hexio.c       **** 	DATA_RECORD = 0x00,
+  36:hexio.c       **** 	EOF_RECORD,
+  37:hexio.c       **** 	EXT_SEG_RECORD,
+  38:hexio.c       **** 	START_SEG_RECORD,
+  39:hexio.c       **** 	EXT_LIN_RECORD,
+  40:hexio.c       **** 	START_LIN_RECORD
+  41:hexio.c       **** } RecordType;
+  42:hexio.c       **** 
+  43:hexio.c       **** // Process a single Intel hex record.
+  44:hexio.c       **** //   Data record:   ":CCAAAA00DD..SS"
+  45:hexio.c       **** //   EOF record:    ":00000001FF"
+  46:hexio.c       **** //   ExtSeg record: ":02000002AAAASS"
+  47:hexio.c       **** //
+  48:hexio.c       **** BufferStatus bufProcessLine(
+  49:hexio.c       **** 	const char *sourceLine, uint32 lineNumber, struct Buffer *destData, struct Buffer *destMask,
+  50:hexio.c       **** 	uint32 *segment, uint8 *recordType, const char **error)
+  51:hexio.c       **** {
+  59              		.loc 1 51 0
+  60              		.cfi_startproc
+  61 0000 55       		pushq	%rbp
+  62              		.cfi_def_cfa_offset 16
+  63              		.cfi_offset 6, -16
+  64 0001 4889E5   		movq	%rsp, %rbp
+  65              		.cfi_def_cfa_register 6
+  66 0004 53       		pushq	%rbx
+  67 0005 4881EC78 		subq	$888, %rsp
+  67      030000
+  68              		.cfi_offset 3, -24
+  69 000c 4889BDB8 		movq	%rdi, -840(%rbp)
+  69      FCFFFF
+  70 0013 89B5B4FC 		movl	%esi, -844(%rbp)
+  70      FFFF
+  71 0019 488995A8 		movq	%rdx, -856(%rbp)
+  71      FCFFFF
+  72 0020 48898DA0 		movq	%rcx, -864(%rbp)
+  72      FCFFFF
+  73 0027 4C898598 		movq	%r8, -872(%rbp)
+  73      FCFFFF
+  74 002e 4C898D90 		movq	%r9, -880(%rbp)
+  74      FCFFFF
+  75 0035 488B4510 		movq	16(%rbp), %rax
+  76 0039 48898588 		movq	%rax, -888(%rbp)
+  76      FCFFFF
+  77              		.loc 1 51 0
+  78 0040 64488B04 		movq	%fs:40, %rax
+  78      25280000 
+  78      00
+  79 0049 488945E8 		movq	%rax, -24(%rbp)
+  80 004d 31C0     		xorl	%eax, %eax
+  52:hexio.c       **** 	BufferStatus retVal = BUF_SUCCESS;
+  81              		.loc 1 52 0
+  82 004f C785D0FC 		movl	$0, -816(%rbp)
+  82      FFFF0000 
+  82      0000
+  53:hexio.c       **** 	char reconstructedLine[LINE_MAX];
+  54:hexio.c       **** 	uint8 thisByte;
+  55:hexio.c       **** 	uint8 i, byteCount;
+  56:hexio.c       **** 	uint16 address;
+  57:hexio.c       **** 	uint8 dataBytes[LINE_MAX/2];
+  58:hexio.c       **** 	uint8 readChecksum;
+  59:hexio.c       **** 	uint8 calculatedChecksum;
+  60:hexio.c       **** 	const char *p;
+  61:hexio.c       **** 	BufferStatus status;
+  62:hexio.c       **** 
+  63:hexio.c       **** 	p = sourceLine;
+  83              		.loc 1 63 0
+  84 0059 488B85B8 		movq	-840(%rbp), %rax
+  84      FCFFFF
+  85 0060 488985D8 		movq	%rax, -808(%rbp)
+  85      FCFFFF
+  64:hexio.c       **** 	// Read the start code - must be ':'
+  65:hexio.c       **** 	//
+  66:hexio.c       **** 	CHECK_STATUS(
+  86              		.loc 1 66 0
+  87 0067 488B85D8 		movq	-808(%rbp), %rax
+  87      FCFFFF
+  88 006e 488D5001 		leaq	1(%rax), %rdx
+  89 0072 488995D8 		movq	%rdx, -808(%rbp)
+  89      FCFFFF
+  90 0079 0FB600   		movzbl	(%rax), %eax
+  91 007c 3C3A     		cmpb	$58, %al
+  92 007e 7430     		je	.L2
+  93              		.loc 1 66 0 is_stmt 0 discriminator 1
+  94 0080 8B95B4FC 		movl	-844(%rbp), %edx
+  94      FFFF
+  95 0086 488B8588 		movq	-888(%rbp), %rax
+  95      FCFFFF
+  96 008d 488D3500 		leaq	.LC0(%rip), %rsi
+  96      000000
+  97 0094 4889C7   		movq	%rax, %rdi
+  98 0097 B8000000 		movl	$0, %eax
+  98      00
+  99 009c E8000000 		call	errRender@PLT
+  99      00
+ 100 00a1 C785D0FC 		movl	$8, -816(%rbp)
+ 100      FFFF0800 
+ 100      0000
+ 101 00ab E92B0700 		jmp	.L3
+ 101      00
+ 102              	.L2:
+  67:hexio.c       **** 		*p++ != ':', HEX_JUNK_START_CODE, cleanup,
+  68:hexio.c       **** 		"bufProcessLine(): Junk start code at line %lu", lineNumber
+  69:hexio.c       **** 	);
+  70:hexio.c       **** 	
+  71:hexio.c       **** 	// Read the byte count
+  72:hexio.c       **** 	//
+  73:hexio.c       **** 	CHECK_STATUS(
+ 103              		.loc 1 73 0 is_stmt 1
+ 104 00b0 488D95CA 		leaq	-822(%rbp), %rdx
+ 104      FCFFFF
+ 105 00b7 488B85D8 		movq	-808(%rbp), %rax
+ 105      FCFFFF
+ 106 00be 4889D6   		movq	%rdx, %rsi
+ 107 00c1 4889C7   		movq	%rax, %rdi
+ 108 00c4 E8000000 		call	getHexByte@PLT
+ 108      00
+ 109 00c9 84C0     		testb	%al, %al
+ 110 00cb 7430     		je	.L4
+ 111              		.loc 1 73 0 is_stmt 0 discriminator 1
+ 112 00cd 8B95B4FC 		movl	-844(%rbp), %edx
+ 112      FFFF
+ 113 00d3 488B8588 		movq	-888(%rbp), %rax
+ 113      FCFFFF
+ 114 00da 488D3500 		leaq	.LC1(%rip), %rsi
+ 114      000000
+ 115 00e1 4889C7   		movq	%rax, %rdi
+ 116 00e4 B8000000 		movl	$0, %eax
+ 116      00
+ 117 00e9 E8000000 		call	errRender@PLT
+ 117      00
+ 118 00ee C785D0FC 		movl	$9, -816(%rbp)
+ 118      FFFF0900 
+ 118      0000
+ 119 00f8 E9DE0600 		jmp	.L3
+ 119      00
+ 120              	.L4:
+  74:hexio.c       **** 		getHexByte(p, &byteCount), HEX_JUNK_BYTE_COUNT, cleanup,
+  75:hexio.c       **** 		"bufProcessLine(): Junk byte count at line %lu", lineNumber
+  76:hexio.c       **** 	);
+  77:hexio.c       **** 	p += 2;
+ 121              		.loc 1 77 0 is_stmt 1
+ 122 00fd 488385D8 		addq	$2, -808(%rbp)
+ 122      FCFFFF02 
+  78:hexio.c       **** 	calculatedChecksum = byteCount;
+ 123              		.loc 1 78 0
+ 124 0105 0FB685CA 		movzbl	-822(%rbp), %eax
+ 124      FCFFFF
+ 125 010c 8885CDFC 		movb	%al, -819(%rbp)
+ 125      FFFF
+  79:hexio.c       **** 	
+  80:hexio.c       **** 	// Read the MSB of the address
+  81:hexio.c       **** 	//
+  82:hexio.c       **** 	CHECK_STATUS(
+ 126              		.loc 1 82 0
+ 127 0112 488D95C9 		leaq	-823(%rbp), %rdx
+ 127      FCFFFF
+ 128 0119 488B85D8 		movq	-808(%rbp), %rax
+ 128      FCFFFF
+ 129 0120 4889D6   		movq	%rdx, %rsi
+ 130 0123 4889C7   		movq	%rax, %rdi
+ 131 0126 E8000000 		call	getHexByte@PLT
+ 131      00
+ 132 012b 84C0     		testb	%al, %al
+ 133 012d 7430     		je	.L5
+ 134              		.loc 1 82 0 is_stmt 0 discriminator 1
+ 135 012f 8B95B4FC 		movl	-844(%rbp), %edx
+ 135      FFFF
+ 136 0135 488B8588 		movq	-888(%rbp), %rax
+ 136      FCFFFF
+ 137 013c 488D3500 		leaq	.LC2(%rip), %rsi
+ 137      000000
+ 138 0143 4889C7   		movq	%rax, %rdi
+ 139 0146 B8000000 		movl	$0, %eax
+ 139      00
+ 140 014b E8000000 		call	errRender@PLT
+ 140      00
+ 141 0150 C785D0FC 		movl	$10, -816(%rbp)
+ 141      FFFF0A00 
+ 141      0000
+ 142 015a E97C0600 		jmp	.L3
+ 142      00
+ 143              	.L5:
+  83:hexio.c       **** 		getHexByte(p, &thisByte), HEX_JUNK_ADDR_MSB, cleanup,
+  84:hexio.c       **** 		"bufProcessLine(): Junk address MSB at line %lu", lineNumber
+  85:hexio.c       **** 	);
+  86:hexio.c       **** 	p += 2;
+ 144              		.loc 1 86 0 is_stmt 1
+ 145 015f 488385D8 		addq	$2, -808(%rbp)
+ 145      FCFFFF02 
+  87:hexio.c       **** 	address = (uint16)(thisByte << 8);
+ 146              		.loc 1 87 0
+ 147 0167 0FB685C9 		movzbl	-823(%rbp), %eax
+ 147      FCFFFF
+ 148 016e 0FB6C0   		movzbl	%al, %eax
+ 149 0171 C1E008   		sall	$8, %eax
+ 150 0174 668985CE 		movw	%ax, -818(%rbp)
+ 150      FCFFFF
+  88:hexio.c       **** 	calculatedChecksum = (uint8)(calculatedChecksum + thisByte);
+ 151              		.loc 1 88 0
+ 152 017b 0FB685C9 		movzbl	-823(%rbp), %eax
+ 152      FCFFFF
+ 153 0182 0085CDFC 		addb	%al, -819(%rbp)
+ 153      FFFF
+  89:hexio.c       **** 	
+  90:hexio.c       **** 	// Read the LSB of the address
+  91:hexio.c       **** 	//
+  92:hexio.c       **** 	CHECK_STATUS(
+ 154              		.loc 1 92 0
+ 155 0188 488D95C9 		leaq	-823(%rbp), %rdx
+ 155      FCFFFF
+ 156 018f 488B85D8 		movq	-808(%rbp), %rax
+ 156      FCFFFF
+ 157 0196 4889D6   		movq	%rdx, %rsi
+ 158 0199 4889C7   		movq	%rax, %rdi
+ 159 019c E8000000 		call	getHexByte@PLT
+ 159      00
+ 160 01a1 84C0     		testb	%al, %al
+ 161 01a3 7430     		je	.L6
+ 162              		.loc 1 92 0 is_stmt 0 discriminator 1
+ 163 01a5 8B95B4FC 		movl	-844(%rbp), %edx
+ 163      FFFF
+ 164 01ab 488B8588 		movq	-888(%rbp), %rax
+ 164      FCFFFF
+ 165 01b2 488D3500 		leaq	.LC3(%rip), %rsi
+ 165      000000
+ 166 01b9 4889C7   		movq	%rax, %rdi
+ 167 01bc B8000000 		movl	$0, %eax
+ 167      00
+ 168 01c1 E8000000 		call	errRender@PLT
+ 168      00
+ 169 01c6 C785D0FC 		movl	$11, -816(%rbp)
+ 169      FFFF0B00 
+ 169      0000
+ 170 01d0 E9060600 		jmp	.L3
+ 170      00
+ 171              	.L6:
+  93:hexio.c       **** 		getHexByte(p, &thisByte), HEX_JUNK_ADDR_LSB, cleanup,
+  94:hexio.c       **** 		"bufProcessLine(): Junk address LSB at line %lu", lineNumber
+  95:hexio.c       **** 	);
+  96:hexio.c       **** 	p += 2;
+ 172              		.loc 1 96 0 is_stmt 1
+ 173 01d5 488385D8 		addq	$2, -808(%rbp)
+ 173      FCFFFF02 
+  97:hexio.c       **** 	address = (uint16)(address | thisByte);
+ 174              		.loc 1 97 0
+ 175 01dd 0FB685C9 		movzbl	-823(%rbp), %eax
+ 175      FCFFFF
+ 176 01e4 0FB6C0   		movzbl	%al, %eax
+ 177 01e7 660985CE 		orw	%ax, -818(%rbp)
+ 177      FCFFFF
+  98:hexio.c       **** 	calculatedChecksum = (uint8)(calculatedChecksum + thisByte);
+ 178              		.loc 1 98 0
+ 179 01ee 0FB685C9 		movzbl	-823(%rbp), %eax
+ 179      FCFFFF
+ 180 01f5 0085CDFC 		addb	%al, -819(%rbp)
+ 180      FFFF
+  99:hexio.c       **** 	
+ 100:hexio.c       **** 	// Read the record type
+ 101:hexio.c       **** 	//
+ 102:hexio.c       **** 	CHECK_STATUS(
+ 181              		.loc 1 102 0
+ 182 01fb 488B9590 		movq	-880(%rbp), %rdx
+ 182      FCFFFF
+ 183 0202 488B85D8 		movq	-808(%rbp), %rax
+ 183      FCFFFF
+ 184 0209 4889D6   		movq	%rdx, %rsi
+ 185 020c 4889C7   		movq	%rax, %rdi
+ 186 020f E8000000 		call	getHexByte@PLT
+ 186      00
+ 187 0214 84C0     		testb	%al, %al
+ 188 0216 7430     		je	.L7
+ 189              		.loc 1 102 0 is_stmt 0 discriminator 1
+ 190 0218 8B95B4FC 		movl	-844(%rbp), %edx
+ 190      FFFF
+ 191 021e 488B8588 		movq	-888(%rbp), %rax
+ 191      FCFFFF
+ 192 0225 488D3500 		leaq	.LC4(%rip), %rsi
+ 192      000000
+ 193 022c 4889C7   		movq	%rax, %rdi
+ 194 022f B8000000 		movl	$0, %eax
+ 194      00
+ 195 0234 E8000000 		call	errRender@PLT
+ 195      00
+ 196 0239 C785D0FC 		movl	$12, -816(%rbp)
+ 196      FFFF0C00 
+ 196      0000
+ 197 0243 E9930500 		jmp	.L3
+ 197      00
+ 198              	.L7:
+ 103:hexio.c       **** 		getHexByte(p, recordType), HEX_JUNK_REC_TYPE, cleanup,
+ 104:hexio.c       **** 		"bufProcessLine(): Junk record type at line %lu", lineNumber
+ 105:hexio.c       **** 	);
+ 106:hexio.c       **** 	p += 2;
+ 199              		.loc 1 106 0 is_stmt 1
+ 200 0248 488385D8 		addq	$2, -808(%rbp)
+ 200      FCFFFF02 
+ 107:hexio.c       **** 	calculatedChecksum = (uint8)(calculatedChecksum + *recordType);
+ 201              		.loc 1 107 0
+ 202 0250 488B8590 		movq	-880(%rbp), %rax
+ 202      FCFFFF
+ 203 0257 0FB600   		movzbl	(%rax), %eax
+ 204 025a 0085CDFC 		addb	%al, -819(%rbp)
+ 204      FFFF
+ 108:hexio.c       **** 	
+ 109:hexio.c       **** 	// Read the data
+ 110:hexio.c       **** 	//
+ 111:hexio.c       **** 	for ( i = 0; i < byteCount; i++ ) {
+ 205              		.loc 1 111 0
+ 206 0260 C685CCFC 		movb	$0, -820(%rbp)
+ 206      FFFF00
+ 207 0267 E9900000 		jmp	.L8
+ 207      00
+ 208              	.L10:
+ 112:hexio.c       **** 		CHECK_STATUS(
+ 209              		.loc 1 112 0
+ 210 026c 488D95C9 		leaq	-823(%rbp), %rdx
+ 210      FCFFFF
+ 211 0273 488B85D8 		movq	-808(%rbp), %rax
+ 211      FCFFFF
+ 212 027a 4889D6   		movq	%rdx, %rsi
+ 213 027d 4889C7   		movq	%rax, %rdi
+ 214 0280 E8000000 		call	getHexByte@PLT
+ 214      00
+ 215 0285 84C0     		testb	%al, %al
+ 216 0287 7437     		je	.L9
+ 217              		.loc 1 112 0 is_stmt 0 discriminator 1
+ 218 0289 0FB695CC 		movzbl	-820(%rbp), %edx
+ 218      FCFFFF
+ 219 0290 8B8DB4FC 		movl	-844(%rbp), %ecx
+ 219      FFFF
+ 220 0296 488B8588 		movq	-888(%rbp), %rax
+ 220      FCFFFF
+ 221 029d 488D3500 		leaq	.LC5(%rip), %rsi
+ 221      000000
+ 222 02a4 4889C7   		movq	%rax, %rdi
+ 223 02a7 B8000000 		movl	$0, %eax
+ 223      00
+ 224 02ac E8000000 		call	errRender@PLT
+ 224      00
+ 225 02b1 C785D0FC 		movl	$14, -816(%rbp)
+ 225      FFFF0E00 
+ 225      0000
+ 226 02bb E91B0500 		jmp	.L3
+ 226      00
+ 227              	.L9:
+ 113:hexio.c       **** 			getHexByte(p, &thisByte), HEX_JUNK_DATA_BYTE, cleanup,
+ 114:hexio.c       **** 			"bufProcessLine(): Junk data byte %d at line %lu", i, lineNumber
+ 115:hexio.c       **** 		);
+ 116:hexio.c       **** 		p += 2;
+ 228              		.loc 1 116 0 is_stmt 1
+ 229 02c0 488385D8 		addq	$2, -808(%rbp)
+ 229      FCFFFF02 
+ 117:hexio.c       **** 		dataBytes[i] = thisByte;
+ 230              		.loc 1 117 0
+ 231 02c8 0FB685CC 		movzbl	-820(%rbp), %eax
+ 231      FCFFFF
+ 232 02cf 0FB695C9 		movzbl	-823(%rbp), %edx
+ 232      FCFFFF
+ 233 02d6 4898     		cltq
+ 234 02d8 889405E0 		movb	%dl, -800(%rbp,%rax)
+ 234      FCFFFF
+ 118:hexio.c       **** 		calculatedChecksum = (uint8)(calculatedChecksum + thisByte);
+ 235              		.loc 1 118 0
+ 236 02df 0FB685C9 		movzbl	-823(%rbp), %eax
+ 236      FCFFFF
+ 237 02e6 0085CDFC 		addb	%al, -819(%rbp)
+ 237      FFFF
+ 111:hexio.c       **** 		CHECK_STATUS(
+ 238              		.loc 1 111 0
+ 239 02ec 0FB685CC 		movzbl	-820(%rbp), %eax
+ 239      FCFFFF
+ 240 02f3 83C001   		addl	$1, %eax
+ 241 02f6 8885CCFC 		movb	%al, -820(%rbp)
+ 241      FFFF
+ 242              	.L8:
+ 111:hexio.c       **** 		CHECK_STATUS(
+ 243              		.loc 1 111 0 is_stmt 0 discriminator 1
+ 244 02fc 0FB685CA 		movzbl	-822(%rbp), %eax
+ 244      FCFFFF
+ 245 0303 3885CCFC 		cmpb	%al, -820(%rbp)
+ 245      FFFF
+ 246 0309 0F825DFF 		jb	.L10
+ 246      FFFF
+ 119:hexio.c       **** 	}
+ 120:hexio.c       **** 	
+ 121:hexio.c       **** 	// Read the checksum
+ 122:hexio.c       **** 	//
+ 123:hexio.c       **** 	CHECK_STATUS(
+ 247              		.loc 1 123 0 is_stmt 1
+ 248 030f 488D95CB 		leaq	-821(%rbp), %rdx
+ 248      FCFFFF
+ 249 0316 488B85D8 		movq	-808(%rbp), %rax
+ 249      FCFFFF
+ 250 031d 4889D6   		movq	%rdx, %rsi
+ 251 0320 4889C7   		movq	%rax, %rdi
+ 252 0323 E8000000 		call	getHexByte@PLT
+ 252      00
+ 253 0328 84C0     		testb	%al, %al
+ 254 032a 7430     		je	.L11
+ 255              		.loc 1 123 0 is_stmt 0 discriminator 1
+ 256 032c 8B95B4FC 		movl	-844(%rbp), %edx
+ 256      FFFF
+ 257 0332 488B8588 		movq	-888(%rbp), %rax
+ 257      FCFFFF
+ 258 0339 488D3500 		leaq	.LC6(%rip), %rsi
+ 258      000000
+ 259 0340 4889C7   		movq	%rax, %rdi
+ 260 0343 B8000000 		movl	$0, %eax
+ 260      00
+ 261 0348 E8000000 		call	errRender@PLT
+ 261      00
+ 262 034d C785D0FC 		movl	$15, -816(%rbp)
+ 262      FFFF0F00 
+ 262      0000
+ 263 0357 E97F0400 		jmp	.L3
+ 263      00
+ 264              	.L11:
+ 124:hexio.c       **** 		getHexByte(p, &readChecksum), HEX_JUNK_CHECKSUM, cleanup,
+ 125:hexio.c       **** 		"bufProcessLine(): Junk checksum at line %lu", lineNumber
+ 126:hexio.c       **** 	);
+ 127:hexio.c       **** 	
+ 128:hexio.c       **** 	// Calculate the two's complement of the checksum
+ 129:hexio.c       **** 	//
+ 130:hexio.c       **** 	calculatedChecksum = (uint8)(256 - calculatedChecksum);
+ 265              		.loc 1 130 0 is_stmt 1
+ 266 035c F69DCDFC 		negb	-819(%rbp)
+ 266      FFFF
+ 131:hexio.c       **** 	CHECK_STATUS(
+ 267              		.loc 1 131 0
+ 268 0362 0FB685CB 		movzbl	-821(%rbp), %eax
+ 268      FCFFFF
+ 269 0369 3A85CDFC 		cmpb	-819(%rbp), %al
+ 269      FFFF
+ 270 036f 7444     		je	.L12
+ 271              		.loc 1 131 0 is_stmt 0 discriminator 1
+ 272 0371 0FB68DCD 		movzbl	-819(%rbp), %ecx
+ 272      FCFFFF
+ 273 0378 0FB685CB 		movzbl	-821(%rbp), %eax
+ 273      FCFFFF
+ 274 037f 0FB6D0   		movzbl	%al, %edx
+ 275 0382 8BB5B4FC 		movl	-844(%rbp), %esi
+ 275      FFFF
+ 276 0388 488B8588 		movq	-888(%rbp), %rax
+ 276      FCFFFF
+ 277 038f 4189F0   		movl	%esi, %r8d
+ 278 0392 488D3500 		leaq	.LC7(%rip), %rsi
+ 278      000000
+ 279 0399 4889C7   		movq	%rax, %rdi
+ 280 039c B8000000 		movl	$0, %eax
+ 280      00
+ 281 03a1 E8000000 		call	errRender@PLT
+ 281      00
+ 282 03a6 C785D0FC 		movl	$16, -816(%rbp)
+ 282      FFFF1000 
+ 282      0000
+ 283 03b0 E9260400 		jmp	.L3
+ 283      00
+ 284              	.L12:
+ 132:hexio.c       **** 		readChecksum != calculatedChecksum, HEX_BAD_CHECKSUM, cleanup,
+ 133:hexio.c       **** 		"bufProcessLine(): Read checksum 0x%02X differs from calculated checksum 0x%02X at line %lu",
+ 134:hexio.c       **** 		readChecksum, calculatedChecksum, lineNumber
+ 135:hexio.c       **** 	);
+ 136:hexio.c       **** 	
+ 137:hexio.c       **** 	// Recreate the input data
+ 138:hexio.c       **** 	//
+ 139:hexio.c       **** 	sprintf(reconstructedLine, ":%02X%04X%02X", byteCount, address, *recordType);
+ 285              		.loc 1 139 0 is_stmt 1
+ 286 03b5 488B8590 		movq	-880(%rbp), %rax
+ 286      FCFFFF
+ 287 03bc 0FB600   		movzbl	(%rax), %eax
+ 288 03bf 0FB6F0   		movzbl	%al, %esi
+ 289 03c2 0FB78DCE 		movzwl	-818(%rbp), %ecx
+ 289      FCFFFF
+ 290 03c9 0FB685CA 		movzbl	-822(%rbp), %eax
+ 290      FCFFFF
+ 291 03d0 0FB6D0   		movzbl	%al, %edx
+ 292 03d3 488D85E0 		leaq	-544(%rbp), %rax
+ 292      FDFFFF
+ 293 03da 4189F0   		movl	%esi, %r8d
+ 294 03dd 488D3500 		leaq	.LC8(%rip), %rsi
+ 294      000000
+ 295 03e4 4889C7   		movq	%rax, %rdi
+ 296 03e7 B8000000 		movl	$0, %eax
+ 296      00
+ 297 03ec E8000000 		call	sprintf@PLT
+ 297      00
+ 140:hexio.c       **** 	for ( i = 0; i < byteCount; i++ ) {
+ 298              		.loc 1 140 0
+ 299 03f1 C685CCFC 		movb	$0, -820(%rbp)
+ 299      FFFF00
+ 300 03f8 EB54     		jmp	.L13
+ 301              	.L14:
+ 141:hexio.c       **** 		sprintf(reconstructedLine + 9 + 2*i, "%02X", dataBytes[i]);
+ 302              		.loc 1 141 0 discriminator 2
+ 303 03fa 0FB685CC 		movzbl	-820(%rbp), %eax
+ 303      FCFFFF
+ 304 0401 4898     		cltq
+ 305 0403 0FB68405 		movzbl	-800(%rbp,%rax), %eax
+ 305      E0FCFFFF 
+ 306 040b 0FB6C0   		movzbl	%al, %eax
+ 307 040e 0FB695CC 		movzbl	-820(%rbp), %edx
+ 307      FCFFFF
+ 308 0415 01D2     		addl	%edx, %edx
+ 309 0417 4863D2   		movslq	%edx, %rdx
+ 310 041a 488D4A09 		leaq	9(%rdx), %rcx
+ 311 041e 488D95E0 		leaq	-544(%rbp), %rdx
+ 311      FDFFFF
+ 312 0425 4801D1   		addq	%rdx, %rcx
+ 313 0428 89C2     		movl	%eax, %edx
+ 314 042a 488D3500 		leaq	.LC9(%rip), %rsi
+ 314      000000
+ 315 0431 4889CF   		movq	%rcx, %rdi
+ 316 0434 B8000000 		movl	$0, %eax
+ 316      00
+ 317 0439 E8000000 		call	sprintf@PLT
+ 317      00
+ 140:hexio.c       **** 	for ( i = 0; i < byteCount; i++ ) {
+ 318              		.loc 1 140 0 discriminator 2
+ 319 043e 0FB685CC 		movzbl	-820(%rbp), %eax
+ 319      FCFFFF
+ 320 0445 83C001   		addl	$1, %eax
+ 321 0448 8885CCFC 		movb	%al, -820(%rbp)
+ 321      FFFF
+ 322              	.L13:
+ 140:hexio.c       **** 	for ( i = 0; i < byteCount; i++ ) {
+ 323              		.loc 1 140 0 is_stmt 0 discriminator 1
+ 324 044e 0FB685CA 		movzbl	-822(%rbp), %eax
+ 324      FCFFFF
+ 325 0455 3885CCFC 		cmpb	%al, -820(%rbp)
+ 325      FFFF
+ 326 045b 729D     		jb	.L14
+ 142:hexio.c       **** 	}
+ 143:hexio.c       **** 	sprintf(reconstructedLine + 9 + byteCount*2, "%02X", readChecksum);
+ 327              		.loc 1 143 0 is_stmt 1
+ 328 045d 0FB685CB 		movzbl	-821(%rbp), %eax
+ 328      FCFFFF
+ 329 0464 0FB6C0   		movzbl	%al, %eax
+ 330 0467 0FB695CA 		movzbl	-822(%rbp), %edx
+ 330      FCFFFF
+ 331 046e 0FB6D2   		movzbl	%dl, %edx
+ 332 0471 01D2     		addl	%edx, %edx
+ 333 0473 4863D2   		movslq	%edx, %rdx
+ 334 0476 488D4A09 		leaq	9(%rdx), %rcx
+ 335 047a 488D95E0 		leaq	-544(%rbp), %rdx
+ 335      FDFFFF
+ 336 0481 4801D1   		addq	%rdx, %rcx
+ 337 0484 89C2     		movl	%eax, %edx
+ 338 0486 488D3500 		leaq	.LC9(%rip), %rsi
+ 338      000000
+ 339 048d 4889CF   		movq	%rcx, %rdi
+ 340 0490 B8000000 		movl	$0, %eax
+ 340      00
+ 341 0495 E8000000 		call	sprintf@PLT
+ 341      00
+ 144:hexio.c       **** 	while ( *p && *p != 0x0D && *p != 0x0A ) {
+ 342              		.loc 1 144 0
+ 343 049a EB08     		jmp	.L15
+ 344              	.L17:
+ 145:hexio.c       **** 		p++;
+ 345              		.loc 1 145 0
+ 346 049c 488385D8 		addq	$1, -808(%rbp)
+ 346      FCFFFF01 
+ 347              	.L15:
+ 144:hexio.c       **** 	while ( *p && *p != 0x0D && *p != 0x0A ) {
+ 348              		.loc 1 144 0 discriminator 1
+ 349 04a4 488B85D8 		movq	-808(%rbp), %rax
+ 349      FCFFFF
+ 350 04ab 0FB600   		movzbl	(%rax), %eax
+ 351 04ae 84C0     		testb	%al, %al
+ 352 04b0 741C     		je	.L16
+ 144:hexio.c       **** 	while ( *p && *p != 0x0D && *p != 0x0A ) {
+ 353              		.loc 1 144 0 is_stmt 0 discriminator 2
+ 354 04b2 488B85D8 		movq	-808(%rbp), %rax
+ 354      FCFFFF
+ 355 04b9 0FB600   		movzbl	(%rax), %eax
+ 356 04bc 3C0D     		cmpb	$13, %al
+ 357 04be 740E     		je	.L16
+ 144:hexio.c       **** 	while ( *p && *p != 0x0D && *p != 0x0A ) {
+ 358              		.loc 1 144 0 discriminator 1
+ 359 04c0 488B85D8 		movq	-808(%rbp), %rax
+ 359      FCFFFF
+ 360 04c7 0FB600   		movzbl	(%rax), %eax
+ 361 04ca 3C0A     		cmpb	$10, %al
+ 362 04cc 75CE     		jne	.L17
+ 363              	.L16:
+ 146:hexio.c       **** 	}
+ 147:hexio.c       **** 	CHECK_STATUS(
+ 364              		.loc 1 147 0 is_stmt 1
+ 365 04ce 488B95D8 		movq	-808(%rbp), %rdx
+ 365      FCFFFF
+ 366 04d5 488B85B8 		movq	-840(%rbp), %rax
+ 366      FCFFFF
+ 367 04dc 4829C2   		subq	%rax, %rdx
+ 368 04df 4889D0   		movq	%rdx, %rax
+ 369 04e2 4889C2   		movq	%rax, %rdx
+ 370 04e5 488D8DE0 		leaq	-544(%rbp), %rcx
+ 370      FDFFFF
+ 371 04ec 488B85B8 		movq	-840(%rbp), %rax
+ 371      FCFFFF
+ 372 04f3 4889CE   		movq	%rcx, %rsi
+ 373 04f6 4889C7   		movq	%rax, %rdi
+ 374 04f9 E8000000 		call	strncmp@PLT
+ 374      00
+ 375 04fe 85C0     		testl	%eax, %eax
+ 376 0500 7430     		je	.L18
+ 377              		.loc 1 147 0 is_stmt 0 discriminator 1
+ 378 0502 8B95B4FC 		movl	-844(%rbp), %edx
+ 378      FFFF
+ 379 0508 488B8588 		movq	-888(%rbp), %rax
+ 379      FCFFFF
+ 380 050f 488D3500 		leaq	.LC10(%rip), %rsi
+ 380      000000
+ 381 0516 4889C7   		movq	%rax, %rdi
+ 382 0519 B8000000 		movl	$0, %eax
+ 382      00
+ 383 051e E8000000 		call	errRender@PLT
+ 383      00
+ 384 0523 C785D0FC 		movl	$17, -816(%rbp)
+ 384      FFFF1100 
+ 384      0000
+ 385 052d E9A90200 		jmp	.L3
+ 385      00
+ 386              	.L18:
+ 148:hexio.c       **** 		strncmp(sourceLine, reconstructedLine, (size_t)(p - sourceLine)), HEX_CORRUPT_LINE, cleanup,
+ 149:hexio.c       **** 		"bufProcessLine(): Some corruption detected at line %lu - some junk at the end of the line perhap
+ 150:hexio.c       **** 		lineNumber
+ 151:hexio.c       **** 	);
+ 152:hexio.c       **** 	CHECK_STATUS(
+ 387              		.loc 1 152 0 is_stmt 1
+ 388 0532 488B8590 		movq	-880(%rbp), %rax
+ 388      FCFFFF
+ 389 0539 0FB600   		movzbl	(%rax), %eax
+ 390 053c 3C03     		cmpb	$3, %al
+ 391 053e 7530     		jne	.L19
+ 392              		.loc 1 152 0 is_stmt 0 discriminator 1
+ 393 0540 8B95B4FC 		movl	-844(%rbp), %edx
+ 393      FFFF
+ 394 0546 488B8588 		movq	-888(%rbp), %rax
+ 394      FCFFFF
+ 395 054d 488D3500 		leaq	.LC11(%rip), %rsi
+ 395      000000
+ 396 0554 4889C7   		movq	%rax, %rdi
+ 397 0557 B8000000 		movl	$0, %eax
+ 397      00
+ 398 055c E8000000 		call	errRender@PLT
+ 398      00
+ 399 0561 C785D0FC 		movl	$13, -816(%rbp)
+ 399      FFFF0D00 
+ 399      0000
+ 400 056b E96B0200 		jmp	.L3
+ 400      00
+ 401              	.L19:
+ 153:hexio.c       **** 		*recordType == START_SEG_RECORD, HEX_BAD_REC_TYPE, cleanup,
+ 154:hexio.c       **** 		"bufProcessLine(): Record type START_SEG_RECORD not supported at line %lu", lineNumber
+ 155:hexio.c       **** 	);
+ 156:hexio.c       **** 	CHECK_STATUS(
+ 402              		.loc 1 156 0 is_stmt 1
+ 403 0570 488B8590 		movq	-880(%rbp), %rax
+ 403      FCFFFF
+ 404 0577 0FB600   		movzbl	(%rax), %eax
+ 405 057a 3C04     		cmpb	$4, %al
+ 406 057c 7530     		jne	.L20
+ 407              		.loc 1 156 0 is_stmt 0 discriminator 1
+ 408 057e 8B95B4FC 		movl	-844(%rbp), %edx
+ 408      FFFF
+ 409 0584 488B8588 		movq	-888(%rbp), %rax
+ 409      FCFFFF
+ 410 058b 488D3500 		leaq	.LC12(%rip), %rsi
+ 410      000000
+ 411 0592 4889C7   		movq	%rax, %rdi
+ 412 0595 B8000000 		movl	$0, %eax
+ 412      00
+ 413 059a E8000000 		call	errRender@PLT
+ 413      00
+ 414 059f C785D0FC 		movl	$13, -816(%rbp)
+ 414      FFFF0D00 
+ 414      0000
+ 415 05a9 E92D0200 		jmp	.L3
+ 415      00
+ 416              	.L20:
+ 157:hexio.c       **** 		*recordType == EXT_LIN_RECORD, HEX_BAD_REC_TYPE, cleanup,
+ 158:hexio.c       **** 		"bufProcessLine(): Record type EXT_LIN_RECORD, not supported at line %lu", lineNumber
+ 159:hexio.c       **** 	);
+ 160:hexio.c       **** 	CHECK_STATUS(
+ 417              		.loc 1 160 0 is_stmt 1
+ 418 05ae 488B8590 		movq	-880(%rbp), %rax
+ 418      FCFFFF
+ 419 05b5 0FB600   		movzbl	(%rax), %eax
+ 420 05b8 3C05     		cmpb	$5, %al
+ 421 05ba 7530     		jne	.L21
+ 422              		.loc 1 160 0 is_stmt 0 discriminator 1
+ 423 05bc 8B95B4FC 		movl	-844(%rbp), %edx
+ 423      FFFF
+ 424 05c2 488B8588 		movq	-888(%rbp), %rax
+ 424      FCFFFF
+ 425 05c9 488D3500 		leaq	.LC13(%rip), %rsi
+ 425      000000
+ 426 05d0 4889C7   		movq	%rax, %rdi
+ 427 05d3 B8000000 		movl	$0, %eax
+ 427      00
+ 428 05d8 E8000000 		call	errRender@PLT
+ 428      00
+ 429 05dd C785D0FC 		movl	$13, -816(%rbp)
+ 429      FFFF0D00 
+ 429      0000
+ 430 05e7 E9EF0100 		jmp	.L3
+ 430      00
+ 431              	.L21:
+ 161:hexio.c       **** 		*recordType == START_LIN_RECORD, HEX_BAD_REC_TYPE, cleanup,
+ 162:hexio.c       **** 		"bufProcessLine(): Record type START_LIN_RECORD, not supported at line %lu", lineNumber
+ 163:hexio.c       **** 	);
+ 164:hexio.c       **** 	if ( *recordType == DATA_RECORD ) {
+ 432              		.loc 1 164 0 is_stmt 1
+ 433 05ec 488B8590 		movq	-880(%rbp), %rax
+ 433      FCFFFF
+ 434 05f3 0FB600   		movzbl	(%rax), %eax
+ 435 05f6 84C0     		testb	%al, %al
+ 436 05f8 0F850201 		jne	.L22
+ 436      0000
+ 165:hexio.c       **** 		// Write into the binary buffer
+ 166:hexio.c       **** 		//
+ 167:hexio.c       **** 		status = bufWriteBlock(destData, *segment + address, dataBytes, byteCount, error);
+ 437              		.loc 1 167 0
+ 438 05fe 0FB685CA 		movzbl	-822(%rbp), %eax
+ 438      FCFFFF
+ 439 0605 0FB6C8   		movzbl	%al, %ecx
+ 440 0608 488B8598 		movq	-872(%rbp), %rax
+ 440      FCFFFF
+ 441 060f 8B10     		movl	(%rax), %edx
+ 442 0611 0FB785CE 		movzwl	-818(%rbp), %eax
+ 442      FCFFFF
+ 443 0618 01D0     		addl	%edx, %eax
+ 444 061a 89C6     		movl	%eax, %esi
+ 445 061c 488BBD88 		movq	-888(%rbp), %rdi
+ 445      FCFFFF
+ 446 0623 488D95E0 		leaq	-800(%rbp), %rdx
+ 446      FCFFFF
+ 447 062a 488B85A8 		movq	-856(%rbp), %rax
+ 447      FCFFFF
+ 448 0631 4989F8   		movq	%rdi, %r8
+ 449 0634 4889C7   		movq	%rax, %rdi
+ 450 0637 E8000000 		call	bufWriteBlock@PLT
+ 450      00
+ 451 063c 8985D4FC 		movl	%eax, -812(%rbp)
+ 451      FFFF
+ 168:hexio.c       **** 		CHECK_STATUS(status, status, cleanup, "bufProcessLine()");
+ 452              		.loc 1 168 0
+ 453 0642 83BDD4FC 		cmpl	$0, -812(%rbp)
+ 453      FFFF00
+ 454 0649 7427     		je	.L23
+ 455              		.loc 1 168 0 is_stmt 0 discriminator 1
+ 456 064b 488B8588 		movq	-888(%rbp), %rax
+ 456      FCFFFF
+ 457 0652 488D3500 		leaq	.LC14(%rip), %rsi
+ 457      000000
+ 458 0659 4889C7   		movq	%rax, %rdi
+ 459 065c E8000000 		call	errPrefix@PLT
+ 459      00
+ 460 0661 8B85D4FC 		movl	-812(%rbp), %eax
+ 460      FFFF
+ 461 0667 8985D0FC 		movl	%eax, -816(%rbp)
+ 461      FFFF
+ 462 066d E9690100 		jmp	.L3
+ 462      00
+ 463              	.L23:
+ 169:hexio.c       **** 		if ( destMask ) {
+ 464              		.loc 1 169 0 is_stmt 1
+ 465 0672 4883BDA0 		cmpq	$0, -864(%rbp)
+ 465      FCFFFF00 
+ 466 067a 7475     		je	.L24
+ 170:hexio.c       **** 			status = bufWriteConst(destMask, *segment + address, 0x01, byteCount, error);
+ 467              		.loc 1 170 0
+ 468 067c 0FB685CA 		movzbl	-822(%rbp), %eax
+ 468      FCFFFF
+ 469 0683 0FB6D0   		movzbl	%al, %edx
+ 470 0686 488B8598 		movq	-872(%rbp), %rax
+ 470      FCFFFF
+ 471 068d 8B08     		movl	(%rax), %ecx
+ 472 068f 0FB785CE 		movzwl	-818(%rbp), %eax
+ 472      FCFFFF
+ 473 0696 01C8     		addl	%ecx, %eax
+ 474 0698 89C6     		movl	%eax, %esi
+ 475 069a 488B8D88 		movq	-888(%rbp), %rcx
+ 475      FCFFFF
+ 476 06a1 488B85A0 		movq	-864(%rbp), %rax
+ 476      FCFFFF
+ 477 06a8 4989C8   		movq	%rcx, %r8
+ 478 06ab 4889D1   		movq	%rdx, %rcx
+ 479 06ae BA010000 		movl	$1, %edx
+ 479      00
+ 480 06b3 4889C7   		movq	%rax, %rdi
+ 481 06b6 E8000000 		call	bufWriteConst@PLT
+ 481      00
+ 482 06bb 8985D4FC 		movl	%eax, -812(%rbp)
+ 482      FFFF
+ 171:hexio.c       **** 			CHECK_STATUS(status, status, cleanup, "bufProcessLine()");
+ 483              		.loc 1 171 0
+ 484 06c1 83BDD4FC 		cmpl	$0, -812(%rbp)
+ 484      FFFF00
+ 485 06c8 7427     		je	.L24
+ 486              		.loc 1 171 0 is_stmt 0 discriminator 1
+ 487 06ca 488B8588 		movq	-888(%rbp), %rax
+ 487      FCFFFF
+ 488 06d1 488D3500 		leaq	.LC14(%rip), %rsi
+ 488      000000
+ 489 06d8 4889C7   		movq	%rax, %rdi
+ 490 06db E8000000 		call	errPrefix@PLT
+ 490      00
+ 491 06e0 8B85D4FC 		movl	-812(%rbp), %eax
+ 491      FFFF
+ 492 06e6 8985D0FC 		movl	%eax, -816(%rbp)
+ 492      FFFF
+ 493 06ec E9EA0000 		jmp	.L3
+ 493      00
+ 494              	.L24:
+ 172:hexio.c       **** 		}
+ 173:hexio.c       **** 		retVal = BUF_SUCCESS;
+ 495              		.loc 1 173 0 is_stmt 1
+ 496 06f1 C785D0FC 		movl	$0, -816(%rbp)
+ 496      FFFF0000 
+ 496      0000
+ 497 06fb E9DB0000 		jmp	.L3
+ 497      00
+ 498              	.L22:
+ 174:hexio.c       **** 	} else if ( *recordType == EOF_RECORD ) {
+ 499              		.loc 1 174 0
+ 500 0700 488B8590 		movq	-880(%rbp), %rax
+ 500      FCFFFF
+ 501 0707 0FB600   		movzbl	(%rax), %eax
+ 502 070a 3C01     		cmpb	$1, %al
+ 503 070c 750F     		jne	.L25
+ 175:hexio.c       **** 		retVal = BUF_SUCCESS;
+ 504              		.loc 1 175 0
+ 505 070e C785D0FC 		movl	$0, -816(%rbp)
+ 505      FFFF0000 
+ 505      0000
+ 506 0718 E9BE0000 		jmp	.L3
+ 506      00
+ 507              	.L25:
+ 176:hexio.c       **** 	} else if ( *recordType == EXT_SEG_RECORD ) {
+ 508              		.loc 1 176 0
+ 509 071d 488B8590 		movq	-880(%rbp), %rax
+ 509      FCFFFF
+ 510 0724 0FB600   		movzbl	(%rax), %eax
+ 511 0727 3C02     		cmpb	$2, %al
+ 512 0729 7577     		jne	.L26
+ 177:hexio.c       **** 		CHECK_STATUS(
+ 513              		.loc 1 177 0
+ 514 072b 6683BDCE 		cmpw	$0, -818(%rbp)
+ 514      FCFFFF00 
+ 515 0733 750B     		jne	.L27
+ 516              		.loc 1 177 0 is_stmt 0 discriminator 2
+ 517 0735 0FB685CA 		movzbl	-822(%rbp), %eax
+ 517      FCFFFF
+ 518 073c 3C02     		cmpb	$2, %al
+ 519 073e 742D     		je	.L28
+ 520              	.L27:
+ 521              		.loc 1 177 0 discriminator 1
+ 522 0740 8B95B4FC 		movl	-844(%rbp), %edx
+ 522      FFFF
+ 523 0746 488B8588 		movq	-888(%rbp), %rax
+ 523      FCFFFF
+ 524 074d 488D3500 		leaq	.LC15(%rip), %rsi
+ 524      000000
+ 525 0754 4889C7   		movq	%rax, %rdi
+ 526 0757 B8000000 		movl	$0, %eax
+ 526      00
+ 527 075c E8000000 		call	errRender@PLT
+ 527      00
+ 528 0761 C785D0FC 		movl	$19, -816(%rbp)
+ 528      FFFF1300 
+ 528      0000
+ 529 076b EB6E     		jmp	.L3
+ 530              	.L28:
+ 178:hexio.c       **** 			address != 0x0000 || byteCount != 2, HEX_BAD_EXT_SEG, cleanup,
+ 179:hexio.c       **** 			"bufProcessLine(): For record type EXT_SEG_RECORD, address must be 0x0000 and byteCount must be 
+ 180:hexio.c       **** 			lineNumber
+ 181:hexio.c       **** 		);
+ 182:hexio.c       **** 		*segment = (uint32)(((dataBytes[0] << 8) + dataBytes[1]) << 4);
+ 531              		.loc 1 182 0 is_stmt 1
+ 532 076d 0FB685E0 		movzbl	-800(%rbp), %eax
+ 532      FCFFFF
+ 533 0774 0FB6C0   		movzbl	%al, %eax
+ 534 0777 C1E008   		sall	$8, %eax
+ 535 077a 89C2     		movl	%eax, %edx
+ 536 077c 0FB685E1 		movzbl	-799(%rbp), %eax
+ 536      FCFFFF
+ 537 0783 0FB6C0   		movzbl	%al, %eax
+ 538 0786 01D0     		addl	%edx, %eax
+ 539 0788 C1E004   		sall	$4, %eax
+ 540 078b 89C2     		movl	%eax, %edx
+ 541 078d 488B8598 		movq	-872(%rbp), %rax
+ 541      FCFFFF
+ 542 0794 8910     		movl	%edx, (%rax)
+ 183:hexio.c       **** 		retVal = BUF_SUCCESS;
+ 543              		.loc 1 183 0
+ 544 0796 C785D0FC 		movl	$0, -816(%rbp)
+ 544      FFFF0000 
+ 544      0000
+ 545 07a0 EB39     		jmp	.L3
+ 546              	.L26:
+ 184:hexio.c       **** 	} else {
+ 185:hexio.c       **** 		CHECK_STATUS(
+ 547              		.loc 1 185 0 discriminator 1
+ 548 07a2 488B8590 		movq	-880(%rbp), %rax
+ 548      FCFFFF
+ 549 07a9 0FB600   		movzbl	(%rax), %eax
+ 550 07ac 0FB6D0   		movzbl	%al, %edx
+ 551 07af 8B8DB4FC 		movl	-844(%rbp), %ecx
+ 551      FFFF
+ 552 07b5 488B8588 		movq	-888(%rbp), %rax
+ 552      FCFFFF
+ 553 07bc 488D3500 		leaq	.LC16(%rip), %rsi
+ 553      000000
+ 554 07c3 4889C7   		movq	%rax, %rdi
+ 555 07c6 B8000000 		movl	$0, %eax
+ 555      00
+ 556 07cb E8000000 		call	errRender@PLT
+ 556      00
+ 557 07d0 C785D0FC 		movl	$13, -816(%rbp)
+ 557      FFFF0D00 
+ 557      0000
+ 558 07da 90       		nop
+ 559              	.L3:
+ 186:hexio.c       **** 			true, HEX_BAD_REC_TYPE, cleanup,
+ 187:hexio.c       **** 			"bufProcessLine(): Record type 0x%02X not supported at line %lu", *recordType, lineNumber
+ 188:hexio.c       **** 		);
+ 189:hexio.c       **** 	}
+ 190:hexio.c       **** cleanup:
+ 191:hexio.c       **** 	return retVal;
+ 560              		.loc 1 191 0
+ 561 07db 8B85D0FC 		movl	-816(%rbp), %eax
+ 561      FFFF
+ 192:hexio.c       **** }
+ 562              		.loc 1 192 0
+ 563 07e1 488B5DE8 		movq	-24(%rbp), %rbx
+ 564 07e5 6448331C 		xorq	%fs:40, %rbx
+ 564      25280000 
+ 564      00
+ 565 07ee 7405     		je	.L30
+ 566 07f0 E8000000 		call	__stack_chk_fail@PLT
+ 566      00
+ 567              	.L30:
+ 568 07f5 4881C478 		addq	$888, %rsp
+ 568      030000
+ 569 07fc 5B       		popq	%rbx
+ 570 07fd 5D       		popq	%rbp
+ 571              		.cfi_def_cfa 7, 8
+ 572 07fe C3       		ret
+ 573              		.cfi_endproc
+ 574              	.LFE4:
+ 576              		.section	.rodata
+ 577              	.LC17:
+ 578 03cf 726200   		.string	"rb"
+ 579              	.LC18:
+ 580 03d2 62756652 		.string	"bufReadFromIntelHexFile()"
+ 580      65616446 
+ 580      726F6D49 
+ 580      6E74656C 
+ 580      48657846 
+ 581 03ec 00000000 		.align 8
+ 582              	.LC19:
+ 583 03f0 62756652 		.string	"bufReadFromIntelHexFile(): Empty file!"
+ 583      65616446 
+ 583      726F6D49 
+ 583      6E74656C 
+ 583      48657846 
+ 584 0417 00       		.align 8
+ 585              	.LC20:
+ 586 0418 62756652 		.string	"bufReadFromIntelHexFile(): Premature end of file - no EOF_RECORD found!"
+ 586      65616446 
+ 586      726F6D49 
+ 586      6E74656C 
+ 586      48657846 
+ 587              		.text
+ 588              		.globl	bufReadFromIntelHexFile
+ 590              	bufReadFromIntelHexFile:
+ 591              	.LFB5:
+ 193:hexio.c       **** 
+ 194:hexio.c       **** // Read Intel Hex records from a file.
+ 195:hexio.c       **** // TODO: Handle read errors
+ 196:hexio.c       **** //
+ 197:hexio.c       **** DLLEXPORT(BufferStatus) bufReadFromIntelHexFile(
+ 198:hexio.c       **** 	struct Buffer *destData, struct Buffer *destMask, const char *fileName, const char **error)
+ 199:hexio.c       **** {
+ 592              		.loc 1 199 0
+ 593              		.cfi_startproc
+ 594 07ff 55       		pushq	%rbp
+ 595              		.cfi_def_cfa_offset 16
+ 596              		.cfi_offset 6, -16
+ 597 0800 4889E5   		movq	%rsp, %rbp
+ 598              		.cfi_def_cfa_register 6
+ 599 0803 53       		pushq	%rbx
+ 600 0804 4881EC68 		subq	$616, %rsp
+ 600      020000
+ 601              		.cfi_offset 3, -24
+ 602 080b 4889BDB8 		movq	%rdi, -584(%rbp)
+ 602      FDFFFF
+ 603 0812 4889B5B0 		movq	%rsi, -592(%rbp)
+ 603      FDFFFF
+ 604 0819 488995A8 		movq	%rdx, -600(%rbp)
+ 604      FDFFFF
+ 605 0820 48898DA0 		movq	%rcx, -608(%rbp)
+ 605      FDFFFF
+ 606              		.loc 1 199 0
+ 607 0827 64488B04 		movq	%fs:40, %rax
+ 607      25280000 
+ 607      00
+ 608 0830 488945E8 		movq	%rax, -24(%rbp)
+ 609 0834 31C0     		xorl	%eax, %eax
+ 200:hexio.c       **** 	BufferStatus retVal = BUF_SUCCESS;
+ 610              		.loc 1 200 0
+ 611 0836 C785CCFD 		movl	$0, -564(%rbp)
+ 611      FFFF0000 
+ 611      0000
+ 201:hexio.c       **** 	uint32 lineNumber;
+ 202:hexio.c       **** 	uint32 segment = 0x00000000;
+ 612              		.loc 1 202 0
+ 613 0840 C785C8FD 		movl	$0, -568(%rbp)
+ 613      FFFF0000 
+ 613      0000
+ 203:hexio.c       **** 	char readLine[LINE_MAX];
+ 204:hexio.c       **** 	BufferStatus status;
+ 205:hexio.c       **** 	uint8 recordType;
+ 206:hexio.c       **** 
+ 207:hexio.c       **** 	// Open the file...
+ 208:hexio.c       **** 	//
+ 209:hexio.c       **** 	FILE *file = fopen(fileName, "rb");
+ 614              		.loc 1 209 0
+ 615 084a 488B85A8 		movq	-600(%rbp), %rax
+ 615      FDFFFF
+ 616 0851 488D3500 		leaq	.LC17(%rip), %rsi
+ 616      000000
+ 617 0858 4889C7   		movq	%rax, %rdi
+ 618 085b E8000000 		call	fopen@PLT
+ 618      00
+ 619 0860 488985D8 		movq	%rax, -552(%rbp)
+ 619      FDFFFF
+ 210:hexio.c       **** 	if ( !file ) {
+ 620              		.loc 1 210 0
+ 621 0867 4883BDD8 		cmpq	$0, -552(%rbp)
+ 621      FDFFFF00 
+ 622 086f 7534     		jne	.L32
+ 211:hexio.c       **** 		errRenderStd(error);
+ 623              		.loc 1 211 0
+ 624 0871 488B85A0 		movq	-608(%rbp), %rax
+ 624      FDFFFF
+ 625 0878 4889C7   		movq	%rax, %rdi
+ 626 087b E8000000 		call	errRenderStd@PLT
+ 626      00
+ 212:hexio.c       **** 		CHECK_STATUS(true, BUF_FOPEN, exit, "bufReadFromIntelHexFile()");
+ 627              		.loc 1 212 0
+ 628 0880 488B85A0 		movq	-608(%rbp), %rax
+ 628      FDFFFF
+ 629 0887 488D3500 		leaq	.LC18(%rip), %rsi
+ 629      000000
+ 630 088e 4889C7   		movq	%rax, %rdi
+ 631 0891 E8000000 		call	errPrefix@PLT
+ 631      00
+ 632 0896 C785CCFD 		movl	$2, -564(%rbp)
+ 632      FFFF0200 
+ 632      0000
+ 633 08a0 E9620100 		jmp	.L33
+ 633      00
+ 634              	.L32:
+ 213:hexio.c       **** 	}
+ 214:hexio.c       **** 
+ 215:hexio.c       **** 	// Clear the existing data in the buffer, if any.
+ 216:hexio.c       **** 	//
+ 217:hexio.c       **** 	bufZeroLength(destData);
+ 635              		.loc 1 217 0
+ 636 08a5 488B85B8 		movq	-584(%rbp), %rax
+ 636      FDFFFF
+ 637 08ac 4889C7   		movq	%rax, %rdi
+ 638 08af E8000000 		call	bufZeroLength@PLT
+ 638      00
+ 218:hexio.c       **** 	if ( destMask ) {
+ 639              		.loc 1 218 0
+ 640 08b4 4883BDB0 		cmpq	$0, -592(%rbp)
+ 640      FDFFFF00 
+ 641 08bc 740F     		je	.L34
+ 219:hexio.c       **** 		bufZeroLength(destMask);
+ 642              		.loc 1 219 0
+ 643 08be 488B85B0 		movq	-592(%rbp), %rax
+ 643      FDFFFF
+ 644 08c5 4889C7   		movq	%rax, %rdi
+ 645 08c8 E8000000 		call	bufZeroLength@PLT
+ 645      00
+ 646              	.L34:
+ 220:hexio.c       **** 	}
+ 221:hexio.c       **** 
+ 222:hexio.c       **** 	// Iterate over every line
+ 223:hexio.c       **** 	//
+ 224:hexio.c       **** 	lineNumber = 1;
+ 647              		.loc 1 224 0
+ 648 08cd C785D0FD 		movl	$1, -560(%rbp)
+ 648      FFFF0100 
+ 648      0000
+ 225:hexio.c       **** 	CHECK_STATUS(
+ 649              		.loc 1 225 0
+ 650 08d7 488B95D8 		movq	-552(%rbp), %rdx
+ 650      FDFFFF
+ 651 08de 488D85E0 		leaq	-544(%rbp), %rax
+ 651      FDFFFF
+ 652 08e5 BE000200 		movl	$512, %esi
+ 652      00
+ 653 08ea 4889C7   		movq	%rax, %rdi
+ 654 08ed E8000000 		call	fgets@PLT
+ 654      00
+ 655 08f2 4885C0   		testq	%rax, %rax
+ 656 08f5 7525     		jne	.L35
+ 657              		.loc 1 225 0 is_stmt 0 discriminator 1
+ 658 08f7 488B85A0 		movq	-608(%rbp), %rax
+ 658      FDFFFF
+ 659 08fe 488D3500 		leaq	.LC19(%rip), %rsi
+ 659      000000
+ 660 0905 4889C7   		movq	%rax, %rdi
+ 661 0908 E8000000 		call	errPrefix@PLT
+ 661      00
+ 662 090d C785CCFD 		movl	$7, -564(%rbp)
+ 662      FFFF0700 
+ 662      0000
+ 663 0917 E9DC0000 		jmp	.L36
+ 663      00
+ 664              	.L35:
+ 226:hexio.c       **** 		!fgets(readLine, LINE_MAX, file), HEX_EMPTY_FILE, cleanup,
+ 227:hexio.c       **** 		"bufReadFromIntelHexFile(): Empty file!"
+ 228:hexio.c       **** 	);
+ 229:hexio.c       **** 	do {
+ 230:hexio.c       **** 		status = bufProcessLine(
+ 665              		.loc 1 230 0 is_stmt 1
+ 666 091c 4C8D8DC7 		leaq	-569(%rbp), %r9
+ 666      FDFFFF
+ 667 0923 4C8D85C8 		leaq	-568(%rbp), %r8
+ 667      FDFFFF
+ 668 092a 488B8DB0 		movq	-592(%rbp), %rcx
+ 668      FDFFFF
+ 669 0931 488B95B8 		movq	-584(%rbp), %rdx
+ 669      FDFFFF
+ 670 0938 8BB5D0FD 		movl	-560(%rbp), %esi
+ 670      FFFF
+ 671 093e 488D85E0 		leaq	-544(%rbp), %rax
+ 671      FDFFFF
+ 672 0945 488BBDA0 		movq	-608(%rbp), %rdi
+ 672      FDFFFF
+ 673 094c 48893C24 		movq	%rdi, (%rsp)
+ 674 0950 4889C7   		movq	%rax, %rdi
+ 675 0953 E8000000 		call	bufProcessLine@PLT
+ 675      00
+ 676 0958 8985D4FD 		movl	%eax, -556(%rbp)
+ 676      FFFF
+ 231:hexio.c       **** 			readLine, lineNumber, destData, destMask, &segment, &recordType, error);
+ 232:hexio.c       **** 		CHECK_STATUS(status, status, cleanup, "bufReadFromIntelHexFile()");
+ 677              		.loc 1 232 0
+ 678 095e 83BDD4FD 		cmpl	$0, -556(%rbp)
+ 678      FFFF00
+ 679 0965 7424     		je	.L37
+ 680              		.loc 1 232 0 is_stmt 0 discriminator 1
+ 681 0967 488B85A0 		movq	-608(%rbp), %rax
+ 681      FDFFFF
+ 682 096e 488D3500 		leaq	.LC18(%rip), %rsi
+ 682      000000
+ 683 0975 4889C7   		movq	%rax, %rdi
+ 684 0978 E8000000 		call	errPrefix@PLT
+ 684      00
+ 685 097d 8B85D4FD 		movl	-556(%rbp), %eax
+ 685      FFFF
+ 686 0983 8985CCFD 		movl	%eax, -564(%rbp)
+ 686      FFFF
+ 687 0989 EB6D     		jmp	.L36
+ 688              	.L37:
+ 233:hexio.c       **** 		lineNumber++;
+ 689              		.loc 1 233 0 is_stmt 1
+ 690 098b 8385D0FD 		addl	$1, -560(%rbp)
+ 690      FFFF01
+ 234:hexio.c       **** 	} while ( (recordType == DATA_RECORD || recordType == EXT_SEG_RECORD) &&
+ 691              		.loc 1 234 0
+ 692 0992 0FB685C7 		movzbl	-569(%rbp), %eax
+ 692      FDFFFF
+ 235:hexio.c       **** 	          fgets(readLine, LINE_MAX, file) );
+ 693              		.loc 1 235 0
+ 694 0999 84C0     		testb	%al, %al
+ 695 099b 740B     		je	.L38
+ 234:hexio.c       **** 	} while ( (recordType == DATA_RECORD || recordType == EXT_SEG_RECORD) &&
+ 696              		.loc 1 234 0
+ 697 099d 0FB685C7 		movzbl	-569(%rbp), %eax
+ 697      FDFFFF
+ 698 09a4 3C02     		cmpb	$2, %al
+ 699 09a6 7524     		jne	.L39
+ 700              	.L38:
+ 701              		.loc 1 235 0 discriminator 1
+ 702 09a8 488B95D8 		movq	-552(%rbp), %rdx
+ 702      FDFFFF
+ 703 09af 488D85E0 		leaq	-544(%rbp), %rax
+ 703      FDFFFF
+ 704 09b6 BE000200 		movl	$512, %esi
+ 704      00
+ 705 09bb 4889C7   		movq	%rax, %rdi
+ 706 09be E8000000 		call	fgets@PLT
+ 706      00
+ 234:hexio.c       **** 	} while ( (recordType == DATA_RECORD || recordType == EXT_SEG_RECORD) &&
+ 707              		.loc 1 234 0 discriminator 1
+ 708 09c3 4885C0   		testq	%rax, %rax
+ 709 09c6 0F8550FF 		jne	.L35
+ 709      FFFF
+ 710              	.L39:
+ 236:hexio.c       **** 
+ 237:hexio.c       **** 	// Make sure the file terminated correctly
+ 238:hexio.c       **** 	//
+ 239:hexio.c       **** 	CHECK_STATUS(
+ 711              		.loc 1 239 0
+ 712 09cc 0FB685C7 		movzbl	-569(%rbp), %eax
+ 712      FDFFFF
+ 713 09d3 3C01     		cmpb	$1, %al
+ 714 09d5 7421     		je	.L36
+ 715              		.loc 1 239 0 is_stmt 0 discriminator 1
+ 716 09d7 488B85A0 		movq	-608(%rbp), %rax
+ 716      FDFFFF
+ 717 09de 488D3500 		leaq	.LC20(%rip), %rsi
+ 717      000000
+ 718 09e5 4889C7   		movq	%rax, %rdi
+ 719 09e8 E8000000 		call	errPrefix@PLT
+ 719      00
+ 720 09ed C785CCFD 		movl	$18, -564(%rbp)
+ 720      FFFF1200 
+ 720      0000
+ 721 09f7 90       		nop
+ 722              	.L36:
+ 240:hexio.c       **** 		recordType != EOF_RECORD, HEX_MISSING_EOF, cleanup,
+ 241:hexio.c       **** 		"bufReadFromIntelHexFile(): Premature end of file - no EOF_RECORD found!"
+ 242:hexio.c       **** 	);
+ 243:hexio.c       **** 
+ 244:hexio.c       **** cleanup:
+ 245:hexio.c       **** 	// Close the file and exit
+ 246:hexio.c       **** 	//
+ 247:hexio.c       **** 	fclose(file);
+ 723              		.loc 1 247 0 is_stmt 1
+ 724 09f8 488B85D8 		movq	-552(%rbp), %rax
+ 724      FDFFFF
+ 725 09ff 4889C7   		movq	%rax, %rdi
+ 726 0a02 E8000000 		call	fclose@PLT
+ 726      00
+ 727              	.L33:
+ 248:hexio.c       **** exit:
+ 249:hexio.c       **** 	return retVal;
+ 728              		.loc 1 249 0
+ 729 0a07 8B85CCFD 		movl	-564(%rbp), %eax
+ 729      FFFF
+ 250:hexio.c       **** }
+ 730              		.loc 1 250 0
+ 731 0a0d 488B5DE8 		movq	-24(%rbp), %rbx
+ 732 0a11 6448331C 		xorq	%fs:40, %rbx
+ 732      25280000 
+ 732      00
+ 733 0a1a 7405     		je	.L41
+ 734 0a1c E8000000 		call	__stack_chk_fail@PLT
+ 734      00
+ 735              	.L41:
+ 736 0a21 4881C468 		addq	$616, %rsp
+ 736      020000
+ 737 0a28 5B       		popq	%rbx
+ 738 0a29 5D       		popq	%rbp
+ 739              		.cfi_def_cfa 7, 8
+ 740 0a2a C3       		ret
+ 741              		.cfi_endproc
+ 742              	.LFE5:
+ 745              	writeHexByte:
+ 746              	.LFB6:
+ 251:hexio.c       **** 
+ 252:hexio.c       **** // Write the supplied byte as two hex digits
+ 253:hexio.c       **** // TODO: Handle write errors
+ 254:hexio.c       **** //
+ 255:hexio.c       **** static void writeHexByte(uint8 byte, FILE *file) {
+ 747              		.loc 1 255 0
+ 748              		.cfi_startproc
+ 749 0a2b 55       		pushq	%rbp
+ 750              		.cfi_def_cfa_offset 16
+ 751              		.cfi_offset 6, -16
+ 752 0a2c 4889E5   		movq	%rsp, %rbp
+ 753              		.cfi_def_cfa_register 6
+ 754 0a2f 4883EC10 		subq	$16, %rsp
+ 755 0a33 89F8     		movl	%edi, %eax
+ 756 0a35 488975F0 		movq	%rsi, -16(%rbp)
+ 757 0a39 8845FC   		movb	%al, -4(%rbp)
+ 256:hexio.c       **** 	fputc(getHexUpperNibble(byte), file);
+ 758              		.loc 1 256 0
+ 759 0a3c 0FB645FC 		movzbl	-4(%rbp), %eax
+ 760 0a40 89C7     		movl	%eax, %edi
+ 761 0a42 E8000000 		call	getHexUpperNibble@PLT
+ 761      00
+ 762 0a47 0FBEC0   		movsbl	%al, %eax
+ 763 0a4a 488B55F0 		movq	-16(%rbp), %rdx
+ 764 0a4e 4889D6   		movq	%rdx, %rsi
+ 765 0a51 89C7     		movl	%eax, %edi
+ 766 0a53 E8000000 		call	fputc@PLT
+ 766      00
+ 257:hexio.c       **** 	fputc(getHexLowerNibble(byte), file);
+ 767              		.loc 1 257 0
+ 768 0a58 0FB645FC 		movzbl	-4(%rbp), %eax
+ 769 0a5c 89C7     		movl	%eax, %edi
+ 770 0a5e E8000000 		call	getHexLowerNibble@PLT
+ 770      00
+ 771 0a63 0FBEC0   		movsbl	%al, %eax
+ 772 0a66 488B55F0 		movq	-16(%rbp), %rdx
+ 773 0a6a 4889D6   		movq	%rdx, %rsi
+ 774 0a6d 89C7     		movl	%eax, %edi
+ 775 0a6f E8000000 		call	fputc@PLT
+ 775      00
+ 258:hexio.c       **** }
+ 776              		.loc 1 258 0
+ 777 0a74 C9       		leave
+ 778              		.cfi_def_cfa 7, 8
+ 779 0a75 C3       		ret
+ 780              		.cfi_endproc
+ 781              	.LFE6:
+ 784              	writeHexWordBE:
+ 785              	.LFB7:
+ 259:hexio.c       **** 
+ 260:hexio.c       **** // Write the supplied word as four hex digits, in big-endian format (most significant byte first).
+ 261:hexio.c       **** // TODO: Handle write errors
+ 262:hexio.c       **** //
+ 263:hexio.c       **** static void writeHexWordBE(uint16 word, FILE *file) {
+ 786              		.loc 1 263 0
+ 787              		.cfi_startproc
+ 788 0a76 55       		pushq	%rbp
+ 789              		.cfi_def_cfa_offset 16
+ 790              		.cfi_offset 6, -16
+ 791 0a77 4889E5   		movq	%rsp, %rbp
+ 792              		.cfi_def_cfa_register 6
+ 793 0a7a 4883EC10 		subq	$16, %rsp
+ 794 0a7e 89F8     		movl	%edi, %eax
+ 795 0a80 488975F0 		movq	%rsi, -16(%rbp)
+ 796 0a84 668945FC 		movw	%ax, -4(%rbp)
+ 264:hexio.c       **** 	fputc(getHexUpperNibble((uint8)(word >> 8)), file);
+ 797              		.loc 1 264 0
+ 798 0a88 0FB745FC 		movzwl	-4(%rbp), %eax
+ 799 0a8c 66C1E808 		shrw	$8, %ax
+ 800 0a90 0FB6C0   		movzbl	%al, %eax
+ 801 0a93 89C7     		movl	%eax, %edi
+ 802 0a95 E8000000 		call	getHexUpperNibble@PLT
+ 802      00
+ 803 0a9a 0FBEC0   		movsbl	%al, %eax
+ 804 0a9d 488B55F0 		movq	-16(%rbp), %rdx
+ 805 0aa1 4889D6   		movq	%rdx, %rsi
+ 806 0aa4 89C7     		movl	%eax, %edi
+ 807 0aa6 E8000000 		call	fputc@PLT
+ 807      00
+ 265:hexio.c       **** 	fputc(getHexLowerNibble((uint8)(word >> 8)), file);
+ 808              		.loc 1 265 0
+ 809 0aab 0FB745FC 		movzwl	-4(%rbp), %eax
+ 810 0aaf 66C1E808 		shrw	$8, %ax
+ 811 0ab3 0FB6C0   		movzbl	%al, %eax
+ 812 0ab6 89C7     		movl	%eax, %edi
+ 813 0ab8 E8000000 		call	getHexLowerNibble@PLT
+ 813      00
+ 814 0abd 0FBEC0   		movsbl	%al, %eax
+ 815 0ac0 488B55F0 		movq	-16(%rbp), %rdx
+ 816 0ac4 4889D6   		movq	%rdx, %rsi
+ 817 0ac7 89C7     		movl	%eax, %edi
+ 818 0ac9 E8000000 		call	fputc@PLT
+ 818      00
+ 266:hexio.c       **** 	fputc(getHexUpperNibble((uint8)(word & 0xFF)), file);
+ 819              		.loc 1 266 0
+ 820 0ace 0FB745FC 		movzwl	-4(%rbp), %eax
+ 821 0ad2 0FB6C0   		movzbl	%al, %eax
+ 822 0ad5 89C7     		movl	%eax, %edi
+ 823 0ad7 E8000000 		call	getHexUpperNibble@PLT
+ 823      00
+ 824 0adc 0FBEC0   		movsbl	%al, %eax
+ 825 0adf 488B55F0 		movq	-16(%rbp), %rdx
+ 826 0ae3 4889D6   		movq	%rdx, %rsi
+ 827 0ae6 89C7     		movl	%eax, %edi
+ 828 0ae8 E8000000 		call	fputc@PLT
+ 828      00
+ 267:hexio.c       **** 	fputc(getHexLowerNibble((uint8)(word & 0xFF)), file);
+ 829              		.loc 1 267 0
+ 830 0aed 0FB745FC 		movzwl	-4(%rbp), %eax
+ 831 0af1 0FB6C0   		movzbl	%al, %eax
+ 832 0af4 89C7     		movl	%eax, %edi
+ 833 0af6 E8000000 		call	getHexLowerNibble@PLT
+ 833      00
+ 834 0afb 0FBEC0   		movsbl	%al, %eax
+ 835 0afe 488B55F0 		movq	-16(%rbp), %rdx
+ 836 0b02 4889D6   		movq	%rdx, %rsi
+ 837 0b05 89C7     		movl	%eax, %edi
+ 838 0b07 E8000000 		call	fputc@PLT
+ 838      00
+ 268:hexio.c       **** }
+ 839              		.loc 1 268 0
+ 840 0b0c C9       		leave
+ 841              		.cfi_def_cfa 7, 8
+ 842 0b0d C3       		ret
+ 843              		.cfi_endproc
+ 844              	.LFE7:
+ 846              		.section	.rodata
+ 847              	.LC21:
+ 848 0460 62756644 		.string	"bufDeriveMask()"
+ 848      65726976 
+ 848      654D6173 
+ 848      6B282900 
+ 849              		.text
+ 850              		.globl	bufDeriveMask
+ 852              	bufDeriveMask:
+ 853              	.LFB8:
+ 269:hexio.c       **** 
+ 270:hexio.c       **** BufferStatus bufDeriveMask(
+ 271:hexio.c       **** 	const struct Buffer *sourceData, struct Buffer *destMask, const char **error)
+ 272:hexio.c       **** {
+ 854              		.loc 1 272 0
+ 855              		.cfi_startproc
+ 856 0b0e 55       		pushq	%rbp
+ 857              		.cfi_def_cfa_offset 16
+ 858              		.cfi_offset 6, -16
+ 859 0b0f 4889E5   		movq	%rsp, %rbp
+ 860              		.cfi_def_cfa_register 6
+ 861 0b12 4883EC40 		subq	$64, %rsp
+ 862 0b16 48897DD8 		movq	%rdi, -40(%rbp)
+ 863 0b1a 488975D0 		movq	%rsi, -48(%rbp)
+ 864 0b1e 488955C8 		movq	%rdx, -56(%rbp)
+ 273:hexio.c       **** 	BufferStatus retVal = BUF_SUCCESS;
+ 865              		.loc 1 273 0
+ 866 0b22 C745E000 		movl	$0, -32(%rbp)
+ 866      000000
+ 274:hexio.c       **** 	size_t address, count, i;
+ 275:hexio.c       **** 	BufferStatus bStatus;
+ 276:hexio.c       **** 	bufZeroLength(destMask);
+ 867              		.loc 1 276 0
+ 868 0b29 488B45D0 		movq	-48(%rbp), %rax
+ 869 0b2d 4889C7   		movq	%rax, %rdi
+ 870 0b30 E8000000 		call	bufZeroLength@PLT
+ 870      00
+ 277:hexio.c       **** 	bStatus = bufAppendConst(destMask, 0x01, sourceData->length, error);
+ 871              		.loc 1 277 0
+ 872 0b35 488B45D8 		movq	-40(%rbp), %rax
+ 873 0b39 488B5008 		movq	8(%rax), %rdx
+ 874 0b3d 488B4DC8 		movq	-56(%rbp), %rcx
+ 875 0b41 488B45D0 		movq	-48(%rbp), %rax
+ 876 0b45 BE010000 		movl	$1, %esi
+ 876      00
+ 877 0b4a 4889C7   		movq	%rax, %rdi
+ 878 0b4d E8000000 		call	bufAppendConst@PLT
+ 878      00
+ 879 0b52 8945E4   		movl	%eax, -28(%rbp)
+ 278:hexio.c       **** 	CHECK_STATUS(bStatus, bStatus, cleanup, "bufDeriveMask()");
+ 880              		.loc 1 278 0
+ 881 0b55 837DE400 		cmpl	$0, -28(%rbp)
+ 882 0b59 741E     		je	.L45
+ 883              		.loc 1 278 0 is_stmt 0 discriminator 1
+ 884 0b5b 488B45C8 		movq	-56(%rbp), %rax
+ 885 0b5f 488D3500 		leaq	.LC21(%rip), %rsi
+ 885      000000
+ 886 0b66 4889C7   		movq	%rax, %rdi
+ 887 0b69 E8000000 		call	errPrefix@PLT
+ 887      00
+ 888 0b6e 8B45E4   		movl	-28(%rbp), %eax
+ 889 0b71 8945E0   		movl	%eax, -32(%rbp)
+ 890 0b74 E9EF0000 		jmp	.L46
+ 890      00
+ 891              	.L45:
+ 279:hexio.c       **** 	address = 0x00000000;
+ 892              		.loc 1 279 0 is_stmt 1
+ 893 0b79 48C745E8 		movq	$0, -24(%rbp)
+ 893      00000000 
+ 280:hexio.c       **** 	while ( address < destMask->length ) {
+ 894              		.loc 1 280 0
+ 895 0b81 E9D00000 		jmp	.L47
+ 895      00
+ 896              	.L58:
+ 281:hexio.c       **** 		while ( address < destMask->length && sourceData->data[address] != sourceData->fill ) {
+ 897              		.loc 1 281 0
+ 898 0b86 EB05     		jmp	.L48
+ 899              	.L50:
+ 282:hexio.c       **** 			address++;
+ 900              		.loc 1 282 0
+ 901 0b88 488345E8 		addq	$1, -24(%rbp)
+ 901      01
+ 902              	.L48:
+ 281:hexio.c       **** 		while ( address < destMask->length && sourceData->data[address] != sourceData->fill ) {
+ 903              		.loc 1 281 0 discriminator 1
+ 904 0b8d 488B45D0 		movq	-48(%rbp), %rax
+ 905 0b91 488B4008 		movq	8(%rax), %rax
+ 906 0b95 483B45E8 		cmpq	-24(%rbp), %rax
+ 907 0b99 761D     		jbe	.L49
+ 281:hexio.c       **** 		while ( address < destMask->length && sourceData->data[address] != sourceData->fill ) {
+ 908              		.loc 1 281 0 is_stmt 0 discriminator 2
+ 909 0b9b 488B45D8 		movq	-40(%rbp), %rax
+ 910 0b9f 488B10   		movq	(%rax), %rdx
+ 911 0ba2 488B45E8 		movq	-24(%rbp), %rax
+ 912 0ba6 4801D0   		addq	%rdx, %rax
+ 913 0ba9 0FB610   		movzbl	(%rax), %edx
+ 914 0bac 488B45D8 		movq	-40(%rbp), %rax
+ 915 0bb0 0FB64018 		movzbl	24(%rax), %eax
+ 916 0bb4 38C2     		cmpb	%al, %dl
+ 917 0bb6 75D0     		jne	.L50
+ 918              	.L49:
+ 283:hexio.c       **** 		}
+ 284:hexio.c       **** 		if ( address == destMask->length ) {
+ 919              		.loc 1 284 0 is_stmt 1
+ 920 0bb8 488B45D0 		movq	-48(%rbp), %rax
+ 921 0bbc 488B4008 		movq	8(%rax), %rax
+ 922 0bc0 483B45E8 		cmpq	-24(%rbp), %rax
+ 923 0bc4 7505     		jne	.L51
+ 285:hexio.c       **** 			break;
+ 924              		.loc 1 285 0
+ 925 0bc6 E99D0000 		jmp	.L46
+ 925      00
+ 926              	.L51:
+ 286:hexio.c       **** 		}
+ 287:hexio.c       **** 		count = 1;
+ 927              		.loc 1 287 0
+ 928 0bcb 48C745F0 		movq	$1, -16(%rbp)
+ 928      01000000 
+ 288:hexio.c       **** 		while ( address + count < destMask->length &&
+ 929              		.loc 1 288 0
+ 930 0bd3 EB05     		jmp	.L52
+ 931              	.L54:
+ 289:hexio.c       **** 		        sourceData->data[address + count] == sourceData->fill )
+ 290:hexio.c       **** 		{
+ 291:hexio.c       **** 			count++;
+ 932              		.loc 1 291 0
+ 933 0bd5 488345F0 		addq	$1, -16(%rbp)
+ 933      01
+ 934              	.L52:
+ 288:hexio.c       **** 		while ( address + count < destMask->length &&
+ 935              		.loc 1 288 0 discriminator 1
+ 936 0bda 488B45F0 		movq	-16(%rbp), %rax
+ 937 0bde 488B55E8 		movq	-24(%rbp), %rdx
+ 938 0be2 4801C2   		addq	%rax, %rdx
+ 939 0be5 488B45D0 		movq	-48(%rbp), %rax
+ 940 0be9 488B4008 		movq	8(%rax), %rax
+ 941 0bed 4839C2   		cmpq	%rax, %rdx
+ 942 0bf0 7324     		jnb	.L53
+ 289:hexio.c       **** 		        sourceData->data[address + count] == sourceData->fill )
+ 943              		.loc 1 289 0 discriminator 2
+ 944 0bf2 488B45D8 		movq	-40(%rbp), %rax
+ 945 0bf6 488B00   		movq	(%rax), %rax
+ 946 0bf9 488B55F0 		movq	-16(%rbp), %rdx
+ 947 0bfd 488B4DE8 		movq	-24(%rbp), %rcx
+ 948 0c01 4801CA   		addq	%rcx, %rdx
+ 949 0c04 4801D0   		addq	%rdx, %rax
+ 950 0c07 0FB610   		movzbl	(%rax), %edx
+ 951 0c0a 488B45D8 		movq	-40(%rbp), %rax
+ 952 0c0e 0FB64018 		movzbl	24(%rax), %eax
+ 288:hexio.c       **** 		while ( address + count < destMask->length &&
+ 953              		.loc 1 288 0 discriminator 2
+ 954 0c12 38C2     		cmpb	%al, %dl
+ 955 0c14 74BF     		je	.L54
+ 956              	.L53:
+ 292:hexio.c       **** 		}
+ 293:hexio.c       **** 		if ( count >= 8 ) {
+ 957              		.loc 1 293 0
+ 958 0c16 48837DF0 		cmpq	$7, -16(%rbp)
+ 958      07
+ 959 0c1b 7631     		jbe	.L55
+ 294:hexio.c       **** 			for ( i = 0; i < count; i++ ) {
+ 960              		.loc 1 294 0
+ 961 0c1d 48C745F8 		movq	$0, -8(%rbp)
+ 961      00000000 
+ 962 0c25 EB1D     		jmp	.L56
+ 963              	.L57:
+ 295:hexio.c       **** 				destMask->data[address + i] = 0x00;
+ 964              		.loc 1 295 0 discriminator 2
+ 965 0c27 488B45D0 		movq	-48(%rbp), %rax
+ 966 0c2b 488B00   		movq	(%rax), %rax
+ 967 0c2e 488B55F8 		movq	-8(%rbp), %rdx
+ 968 0c32 488B4DE8 		movq	-24(%rbp), %rcx
+ 969 0c36 4801CA   		addq	%rcx, %rdx
+ 970 0c39 4801D0   		addq	%rdx, %rax
+ 971 0c3c C60000   		movb	$0, (%rax)
+ 294:hexio.c       **** 			for ( i = 0; i < count; i++ ) {
+ 972              		.loc 1 294 0 discriminator 2
+ 973 0c3f 488345F8 		addq	$1, -8(%rbp)
+ 973      01
+ 974              	.L56:
+ 294:hexio.c       **** 			for ( i = 0; i < count; i++ ) {
+ 975              		.loc 1 294 0 is_stmt 0 discriminator 1
+ 976 0c44 488B45F8 		movq	-8(%rbp), %rax
+ 977 0c48 483B45F0 		cmpq	-16(%rbp), %rax
+ 978 0c4c 72D9     		jb	.L57
+ 979              	.L55:
+ 296:hexio.c       **** 			}
+ 297:hexio.c       **** 		}
+ 298:hexio.c       **** 		address += count;
+ 980              		.loc 1 298 0 is_stmt 1
+ 981 0c4e 488B45F0 		movq	-16(%rbp), %rax
+ 982 0c52 480145E8 		addq	%rax, -24(%rbp)
+ 983              	.L47:
+ 280:hexio.c       **** 		while ( address < destMask->length && sourceData->data[address] != sourceData->fill ) {
+ 984              		.loc 1 280 0 discriminator 1
+ 985 0c56 488B45D0 		movq	-48(%rbp), %rax
+ 986 0c5a 488B4008 		movq	8(%rax), %rax
+ 987 0c5e 483B45E8 		cmpq	-24(%rbp), %rax
+ 988 0c62 0F871EFF 		ja	.L58
+ 988      FFFF
+ 989              	.L46:
+ 299:hexio.c       **** 	}
+ 300:hexio.c       **** cleanup:
+ 301:hexio.c       **** 	return retVal;
+ 990              		.loc 1 301 0
+ 991 0c68 8B45E0   		movl	-32(%rbp), %eax
+ 302:hexio.c       **** }
+ 992              		.loc 1 302 0
+ 993 0c6b C9       		leave
+ 994              		.cfi_def_cfa 7, 8
+ 995 0c6c C3       		ret
+ 996              		.cfi_endproc
+ 997              	.LFE8:
+ 999              		.section	.rodata
+ 1000              	.LC22:
+ 1001 0470 776200   		.string	"wb"
+ 1002              	.LC23:
+ 1003 0473 62756657 		.string	"bufWriteToIntelHexFile()"
+ 1003      72697465 
+ 1003      546F496E 
+ 1003      74656C48 
+ 1003      65784669 
+ 1004 048c 00000000 		.align 8
+ 1005              	.LC24:
+ 1006 0490 62756657 		.string	"bufWriteToIntelHexFile(): Segment addresses > 0xFFFF are not supported"
+ 1006      72697465 
+ 1006      546F496E 
+ 1006      74656C48 
+ 1006      65784669 
+ 1007              	.LC25:
+ 1008 04d7 3A303230 		.string	":020000"
+ 1008      30303000 
+ 1009              	.LC26:
+ 1010 04df 3A303030 		.string	":00000001FF\n"
+ 1010      30303030 
+ 1010      3146460A 
+ 1010      00
+ 1011              		.text
+ 1012              		.globl	bufWriteToIntelHexFile
+ 1014              	bufWriteToIntelHexFile:
+ 1015              	.LFB9:
+ 303:hexio.c       **** 
+ 304:hexio.c       **** // Write the supplied buffer as Intel hex records with the stated line length to a file, using the
+ 305:hexio.c       **** // supplied mask. If the mask is null, one is derived from the data, either compressed or
+ 306:hexio.c       **** // uncompressed.
+ 307:hexio.c       **** // TODO: Handle write errors
+ 308:hexio.c       **** //
+ 309:hexio.c       **** DLLEXPORT(BufferStatus) bufWriteToIntelHexFile(
+ 310:hexio.c       **** 	const struct Buffer *sourceData, const struct Buffer *sourceMask, const char *fileName,
+ 311:hexio.c       **** 	uint8 lineLength, bool compress, const char **error)
+ 312:hexio.c       **** {
+ 1016              		.loc 1 312 0
+ 1017              		.cfi_startproc
+ 1018 0c6d 55       		pushq	%rbp
+ 1019              		.cfi_def_cfa_offset 16
+ 1020              		.cfi_offset 6, -16
+ 1021 0c6e 4889E5   		movq	%rsp, %rbp
+ 1022              		.cfi_def_cfa_register 6
+ 1023 0c71 4883C480 		addq	$-128, %rsp
+ 1024 0c75 48897DA8 		movq	%rdi, -88(%rbp)
+ 1025 0c79 488975A0 		movq	%rsi, -96(%rbp)
+ 1026 0c7d 48895598 		movq	%rdx, -104(%rbp)
+ 1027 0c81 89C8     		movl	%ecx, %eax
+ 1028 0c83 4489C2   		movl	%r8d, %edx
+ 1029 0c86 4C894D88 		movq	%r9, -120(%rbp)
+ 1030 0c8a 884594   		movb	%al, -108(%rbp)
+ 1031 0c8d 885590   		movb	%dl, -112(%rbp)
+ 313:hexio.c       **** 	BufferStatus status, retVal = BUF_SUCCESS;
+ 1032              		.loc 1 313 0
+ 1033 0c90 C745BC00 		movl	$0, -68(%rbp)
+ 1033      000000
+ 314:hexio.c       **** 	struct Buffer tmpSourceMask;
+ 315:hexio.c       **** 	bool usedTmpSourceMask = false;
+ 1034              		.loc 1 315 0
+ 1035 0c97 C645B700 		movb	$0, -73(%rbp)
+ 316:hexio.c       **** 	size_t address = 0x00000000;
+ 1036              		.loc 1 316 0
+ 1037 0c9b 48C745C8 		movq	$0, -56(%rbp)
+ 1037      00000000 
+ 317:hexio.c       **** 	size_t ceiling = 0x00000000;
+ 1038              		.loc 1 317 0
+ 1039 0ca3 48C745D0 		movq	$0, -48(%rbp)
+ 1039      00000000 
+ 318:hexio.c       **** 	uint32 segment;
+ 319:hexio.c       **** 	uint8 i, calculatedChecksum, maxBytesToWrite, bytesToWrite;
+ 320:hexio.c       **** 	FILE *file = fopen(fileName, "wb");
+ 1040              		.loc 1 320 0
+ 1041 0cab 488B4598 		movq	-104(%rbp), %rax
+ 1042 0caf 488D3500 		leaq	.LC22(%rip), %rsi
+ 1042      000000
+ 1043 0cb6 4889C7   		movq	%rax, %rdi
+ 1044 0cb9 E8000000 		call	fopen@PLT
+ 1044      00
+ 1045 0cbe 488945D8 		movq	%rax, -40(%rbp)
+ 321:hexio.c       **** 	if ( !file ) {
+ 1046              		.loc 1 321 0
+ 1047 0cc2 48837DD8 		cmpq	$0, -40(%rbp)
+ 1047      00
+ 1048 0cc7 752B     		jne	.L61
+ 322:hexio.c       **** 		errRenderStd(error);
+ 1049              		.loc 1 322 0
+ 1050 0cc9 488B4588 		movq	-120(%rbp), %rax
+ 1051 0ccd 4889C7   		movq	%rax, %rdi
+ 1052 0cd0 E8000000 		call	errRenderStd@PLT
+ 1052      00
+ 323:hexio.c       **** 		CHECK_STATUS(true, BUF_FOPEN, exit, "bufWriteToIntelHexFile()");
+ 1053              		.loc 1 323 0
+ 1054 0cd5 488B4588 		movq	-120(%rbp), %rax
+ 1055 0cd9 488D3500 		leaq	.LC23(%rip), %rsi
+ 1055      000000
+ 1056 0ce0 4889C7   		movq	%rax, %rdi
+ 1057 0ce3 E8000000 		call	errPrefix@PLT
+ 1057      00
+ 1058 0ce8 C745BC02 		movl	$2, -68(%rbp)
+ 1058      000000
+ 1059 0cef E9AD0300 		jmp	.L62
+ 1059      00
+ 1060              	.L61:
+ 324:hexio.c       **** 	}
+ 325:hexio.c       **** 	if ( !sourceMask ) {
+ 1061              		.loc 1 325 0
+ 1062 0cf4 48837DA0 		cmpq	$0, -96(%rbp)
+ 1062      00
+ 1063 0cf9 0F85D800 		jne	.L63
+ 1063      0000
+ 326:hexio.c       **** 		// No sourceMask was supplied; we can either assume we need to write everything,
+ 327:hexio.c       **** 		// or we can try to compress the data, assuming holes where there exist ranges
+ 328:hexio.c       **** 		// of the sourceData's fill byte.
+ 329:hexio.c       **** 		//
+ 330:hexio.c       **** 		status = bufInitialise(&tmpSourceMask, 1024, 0x00, error);
+ 1064              		.loc 1 330 0
+ 1065 0cff 488B5588 		movq	-120(%rbp), %rdx
+ 1066 0d03 488D45E0 		leaq	-32(%rbp), %rax
+ 1067 0d07 4889D1   		movq	%rdx, %rcx
+ 1068 0d0a BA000000 		movl	$0, %edx
+ 1068      00
+ 1069 0d0f BE000400 		movl	$1024, %esi
+ 1069      00
+ 1070 0d14 4889C7   		movq	%rax, %rdi
+ 1071 0d17 E8000000 		call	bufInitialise@PLT
+ 1071      00
+ 1072 0d1c 8945C0   		movl	%eax, -64(%rbp)
+ 331:hexio.c       **** 		CHECK_STATUS(status, status, cleanupFile, "bufWriteToIntelHexFile()");
+ 1073              		.loc 1 331 0
+ 1074 0d1f 837DC000 		cmpl	$0, -64(%rbp)
+ 1075 0d23 741E     		je	.L64
+ 1076              		.loc 1 331 0 is_stmt 0 discriminator 1
+ 1077 0d25 488B4588 		movq	-120(%rbp), %rax
+ 1078 0d29 488D3500 		leaq	.LC23(%rip), %rsi
+ 1078      000000
+ 1079 0d30 4889C7   		movq	%rax, %rdi
+ 1080 0d33 E8000000 		call	errPrefix@PLT
+ 1080      00
+ 1081 0d38 8B45C0   		movl	-64(%rbp), %eax
+ 1082 0d3b 8945BC   		movl	%eax, -68(%rbp)
+ 1083 0d3e E9520300 		jmp	.L65
+ 1083      00
+ 1084              	.L64:
+ 332:hexio.c       **** 		sourceMask = &tmpSourceMask;
+ 1085              		.loc 1 332 0 is_stmt 1
+ 1086 0d43 488D45E0 		leaq	-32(%rbp), %rax
+ 1087 0d47 488945A0 		movq	%rax, -96(%rbp)
+ 333:hexio.c       **** 		usedTmpSourceMask = true;
+ 1088              		.loc 1 333 0
+ 1089 0d4b C645B701 		movb	$1, -73(%rbp)
+ 334:hexio.c       **** 		if ( compress ) {
+ 1090              		.loc 1 334 0
+ 1091 0d4f 807D9000 		cmpb	$0, -112(%rbp)
+ 1092 0d53 743E     		je	.L66
+ 335:hexio.c       **** 			status = bufDeriveMask(sourceData, &tmpSourceMask, error);
+ 1093              		.loc 1 335 0
+ 1094 0d55 488B5588 		movq	-120(%rbp), %rdx
+ 1095 0d59 488D4DE0 		leaq	-32(%rbp), %rcx
+ 1096 0d5d 488B45A8 		movq	-88(%rbp), %rax
+ 1097 0d61 4889CE   		movq	%rcx, %rsi
+ 1098 0d64 4889C7   		movq	%rax, %rdi
+ 1099 0d67 E8000000 		call	bufDeriveMask@PLT
+ 1099      00
+ 1100 0d6c 8945C0   		movl	%eax, -64(%rbp)
+ 336:hexio.c       **** 			CHECK_STATUS(status, status, cleanupBuffer, "bufWriteToIntelHexFile()");
+ 1101              		.loc 1 336 0
+ 1102 0d6f 837DC000 		cmpl	$0, -64(%rbp)
+ 1103 0d73 7462     		je	.L63
+ 1104              		.loc 1 336 0 is_stmt 0 discriminator 1
+ 1105 0d75 488B4588 		movq	-120(%rbp), %rax
+ 1106 0d79 488D3500 		leaq	.LC23(%rip), %rsi
+ 1106      000000
+ 1107 0d80 4889C7   		movq	%rax, %rdi
+ 1108 0d83 E8000000 		call	errPrefix@PLT
+ 1108      00
+ 1109 0d88 8B45C0   		movl	-64(%rbp), %eax
+ 1110 0d8b 8945BC   		movl	%eax, -68(%rbp)
+ 1111 0d8e E9F00200 		jmp	.L67
+ 1111      00
+ 1112              	.L66:
+ 337:hexio.c       **** 		} else {
+ 338:hexio.c       **** 			status = bufAppendConst(&tmpSourceMask, 0x01, sourceData->length, error);
+ 1113              		.loc 1 338 0 is_stmt 1
+ 1114 0d93 488B45A8 		movq	-88(%rbp), %rax
+ 1115 0d97 488B5008 		movq	8(%rax), %rdx
+ 1116 0d9b 488B4D88 		movq	-120(%rbp), %rcx
+ 1117 0d9f 488D45E0 		leaq	-32(%rbp), %rax
+ 1118 0da3 BE010000 		movl	$1, %esi
+ 1118      00
+ 1119 0da8 4889C7   		movq	%rax, %rdi
+ 1120 0dab E8000000 		call	bufAppendConst@PLT
+ 1120      00
+ 1121 0db0 8945C0   		movl	%eax, -64(%rbp)
+ 339:hexio.c       **** 			CHECK_STATUS(status, status, cleanupBuffer, "bufWriteToIntelHexFile()");
+ 1122              		.loc 1 339 0
+ 1123 0db3 837DC000 		cmpl	$0, -64(%rbp)
+ 1124 0db7 741E     		je	.L63
+ 1125              		.loc 1 339 0 is_stmt 0 discriminator 1
+ 1126 0db9 488B4588 		movq	-120(%rbp), %rax
+ 1127 0dbd 488D3500 		leaq	.LC23(%rip), %rsi
+ 1127      000000
+ 1128 0dc4 4889C7   		movq	%rax, %rdi
+ 1129 0dc7 E8000000 		call	errPrefix@PLT
+ 1129      00
+ 1130 0dcc 8B45C0   		movl	-64(%rbp), %eax
+ 1131 0dcf 8945BC   		movl	%eax, -68(%rbp)
+ 1132 0dd2 E9AC0200 		jmp	.L67
+ 1132      00
+ 1133              	.L63:
+ 340:hexio.c       **** 		}
+ 341:hexio.c       **** 	}
+ 342:hexio.c       **** 
+ 343:hexio.c       **** 	do {
+ 344:hexio.c       **** 		ceiling += 0x10000;
+ 1134              		.loc 1 344 0 is_stmt 1
+ 1135 0dd7 488145D0 		addq	$65536, -48(%rbp)
+ 1135      00000100 
+ 345:hexio.c       **** 		if ( ceiling > sourceMask->length ) {
+ 1136              		.loc 1 345 0
+ 1137 0ddf 488B45A0 		movq	-96(%rbp), %rax
+ 1138 0de3 488B4008 		movq	8(%rax), %rax
+ 1139 0de7 483B45D0 		cmpq	-48(%rbp), %rax
+ 1140 0deb 7311     		jnb	.L68
+ 346:hexio.c       **** 			ceiling = sourceMask->length;
+ 1141              		.loc 1 346 0
+ 1142 0ded 488B45A0 		movq	-96(%rbp), %rax
+ 1143 0df1 488B4008 		movq	8(%rax), %rax
+ 1144 0df5 488945D0 		movq	%rax, -48(%rbp)
+ 347:hexio.c       **** 		}
+ 348:hexio.c       **** 		while ( address < ceiling ) {
+ 1145              		.loc 1 348 0
+ 1146 0df9 E9870100 		jmp	.L69
+ 1146      00
+ 1147              	.L68:
+ 1148 0dfe E9820100 		jmp	.L69
+ 1148      00
+ 1149              	.L82:
+ 349:hexio.c       **** 			// Find the next run in the sourceMask
+ 350:hexio.c       **** 			while ( address < ceiling && !sourceMask->data[address] ) {
+ 1150              		.loc 1 350 0
+ 1151 0e03 EB05     		jmp	.L70
+ 1152              	.L72:
+ 351:hexio.c       **** 				address++;
+ 1153              		.loc 1 351 0
+ 1154 0e05 488345C8 		addq	$1, -56(%rbp)
+ 1154      01
+ 1155              	.L70:
+ 350:hexio.c       **** 				address++;
+ 1156              		.loc 1 350 0 discriminator 1
+ 1157 0e0a 488B45C8 		movq	-56(%rbp), %rax
+ 1158 0e0e 483B45D0 		cmpq	-48(%rbp), %rax
+ 1159 0e12 7315     		jnb	.L71
+ 350:hexio.c       **** 				address++;
+ 1160              		.loc 1 350 0 is_stmt 0 discriminator 2
+ 1161 0e14 488B45A0 		movq	-96(%rbp), %rax
+ 1162 0e18 488B10   		movq	(%rax), %rdx
+ 1163 0e1b 488B45C8 		movq	-56(%rbp), %rax
+ 1164 0e1f 4801D0   		addq	%rdx, %rax
+ 1165 0e22 0FB600   		movzbl	(%rax), %eax
+ 1166 0e25 84C0     		testb	%al, %al
+ 1167 0e27 74DC     		je	.L72
+ 1168              	.L71:
+ 352:hexio.c       **** 			}
+ 353:hexio.c       **** 			// If we hit the end of the sourceMask, break out of this while loop
+ 354:hexio.c       **** 			if ( address == ceiling ) {
+ 1169              		.loc 1 354 0 is_stmt 1
+ 1170 0e29 488B45C8 		movq	-56(%rbp), %rax
+ 1171 0e2d 483B45D0 		cmpq	-48(%rbp), %rax
+ 1172 0e31 7505     		jne	.L73
+ 355:hexio.c       **** 				break;
+ 1173              		.loc 1 355 0
+ 1174 0e33 E95B0100 		jmp	.L74
+ 1174      00
+ 1175              	.L73:
+ 356:hexio.c       **** 			}
+ 357:hexio.c       **** 			if ( address + lineLength > ceiling ) {
+ 1176              		.loc 1 357 0
+ 1177 0e38 0FB65594 		movzbl	-108(%rbp), %edx
+ 1178 0e3c 488B45C8 		movq	-56(%rbp), %rax
+ 1179 0e40 4801D0   		addq	%rdx, %rax
+ 1180 0e43 483B45D0 		cmpq	-48(%rbp), %rax
+ 1181 0e47 7613     		jbe	.L75
+ 358:hexio.c       **** 				// there are fewer than lineLength bytes remaining
+ 359:hexio.c       **** 				maxBytesToWrite = (uint8)(ceiling - address);
+ 1182              		.loc 1 359 0
+ 1183 0e49 488B45D0 		movq	-48(%rbp), %rax
+ 1184 0e4d 89C2     		movl	%eax, %edx
+ 1185 0e4f 488B45C8 		movq	-56(%rbp), %rax
+ 1186 0e53 29C2     		subl	%eax, %edx
+ 1187 0e55 89D0     		movl	%edx, %eax
+ 1188 0e57 8845BA   		movb	%al, -70(%rbp)
+ 1189 0e5a EB07     		jmp	.L76
+ 1190              	.L75:
+ 360:hexio.c       **** 			} else {
+ 361:hexio.c       **** 				// there are lineLength or more bytes remaining
+ 362:hexio.c       **** 				maxBytesToWrite = lineLength;
+ 1191              		.loc 1 362 0
+ 1192 0e5c 0FB64594 		movzbl	-108(%rbp), %eax
+ 1193 0e60 8845BA   		movb	%al, -70(%rbp)
+ 1194              	.L76:
+ 363:hexio.c       **** 			}
+ 364:hexio.c       **** 			// find out how many bytes are in this run
+ 365:hexio.c       **** 			bytesToWrite = 0;
+ 1195              		.loc 1 365 0
+ 1196 0e63 C645BB00 		movb	$0, -69(%rbp)
+ 366:hexio.c       **** 			while ( bytesToWrite < maxBytesToWrite && sourceMask->data[address + bytesToWrite] ) {
+ 1197              		.loc 1 366 0
+ 1198 0e67 EB0A     		jmp	.L77
+ 1199              	.L79:
+ 367:hexio.c       **** 				bytesToWrite++;
+ 1200              		.loc 1 367 0
+ 1201 0e69 0FB645BB 		movzbl	-69(%rbp), %eax
+ 1202 0e6d 83C001   		addl	$1, %eax
+ 1203 0e70 8845BB   		movb	%al, -69(%rbp)
+ 1204              	.L77:
+ 366:hexio.c       **** 			while ( bytesToWrite < maxBytesToWrite && sourceMask->data[address + bytesToWrite] ) {
+ 1205              		.loc 1 366 0 discriminator 1
+ 1206 0e73 0FB645BB 		movzbl	-69(%rbp), %eax
+ 1207 0e77 3A45BA   		cmpb	-70(%rbp), %al
+ 1208 0e7a 731C     		jnb	.L78
+ 366:hexio.c       **** 			while ( bytesToWrite < maxBytesToWrite && sourceMask->data[address + bytesToWrite] ) {
+ 1209              		.loc 1 366 0 is_stmt 0 discriminator 2
+ 1210 0e7c 488B45A0 		movq	-96(%rbp), %rax
+ 1211 0e80 488B00   		movq	(%rax), %rax
+ 1212 0e83 0FB64DBB 		movzbl	-69(%rbp), %ecx
+ 1213 0e87 488B55C8 		movq	-56(%rbp), %rdx
+ 1214 0e8b 4801CA   		addq	%rcx, %rdx
+ 1215 0e8e 4801D0   		addq	%rdx, %rax
+ 1216 0e91 0FB600   		movzbl	(%rax), %eax
+ 1217 0e94 84C0     		testb	%al, %al
+ 1218 0e96 75D1     		jne	.L79
+ 1219              	.L78:
+ 368:hexio.c       **** 			}
+ 369:hexio.c       **** 			fputc(':', file);
+ 1220              		.loc 1 369 0 is_stmt 1
+ 1221 0e98 488B45D8 		movq	-40(%rbp), %rax
+ 1222 0e9c 4889C6   		movq	%rax, %rsi
+ 1223 0e9f BF3A0000 		movl	$58, %edi
+ 1223      00
+ 1224 0ea4 E8000000 		call	fputc@PLT
+ 1224      00
+ 370:hexio.c       **** 			writeHexByte(bytesToWrite, file);
+ 1225              		.loc 1 370 0
+ 1226 0ea9 0FB645BB 		movzbl	-69(%rbp), %eax
+ 1227 0ead 488B55D8 		movq	-40(%rbp), %rdx
+ 1228 0eb1 4889D6   		movq	%rdx, %rsi
+ 1229 0eb4 89C7     		movl	%eax, %edi
+ 1230 0eb6 E870FBFF 		call	writeHexByte
+ 1230      FF
+ 371:hexio.c       **** 			writeHexWordBE(address & 0xFFFF, file);
+ 1231              		.loc 1 371 0
+ 1232 0ebb 488B45C8 		movq	-56(%rbp), %rax
+ 1233 0ebf 0FB7C0   		movzwl	%ax, %eax
+ 1234 0ec2 488B55D8 		movq	-40(%rbp), %rdx
+ 1235 0ec6 4889D6   		movq	%rdx, %rsi
+ 1236 0ec9 89C7     		movl	%eax, %edi
+ 1237 0ecb E8A6FBFF 		call	writeHexWordBE
+ 1237      FF
+ 372:hexio.c       **** 			writeHexByte(DATA_RECORD, file);
+ 1238              		.loc 1 372 0
+ 1239 0ed0 488B45D8 		movq	-40(%rbp), %rax
+ 1240 0ed4 4889C6   		movq	%rax, %rsi
+ 1241 0ed7 BF000000 		movl	$0, %edi
+ 1241      00
+ 1242 0edc E84AFBFF 		call	writeHexByte
+ 1242      FF
+ 373:hexio.c       **** 			calculatedChecksum = bytesToWrite;
+ 1243              		.loc 1 373 0
+ 1244 0ee1 0FB645BB 		movzbl	-69(%rbp), %eax
+ 1245 0ee5 8845B9   		movb	%al, -71(%rbp)
+ 374:hexio.c       **** 			calculatedChecksum = (uint8)(calculatedChecksum + (address >> 8));
+ 1246              		.loc 1 374 0
+ 1247 0ee8 488B45C8 		movq	-56(%rbp), %rax
+ 1248 0eec 48C1E808 		shrq	$8, %rax
+ 1249 0ef0 0045B9   		addb	%al, -71(%rbp)
+ 375:hexio.c       **** 			calculatedChecksum = (uint8)(calculatedChecksum + (address & 0xFF));
+ 1250              		.loc 1 375 0
+ 1251 0ef3 488B45C8 		movq	-56(%rbp), %rax
+ 1252 0ef7 0045B9   		addb	%al, -71(%rbp)
+ 376:hexio.c       **** 			for ( i = 0; i < bytesToWrite; i++ ) {
+ 1253              		.loc 1 376 0
+ 1254 0efa C645B800 		movb	$0, -72(%rbp)
+ 1255 0efe EB4E     		jmp	.L80
+ 1256              	.L81:
+ 377:hexio.c       **** 				writeHexByte(sourceData->data[address + i], file);
+ 1257              		.loc 1 377 0 discriminator 2
+ 1258 0f00 488B45A8 		movq	-88(%rbp), %rax
+ 1259 0f04 488B00   		movq	(%rax), %rax
+ 1260 0f07 0FB64DB8 		movzbl	-72(%rbp), %ecx
+ 1261 0f0b 488B55C8 		movq	-56(%rbp), %rdx
+ 1262 0f0f 4801CA   		addq	%rcx, %rdx
+ 1263 0f12 4801D0   		addq	%rdx, %rax
+ 1264 0f15 0FB600   		movzbl	(%rax), %eax
+ 1265 0f18 0FB6C0   		movzbl	%al, %eax
+ 1266 0f1b 488B55D8 		movq	-40(%rbp), %rdx
+ 1267 0f1f 4889D6   		movq	%rdx, %rsi
+ 1268 0f22 89C7     		movl	%eax, %edi
+ 1269 0f24 E802FBFF 		call	writeHexByte
+ 1269      FF
+ 378:hexio.c       **** 				calculatedChecksum = (uint8)(calculatedChecksum + sourceData->data[address + i]);
+ 1270              		.loc 1 378 0 discriminator 2
+ 1271 0f29 488B45A8 		movq	-88(%rbp), %rax
+ 1272 0f2d 488B00   		movq	(%rax), %rax
+ 1273 0f30 0FB64DB8 		movzbl	-72(%rbp), %ecx
+ 1274 0f34 488B55C8 		movq	-56(%rbp), %rdx
+ 1275 0f38 4801CA   		addq	%rcx, %rdx
+ 1276 0f3b 4801D0   		addq	%rdx, %rax
+ 1277 0f3e 0FB600   		movzbl	(%rax), %eax
+ 1278 0f41 0045B9   		addb	%al, -71(%rbp)
+ 376:hexio.c       **** 			for ( i = 0; i < bytesToWrite; i++ ) {
+ 1279              		.loc 1 376 0 discriminator 2
+ 1280 0f44 0FB645B8 		movzbl	-72(%rbp), %eax
+ 1281 0f48 83C001   		addl	$1, %eax
+ 1282 0f4b 8845B8   		movb	%al, -72(%rbp)
+ 1283              	.L80:
+ 376:hexio.c       **** 			for ( i = 0; i < bytesToWrite; i++ ) {
+ 1284              		.loc 1 376 0 is_stmt 0 discriminator 1
+ 1285 0f4e 0FB645B8 		movzbl	-72(%rbp), %eax
+ 1286 0f52 3A45BB   		cmpb	-69(%rbp), %al
+ 1287 0f55 72A9     		jb	.L81
+ 379:hexio.c       **** 			}
+ 380:hexio.c       **** 			calculatedChecksum = (uint8)(256 - calculatedChecksum);
+ 1288              		.loc 1 380 0 is_stmt 1
+ 1289 0f57 F65DB9   		negb	-71(%rbp)
+ 381:hexio.c       **** 			writeHexByte(calculatedChecksum, file);
+ 1290              		.loc 1 381 0
+ 1291 0f5a 0FB645B9 		movzbl	-71(%rbp), %eax
+ 1292 0f5e 488B55D8 		movq	-40(%rbp), %rdx
+ 1293 0f62 4889D6   		movq	%rdx, %rsi
+ 1294 0f65 89C7     		movl	%eax, %edi
+ 1295 0f67 E8BFFAFF 		call	writeHexByte
+ 1295      FF
+ 382:hexio.c       **** 			fputc('\n', file);
+ 1296              		.loc 1 382 0
+ 1297 0f6c 488B45D8 		movq	-40(%rbp), %rax
+ 1298 0f70 4889C6   		movq	%rax, %rsi
+ 1299 0f73 BF0A0000 		movl	$10, %edi
+ 1299      00
+ 1300 0f78 E8000000 		call	fputc@PLT
+ 1300      00
+ 383:hexio.c       **** 			address += bytesToWrite;
+ 1301              		.loc 1 383 0
+ 1302 0f7d 0FB645BB 		movzbl	-69(%rbp), %eax
+ 1303 0f81 480145C8 		addq	%rax, -56(%rbp)
+ 1304              	.L69:
+ 348:hexio.c       **** 			// Find the next run in the sourceMask
+ 1305              		.loc 1 348 0 discriminator 1
+ 1306 0f85 488B45C8 		movq	-56(%rbp), %rax
+ 1307 0f89 483B45D0 		cmpq	-48(%rbp), %rax
+ 1308 0f8d 0F8270FE 		jb	.L82
+ 1308      FFFF
+ 1309              	.L74:
+ 384:hexio.c       **** 		}
+ 385:hexio.c       **** 		if ( address < sourceMask->length ) {
+ 1310              		.loc 1 385 0
+ 1311 0f93 488B45A0 		movq	-96(%rbp), %rax
+ 1312 0f97 488B4008 		movq	8(%rax), %rax
+ 1313 0f9b 483B45C8 		cmpq	-56(%rbp), %rax
+ 1314 0f9f 0F86AF00 		jbe	.L83
+ 1314      0000
+ 386:hexio.c       **** 			segment = (uint32)(address >> 4);
+ 1315              		.loc 1 386 0
+ 1316 0fa5 488B45C8 		movq	-56(%rbp), %rax
+ 1317 0fa9 48C1E804 		shrq	$4, %rax
+ 1318 0fad 8945C4   		movl	%eax, -60(%rbp)
+ 387:hexio.c       **** 			CHECK_STATUS(
+ 1319              		.loc 1 387 0
+ 1320 0fb0 817DC4FF 		cmpl	$65535, -60(%rbp)
+ 1320      FF0000
+ 1321 0fb7 761F     		jbe	.L84
+ 1322              		.loc 1 387 0 is_stmt 0 discriminator 1
+ 1323 0fb9 488B4588 		movq	-120(%rbp), %rax
+ 1324 0fbd 488D3500 		leaq	.LC24(%rip), %rsi
+ 1324      000000
+ 1325 0fc4 4889C7   		movq	%rax, %rdi
+ 1326 0fc7 E8000000 		call	errPrefix@PLT
+ 1326      00
+ 1327 0fcc C745BC13 		movl	$19, -68(%rbp)
+ 1327      000000
+ 1328 0fd3 E9AB0000 		jmp	.L67
+ 1328      00
+ 1329              	.L84:
+ 388:hexio.c       **** 				segment > 0xFFFF, HEX_BAD_EXT_SEG, cleanupBuffer,
+ 389:hexio.c       **** 				"bufWriteToIntelHexFile(): Segment addresses > 0xFFFF are not supported"
+ 390:hexio.c       **** 			);
+ 391:hexio.c       **** 			calculatedChecksum =
+ 392:hexio.c       **** 				(uint8)(256 - 2 - EXT_SEG_RECORD - (segment >> 8) - (segment & 0xFF));
+ 1330              		.loc 1 392 0 is_stmt 1
+ 1331 0fd8 8B45C4   		movl	-60(%rbp), %eax
+ 1332 0fdb C1E808   		shrl	$8, %eax
+ 1333 0fde F7D8     		negl	%eax
+ 1334 0fe0 89C2     		movl	%eax, %edx
+ 1335 0fe2 8B45C4   		movl	-60(%rbp), %eax
+ 1336 0fe5 29C2     		subl	%eax, %edx
+ 1337 0fe7 89D0     		movl	%edx, %eax
+ 391:hexio.c       **** 				(uint8)(256 - 2 - EXT_SEG_RECORD - (segment >> 8) - (segment & 0xFF));
+ 1338              		.loc 1 391 0
+ 1339 0fe9 83E804   		subl	$4, %eax
+ 1340 0fec 8845B9   		movb	%al, -71(%rbp)
+ 393:hexio.c       **** 			fwrite(":020000", 1, 7, file);
+ 1341              		.loc 1 393 0
+ 1342 0fef 488B45D8 		movq	-40(%rbp), %rax
+ 1343 0ff3 4889C1   		movq	%rax, %rcx
+ 1344 0ff6 BA070000 		movl	$7, %edx
+ 1344      00
+ 1345 0ffb BE010000 		movl	$1, %esi
+ 1345      00
+ 1346 1000 488D3D00 		leaq	.LC25(%rip), %rdi
+ 1346      000000
+ 1347 1007 E8000000 		call	fwrite@PLT
+ 1347      00
+ 394:hexio.c       **** 			writeHexByte(EXT_SEG_RECORD, file);
+ 1348              		.loc 1 394 0
+ 1349 100c 488B45D8 		movq	-40(%rbp), %rax
+ 1350 1010 4889C6   		movq	%rax, %rsi
+ 1351 1013 BF020000 		movl	$2, %edi
+ 1351      00
+ 1352 1018 E80EFAFF 		call	writeHexByte
+ 1352      FF
+ 395:hexio.c       **** 			writeHexWordBE((uint16)segment, file);
+ 1353              		.loc 1 395 0
+ 1354 101d 8B45C4   		movl	-60(%rbp), %eax
+ 1355 1020 0FB7C0   		movzwl	%ax, %eax
+ 1356 1023 488B55D8 		movq	-40(%rbp), %rdx
+ 1357 1027 4889D6   		movq	%rdx, %rsi
+ 1358 102a 89C7     		movl	%eax, %edi
+ 1359 102c E845FAFF 		call	writeHexWordBE
+ 1359      FF
+ 396:hexio.c       **** 			writeHexByte(calculatedChecksum, file);
+ 1360              		.loc 1 396 0
+ 1361 1031 0FB645B9 		movzbl	-71(%rbp), %eax
+ 1362 1035 488B55D8 		movq	-40(%rbp), %rdx
+ 1363 1039 4889D6   		movq	%rdx, %rsi
+ 1364 103c 89C7     		movl	%eax, %edi
+ 1365 103e E8E8F9FF 		call	writeHexByte
+ 1365      FF
+ 397:hexio.c       **** 			fputc('\n', file);
+ 1366              		.loc 1 397 0
+ 1367 1043 488B45D8 		movq	-40(%rbp), %rax
+ 1368 1047 4889C6   		movq	%rax, %rsi
+ 1369 104a BF0A0000 		movl	$10, %edi
+ 1369      00
+ 1370 104f E8000000 		call	fputc@PLT
+ 1370      00
+ 1371              	.L83:
+ 398:hexio.c       **** 		}
+ 399:hexio.c       **** 	} while ( address < sourceMask->length );
+ 1372              		.loc 1 399 0
+ 1373 1054 488B45A0 		movq	-96(%rbp), %rax
+ 1374 1058 488B4008 		movq	8(%rax), %rax
+ 1375 105c 483B45C8 		cmpq	-56(%rbp), %rax
+ 1376 1060 0F8771FD 		ja	.L63
+ 1376      FFFF
+ 400:hexio.c       **** 	fwrite(":00000001FF\n", 1, 12, file);
+ 1377              		.loc 1 400 0
+ 1378 1066 488B45D8 		movq	-40(%rbp), %rax
+ 1379 106a 4889C1   		movq	%rax, %rcx
+ 1380 106d BA0C0000 		movl	$12, %edx
+ 1380      00
+ 1381 1072 BE010000 		movl	$1, %esi
+ 1381      00
+ 1382 1077 488D3D00 		leaq	.LC26(%rip), %rdi
+ 1382      000000
+ 1383 107e E8000000 		call	fwrite@PLT
+ 1383      00
+ 1384              	.L67:
+ 401:hexio.c       **** cleanupBuffer:
+ 402:hexio.c       **** 	if ( usedTmpSourceMask ) {
+ 1385              		.loc 1 402 0
+ 1386 1083 807DB700 		cmpb	$0, -73(%rbp)
+ 1387 1087 740C     		je	.L65
+ 403:hexio.c       **** 		bufDestroy(&tmpSourceMask);
+ 1388              		.loc 1 403 0
+ 1389 1089 488D45E0 		leaq	-32(%rbp), %rax
+ 1390 108d 4889C7   		movq	%rax, %rdi
+ 1391 1090 E8000000 		call	bufDestroy@PLT
+ 1391      00
+ 1392              	.L65:
+ 404:hexio.c       **** 	}
+ 405:hexio.c       **** cleanupFile:
+ 406:hexio.c       **** 	fclose(file);
+ 1393              		.loc 1 406 0
+ 1394 1095 488B45D8 		movq	-40(%rbp), %rax
+ 1395 1099 4889C7   		movq	%rax, %rdi
+ 1396 109c E8000000 		call	fclose@PLT
+ 1396      00
+ 1397              	.L62:
+ 407:hexio.c       **** exit:
+ 408:hexio.c       **** 	return retVal;
+ 1398              		.loc 1 408 0
+ 1399 10a1 8B45BC   		movl	-68(%rbp), %eax
+ 409:hexio.c       **** }
+ 1400              		.loc 1 409 0
+ 1401 10a4 C9       		leave
+ 1402              		.cfi_def_cfa 7, 8
+ 1403 10a5 C3       		ret
+ 1404              		.cfi_endproc
+ 1405              	.LFE9:
+ 1407              	.Letext0:
+ 1408              		.file 2 "/usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h"
+ 1409              		.file 3 "/usr/include/x86_64-linux-gnu/bits/types.h"
+ 1410              		.file 4 "/usr/include/stdio.h"
+ 1411              		.file 5 "/usr/include/libio.h"
+ 1412              		.file 6 "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-/makestuff/common/makestuff.h"
+ 1413              		.file 7 "libbuffer.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 hexio.c
+     /tmp/cc1r9liE.s:56     .text:0000000000000000 bufProcessLine
+     /tmp/cc1r9liE.s:590    .text:00000000000007ff bufReadFromIntelHexFile
+     /tmp/cc1r9liE.s:745    .text:0000000000000a2b writeHexByte
+     /tmp/cc1r9liE.s:784    .text:0000000000000a76 writeHexWordBE
+     /tmp/cc1r9liE.s:852    .text:0000000000000b0e bufDeriveMask
+     /tmp/cc1r9liE.s:1014   .text:0000000000000c6d bufWriteToIntelHexFile
+
+UNDEFINED SYMBOLS
+_GLOBAL_OFFSET_TABLE_
+errRender
+getHexByte
+sprintf
+strncmp
+bufWriteBlock
+errPrefix
+bufWriteConst
+__stack_chk_fail
+fopen
+errRenderStd
+bufZeroLength
+fgets
+fclose
+getHexUpperNibble
+fputc
+getHexLowerNibble
+bufAppendConst
+bufInitialise
+fwrite
+bufDestroy
