@@ -6,7 +6,7 @@ use IEEE.STD_LOGIC_UNSIGNED.all;
 -- the need for this.
 
 entity debouncer is
-	Generic(wait_cycles : STD_LOGIC_VECTOR(19 downto 0) := x"00001");
+	Generic(wait_cycles : STD_LOGIC_VECTOR(19 downto 0) := x"F423F");
 	Port(clk        : in  STD_LOGIC;
 		 button     : in  STD_LOGIC;
 		 button_deb : out STD_LOGIC);

@@ -24,7 +24,7 @@ entity top_level is
 		sseg_out       : out   std_logic_vector(7 downto 0); -- seven-segment display cathodes (one for each segment)
 		anode_out      : out   std_logic_vector(3 downto 0); -- seven-segment display anodes (one for each digit)
 		led_out        : out   std_logic_vector(7 downto 0); -- eight LEDs
-		sw_in          : in    std_logic_vector(7 downto 0)  -- eight switches
+		sw_in          : in    std_logic_vector(7 downto 0); -- eight switches
 
 		-- ATM: ----------------------------------------------------------------------------------------
 		next_data_in_button  	: in  STD_LOGIC;
@@ -81,21 +81,23 @@ architecture structural of top_level is
 	signal fx2Reset  : std_logic;
 
 	-- Modification
-	signal debounced_next_data  : STD_LOGIC                     := '0';
-	--signal debounced_next_data_out_button : STD_LOGIC                     := '0';
-	signal start_encrypt : STD_LOGIC                     := '0';
-	signal start_decrypt : STD_LOGIC                     := '0';
-	signal multi_byte_data_read           : STD_LOGIC_VECTOR(63 downto 0) := (others => '0');
-	signal ciphertext_out                 : STD_LOGIC_VECTOR(63 downto 0) := (others => '0');
-	signal plaintext_out                  : STD_LOGIC_VECTOR(63 downto 0) := (others => '0');
-	signal data_to_be_displayed           : STD_LOGIC_VECTOR(63 downto 0) := (others => '0');
-	signal encrypted_response			  : STD_LOGIC_VECTOR(63 downto 0) := (others => '0');
-	signal encryption_over                : STD_LOGIC                     := '1';
-	signal decryption_over                : STD_LOGIC                     := '1';
 	signal system_state                   : STD_LOGIC_VECTOR(2 downto 0) := (others => '0');
+
+	signal start_encrypt 				  : STD_LOGIC                     := '0';
+	signal en_input           			  : STD_LOGIC_VECTOR(63 downto 0) := (others => '0');
+	signal encryption_over                : STD_LOGIC                     := '1';
+	signal en_output 					  : STD_LOGIC_VECTOR(63 downto 0) := (others => '0');
+	
+	signal start_decrypt 				  : STD_LOGIC                     := '0';
+	signal encrypted_response			  : STD_LOGIC_VECTOR(63 downto 0) := (others => '0');
+	signal decryption_over                : STD_LOGIC                     := '1';
+	signal plaintext_out                  : STD_LOGIC_VECTOR(63 downto 0) := (others => '0');
+	
+	signal debounced_next_data  		  : STD_LOGIC                     := '0';
 	signal debounced_reset                : STD_LOGIC                     := '0';
 	signal debounced_start                : STD_LOGIC                     := '0';
 	signal debounced_done                 : STD_LOGIC                     := '0';
+
 	signal n2000 	: STD_LOGIC_VECTOR(7 downto 0) := (others => '0');	
 	signal n1000 	: STD_LOGIC_VECTOR(7 downto 0) := (others => '0');	
 	signal n500 	: STD_LOGIC_VECTOR(7 downto 0) := (others => '0');	
@@ -135,35 +137,35 @@ begin
 
  	-- ATM requirements
 	data_in_debouncer : debouncer
-		port map(clk        => clk,
+		port map(clk        => fx2Clk_in,
 			     button     => next_data_in_button,
 			     button_deb => debounced_next_data);
 
 	start_debouncer : debouncer
-		port map(clk        => clk,
+		port map(clk        => fx2Clk_in,
 			     button     => start_button,
 			     button_deb => debounced_start);
 
 	done_debouncer: debouncer
-		port map(clk        => clk,
+		port map(clk        => fx2Clk_in,
 			     button     => done_button,
 			     button_deb => debounced_done);
 
 	reset_debouncer : debouncer
-		port map(clk        => clk,
-			     button     => reset,
+		port map(clk        => fx2Clk_in,
+			     button     => reset_button,
 			     button_deb => debounced_reset);
 
 	encrypt : encrypter
-		port map(clk        => clk,
+		port map(clk        => fx2Clk_in,
 			     reset      => debounced_reset,
-			     plaintext  => multi_byte_data_read,
+			     plaintext  => en_input,
 			     start      => start_encrypt,
-			     ciphertext => ciphertext_out,
+			     ciphertext => en_output,
 			     done       => encryption_over);
 
 	decrypt : decrypter
-		port map(clk        => clk,
+		port map(clk        => fx2Clk_in,
 			     reset      => debounced_reset,
 			     ciphertext => encrypted_response,
 			     start      => start_decrypt,
@@ -187,28 +189,49 @@ begin
 --	--		writeline(output, myline);
 --	end process;
 
-	main_process : process(clk)
-		--Input 8 bytes one by one 
+	-- TODO : implement else for all channel i/o
+	main_process : process(fx2Clk_in, debounced_reset)
+		--Taking Input (Input 8 bytes one by one) 
 		variable input_byte_count  	 	: integer range 0 to 8       := 0;
 		variable input_taken_already 	: std_logic := '0';
 		variable input_eight_bytes   	: std_logic_vector(63 downto 0) := (others => '0');
 
+		--Encryption
+		variable input_done_already  	: std_logic := '0';
+
+		-- Communicating wih backend
+		variable adequate_cash_in_atm   : std_logic := '0';
+
 	begin
 		if debounced_reset = '1' then
-			-- Resetting Input variables
+			-- Reseetting the system state
+			system_state <= "000";
+
+			-- Resetting Taking Input variables
 			input_byte_count  := 0;
-			input_eight_bytes <= (others => '0');
+			input_eight_bytes := (others => '0');
 			input_taken_already := '0';
 
-		elsif (clk'event AND clk = '1') then
+			-- Resetting Encryption variables
+			input_done_already := '0';
+
+			-- Communicating wih backend
+			adequate_cash_in_atm := '0';
+
+		elsif (fx2Clk_in'event AND fx2Clk_in = '1') then
 		
-			-- States described below
+			--------------------- States described below ------------------------
 			-- Ready
 			if(system_state = "000") then 
 				-- Start button pressed, ready -> taking input
 				if (debounced_start = '1') then
 					system_state <= "001";
 				end if;
+
+				-- Still not ready for communication
+				if chanAddr = "0000000" and f2hReady = '1' then
+					f2hData <= x"00";
+				end if; 
 
 			-- Taking Input
 			elsif (system_state = "001") then
@@ -228,10 +251,13 @@ begin
 						input_byte_count := input_byte_count + 1;
 						--When pressed for 8th time change the system state to "Encrypt" mode
 						if input_byte_count = 8 then
-							system_state <= "010"
+							-- Puts the eight inputs to encrypter plaintext port
+							-- Note that this doesn't start encryption
+							en_input <= input_eight_bytes;
+							-- Goes to Next State
+							system_state <= "010";
 						end if;
 					end if;
-
 				-- debounced_next_data == 0 can only exist right after start 
 				-- or after releasing next_data 
 				elsif debounced_next_data = '0' then
@@ -239,11 +265,87 @@ begin
 					input_taken_already := '0';
 				end if;
 
+				-- Still not ready for communication
+				if chanAddr = "0000000" and f2hReady = '1' then
+					f2hData <= x"00";
+				end if;
+
 			-- Encrypt
 			elsif (system_state = "010") then 
+						
+				-- checking Adquate cash in atm
+				if input_eight_bytes(39 downto 32) > n2000 
+					or input_eight_bytes(47 downto 40) > n1000 
+					or input_eight_bytes(55 downto 48) > n500 
+					or input_eight_bytes(63 downto 56) > n100 then
+					-- Send 0x02 
+					adequate_cash_in_atm := '0';
+				else
+					-- Send 0x01
+					adequate_cash_in_atm := '1';
+				end if;
+				
+				-- Starting encryption
+				start_encrypt <= '1';
+			
+				-- After encrytion is done
+				if encryption_over = '1' then
+					start_encrypt <= '0'; -- Stops further encrption
+					system_state <= "011"; -- Goes into next step
+				end if;
+
+				-- Still not ready for communication
+				if chanAddr = "0000000" and f2hReady = '1' then
+					f2hData <= x"00";
+				end if;
 
 			-- Communicating wih backend
 			elsif (system_state = "011") then 
+
+				-- Ready for communication
+				if chanAddr = "0000000" and f2hReady = '1' then
+					-- Adequate cash in atm
+					if adequate_cash_in_atm = '1' then 
+						f2hData <= x"01";
+					elsif adequate_cash_in_atm = '0' then
+						f2hData <= x"02";
+					end if;
+
+				-- From channel 1 to 8 read corresponding bytes of input_eight_bytes_encrypted
+				elsif chanAddr = "0000001" and f2hReady = '1' then
+					f2hData <= en_output(7 downto 0);
+				elsif chanAddr = "0000010" and f2hReady = '1' then
+					f2hData <= en_output(15 downto 8);
+				elsif chanAddr = "0000011" and f2hReady = '1' then
+					f2hData <= en_output(23 downto 16);
+				elsif chanAddr = "0000100" and f2hReady = '1' then
+					f2hData <= en_output(31 downto 24);
+				elsif chanAddr = "0000101" and f2hReady = '1' then
+					f2hData <= en_output(39 downto 32);
+				elsif chanAddr = "0000110" and f2hReady = '1' then
+					f2hData <= en_output(47 downto 40);
+				elsif chanAddr = "0000111" and f2hReady = '1' then
+					f2hData <= en_output(55 downto 48);
+				elsif chanAddr = "0001000" and f2hReady = '1' then
+					f2hData <= en_output(63 downto 56);
+				end if;
+
+				-- In channel 9 *****
+				if chanAddr = "0001001" and h2fValid = '1' then
+					if h2fData = x"00" then 
+					-- No communication
+					elsif h2fData = x"01" then 
+					-- Normal User & Adequate Cash in Account
+						-- If adequate cash in atm
+						-- Else 
+					elsif h2fData = x"02" then
+					-- Normal User & NOT Adequate Cash in Account
+					elsif h2fData = x"03" then
+					-- Admin 
+					elsif h2fData = x"04" then
+					-- User Not validated 
+					end if;
+				end if ;
 
 			-- Decrypt
 			elsif (system_state = "100") then 
@@ -258,9 +360,13 @@ begin
 			elsif (system_state = "111") then 
 
 			end if;
+
 		end if;
 	end process;
 
-	--data_to_be_displayed <= ciphertext_out when (system_state = '0') else plaintext_out; -- edit
+	f2hValid <= '1';
+	h2fReady <= '1';
+
+	--data_to_be_displayed <= en_output when (system_state = '0') else plaintext_out; -- edit
 	--done                 <= encryption_over AND decryption_over;
 end architecture;
