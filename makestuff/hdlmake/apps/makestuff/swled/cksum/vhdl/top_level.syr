@@ -5,14 +5,14 @@ Parameter TMPDIR set to xst/projnav.tmp
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.05 secs
+Total CPU time to Xst completion: 0.04 secs
  
 --> 
 Parameter xsthdpdir set to xst
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.05 secs
+Total CPU time to Xst completion: 0.04 secs
  
 --> 
 Reading design: top_level.prj
@@ -128,12 +128,6 @@ Parsing architecture <rtl> of entity <mod_swled>.
 =========================================================================
 
 Elaborating entity <top_level> (architecture <structural>) from library <work>.
-WARNING:HDLCompiler:871 - "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/hdlmake/apps/makestuff/swled/templates/fx2all/vhdl/top_level.vhdl" Line 91: Using initial value '0' for start_decrypt since it is never assigned
-WARNING:HDLCompiler:871 - "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/hdlmake/apps/makestuff/swled/templates/fx2all/vhdl/top_level.vhdl" Line 92: Using initial value "0000000000000000000000000000000000000000000000000000000000000000" for encrypted_response since it is never assigned
-WARNING:HDLCompiler:871 - "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/hdlmake/apps/makestuff/swled/templates/fx2all/vhdl/top_level.vhdl" Line 101: Using initial value "00000000" for n2000 since it is never assigned
-WARNING:HDLCompiler:871 - "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/hdlmake/apps/makestuff/swled/templates/fx2all/vhdl/top_level.vhdl" Line 102: Using initial value "00000000" for n1000 since it is never assigned
-WARNING:HDLCompiler:871 - "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/hdlmake/apps/makestuff/swled/templates/fx2all/vhdl/top_level.vhdl" Line 103: Using initial value "00000000" for n500 since it is never assigned
-WARNING:HDLCompiler:871 - "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/hdlmake/apps/makestuff/swled/templates/fx2all/vhdl/top_level.vhdl" Line 104: Using initial value "00000000" for n100 since it is never assigned
 
 Elaborating entity <comm_fpga_fx2> (architecture <rtl>) from library <work>.
 WARNING:HDLCompiler:89 - "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/hdlmake/apps/makestuff/swled/templates/fx2all/vhdl/top_level.vhdl" Line 39: <debouncer> remains a black-box since it has no binding entity.
@@ -146,25 +140,31 @@ WARNING:HDLCompiler:89 - "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishin
 
 Synthesizing Unit <top_level>.
     Related source file is "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/hdlmake/apps/makestuff/swled/templates/fx2all/vhdl/top_level.vhdl".
-INFO:Xst:3210 - "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/hdlmake/apps/makestuff/swled/templates/fx2all/vhdl/top_level.vhdl" line 113: Output port <h2fData_out> of the instance <comm_fpga_fx2> is unconnected or connected to loadless signal.
-INFO:Xst:3210 - "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/hdlmake/apps/makestuff/swled/templates/fx2all/vhdl/top_level.vhdl" line 113: Output port <h2fValid_out> of the instance <comm_fpga_fx2> is unconnected or connected to loadless signal.
-INFO:Xst:3210 - "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/hdlmake/apps/makestuff/swled/templates/fx2all/vhdl/top_level.vhdl" line 149: Output port <button_deb> of the instance <done_debouncer> is unconnected or connected to loadless signal.
-INFO:Xst:3210 - "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/hdlmake/apps/makestuff/swled/templates/fx2all/vhdl/top_level.vhdl" line 167: Output port <plaintext> of the instance <decrypt> is unconnected or connected to loadless signal.
-INFO:Xst:3210 - "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/hdlmake/apps/makestuff/swled/templates/fx2all/vhdl/top_level.vhdl" line 167: Output port <done> of the instance <decrypt> is unconnected or connected to loadless signal.
+    Found 1-bit register for signal <start_encrypt>.
+    Found 1-bit register for signal <start_decrypt>.
     Found 1-bit register for signal <main_process.input_taken_already>.
     Found 1-bit register for signal <main_process.adequate_cash_in_atm>.
+    Found 1-bit register for signal <main_process.adequate_cash_in_account>.
+    Found 1-bit register for signal <main_process.user_is_admin>.
+    Found 1-bit register for signal <main_process.dispensing_done_already>.
     Found 4-bit register for signal <main_process.input_byte_count>.
     Found 64-bit register for signal <main_process.input_eight_bytes>.
+    Found 64-bit register for signal <main_process.response_from_host>.
+    Found 8-bit register for signal <main_process.check_for_host_response>.
     Found 3-bit register for signal <system_state>.
     Found 8-bit register for signal <f2hData>.
     Found 64-bit register for signal <en_input>.
-    Found 1-bit register for signal <start_encrypt>.
+    Found 64-bit register for signal <de_input>.
+    Found 8-bit register for signal <n2000>.
+    Found 8-bit register for signal <n1000>.
+    Found 8-bit register for signal <n500>.
+    Found 8-bit register for signal <n100>.
     Found finite state machine <FSM_0> for signal <system_state>.
     -----------------------------------------------------------------------
-    | States             | 4                                              |
-    | Transitions        | 10                                             |
-    | Inputs             | 6                                              |
-    | Outputs            | 2                                              |
+    | States             | 8                                              |
+    | Transitions        | 24                                             |
+    | Inputs             | 16                                             |
+    | Outputs            | 3                                              |
     | Clock              | fx2Clk_in (rising_edge)                        |
     | Reset              | debounced_reset (positive)                     |
     | Reset type         | asynchronous                                   |
@@ -173,19 +173,23 @@ INFO:Xst:3210 - "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makes
     | Encoding           | auto                                           |
     | Implementation     | LUT                                            |
     -----------------------------------------------------------------------
-    Found 5-bit adder for signal <n0232> created at line 251.
-    Found 7-bit subtractor for signal <GND_4_o_GND_4_o_sub_8_OUT<6:0>> created at line 247.
+    Found 4-bit adder for signal <main_process.input_byte_count[3]_GND_4_o_add_80_OUT> created at line 268.
+    Found 7-bit subtractor for signal <GND_4_o_GND_4_o_sub_7_OUT<6:0>> created at line 264.
+    Found 8-bit subtractor for signal <GND_4_o_GND_4_o_sub_155_OUT<7:0>> created at line 443.
+    Found 8-bit subtractor for signal <GND_4_o_GND_4_o_sub_156_OUT<7:0>> created at line 444.
+    Found 8-bit subtractor for signal <GND_4_o_GND_4_o_sub_157_OUT<7:0>> created at line 445.
+    Found 8-bit subtractor for signal <GND_4_o_GND_4_o_sub_158_OUT<7:0>> created at line 446.
     Found 1-bit tristate buffer for signal <fx2Addr_out<0>> created at line 10
-    Found 4-bit comparator greater for signal <main_process.input_byte_count[3]_PWR_4_o_LessThan_6_o> created at line 243
-    Found 8-bit comparator greater for signal <GND_4_o_main_process.input_eight_bytes[39]_LessThan_101_o> created at line 274
-    Found 8-bit comparator greater for signal <GND_4_o_main_process.input_eight_bytes[47]_LessThan_102_o> created at line 275
-    Found 8-bit comparator greater for signal <GND_4_o_main_process.input_eight_bytes[55]_LessThan_103_o> created at line 276
-    Found 8-bit comparator greater for signal <GND_4_o_main_process.input_eight_bytes[63]_LessThan_104_o> created at line 277
+    Found 4-bit comparator greater for signal <main_process.input_byte_count[3]_PWR_4_o_LessThan_6_o> created at line 260
+    Found 8-bit comparator greater for signal <n2000[7]_main_process.input_eight_bytes[31]_LessThan_96_o> created at line 294
+    Found 8-bit comparator greater for signal <n1000[7]_main_process.input_eight_bytes[23]_LessThan_97_o> created at line 295
+    Found 8-bit comparator greater for signal <n500[7]_main_process.input_eight_bytes[15]_LessThan_98_o> created at line 296
+    Found 8-bit comparator greater for signal <n100[7]_main_process.input_eight_bytes[7]_LessThan_99_o> created at line 297
     Summary:
-	inferred   2 Adder/Subtractor(s).
-	inferred 143 D-type flip-flop(s).
+	inferred   6 Adder/Subtractor(s).
+	inferred 315 D-type flip-flop(s).
 	inferred   5 Comparator(s).
-	inferred  77 Multiplexer(s).
+	inferred 336 Multiplexer(s).
 	inferred   1 Tristate(s).
 	inferred   1 Finite State Machine(s).
 Unit <top_level> synthesized.
@@ -233,24 +237,26 @@ Unit <comm_fpga_fx2> synthesized.
 HDL Synthesis Report
 
 Macro Statistics
-# Adders/Subtractors                                   : 3
+# Adders/Subtractors                                   : 7
  17-bit subtractor                                     : 1
- 5-bit adder                                           : 1
+ 4-bit adder                                           : 1
  7-bit subtractor                                      : 1
-# Registers                                            : 11
- 1-bit register                                        : 5
+ 8-bit subtractor                                      : 4
+# Registers                                            : 22
+ 1-bit register                                        : 9
  17-bit register                                       : 1
  4-bit register                                        : 1
- 64-bit register                                       : 2
+ 64-bit register                                       : 4
  7-bit register                                        : 1
- 8-bit register                                        : 1
+ 8-bit register                                        : 6
 # Comparators                                          : 5
  4-bit comparator greater                              : 1
  8-bit comparator greater                              : 4
-# Multiplexers                                         : 104
- 1-bit 2-to-1 multiplexer                              : 86
+# Multiplexers                                         : 363
+ 1-bit 2-to-1 multiplexer                              : 339
  17-bit 2-to-1 multiplexer                             : 3
- 8-bit 2-to-1 multiplexer                              : 15
+ 64-bit 2-to-1 multiplexer                             : 1
+ 8-bit 2-to-1 multiplexer                              : 20
 # Tristates                                            : 13
  1-bit tristate buffer                                 : 13
 # FSMs                                                 : 2
@@ -263,6 +269,10 @@ Macro Statistics
 
 
 Synthesizing (advanced) Unit <top_level>.
+The following registers are absorbed into accumulator <n2000>: 1 register on signal <n2000>.
+The following registers are absorbed into accumulator <n1000>: 1 register on signal <n1000>.
+The following registers are absorbed into accumulator <n500>: 1 register on signal <n500>.
+The following registers are absorbed into accumulator <n100>: 1 register on signal <n100>.
 The following registers are absorbed into counter <main_process.input_byte_count>: 1 register on signal <main_process.input_byte_count>.
 Unit <top_level> synthesized (advanced).
 
@@ -276,13 +286,15 @@ Macro Statistics
  7-bit subtractor                                      : 1
 # Counters                                             : 1
  4-bit up counter                                      : 1
-# Registers                                            : 165
- Flip-Flops                                            : 165
+# Accumulators                                         : 4
+ 8-bit down loadable accumulator                       : 4
+# Registers                                            : 305
+ Flip-Flops                                            : 305
 # Comparators                                          : 5
  4-bit comparator greater                              : 1
  8-bit comparator greater                              : 4
-# Multiplexers                                         : 104
- 1-bit 2-to-1 multiplexer                              : 86
+# Multiplexers                                         : 429
+ 1-bit 2-to-1 multiplexer                              : 411
  17-bit 2-to-1 multiplexer                             : 3
  8-bit 2-to-1 multiplexer                              : 15
 # FSMs                                                 : 2
@@ -293,14 +305,18 @@ Macro Statistics
 *                         Low Level Synthesis                           *
 =========================================================================
 Analyzing FSM <MFsm> for best encoding.
-Optimizing FSM <FSM_0> on signal <system_state[1:2]> with gray encoding.
+Optimizing FSM <FSM_0> on signal <system_state[1:3]> with gray encoding.
 -------------------
  State | Encoding
 -------------------
- 000   | 00
- 001   | 01
- 010   | 11
- 011   | 10
+ 000   | 000
+ 001   | 001
+ 010   | 011
+ 011   | 010
+ 100   | 110
+ 110   | 111
+ 101   | 101
+ 111   | 100
 -------------------
 Analyzing FSM <MFsm> for best encoding.
 Optimizing FSM <comm_fpga_fx2/FSM_1> on signal <state[1:4]> with user encoding.
@@ -319,17 +335,26 @@ Optimizing FSM <comm_fpga_fx2/FSM_1> on signal <state[1:4]> with user encoding.
 ------------------------------------
 
 Optimizing unit <top_level> ...
-INFO:Xst:2261 - The FF/Latch <system_state_FSM_FFd1> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <main_process.input_byte_count_3> 
 
 Mapping all equations...
 Building and optimizing final netlist ...
-Found area constraint ratio of 100 (+ 5) on block top_level, actual ratio is 1.
-FlipFlop comm_fpga_fx2/chanAddr_0 has been replicated 1 time(s)
-FlipFlop comm_fpga_fx2/chanAddr_1 has been replicated 1 time(s)
-FlipFlop comm_fpga_fx2/state_FSM_FFd1 has been replicated 1 time(s)
-FlipFlop comm_fpga_fx2/state_FSM_FFd2 has been replicated 1 time(s)
-FlipFlop comm_fpga_fx2/state_FSM_FFd3 has been replicated 1 time(s)
-FlipFlop comm_fpga_fx2/state_FSM_FFd4 has been replicated 1 time(s)
+Found area constraint ratio of 100 (+ 5) on block top_level, actual ratio is 2.
+FlipFlop comm_fpga_fx2/chanAddr_0 has been replicated 3 time(s)
+FlipFlop comm_fpga_fx2/chanAddr_1 has been replicated 4 time(s)
+FlipFlop comm_fpga_fx2/chanAddr_2 has been replicated 4 time(s)
+FlipFlop comm_fpga_fx2/chanAddr_3 has been replicated 3 time(s)
+FlipFlop comm_fpga_fx2/chanAddr_4 has been replicated 2 time(s)
+FlipFlop comm_fpga_fx2/chanAddr_5 has been replicated 2 time(s)
+FlipFlop comm_fpga_fx2/chanAddr_6 has been replicated 1 time(s)
+FlipFlop comm_fpga_fx2/state_FSM_FFd1 has been replicated 2 time(s)
+FlipFlop comm_fpga_fx2/state_FSM_FFd2 has been replicated 2 time(s)
+FlipFlop comm_fpga_fx2/state_FSM_FFd3 has been replicated 3 time(s)
+FlipFlop comm_fpga_fx2/state_FSM_FFd4 has been replicated 2 time(s)
+FlipFlop main_process.input_byte_count_1 has been replicated 1 time(s)
+FlipFlop main_process.input_byte_count_3 has been replicated 1 time(s)
+FlipFlop system_state_FSM_FFd1 has been replicated 1 time(s)
+FlipFlop system_state_FSM_FFd2 has been replicated 1 time(s)
+FlipFlop system_state_FSM_FFd3 has been replicated 1 time(s)
 
 Final Macro Processing ...
 
@@ -337,8 +362,8 @@ Final Macro Processing ...
 Final Register Report
 
 Macro Statistics
-# Registers                                            : 180
- Flip-Flops                                            : 180
+# Registers                                            : 381
+ Flip-Flops                                            : 381
 
 =========================================================================
 
@@ -361,23 +386,24 @@ Top Level Output File Name         : top_level.ngc
 
 Primitive and Black Box Usage:
 ------------------------------
-# BELS                             : 281
+# BELS                             : 641
 #      GND                         : 1
-#      INV                         : 18
+#      INV                         : 17
 #      LUT1                        : 1
-#      LUT2                        : 12
-#      LUT3                        : 8
-#      LUT4                        : 12
-#      LUT5                        : 27
-#      LUT6                        : 168
-#      MUXCY                       : 16
+#      LUT2                        : 10
+#      LUT3                        : 53
+#      LUT4                        : 59
+#      LUT5                        : 98
+#      LUT6                        : 301
+#      MUXCY                       : 44
+#      MUXF7                       : 7
 #      VCC                         : 1
-#      XORCY                       : 17
-# FlipFlops/Latches                : 180
-#      FD                          : 10
-#      FDC                         : 4
-#      FDCE                        : 67
-#      FDE                         : 99
+#      XORCY                       : 49
+# FlipFlops/Latches                : 381
+#      FD                          : 14
+#      FDC                         : 11
+#      FDCE                        : 144
+#      FDE                         : 212
 # Clock Buffers                    : 1
 #      BUFG                        : 1
 # IO Buffers                       : 29
@@ -396,16 +422,16 @@ Selected Device : 6slx45csg324-2
 
 
 Slice Logic Utilization: 
- Number of Slice Registers:             180  out of  54576     0%  
- Number of Slice LUTs:                  246  out of  27288     0%  
-    Number used as Logic:               246  out of  27288     0%  
+ Number of Slice Registers:             381  out of  54576     0%  
+ Number of Slice LUTs:                  539  out of  27288     1%  
+    Number used as Logic:               539  out of  27288     1%  
 
 Slice Logic Distribution: 
- Number of LUT Flip Flop pairs used:    316
-   Number with an unused Flip Flop:     136  out of    316    43%  
-   Number with an unused LUT:            70  out of    316    22%  
-   Number of fully used LUT-FF pairs:   110  out of    316    34%  
-   Number of unique control sets:         7
+ Number of LUT Flip Flop pairs used:    637
+   Number with an unused Flip Flop:     256  out of    637    40%  
+   Number with an unused LUT:            98  out of    637    15%  
+   Number of fully used LUT-FF pairs:   283  out of    637    44%  
+   Number of unique control sets:        12
 
 IO Utilization: 
  Number of IOs:                          49
@@ -435,7 +461,7 @@ Clock Information:
 -----------------------------------+------------------------+-------+
 Clock Signal                       | Clock buffer(FF name)  | Load  |
 -----------------------------------+------------------------+-------+
-fx2Clk_in                          | IBUF+BUFG              | 180   |
+fx2Clk_in                          | IBUF+BUFG              | 381   |
 -----------------------------------+------------------------+-------+
 
 Asynchronous Control Signals Information:
@@ -446,10 +472,10 @@ Timing Summary:
 ---------------
 Speed Grade: -2
 
-   Minimum period: 6.710ns (Maximum Frequency: 149.031MHz)
-   Minimum input arrival time before clock: 7.485ns
-   Maximum output required time after clock: 6.733ns
-   Maximum combinational path delay: 6.864ns
+   Minimum period: 6.627ns (Maximum Frequency: 150.898MHz)
+   Minimum input arrival time before clock: 8.056ns
+   Maximum output required time after clock: 6.700ns
+   Maximum combinational path delay: 6.956ns
 
 Timing Details:
 ---------------
@@ -457,92 +483,92 @@ All values displayed in nanoseconds (ns)
 
 =========================================================================
 Timing constraint: Default period analysis for Clock 'fx2Clk_in'
-  Clock period: 6.710ns (frequency: 149.031MHz)
-  Total number of paths / destination ports: 2799 / 328
+  Clock period: 6.627ns (frequency: 150.898MHz)
+  Total number of paths / destination ports: 14676 / 709
 -------------------------------------------------------------------------
-Delay:               6.710ns (Levels of Logic = 5)
+Delay:               6.627ns (Levels of Logic = 5)
   Source:            comm_fpga_fx2/state_FSM_FFd2_1 (FF)
-  Destination:       f2hData_2 (FF)
+  Destination:       de_input_0 (FF)
   Source Clock:      fx2Clk_in rising
   Destination Clock: fx2Clk_in rising
 
-  Data Path: comm_fpga_fx2/state_FSM_FFd2_1 to f2hData_2
+  Data Path: comm_fpga_fx2/state_FSM_FFd2_1 to de_input_0
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FD:C->Q               1   0.525   0.958  comm_fpga_fx2/state_FSM_FFd2_1 (comm_fpga_fx2/state_FSM_FFd2_1)
-     LUT4:I0->O           18   0.254   1.235  comm_fpga_fx2/_n0136<3>1 (comm_fpga_fx2/_n0136)
-     LUT6:I5->O           10   0.254   1.008  GND_4_o_f2hReady_AND_10_o11_2 (GND_4_o_f2hReady_AND_10_o11_1)
-     LUT5:I4->O            1   0.254   0.958  Mmux__n0239246 (Mmux__n0239245)
-     LUT6:I2->O            1   0.254   0.682  Mmux__n0239249 (Mmux__n0239248)
-     LUT6:I5->O            1   0.254   0.000  Mmux__n02392410 (_n0239<5>)
-     FDE:D                     0.074          f2hData_5
+     FD:C->Q               4   0.525   1.032  comm_fpga_fx2/state_FSM_FFd2_1 (comm_fpga_fx2/state_FSM_FFd2_1)
+     LUT5:I2->O            7   0.235   0.910  comm_fpga_fx2/Mmux_h2fValid_out11_1 (comm_fpga_fx2/Mmux_h2fValid_out11)
+     LUT6:I5->O           17   0.254   1.209  mux69121_2 (mux691211)
+     LUT3:I2->O            8   0.254   0.944  mux112 (mux11)
+     LUT6:I5->O            1   0.254   0.682  de_input_0_dpot (de_input_0_dpot)
+     LUT3:I2->O            1   0.254   0.000  de_input_0_dpot1 (de_input_0_dpot1)
+     FDE:D                     0.074          de_input_0
     ----------------------------------------
-    Total                      6.710ns (1.869ns logic, 4.841ns route)
+    Total                      6.627ns (1.850ns logic, 4.777ns route)
                                        (27.9% logic, 72.1% route)
 
 =========================================================================
 Timing constraint: Default OFFSET IN BEFORE for Clock 'fx2Clk_in'
-  Total number of paths / destination ports: 665 / 412
+  Total number of paths / destination ports: 2023 / 807
 -------------------------------------------------------------------------
-Offset:              7.485ns (Levels of Logic = 6)
-  Source:            fx2GotRoom_in (PAD)
-  Destination:       f2hData_2 (FF)
+Offset:              8.056ns (Levels of Logic = 6)
+  Source:            fx2GotData_in (PAD)
+  Destination:       de_input_0 (FF)
   Destination Clock: fx2Clk_in rising
 
-  Data Path: fx2GotRoom_in to f2hData_2
+  Data Path: fx2GotData_in to de_input_0
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     IBUF:I->O            18   1.328   1.511  fx2GotRoom_in_IBUF (fx2GotRoom_in_IBUF)
-     LUT4:I0->O            8   0.254   1.052  GND_4_o_f2hReady_AND_17_o_SW0 (N40)
-     LUT6:I4->O            1   0.250   0.790  Mmux__n0239128_SW0 (N68)
-     LUT6:I4->O            1   0.250   0.790  Mmux__n0239128 (Mmux__n0239128)
-     LUT6:I4->O            1   0.250   0.682  Mmux__n0239129 (Mmux__n0239129)
-     LUT6:I5->O            1   0.254   0.000  Mmux__n02391210 (_n0239<2>)
-     FDE:D                     0.074          f2hData_2
+     IBUF:I->O            17   1.328   1.639  fx2GotData_in_IBUF (fx2GotData_in_IBUF)
+     LUT5:I0->O            7   0.254   0.910  comm_fpga_fx2/Mmux_h2fValid_out11_1 (comm_fpga_fx2/Mmux_h2fValid_out11)
+     LUT6:I5->O           17   0.254   1.209  mux69121_2 (mux691211)
+     LUT3:I2->O            8   0.254   0.944  mux112 (mux11)
+     LUT6:I5->O            1   0.254   0.682  de_input_0_dpot (de_input_0_dpot)
+     LUT3:I2->O            1   0.254   0.000  de_input_0_dpot1 (de_input_0_dpot1)
+     FDE:D                     0.074          de_input_0
     ----------------------------------------
-    Total                      7.485ns (2.660ns logic, 4.825ns route)
-                                       (35.5% logic, 64.5% route)
+    Total                      8.056ns (2.672ns logic, 5.384ns route)
+                                       (33.2% logic, 66.8% route)
 
 =========================================================================
 Timing constraint: Default OFFSET OUT AFTER for Clock 'fx2Clk_in'
-  Total number of paths / destination ports: 178 / 79
+  Total number of paths / destination ports: 243 / 144
 -------------------------------------------------------------------------
-Offset:              6.733ns (Levels of Logic = 2)
-  Source:            comm_fpga_fx2/state_FSM_FFd4 (FF)
+Offset:              6.700ns (Levels of Logic = 2)
+  Source:            comm_fpga_fx2/state_FSM_FFd2 (FF)
   Destination:       fx2Data_io<7> (PAD)
   Source Clock:      fx2Clk_in rising
 
-  Data Path: comm_fpga_fx2/state_FSM_FFd4 to fx2Data_io<7>
+  Data Path: comm_fpga_fx2/state_FSM_FFd2 to fx2Data_io<7>
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FD:C->Q              39   0.525   2.067  comm_fpga_fx2/state_FSM_FFd4 (comm_fpga_fx2/state_FSM_FFd4)
-     LUT5:I0->O            9   0.254   0.975  comm_fpga_fx2/f2hReady_out_inv1 (comm_fpga_fx2/f2hReady_out_inv)
+     FD:C->Q              37   0.525   2.034  comm_fpga_fx2/state_FSM_FFd2 (comm_fpga_fx2/state_FSM_FFd2)
+     LUT5:I0->O            9   0.254   0.975  comm_fpga_fx2/Mmux_state[3]_PWR_5_o_Mux_42_o11 (comm_fpga_fx2/f2hReady_out_inv)
      OBUFT:I->O                2.912          fx2Write_out_OBUFT (fx2Write_out)
     ----------------------------------------
-    Total                      6.733ns (3.691ns logic, 3.042ns route)
-                                       (54.8% logic, 45.2% route)
+    Total                      6.700ns (3.691ns logic, 3.009ns route)
+                                       (55.1% logic, 44.9% route)
 
 =========================================================================
 Timing constraint: Default path analysis
   Total number of paths / destination ports: 31 / 23
 -------------------------------------------------------------------------
-Delay:               6.864ns (Levels of Logic = 3)
-  Source:            fx2GotData_in (PAD)
-  Destination:       fx2Read_out (PAD)
+Delay:               6.956ns (Levels of Logic = 3)
+  Source:            fx2GotRoom_in (PAD)
+  Destination:       fx2Data_io<7> (PAD)
 
-  Data Path: fx2GotData_in to fx2Read_out
+  Data Path: fx2GotRoom_in to fx2Data_io<7>
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     IBUF:I->O            27   1.328   1.664  fx2GotData_in_IBUF (fx2GotData_in_IBUF)
-     LUT5:I2->O            2   0.235   0.725  comm_fpga_fx2/Mmux_state[3]_GND_6_o_Mux_44_o11 (fx2Read_out_OBUFT)
-     OBUFT:I->O                2.912          fx2Read_out_OBUFT (fx2Read_out)
+     IBUF:I->O            30   1.328   1.487  fx2GotRoom_in_IBUF (fx2GotRoom_in_IBUF)
+     LUT5:I4->O            9   0.254   0.975  comm_fpga_fx2/Mmux_state[3]_PWR_5_o_Mux_42_o11 (comm_fpga_fx2/f2hReady_out_inv)
+     OBUFT:I->O                2.912          fx2Write_out_OBUFT (fx2Write_out)
     ----------------------------------------
-    Total                      6.864ns (4.475ns logic, 2.389ns route)
-                                       (65.2% logic, 34.8% route)
+    Total                      6.956ns (4.494ns logic, 2.462ns route)
+                                       (64.6% logic, 35.4% route)
 
 =========================================================================
 
@@ -554,21 +580,21 @@ Clock to Setup on destination clock fx2Clk_in
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-fx2Clk_in      |    6.710|         |         |         |
+fx2Clk_in      |    6.627|         |         |         |
 ---------------+---------+---------+---------+---------+
 
 =========================================================================
 
 
-Total REAL time to Xst completion: 6.00 secs
-Total CPU time to Xst completion: 5.85 secs
+Total REAL time to Xst completion: 8.00 secs
+Total CPU time to Xst completion: 7.30 secs
  
 --> 
 
 
-Total memory usage is 394088 kilobytes
+Total memory usage is 395804 kilobytes
 
 Number of errors   :    0 (   0 filtered)
-Number of warnings :    9 (   0 filtered)
-Number of infos    :    6 (   0 filtered)
+Number of warnings :    3 (   0 filtered)
+Number of infos    :    0 (   0 filtered)
 
