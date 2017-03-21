@@ -12,7 +12,7 @@ entity debouncer is
 		 button_deb : out STD_LOGIC);
 end debouncer;
 
-architecture Behavioral of debouncer is
+architecture debouncer_rtl of debouncer is
 begin
 	process(clk, button)
 		variable oldbutton : STD_LOGIC := '1';
@@ -31,5 +31,4 @@ begin
 			end if;
 		end if;
 	end process;
-
-end Behavioral;
+end debouncer_rtl;

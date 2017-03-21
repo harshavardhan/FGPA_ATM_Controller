@@ -4,6 +4,11 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity top_level is
+	generic (
+		N : integer := 100; 
+		max_no_of_blinks : integer := 5
+		);
+
 	port(
 		-- FX2LP interface ---------------------------------------------------------------------------
 		fx2Clk_in      : in    std_logic;                    -- 48MHz clock from FX2LP
@@ -208,6 +213,10 @@ begin
 
 		-- Dispensing Cash
 		variable dispensing_done_already 					: std_logic := '0';
+		
+		-- Led Control
+		variable time_counter 								: integer range 0 to N := 0;
+		variable loading_cash_led_counter					: integer range 0 to max_no_of_blinks := 0;
 
 	begin
 		if debounced_reset = '1' then
@@ -234,6 +243,11 @@ begin
 
 			-- Dispensing Cash
 			dispensing_done_already := '0';
+			
+			-- Led Control
+			led_out <= (others => '0');
+			time_counter := 0;
+			loading_cash_led_counter := 0;
 
 		elsif (fx2Clk_in'event AND fx2Clk_in = '1') then
 		
@@ -249,6 +263,9 @@ begin
 				if chanAddr = "0000000" and f2hReady = '1' then
 					f2hData <= x"00";
 				end if; 
+
+				-- Led Control
+				led_out <= (others => '0');
 
 			-- Taking Input
 			elsif (system_state = "001") then
@@ -273,6 +290,9 @@ begin
 							en_input <= input_eight_bytes;
 							-- Goes to Next State
 							system_state <= "010";
+						else
+							-- Led Control 
+							led_out(3 downto 1) <= std_logic_vector(to_unsigned(input_byte_count, 3));
 						end if;
 					end if;
 				-- debounced_next_data == 0 can only exist right after start 
@@ -287,9 +307,16 @@ begin
 					f2hData <= x"00";
 				end if;
 
+				-- Led Control
+				if time_counter = N then
+					led_out(0) <= '1';
+				elsif time_counter < N then
+					led_out(0) <= '0';
+				end if;
+
 			-- Encrypt
-			elsif (system_state = "010") then 
-						
+			elsif (system_state = "010") then
+
 				-- checking Adquate cash in atm
 				if input_eight_bytes(31 downto 24) > n2000 
 					or input_eight_bytes(23 downto 16) > n1000 
@@ -315,8 +342,15 @@ begin
 					f2hData <= x"00";
 				end if;
 
+				-- Led Control
+				if time_counter = N then
+					led_out(1 downto 0) <= "11";
+				elsif time_counter < N then
+					led_out(1 downto 0) <= "00";
+				end if;
+
 			-- Communicating wih backend
-			elsif (system_state = "011") then 
+			elsif (system_state = "011") then
 
 				-- Ready for communication
 				if chanAddr = "0000000" and f2hReady = '1' then
@@ -412,14 +446,21 @@ begin
 					system_state <= "100"; -- Go to next state 
 				end if;
 
+				-- Led Control
+				if time_counter = N then
+					led_out(1 downto 0) <= "11";
+				elsif time_counter < N then
+					led_out(1 downto 0) <= "00";
+				end if;
+
 			-- Decrypt
 			elsif (system_state = "100") then 
+
 				-- Starting decryption
 				start_decrypt <= '1';
 			
 				-- After decrytion is done
 				if decryption_over = '1' then 
-					
 					if user_is_admin = '1' then
 						system_state <= "101"; -- Goes into Loading cash
 					elsif user_is_admin = '0' then
@@ -427,14 +468,33 @@ begin
 					end if;
 				end if;
 
+				-- Led Control
+				if time_counter = N then
+					led_out(1 downto 0) <= "11";
+				elsif time_counter < N then
+					led_out(1 downto 0) <= "00";
+				end if;
+
 			-- Loading cash
 			elsif (system_state = "101") then 
 				n2000 <= de_output(31 downto 24);
 				n1000 <= de_output(23 downto 16);
-				n500 <= de_output(15 downto 8);
-				n100 <= de_output(7 downto 0);
+				n500  <= de_output(15 downto 8);
+				n100  <= de_output(7 downto 0);
 
-				system_state <= "111";
+				-- Led Control
+				if time_counter = N then
+					led_out(2 downto 0) <= "111";
+					loading_cash_led_counter := loading_cash_led_counter + 1;
+				elsif time_counter < N then
+					led_out(2 downto 0) <= "000";
+				end if;
+
+				-- If the blinking happens for "max_no_of_blinks" then go to next state 
+				if loading_cash_led_counter = max_no_of_blinks then 
+					system_state <= "111";
+				end if;				
+
 			-- Dispensing cash
 			elsif (system_state = "110") then
 				if adequate_cash_in_account = '1' and adequate_cash_in_atm = '1' then					 
@@ -454,13 +514,37 @@ begin
 
 				end if;
 
+				-- Led Control
+				if time_counter = N then
+					led_out(2 downto 0) <= "111";
+					loading_cash_led_counter := loading_cash_led_counter + 1;
+				elsif time_counter < N then
+					led_out(2 downto 0) <= "000";
+				end if;
+
 				system_state <= "111";
-			-- Dummy state : Waits for done press and goes to Ready state 
+			
+			-- Dummy state 
 			elsif (system_state = "111") then
+				-- Waits for done press and goes to Ready state
 				if debounced_done = '1' then
 					system_state <= "000";
 				end if;
+
+				-- Led Control
+				led_out <= (others => '0');
+			
 			end if;
+
+			-----------------  END OF STATES -----------------
+
+			if time_counter = N then
+				time_counter := 0;
+			else
+				time_counter := time_counter + 1;
+			end if;
+
+
 
 		end if;
 	end process;

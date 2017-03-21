@@ -1,7 +1,7 @@
 Release 14.7 - par P.20131013 (lin64)
 Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
-Sun Mar 19 21:39:07 2017
+Wed Mar 22 02:31:58 2017
 
 
 # NOTE: This file is designed to be imported into a spreadsheet program
@@ -283,9 +283,9 @@ R9|||GND||||||||||||
 R10|anode_out<1>|IOB|IO_L29P_GCLK3_2|OUTPUT|LVTTL|2|12|SLOW||||LOCATED|NO|NONE|
 R11|sseg_out<2>|IOB|IO_L16P_2|OUTPUT|LVTTL|2|12|SLOW||||LOCATED|NO|NONE|
 R12|||VCCO_2|||2|||||3.30||||
-R13||IOBM|IO_L3P_D0_DIN_MISO_MISO1_2|UNUSED||2|||||||||
+R13|start_button|IOB|IO_L3P_D0_DIN_MISO_MISO1_2|INPUT|LVCMOS25*|2||||NONE||UNLOCATED|NO|NONE|
 R14|||GND||||||||||||
-R15||IOBM|IO_L1P_CCLK_2|UNUSED||2|||||||||
+R15|next_data_in_button|IOB|IO_L1P_CCLK_2|INPUT|LVCMOS25*|2||||NONE||UNLOCATED|NO|NONE|
 R16|||SUSPEND||||||||||||
 R17|||VCCO_1|||1|||||3.30||||
 R18|||GND||||||||||||
@@ -303,7 +303,7 @@ T11||IOBS|IO_L16N_VREF_2|UNUSED||2|||||||||
 T12|sseg_out<1>|IOB|IO_L19P_2|OUTPUT|LVTTL|2|12|SLOW||||LOCATED|NO|NONE|
 T13||IOBS|IO_L3N_MOSI_CSI_B_MISO0_2|UNUSED||2|||||||||
 T14||IOBM|IO_L12P_D1_MISO2_2|UNUSED||2|||||||||
-T15||IOBS|IO_L1N_M0_CMPMISO_2|UNUSED||2|||||||||
+T15|done_button|IOB|IO_L1N_M0_CMPMISO_2|INPUT|LVCMOS25*|2||||NONE||UNLOCATED|NO|NONE|
 T16|||GND||||||||||||
 T17||IOBM|IO_L51P_M1DQ12_1|UNUSED||1|||||||||
 T18||IOBS|IO_L51N_M1DQ13_1|UNUSED||1|||||||||
@@ -340,7 +340,7 @@ V12||IOBS|IO_L19N_2|UNUSED||2|||||||||
 V13||IOBS|IO_L14N_D12_2|UNUSED||2|||||||||
 V14||IOBS|IO_L12N_D2_MISO3_2|UNUSED||2|||||||||
 V15||IOBS|IO_L5N_2|UNUSED||2|||||||||
-V16||IOBS|IO_L2N_CMPMOSI_2|UNUSED||2|||||||||
+V16|reset_button|IOB|IO_L2N_CMPMOSI_2|INPUT|LVCMOS25*|2||||NONE||UNLOCATED|NO|NONE|
 V17|||DONE_2||||||||||||
 V18|||GND||||||||||||
 

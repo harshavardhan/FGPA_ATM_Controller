@@ -5,7 +5,7 @@ Loading device for application Rf_Device from file '6slx45.nph' in environment
    "top_level" is an NCD, version 3.2, device xc6slx45, package csg324, speed -3
 Opened constraints file top_level.pcf.
 
-Sun Mar 19 21:39:11 2017
+Wed Mar 22 02:32:02 2017
 
 /opt/Xilinx/14.7/ISE_DS/ISE/bin/lin64/unwrapped/bitgen -intstyle ise -w -g DebugBitstream:No -g Binary:Yes -g CRC:Enable -g ConfigRate:10 -g ProgPin:PullUp -g DonePin:PullUp -g TckPin:PullUp -g TdiPin:PullUp -g TdoPin:PullUp -g TmsPin:PullUp -g UnusedPin:PullDown -g UserID:0xFFFFFFFF -g StartUpClk:CClk -g DONE_cycle:4 -g GTS_cycle:5 -g GWE_cycle:6 -g LCK_cycle:NoWait -g Security:None -g DonePipe:No -g DriveDone:No top_level.ncd 
 
@@ -128,8 +128,53 @@ There were 0 CONFIG constraint(s) processed from top_level.pcf.
 
 
 Running DRC.
-DRC detected 0 errors and 0 warnings.
-Creating bit map...
-Saving bit stream in "top_level.bit".
-Saving bit stream in "top_level.bin".
-Bitstream generation is complete.
+ERROR:PhysDesignRules:368 - The signal <sseg_out<0>_OBUF> is incomplete. The
+   signal is not driven by any source pin in the design.
+ERROR:PhysDesignRules:368 - The signal <sseg_out<1>_OBUF> is incomplete. The
+   signal is not driven by any source pin in the design.
+ERROR:PhysDesignRules:368 - The signal <sseg_out<2>_OBUF> is incomplete. The
+   signal is not driven by any source pin in the design.
+ERROR:PhysDesignRules:368 - The signal <sseg_out<3>_OBUF> is incomplete. The
+   signal is not driven by any source pin in the design.
+ERROR:PhysDesignRules:368 - The signal <sseg_out<4>_OBUF> is incomplete. The
+   signal is not driven by any source pin in the design.
+ERROR:PhysDesignRules:368 - The signal <sseg_out<5>_OBUF> is incomplete. The
+   signal is not driven by any source pin in the design.
+ERROR:PhysDesignRules:368 - The signal <sseg_out<6>_OBUF> is incomplete. The
+   signal is not driven by any source pin in the design.
+ERROR:PhysDesignRules:368 - The signal <sseg_out<7>_OBUF> is incomplete. The
+   signal is not driven by any source pin in the design.
+ERROR:PhysDesignRules:368 - The signal <anode_out<0>_OBUF> is incomplete. The
+   signal is not driven by any source pin in the design.
+ERROR:PhysDesignRules:368 - The signal <anode_out<1>_OBUF> is incomplete. The
+   signal is not driven by any source pin in the design.
+ERROR:PhysDesignRules:368 - The signal <anode_out<2>_OBUF> is incomplete. The
+   signal is not driven by any source pin in the design.
+ERROR:PhysDesignRules:368 - The signal <anode_out<3>_OBUF> is incomplete. The
+   signal is not driven by any source pin in the design.
+ERROR:PhysDesignRules:10 - The network <sseg_out<0>_OBUF> is completely
+   unrouted.
+ERROR:PhysDesignRules:10 - The network <sseg_out<1>_OBUF> is completely
+   unrouted.
+ERROR:PhysDesignRules:10 - The network <sseg_out<2>_OBUF> is completely
+   unrouted.
+ERROR:PhysDesignRules:10 - The network <sseg_out<3>_OBUF> is completely
+   unrouted.
+ERROR:PhysDesignRules:10 - The network <sseg_out<4>_OBUF> is completely
+   unrouted.
+ERROR:PhysDesignRules:10 - The network <sseg_out<5>_OBUF> is completely
+   unrouted.
+ERROR:PhysDesignRules:10 - The network <sseg_out<6>_OBUF> is completely
+   unrouted.
+ERROR:PhysDesignRules:10 - The network <sseg_out<7>_OBUF> is completely
+   unrouted.
+ERROR:PhysDesignRules:10 - The network <anode_out<0>_OBUF> is completely
+   unrouted.
+ERROR:PhysDesignRules:10 - The network <anode_out<1>_OBUF> is completely
+   unrouted.
+ERROR:PhysDesignRules:10 - The network <anode_out<2>_OBUF> is completely
+   unrouted.
+ERROR:PhysDesignRules:10 - The network <anode_out<3>_OBUF> is completely
+   unrouted.
+ERROR:Bitgen:25 - DRC detected 24 errors and 0 warnings.  Please see the
+   previously displayed individual error or warning messages for more details.

@@ -3,32 +3,6 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity mod_swled is
-	port(
-		clk_in       : in  std_logic;
-		reset_in     : in  std_logic;
-
-		-- DVR interface -----------------------------------------------------------------------------
-		chanAddr_in  : in  std_logic_vector(6 downto 0);  -- the selected channel (0-127)
-
-		-- Host >> FPGA pipe:
-		h2fData_in   : in  std_logic_vector(7 downto 0);  -- data lines used when the host writes to a channel
-		h2fValid_in  : in  std_logic;                     -- '1' means "on the next clock rising edge, please accept the data on h2fData"
-		h2fReady_out : out std_logic;                     -- channel logic can drive this low to say "I'm not ready for more data yet"
-
-		-- Host << FPGA pipe:
-		f2hData_out  : out std_logic_vector(7 downto 0);  -- data lines used when the host reads from a channel
-		f2hValid_out : out std_logic;                     -- channel logic can drive this low to say "I don't have data ready for you"
-		f2hReady_in  : in  std_logic;                     -- '1' means "on the next clock rising edge, put your next byte of data on f2hData"
-
-		-- Peripheral interface ----------------------------------------------------------------------
-		sseg_out       : out   std_logic_vector(7 downto 0); -- seven-segment display cathodes (one for each segment)
-		anode_out      : out   std_logic_vector(3 downto 0); -- seven-segment display anodes (one for each digit)
-		led_out        : out   std_logic_vector(7 downto 0); -- eight LEDs
-		sw_in          : in    std_logic_vector(7 downto 0)  -- eight switches
-	);
-end entity;
-
 architecture rtl of mod_swled is
 	-- Flags for display on the 7-seg decimal points
 	signal flags                   : std_logic_vector(3 downto 0);
@@ -87,3 +61,128 @@ begin                                                                     --BEGI
 			anodes_out => anode_out
 		);
 end architecture;
+
+architecture debouncer_rtl of debouncer is
+begin
+	process(clk, button)
+		variable oldbutton : STD_LOGIC := '1';
+		variable count     : STD_LOGIC_VECTOR(19 downto 0);
+
+	begin
+		if (clk'event AND clk = '1') then
+			if (oldbutton /= button) then
+				count     := (others => '0'); -- reset counter
+				oldbutton := button;    -- save current value of button
+			else
+				count := count + '1';   -- increment counter
+				if ((count = wait_cycles) AND (oldbutton = button)) then
+					button_deb <= oldbutton; -- button had persistent value
+				end if;
+			end if;
+		end if;
+	end process;
+end debouncer_rtl;
+
+architecture en_rtl of encrypter is
+	signal round        : integer range 0 to 33 := 0;
+begin
+	process(clk, start, reset, plaintext, round) is
+		variable v0 : std_logic_vector(31 downto 0);
+		variable v1 : std_logic_vector(31 downto 0);
+		variable sum     : std_logic_vector(31 downto 0)  := (others => '0');
+		variable delta   : std_logic_vector(31 downto 0)  := x"9e3779b9";
+		variable key     : std_logic_vector(127 downto 0) := x"ff0f745743fd99f775f8c48f2927c18c";
+
+	begin
+		if reset = '1' then
+			round <= 0;
+			sum := (others => '0');
+			ciphertext <= (others => '0');
+			done <= '0';
+			
+		elsif clk'event and clk = '1' then
+			
+			if start = '1' then
+
+				delta := x"9e3779b9";
+				key := x"ff0f745743fd99f775f8c48f2927c18c";
+
+				if round = 0 then
+					done <= '0';
+					v0 := plaintext(31 downto 0);
+					v1 := plaintext(63 downto 32);
+				end if;
+
+				if round < 32 then
+					sum := sum + delta;
+					v0  := v0 + (((v1(27 downto 0) & "0000") + key(31 downto 0)) xor (v1 + sum) xor (("00000" & v1(31 downto 5)) + key(63 downto 32)));
+					v1  := v1 + (((v0(27 downto 0) & "0000") + key(95 downto 64)) xor (v0 + sum) xor (("00000" & v0(31 downto 5)) + key(127 downto 96)));
+					round <= round + 1;
+				elsif round = 32 then
+					ciphertext(63 downto 32) <= v1;
+					ciphertext(31 downto 0)  <= v0;
+					round <= 33;
+					done <= '1';
+				end if;
+			
+			elsif start = '0' then
+				done <= '0';
+				round <= 0;
+
+			end if;
+		end if;
+
+	end process;
+end en_rtl;
+
+
+architecture de_rtl of decrypter is
+	signal round : integer range 0 to 33 := 0;
+begin
+	process(clk, start, reset, ciphertext, round) is
+		variable v0           : std_logic_vector(31 downto 0);
+		variable v1           : std_logic_vector(31 downto 0);
+		variable sum          : std_logic_vector(31 downto 0)  := x"C6EF3720";
+		variable delta        : std_logic_vector(31 downto 0)  := x"9e3779b9";
+		variable key          : std_logic_vector(127 downto 0) := x"ff0f745743fd99f775f8c48f2927c18c";
+
+	begin
+		if reset = '1' then
+			round     <= 0;
+			sum := x"C6EF3720";
+			plaintext <= (others => '0');
+			done      <= '0';
+		
+		elsif clk'event and clk = '1' then
+			
+			if start = '1' then
+
+				key := x"ff0f745743fd99f775f8c48f2927c18c";
+				delta := x"9e3779b9" ;
+				
+				if round = 0 then
+					done <= '0';
+					v0 := ciphertext(31 downto 0);
+					v1 := ciphertext(63 downto 32);
+				end if;
+				
+				if round < 32 then
+					v1  := v1 - (((v0(27 downto 0) & "0000") + key(95 downto 64)) xor (v0 + sum) xor (("00000" & v0(31 downto 5)) + key(127 downto 96)));
+					v0  := v0 - (((v1(27 downto 0) & "0000") + key(31 downto 0)) xor (v1 + sum) xor (("00000" & v1(31 downto 5)) + key(63 downto 32)));
+					sum := sum - delta;
+					round <= round + 1;
+				elsif round = 32 then
+					plaintext(63 downto 32) <= v1;
+					plaintext(31 downto 0)  <= v0;
+					round <= 33;
+					done <= '1';
+				end if;
+
+			elsif start = '0' then
+				done <= '0';
+				round <= 0;
+			end if;
+
+		end if;
+	end process;
+end de_rtl;
