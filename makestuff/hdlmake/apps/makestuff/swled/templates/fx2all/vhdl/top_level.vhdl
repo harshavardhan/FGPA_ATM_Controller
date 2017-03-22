@@ -5,8 +5,9 @@ use ieee.numeric_std.all;
 
 entity top_level is
 	generic (
-		N : integer := 100; 
-		max_no_of_blinks : integer := 5
+		N : integer := 100000000;
+		M : integer := 50000000;
+		max_no_of_blinks : integer := 8
 		);
 
 	port(
@@ -213,10 +214,15 @@ begin
 
 		-- Dispensing Cash
 		variable dispensing_done_already 					: std_logic := '0';
-		
+		variable no_2000_notes_to_be_dispensed					: integer range 0 to 255 := 0;
+		variable no_1000_notes_to_be_dispensed					: integer range 0 to 255 := 0;
+		variable no_500_notes_to_be_dispensed						: integer range 0 to 255 := 0;
+		variable no_100_notes_to_be_dispensed						: integer range 0 to 255 := 0;
+		variable led_4to7_blink_counter						: integer range 0 to 6 	 := 0;
+
 		-- Led Control
 		variable time_counter 								: integer range 0 to N := 0;
-		variable loading_cash_led_counter					: integer range 0 to max_no_of_blinks := 0;
+		variable led_blink_counter							: integer range 0 to max_no_of_blinks := 0;
 
 	begin
 		if debounced_reset = '1' then
@@ -243,11 +249,16 @@ begin
 
 			-- Dispensing Cash
 			dispensing_done_already := '0';
-			
+			no_2000_notes_to_be_dispensed := 0;
+			no_1000_notes_to_be_dispensed := 0;
+			no_500_notes_to_be_dispensed 	:= 0;
+			no_100_notes_to_be_dispensed 	:= 0;
+			led_4to7_blink_counter 	:= 0;
+
 			-- Led Control
 			led_out <= (others => '0');
 			time_counter := 0;
-			loading_cash_led_counter := 0;
+			led_blink_counter := 0;
 
 		elsif (fx2Clk_in'event AND fx2Clk_in = '1') then
 		
@@ -288,6 +299,8 @@ begin
 							-- Puts the eight inputs to encrypter plaintext port
 							-- Note that this doesn't start encryption
 							en_input <= input_eight_bytes;
+							-- Turning Off all leds
+							led_out <= (others => '0');
 							-- Goes to Next State
 							system_state <= "010";
 						else
@@ -308,9 +321,9 @@ begin
 				end if;
 
 				-- Led Control
-				if time_counter = N then
+				if time_counter > M then
 					led_out(0) <= '1';
-				elsif time_counter < N then
+				else
 					led_out(0) <= '0';
 				end if;
 
@@ -343,9 +356,9 @@ begin
 				end if;
 
 				-- Led Control
-				if time_counter = N then
+				if time_counter > M then
 					led_out(1 downto 0) <= "11";
-				elsif time_counter < N then
+				else
 					led_out(1 downto 0) <= "00";
 				end if;
 
@@ -447,9 +460,9 @@ begin
 				end if;
 
 				-- Led Control
-				if time_counter = N then
+				if time_counter > M then
 					led_out(1 downto 0) <= "11";
-				elsif time_counter < N then
+				else
 					led_out(1 downto 0) <= "00";
 				end if;
 
@@ -461,6 +474,8 @@ begin
 			
 				-- After decrytion is done
 				if decryption_over = '1' then 
+					-- Turning Off all leds
+					led_out <= (others => '0');
 					if user_is_admin = '1' then
 						system_state <= "101"; -- Goes into Loading cash
 					elsif user_is_admin = '0' then
@@ -469,9 +484,9 @@ begin
 				end if;
 
 				-- Led Control
-				if time_counter = N then
+				if time_counter > M then
 					led_out(1 downto 0) <= "11";
-				elsif time_counter < N then
+				else
 					led_out(1 downto 0) <= "00";
 				end if;
 
@@ -484,43 +499,145 @@ begin
 
 				-- Led Control
 				if time_counter = N then
+					led_blink_counter := led_blink_counter + 1;
+				elsif time_counter > M then
 					led_out(2 downto 0) <= "111";
-					loading_cash_led_counter := loading_cash_led_counter + 1;
-				elsif time_counter < N then
+				else
 					led_out(2 downto 0) <= "000";
 				end if;
 
 				-- If the blinking happens for "max_no_of_blinks" then go to next state 
-				if loading_cash_led_counter = max_no_of_blinks then 
+				if led_blink_counter = max_no_of_blinks then
+					-- Turning off all the leds
+					led_out <= (others => '0');
+					-- Going to next state
 					system_state <= "111";
 				end if;				
 
 			-- Dispensing cash
 			elsif (system_state = "110") then
 				if adequate_cash_in_account = '1' and adequate_cash_in_atm = '1' then					 
-					-- Updating the registers (cash removed)
 					if dispensing_done_already = '0' then 
+						-- Updating the registers (cash removed)
 						n2000 <= std_logic_vector(unsigned(n2000) - unsigned(de_output(31 downto 24)));
 						n1000 <= std_logic_vector(unsigned(n1000) - unsigned(de_output(23 downto 16)));
 						n500  <= std_logic_vector(unsigned(n500)  - unsigned(de_output(15 downto 8)));
 						n100  <= std_logic_vector(unsigned(n100)  - unsigned(de_output(7  downto 0)));
 						
+						-- No of repective notes to be dispensed
+						no_2000_notes_to_be_dispensed := to_integer(unsigned(de_output(31 downto 24)));
+						no_1000_notes_to_be_dispensed := to_integer(unsigned(de_output(23 downto 16)));
+						no_500_notes_to_be_dispensed 	:= to_integer(unsigned(de_output(15 downto 8)));
+						no_100_notes_to_be_dispensed 	:= to_integer(unsigned(de_output(7 downto 0)));
+
 						dispensing_done_already := '1';
-					end if;	
+					end if;
+
+					-- Dispensing cash in terms of blinks of corresponding leds
+					-- 2000 note blinks
+					if no_2000_notes_to_be_dispensed > 0 then
+						if time_counter = N then
+							no_2000_notes_to_be_dispensed := no_2000_notes_to_be_dispensed - 1;
+						elsif time_counter > M then
+							led_out(7 downto 4) <= "0001";
+						else
+							led_out(7 downto 4) <= "0000";
+						end if;
+
+					-- 1000 note blinks
+					elsif no_1000_notes_to_be_dispensed > 0 then
+						if time_counter = N then
+							no_1000_notes_to_be_dispensed := no_1000_notes_to_be_dispensed - 1;
+						elsif time_counter > M then
+							led_out(7 downto 4) <= "0010";
+						else
+							led_out(7 downto 4) <= "0000";
+						end if;
+
+					-- 500 note blinks
+					elsif no_500_notes_to_be_dispensed > 0 then
+						if time_counter = N then
+							no_500_notes_to_be_dispensed := no_500_notes_to_be_dispensed - 1;
+						elsif time_counter > M then
+							led_out(7 downto 4) <= "0100";
+						else
+							led_out(7 downto 4) <= "0000";
+						end if;
+
+					-- 100 note blinks
+					elsif no_100_notes_to_be_dispensed > 0 then
+						if time_counter = N then
+							no_100_notes_to_be_dispensed := no_100_notes_to_be_dispensed - 1;
+						elsif time_counter > M then
+							led_out(7 downto 4) <= "1000";
+						else
+							led_out(7 downto 4) <= "0000";
+						end if;
+
+					-- All the notes are dispensed (all required led blinks are finished)
+					else
+						if led_blink_counter > max_no_of_blinks then
+							-- Turning off all leds
+							led_out <= (others => '0');
+							-- Going to dummy state
+							system_state <= "111";
+						else
+							-- Turn off cash dispensing counter leds
+							led_out(7 downto 4) <= "0000";
+						end if;
+					end if;
 
 				elsif adequate_cash_in_account = '0'then
+					-- Led Control
+					if time_counter = N then
+						led_4to7_blink_counter := led_4to7_blink_counter + 1;
+					elsif time_counter > M and led_4to7_blink_counter < 3 then
+						led_out(7 downto 4) <= "1111";
+					else
+						led_out(7 downto 4) <= "0000";
+					end if;
+
+					if led_blink_counter > max_no_of_blinks then
+						-- Turning off all leds
+						led_out <= (others => '0');
+						-- Going to dummy state
+						system_state <= "111";
+					else
+						-- Turn off cash dispensing counter leds
+						led_out(7 downto 4) <= "0000";
+					end if;
 
 				elsif adequate_cash_in_account = '1' and adequate_cash_in_atm = '0' then
+					-- Led Control
+					if time_counter = N then
+						led_4to7_blink_counter := led_4to7_blink_counter + 1;
+					elsif time_counter > M and led_4to7_blink_counter < 6 then
+						led_out(7 downto 4) <= "1111";
+					else
+						led_out(7 downto 4) <= "0000";
+					end if;
+
+					if led_blink_counter > max_no_of_blinks then
+						-- Turning off all leds
+						led_out <= (others => '0');
+						-- Going to dummy state
+						system_state <= "111";
+					else
+						-- Turn off cash dispensing counter leds
+						led_out(7 downto 4) <= "0000";
+					end if;
 
 				end if;
 
 				-- Led Control
 				if time_counter = N then
-					led_out(2 downto 0) <= "111";
-					loading_cash_led_counter := loading_cash_led_counter + 1;
-				elsif time_counter < N then
-					led_out(2 downto 0) <= "000";
+					led_blink_counter := led_blink_counter + 1;
+				elsif time_counter > M then
+					led_out(3 downto 0) <= "1111";
+				else
+					led_out(3 downto 0) <= "0000";
 				end if;
+
 
 				system_state <= "111";
 			
@@ -531,9 +648,6 @@ begin
 					system_state <= "000";
 				end if;
 
-				-- Led Control
-				led_out <= (others => '0');
-			
 			end if;
 
 			-----------------  END OF STATES -----------------
@@ -544,7 +658,7 @@ begin
 				time_counter := time_counter + 1;
 			end if;
 
-
+			
 
 		end if;
 	end process;

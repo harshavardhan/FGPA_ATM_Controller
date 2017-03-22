@@ -15,6 +15,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+# Modified for use in CS254 Lab experiments
+
 #===============================================================================
 # USB interface
 #===============================================================================
@@ -52,20 +54,15 @@ NET "led_out<5>"      LOC="D4"   | IOSTANDARD=LVTTL;
 NET "led_out<6>"      LOC="P16"  | IOSTANDARD=LVTTL;
 NET "led_out<7>"      LOC="N12"  | IOSTANDARD=LVTTL;
 
-NET "sseg_out<0>"     LOC="N10"  | IOSTANDARD=LVTTL;   # segment a
-NET "sseg_out<1>"     LOC="T12"  | IOSTANDARD=LVTTL;   # segment b
-NET "sseg_out<2>"     LOC="R11"  | IOSTANDARD=LVTTL;   # segment c
-NET "sseg_out<3>"     LOC="M11"  | IOSTANDARD=LVTTL;   # segment d
-NET "sseg_out<4>"     LOC="U13"  | IOSTANDARD=LVTTL;   # segment e
-NET "sseg_out<5>"     LOC="U15"  | IOSTANDARD=LVTTL;   # segment f
-NET "sseg_out<6>"     LOC="U16"  | IOSTANDARD=LVTTL;   # segment g
-NET "sseg_out<7>"     LOC="M10"  | IOSTANDARD=LVTTL;   # decimal point
-
-NET "anode_out<0>"    LOC="U11"  | IOSTANDARD=LVTTL;
-NET "anode_out<1>"    LOC="R10"  | IOSTANDARD=LVTTL;
-NET "anode_out<2>"    LOC="U10"  | IOSTANDARD=LVTTL;
-NET "anode_out<3>"    LOC="R8"   | IOSTANDARD=LVTTL;
-
+# up push button for reset
+ NET "reset_button" LOC = "N4";  # Bank = 3, Pin name = IO_L1P, Sch name = BTNU 
+# left push button for start
+ NET "start_button" LOC = "P4";  # Bank = 3, Pin name = IO_L2P, Sch name = BTNL 
+# down push button for next_data_in
+ NET "next_data_in_button" LOC = "P3";  # Bank = 3, Pin name = IO_L2N, Sch name = BTND 
+# right push button for done
+ NET "done_button" LOC = "F6";  # Bank = 3, Pin name = IO_L55P_M3A13, Sch name = BTNR
+ 
 NET "sw_in<0>"        LOC="A10"  | IOSTANDARD=LVTTL;   # SW0
 NET "sw_in<1>"        LOC="D14"  | IOSTANDARD=LVTTL;   # SW1
 NET "sw_in<2>"        LOC="C14"  | IOSTANDARD=LVTTL;   # SW2
