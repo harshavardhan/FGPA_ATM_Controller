@@ -107,7 +107,11 @@ architecture structural of top_level is
 	signal n2000 	: STD_LOGIC_VECTOR(7 downto 0) := (others => '0');	
 	signal n1000 	: STD_LOGIC_VECTOR(7 downto 0) := (others => '0');	
 	signal n500 	: STD_LOGIC_VECTOR(7 downto 0) := (others => '0');	
-	signal n100 	: STD_LOGIC_VECTOR(7 downto 0) := (others => '0');	
+	signal n100 	: STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
+
+	-- 
+
+	signal adequate_cash_in_atm   	  : std_logic := '0';
 begin
 	-- CommFPGA module
 	fx2Read_out <= fx2Read;
@@ -177,24 +181,6 @@ begin
 			     start      => start_decrypt,
 			     plaintext  => de_output,
 			     done       => decryption_over);
-			
-
---	steer_enc_or_dec_output_to_display : process(clk, start_encrypt, start_decrypt)
-----		variable myline : line;
---	begin
---		if (clk'event AND clk = '1') then
---			if ((start_encrypt = '1') AND (start_decrypt = '0')) then
---				system_state <= '0';
---			elsif ((start_encrypt = '0') AND (start_decrypt = '1')) then
---				system_state <= '1';
---			end if;
---		end if;
-
---	--		write(myline, string'("system state = "));
---	--		write(myline, system_state);
---	--		writeline(output, myline);
---	end process;
-
 
 	-- TODO : implement else for all channel i/o
 	main_process : process(fx2Clk_in, debounced_reset)
@@ -206,7 +192,6 @@ begin
 		-- Encryption
 
 		-- Communicating wih backend
-		variable adequate_cash_in_atm   					: std_logic := '0';
 		variable adequate_cash_in_account 					: std_logic := '0';
 		variable user_is_admin 								: std_logic := '0';
 		variable response_from_host 						: std_logic_vector(63 downto 0) := (others => '0');
@@ -229,19 +214,19 @@ begin
 			-- Resetting the system state
 			system_state <= "000";
 
-			-- Resetting start_enc start_dec etc..
-			start_encrypt <= '0';
-			start_decrypt <= '0';
-
 			-- Resetting Taking Input variables
 			input_byte_count  := 0;
 			input_eight_bytes := (others => '0');
 			input_taken_already := '0';
 
 			-- Resetting Encryption variables
+			start_encrypt <= '0';
+			
+			-- Resetting Decryption variables
+			start_decrypt <= '0';
 
 			-- Communicating wih backend
-			adequate_cash_in_atm := '0';
+			adequate_cash_in_atm <= '0';
 			adequate_cash_in_account := '0';
 			user_is_admin := '0';
 			response_from_host := (others => '0');
@@ -264,16 +249,49 @@ begin
 		
 			--------------------- States described below ------------------------
 			-- Ready
-			if(system_state = "000") then 
+			if(system_state = "000") then
+				------------------------------ Initializing variables ----------------------
+				-- Resetting Taking Input variables
+				input_byte_count  := 0;
+				input_eight_bytes := (others => '0');
+				input_taken_already := '0';
+
+				-- Resetting Encryption variables
+				start_encrypt <= '0';
+				
+				-- Resetting Decryption variables
+				start_decrypt <= '0';
+
+				-- Communicating wih backend
+				adequate_cash_in_atm <= '0';
+				adequate_cash_in_account := '0';
+				user_is_admin := '0';
+				response_from_host := (others => '0');
+				check_for_host_response := (others => '0');
+
+				-- Dispensing Cash
+				dispensing_done_already := '0';
+				no_2000_notes_to_be_dispensed := 0;
+				no_1000_notes_to_be_dispensed := 0;
+				no_500_notes_to_be_dispensed 	:= 0;
+				no_100_notes_to_be_dispensed 	:= 0;
+				led_4to7_blink_counter 	:= 0;
+
+				-- Led Control
+				led_out <= (others => '0');
+				led_blink_counter := 0;
+
+				----------------------------- Initializing Complete ------------------------------------------
+
 				-- Start button pressed, ready -> taking input
 				if (debounced_start = '1') then
 					system_state <= "001";
 				end if;
 
-				-- Still not ready for communication
-				if chanAddr = "0000000" and f2hReady = '1' then
-					f2hData <= x"00";
-				end if; 
+				---- Still not ready for communication
+				--if chanAddr = "0000000" and f2hReady = '1' then
+				--	f2hData <= x"00";
+				--end if;
 
 				-- Led Control
 				led_out <= (others => '0');
@@ -315,10 +333,10 @@ begin
 					input_taken_already := '0';
 				end if;
 
-				-- Still not ready for communication
-				if chanAddr = "0000000" and f2hReady = '1' then
-					f2hData <= x"00";
-				end if;
+				---- Still not ready for communication
+				--if chanAddr = "0000000" and f2hReady = '1' then
+				--	f2hData <= x"00";
+				--end if;
 
 				-- Led Control
 				if time_counter > M then
@@ -336,10 +354,10 @@ begin
 					or input_eight_bytes(15 downto 8) > n500 
 					or input_eight_bytes(7 downto 0) > n100 then
 					-- Send 0x02 
-					adequate_cash_in_atm := '0';
+					adequate_cash_in_atm <= '0';
 				else
 					-- Send 0x01
-					adequate_cash_in_atm := '1';
+					adequate_cash_in_atm <= '1';
 				end if;
 				
 				-- Starting encryption
@@ -350,10 +368,10 @@ begin
 					system_state <= "011"; -- Goes into next step
 				end if;
 
-				-- Still not ready for communication
-				if chanAddr = "0000000" and f2hReady = '1' then
-					f2hData <= x"00";
-				end if;
+				---- Still not ready for communication
+				--if chanAddr = "0000000" and f2hReady = '1' then
+				--	f2hData <= x"00";
+				--end if;
 
 				-- Led Control
 				if time_counter > M then
@@ -365,33 +383,33 @@ begin
 			-- Communicating wih backend
 			elsif (system_state = "011") then
 
-				-- Ready for communication
-				if chanAddr = "0000000" and f2hReady = '1' then
-					-- Adequate cash in atm
-					if adequate_cash_in_atm = '1' then 
-						f2hData <= x"01";
-					elsif adequate_cash_in_atm = '0' then
-						f2hData <= x"02";
-					end if;
-
-				-- From channel 1 to 8 give out corresponding bytes of input_eight_bytes_encrypted
-				elsif chanAddr = "0000001" and f2hReady = '1' then
-					f2hData <= en_output(7 downto 0);
-				elsif chanAddr = "0000010" and f2hReady = '1' then
-					f2hData <= en_output(15 downto 8);
-				elsif chanAddr = "0000011" and f2hReady = '1' then
-					f2hData <= en_output(23 downto 16);
-				elsif chanAddr = "0000100" and f2hReady = '1' then
-					f2hData <= en_output(31 downto 24);
-				elsif chanAddr = "0000101" and f2hReady = '1' then
-					f2hData <= en_output(39 downto 32);
-				elsif chanAddr = "0000110" and f2hReady = '1' then
-					f2hData <= en_output(47 downto 40);
-				elsif chanAddr = "0000111" and f2hReady = '1' then
-					f2hData <= en_output(55 downto 48);
-				elsif chanAddr = "0001000" and f2hReady = '1' then
-					f2hData <= en_output(63 downto 56);
-				end if;
+				---- Ready for communication
+				--if chanAddr = "0000000" and f2hReady = '1' then
+				--	-- Adequate cash in atm
+				--	if adequate_cash_in_atm = '1' then 
+				--		f2hData <= x"01";
+				--	elsif adequate_cash_in_atm = '0' then
+				--		f2hData <= x"02";
+				--	end if;
+				-- This is done outside process
+				---- From channel 1 to 8 give out corresponding bytes of input_eight_bytes_encrypted
+				--elsif chanAddr = "0000001" and f2hReady = '1' then
+				--	f2hData <= en_output(7 downto 0);
+				--elsif chanAddr = "0000010" and f2hReady = '1' then
+				--	f2hData <= en_output(15 downto 8);
+				--elsif chanAddr = "0000011" and f2hReady = '1' then
+				--	f2hData <= en_output(23 downto 16);
+				--elsif chanAddr = "0000100" and f2hReady = '1' then
+				--	f2hData <= en_output(31 downto 24);
+				--elsif chanAddr = "0000101" and f2hReady = '1' then
+				--	f2hData <= en_output(39 downto 32);
+				--elsif chanAddr = "0000110" and f2hReady = '1' then
+				--	f2hData <= en_output(47 downto 40);
+				--elsif chanAddr = "0000111" and f2hReady = '1' then
+				--	f2hData <= en_output(55 downto 48);
+				--elsif chanAddr = "0001000" and f2hReady = '1' then
+				--	f2hData <= en_output(63 downto 56);
+				--end if;
 
 				-- In channel 9 
 				if chanAddr = "0001001" and h2fValid = '1' then
@@ -658,10 +676,30 @@ begin
 				time_counter := time_counter + 1;
 			end if;
 
-			
-
 		end if;
 	end process;
+
+
+	-- I/O
+	-- 
+	f2hData <= 
+			-- No communication code = 0x00
+			(others => '0') 
+				when (chanAddr = "0000000" and f2hReady = '1' and (system_state = "000" or system_state = "001" or system_state = "010"))
+			-- Adequate Cash in atm codes = 0x01 0x02 
+			else x"01" when (chanAddr = "0000000" and f2hReady = '1' and system_state = "011" and adequate_cash_in_atm = '1')
+			else x"02" when (chanAddr = "0000000" and f2hReady = '1' and system_state = "011" and adequate_cash_in_atm = '0')
+			-- Channel 1 - 8 
+			-- From channel 1 to 8 give out corresponding bytes of input_eight_bytes_encrypted
+			else en_output(7 downto 0)   when (chanAddr = "0000001" and f2hReady = '1' and system_state = "011")
+			else en_output(15 downto 8)  when (chanAddr = "0000010" and f2hReady = '1' and system_state = "011")
+			else en_output(23 downto 16) when (chanAddr = "0000011" and f2hReady = '1' and system_state = "011")
+			else en_output(31 downto 24) when (chanAddr = "0000100" and f2hReady = '1' and system_state = "011")
+			else en_output(39 downto 32) when (chanAddr = "0000101" and f2hReady = '1' and system_state = "011")
+			else en_output(47 downto 40) when (chanAddr = "0000110" and f2hReady = '1' and system_state = "011")
+			else en_output(55 downto 48) when (chanAddr = "0000111" and f2hReady = '1' and system_state = "011")
+			else en_output(63 downto 56) when (chanAddr = "0001000" and f2hReady = '1' and system_state = "011");
+
 
 	f2hValid <= '1';
 	h2fReady <= '1';
