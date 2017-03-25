@@ -1000,9 +1000,9 @@ int main(int argc, char *argv[]) {
 								fStatus = flReadChannel(handle,(uint8_t)i,length,readFromChannel_i,&error);
 								CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
 								printf("data in channel %u = %u \n", i ,*readFromChannel_i);
-
-								if(i <= 4) inpFromFrontEnd[0] += (*readFromChannel_i)*(1 << (i-1));
-								else inpFromFrontEnd[1] += (*readFromChannel_i)*(1 << (i-5));
+								uint32_t temp1 = 8*(i-1),temp2 = 8*(i-5);
+								if(i <= 4) inpFromFrontEnd[0] += (*readFromChannel_i)*(1 << temp1);
+								else inpFromFrontEnd[1] += (*readFromChannel_i)*(1 << temp2);
 							}
 							decrypt64(inpFromFrontEnd);
 							uint8_t num_100 = 0, num_500 = 0, num_1000 = 0,num_2000 = 0; 
@@ -1029,9 +1029,17 @@ int main(int argc, char *argv[]) {
 									if((inpFromFrontEnd[1] & (1 << (i-1))) != 0) userID += ((1 << (i-17)));
 								}
 							}
+							printf("unhashedPin %u\n",unhashedPin);
+							printf("userID %u\n",userID);
 							// unhashedPin = 51173; userID = 29;
 							uint16_t hashedPin = myHash(unhashedPin);
 							// hashedPin = 8828; userID = 12838;
+							printf("hashedPin %u\n",hashedPin);
+							printf("num_2000 %u\n",num_2000);
+							printf("num_1000 %u\n",num_1000);
+							printf("num_500 %u\n",num_500);
+							printf("num_100 %u\n",num_100);
+
 							int bal = -1; bool isAdmin = false; int inLineNum = -1;
 							uint8_t * statusOnChan9 = malloc(sizeof(uint8_t));
 							if(find(userID,hashedPin,&isAdmin,&bal,&inLineNum)) {
@@ -1039,10 +1047,15 @@ int main(int argc, char *argv[]) {
 								if(!isAdmin) {
 									int reqAmo = 0;
 									if(suffBal(bal,&reqAmo,num_100,num_500,num_1000,num_2000)) {
+										printf("bal %u\n",bal);
+										printf("req %u\n",reqAmo);
+										printf("Suff Balance \n");
 										* statusOnChan9 = 1;
 										flSleep(1000);
+										printf("data to channel %u = %u \n", 9 ,*statusOnChan9);
 										fStatus = flWriteChannel(handle,(uint8_t)9,length,statusOnChan9,&error);
 										CHECK_STATUS(fStatus, FLP_LIBERR,cleanup);
+										flSleep(1000);
 										uint32_t befEncSen[2];
 										for(int i=0;i<2;i++) befEncSen[i] = 0;
 										for(uint32_t i=0;i <= 31;i += 8) {
@@ -1050,8 +1063,12 @@ int main(int argc, char *argv[]) {
 											else if(i == 8) befEncSen[0] += ((1 << i)*((uint32_t)num_500));
 											else if(i == 16) befEncSen[0] += ((1 << i)*((uint32_t)num_1000));
 											else befEncSen[0] += ((1 << i)*((uint32_t)num_2000));
-										}	
+										}
+										printf("bef Enc1 %u\n",befEncSen[1]);
+										printf("bef Enc0 %u\n",befEncSen[0]);
 										encrypt64(befEncSen);
+										printf("af Enc1 %u\n",befEncSen[1]);
+										printf("af Enc0 %u\n",befEncSen[0]);
 										for(uint8_t i=10;i <= 13;i++) {
 											uint8_t tempSto = 0;
 											for(uint8_t j=0;j <= 7;j++) {
@@ -1062,6 +1079,7 @@ int main(int argc, char *argv[]) {
 											}
 											flSleep(1000);
 											fStatus = flWriteChannel(handle,(uint8_t)i,length,&tempSto,&error);
+											printf("data to channel %u = %u \n", i ,tempSto);
 											CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
 										}
 										
@@ -1075,6 +1093,7 @@ int main(int argc, char *argv[]) {
 											}
 											flSleep(1000);
 											fStatus = flWriteChannel(handle,(uint8_t)i,length,&tempSto,&error);
+											printf("data to channel %u = %u \n", i ,tempSto);
 											CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
 										}
 										/* update the balance in the global variable now and update the csv here itself */
@@ -1098,6 +1117,9 @@ int main(int argc, char *argv[]) {
 										}
 									}
 									else {
+										printf("bal %u\n",bal);
+										printf("req %u\n",reqAmo);
+										printf("Insuff Balance \n");
 										*statusOnChan9 = 2;
 										flSleep(1000);
 										fStatus = flWriteChannel(handle,(uint8_t)9,length,statusOnChan9,&error);

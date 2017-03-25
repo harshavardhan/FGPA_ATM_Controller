@@ -434,6 +434,7 @@ begin
 					-- User Not validated 
 						system_state <= "000"; -- Directly go into ready state
 					end if;
+
 				end if;
 
 				-- From channels 10 to 17 recieve the data from host
@@ -467,8 +468,7 @@ begin
 				
 				elsif chanAddr = "0010001" and h2fValid = '1' then
 					response_from_host(63 downto 56) := h2fData;
-					check_for_host_response(7) := '1';
-				
+					check_for_host_response(7) := '1';				
 				end if;
 
 				-- If all 8 bytes of response recieved from host
@@ -534,7 +534,8 @@ begin
 
 			-- Dispensing cash
 			elsif (system_state = "110") then
-				if adequate_cash_in_account = '1' and adequate_cash_in_atm = '1' then					 
+
+				if adequate_cash_in_account = '1' and adequate_cash_in_atm = '1' then
 					if dispensing_done_already = '0' then 
 						-- Updating the registers (cash removed)
 						n2000 <= std_logic_vector(unsigned(n2000) - unsigned(de_output(31 downto 24)));
@@ -594,7 +595,7 @@ begin
 
 					-- All the notes are dispensed (all required led blinks are finished)
 					else
-						if led_blink_counter > max_no_of_blinks then
+						if led_blink_counter = max_no_of_blinks then
 							-- Turning off all leds
 							led_out <= (others => '0');
 							-- Going to dummy state
@@ -606,6 +607,17 @@ begin
 					end if;
 
 				elsif adequate_cash_in_account = '0'then
+					-- Go to dummy state after sufficient number of blinks
+					if led_blink_counter = max_no_of_blinks then
+						-- Turning off all leds
+						led_out <= (others => '0');
+						-- Going to dummy state
+						system_state <= "111";
+					else
+						-- Turn off cash dispensing counter leds
+						led_out(7 downto 4) <= "0000";
+					end if;
+
 					-- Led Control
 					if time_counter = N then
 						led_4to7_blink_counter := led_4to7_blink_counter + 1;
@@ -615,7 +627,9 @@ begin
 						led_out(7 downto 4) <= "0000";
 					end if;
 
-					if led_blink_counter > max_no_of_blinks then
+				elsif adequate_cash_in_account = '1' and adequate_cash_in_atm = '0' then
+					-- Go to dummy state after sufficient number of blinks
+					if led_blink_counter = max_no_of_blinks then
 						-- Turning off all leds
 						led_out <= (others => '0');
 						-- Going to dummy state
@@ -625,7 +639,6 @@ begin
 						led_out(7 downto 4) <= "0000";
 					end if;
 
-				elsif adequate_cash_in_account = '1' and adequate_cash_in_atm = '0' then
 					-- Led Control
 					if time_counter = N then
 						led_4to7_blink_counter := led_4to7_blink_counter + 1;
@@ -635,29 +648,20 @@ begin
 						led_out(7 downto 4) <= "0000";
 					end if;
 
-					if led_blink_counter > max_no_of_blinks then
-						-- Turning off all leds
-						led_out <= (others => '0');
-						-- Going to dummy state
-						system_state <= "111";
-					else
-						-- Turn off cash dispensing counter leds
-						led_out(7 downto 4) <= "0000";
-					end if;
-
 				end if;
 
 				-- Led Control
-				if time_counter = N then
-					led_blink_counter := led_blink_counter + 1;
-				elsif time_counter > M then
-					led_out(3 downto 0) <= "1111";
-				else
+				if led_blink_counter /= max_no_of_blinks then
+					if time_counter = N then
+						led_blink_counter := led_blink_counter + 1;
+					elsif time_counter > M  then
+						led_out(3 downto 0) <= "1111";
+					else
+						led_out(3 downto 0) <= "0000";
+					end if;
+				else 
 					led_out(3 downto 0) <= "0000";
 				end if;
-
-
-				system_state <= "111";
 			
 			-- Dummy state 
 			elsif (system_state = "111") then
@@ -689,6 +693,8 @@ begin
 			-- Adequate Cash in atm codes = 0x01 0x02 
 			else x"01" when (chanAddr = "0000000" and f2hReady = '1' and system_state = "011" and adequate_cash_in_atm = '1')
 			else x"02" when (chanAddr = "0000000" and f2hReady = '1' and system_state = "011" and adequate_cash_in_atm = '0')
+			-- If communication is done, in all next states channel0 gives code = 0x"03"
+			else x"03" when (chanAddr = "0000000" and f2hReady = '1' and (system_state = "100" or system_state = "101" or system_state = "110" or system_state = "111"))
 			-- Channel 1 - 8 
 			-- From channel 1 to 8 give out corresponding bytes of input_eight_bytes_encrypted
 			else en_output(7 downto 0)   when (chanAddr = "0000001" and f2hReady = '1' and system_state = "011")
@@ -698,7 +704,8 @@ begin
 			else en_output(39 downto 32) when (chanAddr = "0000101" and f2hReady = '1' and system_state = "011")
 			else en_output(47 downto 40) when (chanAddr = "0000110" and f2hReady = '1' and system_state = "011")
 			else en_output(55 downto 48) when (chanAddr = "0000111" and f2hReady = '1' and system_state = "011")
-			else en_output(63 downto 56) when (chanAddr = "0001000" and f2hReady = '1' and system_state = "011");
+			else en_output(63 downto 56) when (chanAddr = "0001000" and f2hReady = '1' and system_state = "011")
+			else (others => '0');
 
 
 	f2hValid <= '1';

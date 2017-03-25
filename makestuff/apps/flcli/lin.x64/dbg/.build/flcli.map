@@ -246,7 +246,7 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
  *(.iplt)
  .iplt          0x0000000000000000        0x0 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
 
-.text           0x0000000000401ab0     0x4682
+.text           0x0000000000401ab0     0x4892
  *(.text.unlikely .text.*_unlikely .text.unlikely.*)
  *(.text.exit .text.exit.*)
  *(.text.startup .text.startup.*)
@@ -256,7 +256,7 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
                 0x0000000000401ab0                _start
  *fill*         0x0000000000401ada        0x6 
  .text          0x0000000000401ae0       0xbd /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o
- .text          0x0000000000401b9d     0x4256 lin.x64/dbg/.build/main.o
+ .text          0x0000000000401b9d     0x445d lin.x64/dbg/.build/main.o
                 0x0000000000401b9d                decrypt
                 0x0000000000401c7a                encrypt
                 0x0000000000401d57                decrypt64
@@ -266,58 +266,59 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
                 0x0000000000401ec5                find
                 0x0000000000401f72                suffBal
                 0x0000000000403638                main
- .text          0x0000000000405df3       0x91 lin.x64/dbg/.build/sig.o
-                0x0000000000405df3                sigIsRaised
-                0x0000000000405e10                sigRegisterHandler
- .text          0x0000000000405e84      0x23c /home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/libs/libdump/lin.x64/dbg/libdump.a(libdump.o)
-                0x0000000000405ef4                dump
-                0x0000000000406071                dumpSimple
- .text          0x00000000004060c0       0x72 /usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
-                0x00000000004060c0                __libc_csu_init
-                0x0000000000406130                __libc_csu_fini
+ .text          0x0000000000405ffa       0x91 lin.x64/dbg/.build/sig.o
+                0x0000000000405ffa                sigIsRaised
+                0x0000000000406017                sigRegisterHandler
+ .text          0x000000000040608b      0x23c /home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/libs/libdump/lin.x64/dbg/libdump.a(libdump.o)
+                0x00000000004060fb                dump
+                0x0000000000406278                dumpSimple
+ *fill*         0x00000000004062c7        0x9 
+ .text          0x00000000004062d0       0x72 /usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
+                0x00000000004062d0                __libc_csu_init
+                0x0000000000406340                __libc_csu_fini
  *(.gnu.warning)
 
-.fini           0x0000000000406134        0x9
+.fini           0x0000000000406344        0x9
  *(SORT(.fini))
- .fini          0x0000000000406134        0x4 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o
-                0x0000000000406134                _fini
- .fini          0x0000000000406138        0x5 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
-                0x000000000040613d                PROVIDE (__etext, .)
-                0x000000000040613d                PROVIDE (_etext, .)
-                0x000000000040613d                PROVIDE (etext, .)
+ .fini          0x0000000000406344        0x4 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o
+                0x0000000000406344                _fini
+ .fini          0x0000000000406348        0x5 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
+                0x000000000040634d                PROVIDE (__etext, .)
+                0x000000000040634d                PROVIDE (_etext, .)
+                0x000000000040634d                PROVIDE (etext, .)
 
-.rodata         0x0000000000406140      0xef4
+.rodata         0x0000000000406360      0xfc4
  *(.rodata .rodata.* .gnu.linkonce.r.*)
- .rodata        0x0000000000406140      0xe78 lin.x64/dbg/.build/main.o
- .rodata        0x0000000000406fb8       0x7c /home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/libs/libdump/lin.x64/dbg/libdump.a(libdump.o)
+ .rodata        0x0000000000406360      0xf48 lin.x64/dbg/.build/main.o
+ .rodata        0x00000000004072a8       0x7c /home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/libs/libdump/lin.x64/dbg/libdump.a(libdump.o)
 
 .rodata1
  *(.rodata1)
 
-.eh_frame_hdr   0x0000000000407034       0xe4
+.eh_frame_hdr   0x0000000000407324       0xe4
  *(.eh_frame_hdr)
- .eh_frame_hdr  0x0000000000407034       0xe4 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
+ .eh_frame_hdr  0x0000000000407324       0xe4 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
 
-.eh_frame       0x0000000000407118      0x3fc
+.eh_frame       0x0000000000407408      0x3fc
  *(.eh_frame)
- .eh_frame      0x0000000000407118       0x30 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
- .eh_frame      0x0000000000407148       0x40 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
- .eh_frame      0x0000000000407188      0x228 lin.x64/dbg/.build/main.o
+ .eh_frame      0x0000000000407408       0x30 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
+ .eh_frame      0x0000000000407438       0x40 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
+ .eh_frame      0x0000000000407478      0x228 lin.x64/dbg/.build/main.o
                                         0x220 (size before relaxing)
- .eh_frame      0x00000000004073b0       0x60 lin.x64/dbg/.build/sig.o
+ .eh_frame      0x00000000004076a0       0x60 lin.x64/dbg/.build/sig.o
                                          0x78 (size before relaxing)
- .eh_frame      0x0000000000407410       0xa0 /home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/libs/libdump/lin.x64/dbg/libdump.a(libdump.o)
+ .eh_frame      0x0000000000407700       0xa0 /home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/libs/libdump/lin.x64/dbg/libdump.a(libdump.o)
                                          0xb8 (size before relaxing)
- .eh_frame      0x00000000004074b0       0x60 /usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
+ .eh_frame      0x00000000004077a0       0x60 /usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
                                          0x78 (size before relaxing)
- .eh_frame      0x0000000000407510        0x4 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtend.o
+ .eh_frame      0x0000000000407800        0x4 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtend.o
 
 .gcc_except_table
  *(.gcc_except_table .gcc_except_table.*)
 
 .exception_ranges
  *(.exception_ranges .exception_ranges*)
-                0x0000000000407514                . = (ALIGN (0x200000) - ((0x200000 - .) & 0x1fffff))
+                0x0000000000407804                . = (ALIGN (0x200000) - ((0x200000 - .) & 0x1fffff))
                 0x0000000000607dac                . = DATA_SEGMENT_ALIGN (0x200000, 0x1000)
 
 .eh_frame
@@ -501,11 +502,11 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x0000000000000000     0x2066
+.debug_info     0x0000000000000000     0x2086
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x0000000000000000     0x1c73 lin.x64/dbg/.build/main.o
- .debug_info    0x0000000000001c73      0x1b3 lin.x64/dbg/.build/sig.o
- .debug_info    0x0000000000001e26      0x240 /home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/libs/libdump/lin.x64/dbg/libdump.a(libdump.o)
+ .debug_info    0x0000000000000000     0x1c93 lin.x64/dbg/.build/main.o
+ .debug_info    0x0000000000001c93      0x1b3 lin.x64/dbg/.build/sig.o
+ .debug_info    0x0000000000001e46      0x240 /home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/libs/libdump/lin.x64/dbg/libdump.a(libdump.o)
 
 .debug_abbrev   0x0000000000000000      0x43e
  *(.debug_abbrev)
@@ -513,22 +514,22 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
  .debug_abbrev  0x0000000000000269       0xfe lin.x64/dbg/.build/sig.o
  .debug_abbrev  0x0000000000000367       0xd7 /home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/libs/libdump/lin.x64/dbg/libdump.a(libdump.o)
 
-.debug_line     0x0000000000000000      0xdb3
+.debug_line     0x0000000000000000      0xdde
  *(.debug_line .debug_line.* .debug_line_end)
- .debug_line    0x0000000000000000      0xbd9 lin.x64/dbg/.build/main.o
- .debug_line    0x0000000000000bd9       0xa2 lin.x64/dbg/.build/sig.o
- .debug_line    0x0000000000000c7b      0x138 /home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/libs/libdump/lin.x64/dbg/libdump.a(libdump.o)
+ .debug_line    0x0000000000000000      0xc04 lin.x64/dbg/.build/main.o
+ .debug_line    0x0000000000000c04       0xa2 lin.x64/dbg/.build/sig.o
+ .debug_line    0x0000000000000ca6      0x138 /home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/libs/libdump/lin.x64/dbg/libdump.a(libdump.o)
 
 .debug_frame
  *(.debug_frame)
 
-.debug_str      0x0000000000000000      0xd50
+.debug_str      0x0000000000000000      0xd5c
  *(.debug_str)
- .debug_str     0x0000000000000000      0xb53 lin.x64/dbg/.build/main.o
-                                        0xbe2 (size before relaxing)
- .debug_str     0x0000000000000b53       0xea lin.x64/dbg/.build/sig.o
+ .debug_str     0x0000000000000000      0xb5f lin.x64/dbg/.build/main.o
+                                        0xbee (size before relaxing)
+ .debug_str     0x0000000000000b5f       0xea lin.x64/dbg/.build/sig.o
                                         0x1e0 (size before relaxing)
- .debug_str     0x0000000000000c3d      0x113 /home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/libs/libdump/lin.x64/dbg/libdump.a(libdump.o)
+ .debug_str     0x0000000000000c49      0x113 /home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/libs/libdump/lin.x64/dbg/libdump.a(libdump.o)
                                         0x1c5 (size before relaxing)
 
 .debug_loc

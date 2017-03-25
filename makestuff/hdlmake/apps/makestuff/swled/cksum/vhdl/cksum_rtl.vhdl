@@ -109,6 +109,7 @@ begin
 
 				if round = 0 then
 					done <= '0';
+					sum := (others => '0');
 					v0 := plaintext(31 downto 0);
 					v1 := plaintext(63 downto 32);
 				end if;
@@ -162,6 +163,7 @@ begin
 				
 				if round = 0 then
 					done <= '0';
+					sum := x"C6EF3720";
 					v0 := ciphertext(31 downto 0);
 					v1 := ciphertext(63 downto 32);
 				end if;
