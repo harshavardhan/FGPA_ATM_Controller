@@ -68,6 +68,6 @@ entity decrypter is
 		 reset      : in  STD_LOGIC;
 		 ciphertext : in  STD_LOGIC_VECTOR(63 downto 0);
 		 start      : in  STD_LOGIC;
-		 plaintext  : out STD_LOGIC_VECTOR(63 downto 0);
+		 plaintext  : out STD_LOGIC_VECTOR(31 downto 0);
 		 done       : out STD_LOGIC);
 end decrypter;

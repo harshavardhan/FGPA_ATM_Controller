@@ -62,7 +62,7 @@ architecture structural of top_level is
 			 reset      : in  STD_LOGIC;
 			 ciphertext : in  STD_LOGIC_VECTOR(63 downto 0);
 			 start      : in  STD_LOGIC;
-			 plaintext  : out STD_LOGIC_VECTOR(63 downto 0);
+			 plaintext  : out STD_LOGIC_VECTOR(31 downto 0);
 			 done       : out STD_LOGIC);
 	end component;
 
@@ -97,7 +97,7 @@ architecture structural of top_level is
 	signal start_decrypt 				  : STD_LOGIC                     := '0';
 	signal de_input			  			  : STD_LOGIC_VECTOR(63 downto 0) := (others => '0');
 	signal decryption_over                : STD_LOGIC                     := '1';
-	signal de_output                  	  : STD_LOGIC_VECTOR(63 downto 0) := (others => '0');
+	signal de_output                  	  : STD_LOGIC_VECTOR(31 downto 0) := (others => '0');
 	
 	signal debounced_next_data  		  : STD_LOGIC                     := '0';
 	signal debounced_reset                : STD_LOGIC                     := '0';

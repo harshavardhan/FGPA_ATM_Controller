@@ -174,8 +174,7 @@ begin
 					sum := sum - delta;
 					round <= round + 1;
 				elsif round = 32 then
-					plaintext(63 downto 32) <= v1;
-					plaintext(31 downto 0)  <= v0;
+					plaintext <= v0;
 					round <= 33;
 					done <= '1';
 				end if;

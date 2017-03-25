@@ -300,7 +300,7 @@ Unit <encrypter> synthesized.
 
 Synthesizing Unit <decrypter>.
     Related source file is "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/makestuff/hdlmake/apps/makestuff/swled/templates/harness.vhdl".
-    Found 64-bit register for signal <plaintext>.
+    Found 32-bit register for signal <plaintext>.
     Found 6-bit register for signal <round>.
     Found 32-bit register for signal <sum>.
     Found 1-bit register for signal <done>.
@@ -313,13 +313,13 @@ Synthesizing Unit <decrypter>.
     Found 32-bit adder for signal <GND_24_o_sum[31]_add_12_OUT> created at line 173.
     Found 32-bit adder for signal <GND_24_o_GND_24_o_add_14_OUT> created at line 173.
     Found 6-bit adder for signal <round[5]_GND_24_o_add_18_OUT> created at line 175.
-    Found 32-bit subtractor for signal <n0108> created at line 0.
+    Found 32-bit subtractor for signal <n0107> created at line 0.
     Found 32-bit subtractor for signal <GND_24_o_GND_24_o_sub_17_OUT<31:0>> created at line 173.
     Found 32-bit subtractor for signal <GND_24_o_GND_24_o_sub_18_OUT<31:0>> created at line 174.
     Found 6-bit comparator greater for signal <round[5]_PWR_15_o_LessThan_5_o> created at line 171
     Summary:
 	inferred  10 Adder/Subtractor(s).
-	inferred 167 D-type flip-flop(s).
+	inferred 135 D-type flip-flop(s).
 	inferred   1 Comparator(s).
 	inferred  10 Multiplexer(s).
 Unit <decrypter> synthesized.
@@ -345,10 +345,10 @@ Macro Statistics
  20-bit register                                       : 4
  27-bit register                                       : 1
  3-bit register                                        : 1
- 32-bit register                                       : 6
+ 32-bit register                                       : 7
  4-bit register                                        : 2
  6-bit register                                        : 2
- 64-bit register                                       : 6
+ 64-bit register                                       : 5
  7-bit register                                        : 1
  8-bit register                                        : 10
 # Comparators                                          : 10
@@ -380,38 +380,6 @@ Macro Statistics
 *                       Advanced HDL Synthesis                          *
 =========================================================================
 
-WARNING:Xst:2677 - Node <plaintext_32> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_33> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_34> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_35> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_36> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_37> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_38> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_39> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_40> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_41> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_42> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_43> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_44> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_45> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_46> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_47> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_48> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_49> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_50> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_51> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_52> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_53> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_54> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_55> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_56> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_57> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_58> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_59> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_60> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_61> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_62> of sequential type is unconnected in block <decrypt>.
-WARNING:Xst:2677 - Node <plaintext_63> of sequential type is unconnected in block <decrypt>.
 
 Synthesizing (advanced) Unit <debouncer>.
 The following registers are absorbed into counter <count>: 1 register on signal <count>.
@@ -445,8 +413,8 @@ Macro Statistics
  3-bit up counter                                      : 1
 # Accumulators                                         : 4
  8-bit down loadable accumulator                       : 4
-# Registers                                            : 687
- Flip-Flops                                            : 687
+# Registers                                            : 655
+ Flip-Flops                                            : 655
 # Comparators                                          : 10
  27-bit comparator greater                             : 1
  3-bit comparator greater                              : 2
@@ -508,38 +476,6 @@ Optimizing unit <debouncer> ...
 Optimizing unit <encrypter> ...
 
 Optimizing unit <decrypter> ...
-WARNING:Xst:2677 - Node <decrypt/plaintext_63> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_62> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_61> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_60> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_59> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_58> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_57> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_56> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_55> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_54> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_53> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_52> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_51> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_50> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_49> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_48> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_47> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_46> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_45> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_44> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_43> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_42> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_41> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_40> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_39> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_38> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_37> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_36> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_35> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_34> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_33> of sequential type is unconnected in block <top_level>.
-WARNING:Xst:2677 - Node <decrypt/plaintext_32> of sequential type is unconnected in block <top_level>.
 
 Mapping all equations...
 Building and optimizing final netlist ...
@@ -833,14 +769,14 @@ fx2Clk_in      |   11.413|         |         |         |
 
 
 Total REAL time to Xst completion: 10.00 secs
-Total CPU time to Xst completion: 10.10 secs
+Total CPU time to Xst completion: 10.06 secs
  
 --> 
 
 
-Total memory usage is 406656 kilobytes
+Total memory usage is 406660 kilobytes
 
 Number of errors   :    0 (   0 filtered)
-Number of warnings :   64 (   0 filtered)
+Number of warnings :    0 (   0 filtered)
 Number of infos    :    0 (   0 filtered)
 
