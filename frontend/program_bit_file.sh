@@ -1,9 +1,9 @@
- # Listing connected devices
- djtgcfg enum
+# Listing connected devices
+djtgcfg enum
 
- # Initializing Atlys
- djtgcfg init -d Atlys
+# Initializing Atlys
+djtgcfg init -d Atlys
 
- # Programming Atlys
-  djtgcfg prog -d Atlys -i 0 -f top_level.bit
+# Programming Atlys
+djtgcfg prog -d Atlys -i 0 -f top_level.bit
   

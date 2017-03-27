@@ -208,6 +208,7 @@ begin
 		-- Led Control
 		variable time_counter 								: integer range 0 to N := 0;
 		variable led_blink_counter							: integer range 0 to max_no_of_blinks := 0;
+		variable time_gap 									: std_logic := '0';
 
 	begin
 		if debounced_reset = '1' then
@@ -244,6 +245,7 @@ begin
 			led_out <= (others => '0');
 			time_counter := 0;
 			led_blink_counter := 0;
+			time_gap := '0';
 
 		elsif (fx2Clk_in'event AND fx2Clk_in = '1') then
 		
@@ -280,6 +282,7 @@ begin
 				-- Led Control
 				led_out <= (others => '0');
 				led_blink_counter := 0;
+				time_gap := '0';
 
 				----------------------------- Initializing Complete ------------------------------------------
 
@@ -555,9 +558,12 @@ begin
 					-- Dispensing cash in terms of blinks of corresponding leds
 					-- 2000 note blinks
 					if no_2000_notes_to_be_dispensed > 0 then
-						if time_counter = N then
+						if time_counter = N and time_gap = '0' then
 							no_2000_notes_to_be_dispensed := no_2000_notes_to_be_dispensed - 1;
-						elsif time_counter > M then
+							time_gap                       := '1';
+						elsif time_counter = N and time_gap = '1' then
+							time_gap                       := '0';
+						elsif time_counter > M and time_gap = '0' then
 							led_out(7 downto 4) <= "0001";
 						else
 							led_out(7 downto 4) <= "0000";
@@ -565,9 +571,12 @@ begin
 
 					-- 1000 note blinks
 					elsif no_1000_notes_to_be_dispensed > 0 then
-						if time_counter = N then
+						if time_counter = N and time_gap = '0'then
 							no_1000_notes_to_be_dispensed := no_1000_notes_to_be_dispensed - 1;
-						elsif time_counter > M then
+							time_gap                       := '1';
+						elsif time_counter = N and time_gap = '1' then
+							time_gap                       := '0';
+						elsif time_counter > M and time_gap = '0' then
 							led_out(7 downto 4) <= "0010";
 						else
 							led_out(7 downto 4) <= "0000";
@@ -575,9 +584,12 @@ begin
 
 					-- 500 note blinks
 					elsif no_500_notes_to_be_dispensed > 0 then
-						if time_counter = N then
+						if time_counter = N and time_gap = '0' then
 							no_500_notes_to_be_dispensed := no_500_notes_to_be_dispensed - 1;
-						elsif time_counter > M then
+							time_gap                       := '1';
+						elsif time_counter = N and time_gap = '1' then
+							time_gap                       := '0';
+						elsif time_counter > M and time_gap = '0' then
 							led_out(7 downto 4) <= "0100";
 						else
 							led_out(7 downto 4) <= "0000";
@@ -585,9 +597,12 @@ begin
 
 					-- 100 note blinks
 					elsif no_100_notes_to_be_dispensed > 0 then
-						if time_counter = N then
+						if time_counter = N and time_gap = '0' then
 							no_100_notes_to_be_dispensed := no_100_notes_to_be_dispensed - 1;
-						elsif time_counter > M then
+							time_gap                       := '1';
+						elsif time_counter = N and time_gap = '1' then
+							time_gap                       := '0';
+						elsif time_counter > M and time_gap = '0' then
 							led_out(7 downto 4) <= "1000";
 						else
 							led_out(7 downto 4) <= "0000";

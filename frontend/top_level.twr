@@ -29,19 +29,19 @@ INFO:Timing:3339 - The clock-to-out numbers in this timing report are based on
 Timing constraint: TS_clk = PERIOD TIMEGRP "fx2Clk_in" 20 ns HIGH 50%;
 For more information, see Period Analysis in the Timing Closure User Guide (UG612).
 
- 215349905 paths analyzed, 4357 endpoints analyzed, 0 failing endpoints
+ 215350756 paths analyzed, 4362 endpoints analyzed, 0 failing endpoints
  0 timing errors detected. (0 setup errors, 0 hold errors, 0 component switching limit errors)
- Minimum period is  14.250ns.
+ Minimum period is  13.046ns.
 --------------------------------------------------------------------------------
 
-Paths for end point encrypt/v1_31 (SLICE_X25Y95.D5), 24539975 paths
+Paths for end point encrypt/v1_26 (SLICE_X24Y75.C3), 12405991 paths
 --------------------------------------------------------------------------------
-Slack (setup path):     5.750ns (requirement - (data path - clock path skew + uncertainty))
+Slack (setup path):     6.954ns (requirement - (data path - clock path skew + uncertainty))
   Source:               encrypt/round_2 (FF)
-  Destination:          encrypt/v1_31 (FF)
+  Destination:          encrypt/v1_26 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      14.209ns (Levels of Logic = 13)
-  Clock Path Skew:      -0.006ns (0.298 - 0.304)
+  Data Path Delay:      13.003ns (Levels of Logic = 12)
+  Clock Path Skew:      -0.008ns (0.293 - 0.301)
   Source Clock:         fx2Clk_in_BUFGP rising at 0.000ns
   Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -52,218 +52,65 @@ Slack (setup path):     5.750ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_31
+  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_26
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X17Y86.AMUX    Tshcko                0.518   encrypt/round<4>
+    SLICE_X10Y71.AMUX    Tshcko                0.576   encrypt/round<5>
                                                        encrypt/round_2
-    SLICE_X23Y86.B2      net (fanout=10)       1.896   encrypt/round<2>
-    SLICE_X23Y86.B       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
+    SLICE_X15Y66.D1      net (fanout=10)       1.241   encrypt/round<2>
+    SLICE_X15Y66.D       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
                                                        encrypt/GND_23_o_round[5]_equal_1_o<5>11_3
-    SLICE_X22Y85.B3      net (fanout=13)       0.662   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-    SLICE_X22Y85.COUT    Topcyb                0.483   encrypt/Madd_n0098_cy<7>
-                                                       encrypt/Madd_n0098_lut<5>
-                                                       encrypt/Madd_n0098_cy<7>
-    SLICE_X22Y86.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<7>
-    SLICE_X22Y86.CMUX    Tcinc                 0.279   encrypt/Madd_n0098_cy<11>
-                                                       encrypt/Madd_n0098_cy<11>
-    SLICE_X24Y86.C1      net (fanout=4)        1.454   encrypt/n0098<10>
-    SLICE_X24Y86.COUT    Topcyc                0.325   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<10>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-    SLICE_X24Y87.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-    SLICE_X24Y87.COUT    Tbyp                  0.091   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X24Y88.CIN     net (fanout=1)        0.082   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X24Y88.COUT    Tbyp                  0.091   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X24Y89.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X24Y89.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<23>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<23>
-    SLICE_X18Y91.B1      net (fanout=1)        2.030   encrypt/v1[31]_sum[31]_add_7_OUT<21>
-    SLICE_X18Y91.COUT    Topcyb                0.483   encrypt/Madd_n0107_cy<23>
-                                                       encrypt/Madd_n0107_lut<21>
-                                                       encrypt/Madd_n0107_cy<23>
-    SLICE_X18Y92.CIN     net (fanout=1)        0.003   encrypt/Madd_n0107_cy<23>
-    SLICE_X18Y92.BMUX    Tcinb                 0.310   encrypt/Madd_n0107_cy<27>
-                                                       encrypt/Madd_n0107_cy<27>
-    SLICE_X20Y91.B3      net (fanout=5)        0.686   encrypt/n0107<25>
-    SLICE_X20Y91.CMUX    Topbc                 0.613   encrypt/Madd_v0[31]_sum[31]_add_13_OUT_cy<27>
-                                                       encrypt/Madd_v0[31]_sum[31]_add_13_OUT_lut<25>
-                                                       encrypt/Madd_v0[31]_sum[31]_add_13_OUT_cy<27>
-    SLICE_X28Y95.C5      net (fanout=1)        1.926   encrypt/v0[31]_sum[31]_add_13_OUT<26>
-    SLICE_X28Y95.COUT    Topcyc                0.325   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<26>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X28Y96.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X28Y96.DMUX    Tcind                 0.289   encrypt/v1[31]_v0[31]_add_17_OUT<31>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_xor<31>
-    SLICE_X25Y95.D5      net (fanout=1)        0.742   encrypt/v1[31]_v0[31]_add_17_OUT<31>
-    SLICE_X25Y95.CLK     Tas                   0.373   encrypt/v1<31>
-                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT251
-                                                       encrypt/v1_31
-    -------------------------------------------------  ---------------------------
-    Total                                     14.209ns (4.716ns logic, 9.493ns route)
-                                                       (33.2% logic, 66.8% route)
-
---------------------------------------------------------------------------------
-Slack (setup path):     5.767ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               encrypt/round_2 (FF)
-  Destination:          encrypt/v1_31 (FF)
-  Requirement:          20.000ns
-  Data Path Delay:      14.192ns (Levels of Logic = 13)
-  Clock Path Skew:      -0.006ns (0.298 - 0.304)
-  Source Clock:         fx2Clk_in_BUFGP rising at 0.000ns
-  Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
-  Clock Uncertainty:    0.035ns
-
-  Clock Uncertainty:          0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
-    Total System Jitter (TSJ):  0.070ns
-    Total Input Jitter (TIJ):   0.000ns
-    Discrete Jitter (DJ):       0.000ns
-    Phase Error (PE):           0.000ns
-
-  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_31
-    Location             Delay type         Delay(ns)  Physical Resource
-                                                       Logical Resource(s)
-    -------------------------------------------------  -------------------
-    SLICE_X17Y86.AMUX    Tshcko                0.518   encrypt/round<4>
-                                                       encrypt/round_2
-    SLICE_X23Y86.B2      net (fanout=10)       1.896   encrypt/round<2>
-    SLICE_X23Y86.B       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-                                                       encrypt/GND_23_o_round[5]_equal_1_o<5>11_3
-    SLICE_X22Y85.D2      net (fanout=13)       0.816   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-    SLICE_X22Y85.COUT    Topcyd                0.312   encrypt/Madd_n0098_cy<7>
-                                                       encrypt/Madd_n0098_lut<7>
-                                                       encrypt/Madd_n0098_cy<7>
-    SLICE_X22Y86.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<7>
-    SLICE_X22Y86.CMUX    Tcinc                 0.279   encrypt/Madd_n0098_cy<11>
-                                                       encrypt/Madd_n0098_cy<11>
-    SLICE_X24Y86.C1      net (fanout=4)        1.454   encrypt/n0098<10>
-    SLICE_X24Y86.COUT    Topcyc                0.325   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<10>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-    SLICE_X24Y87.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-    SLICE_X24Y87.COUT    Tbyp                  0.091   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X24Y88.CIN     net (fanout=1)        0.082   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X24Y88.COUT    Tbyp                  0.091   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X24Y89.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X24Y89.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<23>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<23>
-    SLICE_X18Y91.B1      net (fanout=1)        2.030   encrypt/v1[31]_sum[31]_add_7_OUT<21>
-    SLICE_X18Y91.COUT    Topcyb                0.483   encrypt/Madd_n0107_cy<23>
-                                                       encrypt/Madd_n0107_lut<21>
-                                                       encrypt/Madd_n0107_cy<23>
-    SLICE_X18Y92.CIN     net (fanout=1)        0.003   encrypt/Madd_n0107_cy<23>
-    SLICE_X18Y92.BMUX    Tcinb                 0.310   encrypt/Madd_n0107_cy<27>
-                                                       encrypt/Madd_n0107_cy<27>
-    SLICE_X20Y91.B3      net (fanout=5)        0.686   encrypt/n0107<25>
-    SLICE_X20Y91.CMUX    Topbc                 0.613   encrypt/Madd_v0[31]_sum[31]_add_13_OUT_cy<27>
-                                                       encrypt/Madd_v0[31]_sum[31]_add_13_OUT_lut<25>
-                                                       encrypt/Madd_v0[31]_sum[31]_add_13_OUT_cy<27>
-    SLICE_X28Y95.C5      net (fanout=1)        1.926   encrypt/v0[31]_sum[31]_add_13_OUT<26>
-    SLICE_X28Y95.COUT    Topcyc                0.325   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<26>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X28Y96.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X28Y96.DMUX    Tcind                 0.289   encrypt/v1[31]_v0[31]_add_17_OUT<31>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_xor<31>
-    SLICE_X25Y95.D5      net (fanout=1)        0.742   encrypt/v1[31]_v0[31]_add_17_OUT<31>
-    SLICE_X25Y95.CLK     Tas                   0.373   encrypt/v1<31>
-                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT251
-                                                       encrypt/v1_31
-    -------------------------------------------------  ---------------------------
-    Total                                     14.192ns (4.545ns logic, 9.647ns route)
-                                                       (32.0% logic, 68.0% route)
-
---------------------------------------------------------------------------------
-Slack (setup path):     5.806ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               encrypt/round_2 (FF)
-  Destination:          encrypt/v1_31 (FF)
-  Requirement:          20.000ns
-  Data Path Delay:      14.153ns (Levels of Logic = 14)
-  Clock Path Skew:      -0.006ns (0.298 - 0.304)
-  Source Clock:         fx2Clk_in_BUFGP rising at 0.000ns
-  Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
-  Clock Uncertainty:    0.035ns
-
-  Clock Uncertainty:          0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
-    Total System Jitter (TSJ):  0.070ns
-    Total Input Jitter (TIJ):   0.000ns
-    Discrete Jitter (DJ):       0.000ns
-    Phase Error (PE):           0.000ns
-
-  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_31
-    Location             Delay type         Delay(ns)  Physical Resource
-                                                       Logical Resource(s)
-    -------------------------------------------------  -------------------
-    SLICE_X17Y86.AMUX    Tshcko                0.518   encrypt/round<4>
-                                                       encrypt/round_2
-    SLICE_X23Y86.B2      net (fanout=10)       1.896   encrypt/round<2>
-    SLICE_X23Y86.B       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-                                                       encrypt/GND_23_o_round[5]_equal_1_o<5>11_3
-    SLICE_X22Y84.A5      net (fanout=13)       0.519   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-    SLICE_X22Y84.COUT    Topcya                0.474   encrypt/Madd_n0098_cy<3>
-                                                       encrypt/Madd_n0098_lut<0>
+    SLICE_X14Y62.B3      net (fanout=13)       0.918   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
+    SLICE_X14Y62.COUT    Topcyb                0.483   encrypt/Madd_n0098_cy<3>
+                                                       encrypt/Mmux_n00931211
                                                        encrypt/Madd_n0098_cy<3>
-    SLICE_X22Y85.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<3>
-    SLICE_X22Y85.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<7>
+    SLICE_X14Y63.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<3>
+    SLICE_X14Y63.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<7>
                                                        encrypt/Madd_n0098_cy<7>
-    SLICE_X22Y86.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<7>
-    SLICE_X22Y86.CMUX    Tcinc                 0.279   encrypt/Madd_n0098_cy<11>
+    SLICE_X14Y64.CIN     net (fanout=1)        0.135   encrypt/Madd_n0098_cy<7>
+    SLICE_X14Y64.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<11>
                                                        encrypt/Madd_n0098_cy<11>
-    SLICE_X24Y86.C1      net (fanout=4)        1.454   encrypt/n0098<10>
-    SLICE_X24Y86.COUT    Topcyc                0.325   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<10>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-    SLICE_X24Y87.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-    SLICE_X24Y87.COUT    Tbyp                  0.091   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+    SLICE_X14Y65.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<11>
+    SLICE_X14Y65.DMUX    Tcind                 0.320   encrypt/Madd_n0098_cy<15>
+                                                       encrypt/Madd_n0098_cy<15>
+    SLICE_X16Y66.D1      net (fanout=4)        1.187   encrypt/n0098<15>
+    SLICE_X16Y66.COUT    Topcyd                0.290   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<15>
                                                        encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X24Y88.CIN     net (fanout=1)        0.082   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X24Y88.COUT    Tbyp                  0.091   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
+    SLICE_X16Y67.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+    SLICE_X16Y67.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
                                                        encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X24Y89.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X24Y89.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<23>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<23>
-    SLICE_X18Y91.B1      net (fanout=1)        2.030   encrypt/v1[31]_sum[31]_add_7_OUT<21>
-    SLICE_X18Y91.COUT    Topcyb                0.483   encrypt/Madd_n0107_cy<23>
-                                                       encrypt/Madd_n0107_lut<21>
-                                                       encrypt/Madd_n0107_cy<23>
-    SLICE_X18Y92.CIN     net (fanout=1)        0.003   encrypt/Madd_n0107_cy<23>
-    SLICE_X18Y92.BMUX    Tcinb                 0.310   encrypt/Madd_n0107_cy<27>
-                                                       encrypt/Madd_n0107_cy<27>
-    SLICE_X20Y91.B3      net (fanout=5)        0.686   encrypt/n0107<25>
-    SLICE_X20Y91.CMUX    Topbc                 0.613   encrypt/Madd_v0[31]_sum[31]_add_13_OUT_cy<27>
-                                                       encrypt/Madd_v0[31]_sum[31]_add_13_OUT_lut<25>
-                                                       encrypt/Madd_v0[31]_sum[31]_add_13_OUT_cy<27>
-    SLICE_X28Y95.C5      net (fanout=1)        1.926   encrypt/v0[31]_sum[31]_add_13_OUT<26>
-    SLICE_X28Y95.COUT    Topcyc                0.325   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<26>
+    SLICE_X18Y71.B3      net (fanout=1)        1.103   encrypt/v1[31]_sum[31]_add_7_OUT<17>
+    SLICE_X18Y71.CMUX    Topbc                 0.650   encrypt/Madd_n0107_cy<19>
+                                                       encrypt/Madd_n0107_lut<17>
+                                                       encrypt/Madd_n0107_cy<19>
+    SLICE_X20Y77.C3      net (fanout=5)        1.547   encrypt/n0107<18>
+    SLICE_X20Y77.COUT    Topcyc                0.325   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_lut<21>_INV_0
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+    SLICE_X20Y78.CIN     net (fanout=1)        0.003   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+    SLICE_X20Y78.BMUX    Tcinb                 0.277   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
+    SLICE_X24Y72.B2      net (fanout=1)        1.445   encrypt/v0[31]_GND_23_o_add_12_OUT<25>
+    SLICE_X24Y72.CMUX    Topbc                 0.613   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
+                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<25>
                                                        encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X28Y96.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X28Y96.DMUX    Tcind                 0.289   encrypt/v1[31]_v0[31]_add_17_OUT<31>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_xor<31>
-    SLICE_X25Y95.D5      net (fanout=1)        0.742   encrypt/v1[31]_v0[31]_add_17_OUT<31>
-    SLICE_X25Y95.CLK     Tas                   0.373   encrypt/v1<31>
-                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT251
-                                                       encrypt/v1_31
+    SLICE_X24Y75.C3      net (fanout=1)        0.810   encrypt/v1[31]_v0[31]_add_17_OUT<26>
+    SLICE_X24Y75.CLK     Tas                   0.349   encrypt/v1<27>
+                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT191
+                                                       encrypt/v1_26
     -------------------------------------------------  ---------------------------
-    Total                                     14.153ns (4.800ns logic, 9.353ns route)
-                                                       (33.9% logic, 66.1% route)
+    Total                                     13.003ns (4.605ns logic, 8.398ns route)
+                                                       (35.4% logic, 64.6% route)
 
 --------------------------------------------------------------------------------
-
-Paths for end point encrypt/v1_30 (SLICE_X25Y95.C5), 21680316 paths
---------------------------------------------------------------------------------
-Slack (setup path):     5.783ns (requirement - (data path - clock path skew + uncertainty))
+Slack (setup path):     6.968ns (requirement - (data path - clock path skew + uncertainty))
   Source:               encrypt/round_2 (FF)
-  Destination:          encrypt/v1_30 (FF)
+  Destination:          encrypt/v1_26 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      14.176ns (Levels of Logic = 13)
-  Clock Path Skew:      -0.006ns (0.298 - 0.304)
+  Data Path Delay:      12.989ns (Levels of Logic = 11)
+  Clock Path Skew:      -0.008ns (0.293 - 0.301)
   Source Clock:         fx2Clk_in_BUFGP rising at 0.000ns
   Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -274,68 +121,62 @@ Slack (setup path):     5.783ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_30
+  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_26
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X17Y86.AMUX    Tshcko                0.518   encrypt/round<4>
+    SLICE_X10Y71.AMUX    Tshcko                0.576   encrypt/round<5>
                                                        encrypt/round_2
-    SLICE_X23Y86.B2      net (fanout=10)       1.896   encrypt/round<2>
-    SLICE_X23Y86.B       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
+    SLICE_X15Y66.D1      net (fanout=10)       1.241   encrypt/round<2>
+    SLICE_X15Y66.D       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
                                                        encrypt/GND_23_o_round[5]_equal_1_o<5>11_3
-    SLICE_X22Y85.B3      net (fanout=13)       0.662   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-    SLICE_X22Y85.COUT    Topcyb                0.483   encrypt/Madd_n0098_cy<7>
-                                                       encrypt/Madd_n0098_lut<5>
+    SLICE_X14Y63.A2      net (fanout=13)       1.009   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
+    SLICE_X14Y63.COUT    Topcya                0.474   encrypt/Madd_n0098_cy<7>
+                                                       encrypt/Madd_n0098_lut<4>
                                                        encrypt/Madd_n0098_cy<7>
-    SLICE_X22Y86.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<7>
-    SLICE_X22Y86.CMUX    Tcinc                 0.279   encrypt/Madd_n0098_cy<11>
+    SLICE_X14Y64.CIN     net (fanout=1)        0.135   encrypt/Madd_n0098_cy<7>
+    SLICE_X14Y64.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<11>
                                                        encrypt/Madd_n0098_cy<11>
-    SLICE_X24Y86.C1      net (fanout=4)        1.454   encrypt/n0098<10>
-    SLICE_X24Y86.COUT    Topcyc                0.325   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<10>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-    SLICE_X24Y87.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-    SLICE_X24Y87.COUT    Tbyp                  0.091   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+    SLICE_X14Y65.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<11>
+    SLICE_X14Y65.DMUX    Tcind                 0.320   encrypt/Madd_n0098_cy<15>
+                                                       encrypt/Madd_n0098_cy<15>
+    SLICE_X16Y66.D1      net (fanout=4)        1.187   encrypt/n0098<15>
+    SLICE_X16Y66.COUT    Topcyd                0.290   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<15>
                                                        encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X24Y88.CIN     net (fanout=1)        0.082   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X24Y88.COUT    Tbyp                  0.091   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
+    SLICE_X16Y67.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+    SLICE_X16Y67.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
                                                        encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X24Y89.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X24Y89.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<23>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<23>
-    SLICE_X18Y91.B1      net (fanout=1)        2.030   encrypt/v1[31]_sum[31]_add_7_OUT<21>
-    SLICE_X18Y91.COUT    Topcyb                0.483   encrypt/Madd_n0107_cy<23>
-                                                       encrypt/Madd_n0107_lut<21>
-                                                       encrypt/Madd_n0107_cy<23>
-    SLICE_X18Y92.CIN     net (fanout=1)        0.003   encrypt/Madd_n0107_cy<23>
-    SLICE_X18Y92.BMUX    Tcinb                 0.310   encrypt/Madd_n0107_cy<27>
-                                                       encrypt/Madd_n0107_cy<27>
-    SLICE_X20Y91.B3      net (fanout=5)        0.686   encrypt/n0107<25>
-    SLICE_X20Y91.CMUX    Topbc                 0.613   encrypt/Madd_v0[31]_sum[31]_add_13_OUT_cy<27>
-                                                       encrypt/Madd_v0[31]_sum[31]_add_13_OUT_lut<25>
-                                                       encrypt/Madd_v0[31]_sum[31]_add_13_OUT_cy<27>
-    SLICE_X28Y95.C5      net (fanout=1)        1.926   encrypt/v0[31]_sum[31]_add_13_OUT<26>
-    SLICE_X28Y95.COUT    Topcyc                0.325   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<26>
+    SLICE_X18Y71.B3      net (fanout=1)        1.103   encrypt/v1[31]_sum[31]_add_7_OUT<17>
+    SLICE_X18Y71.CMUX    Topbc                 0.650   encrypt/Madd_n0107_cy<19>
+                                                       encrypt/Madd_n0107_lut<17>
+                                                       encrypt/Madd_n0107_cy<19>
+    SLICE_X20Y77.C3      net (fanout=5)        1.547   encrypt/n0107<18>
+    SLICE_X20Y77.COUT    Topcyc                0.325   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_lut<21>_INV_0
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+    SLICE_X20Y78.CIN     net (fanout=1)        0.003   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+    SLICE_X20Y78.BMUX    Tcinb                 0.277   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
+    SLICE_X24Y72.B2      net (fanout=1)        1.445   encrypt/v0[31]_GND_23_o_add_12_OUT<25>
+    SLICE_X24Y72.CMUX    Topbc                 0.613   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
+                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<25>
                                                        encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X28Y96.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X28Y96.CMUX    Tcinc                 0.289   encrypt/v1[31]_v0[31]_add_17_OUT<31>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_xor<31>
-    SLICE_X25Y95.C5      net (fanout=1)        0.709   encrypt/v1[31]_v0[31]_add_17_OUT<30>
-    SLICE_X25Y95.CLK     Tas                   0.373   encrypt/v1<31>
-                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT241
-                                                       encrypt/v1_30
+    SLICE_X24Y75.C3      net (fanout=1)        0.810   encrypt/v1[31]_v0[31]_add_17_OUT<26>
+    SLICE_X24Y75.CLK     Tas                   0.349   encrypt/v1<27>
+                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT191
+                                                       encrypt/v1_26
     -------------------------------------------------  ---------------------------
-    Total                                     14.176ns (4.716ns logic, 9.460ns route)
-                                                       (33.3% logic, 66.7% route)
+    Total                                     12.989ns (4.503ns logic, 8.486ns route)
+                                                       (34.7% logic, 65.3% route)
 
 --------------------------------------------------------------------------------
-Slack (setup path):     5.800ns (requirement - (data path - clock path skew + uncertainty))
+Slack (setup path):     7.017ns (requirement - (data path - clock path skew + uncertainty))
   Source:               encrypt/round_2 (FF)
-  Destination:          encrypt/v1_30 (FF)
+  Destination:          encrypt/v1_26 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      14.159ns (Levels of Logic = 13)
-  Clock Path Skew:      -0.006ns (0.298 - 0.304)
+  Data Path Delay:      12.940ns (Levels of Logic = 12)
+  Clock Path Skew:      -0.008ns (0.293 - 0.301)
   Source Clock:         fx2Clk_in_BUFGP rising at 0.000ns
   Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -346,146 +187,68 @@ Slack (setup path):     5.800ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_30
+  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_26
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X17Y86.AMUX    Tshcko                0.518   encrypt/round<4>
+    SLICE_X10Y71.AMUX    Tshcko                0.576   encrypt/round<5>
                                                        encrypt/round_2
-    SLICE_X23Y86.B2      net (fanout=10)       1.896   encrypt/round<2>
-    SLICE_X23Y86.B       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
+    SLICE_X15Y66.D1      net (fanout=10)       1.241   encrypt/round<2>
+    SLICE_X15Y66.D       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
                                                        encrypt/GND_23_o_round[5]_equal_1_o<5>11_3
-    SLICE_X22Y85.D2      net (fanout=13)       0.816   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-    SLICE_X22Y85.COUT    Topcyd                0.312   encrypt/Madd_n0098_cy<7>
-                                                       encrypt/Madd_n0098_lut<7>
-                                                       encrypt/Madd_n0098_cy<7>
-    SLICE_X22Y86.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<7>
-    SLICE_X22Y86.CMUX    Tcinc                 0.279   encrypt/Madd_n0098_cy<11>
-                                                       encrypt/Madd_n0098_cy<11>
-    SLICE_X24Y86.C1      net (fanout=4)        1.454   encrypt/n0098<10>
-    SLICE_X24Y86.COUT    Topcyc                0.325   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<10>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-    SLICE_X24Y87.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-    SLICE_X24Y87.COUT    Tbyp                  0.091   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X24Y88.CIN     net (fanout=1)        0.082   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X24Y88.COUT    Tbyp                  0.091   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X24Y89.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X24Y89.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<23>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<23>
-    SLICE_X18Y91.B1      net (fanout=1)        2.030   encrypt/v1[31]_sum[31]_add_7_OUT<21>
-    SLICE_X18Y91.COUT    Topcyb                0.483   encrypt/Madd_n0107_cy<23>
-                                                       encrypt/Madd_n0107_lut<21>
-                                                       encrypt/Madd_n0107_cy<23>
-    SLICE_X18Y92.CIN     net (fanout=1)        0.003   encrypt/Madd_n0107_cy<23>
-    SLICE_X18Y92.BMUX    Tcinb                 0.310   encrypt/Madd_n0107_cy<27>
-                                                       encrypt/Madd_n0107_cy<27>
-    SLICE_X20Y91.B3      net (fanout=5)        0.686   encrypt/n0107<25>
-    SLICE_X20Y91.CMUX    Topbc                 0.613   encrypt/Madd_v0[31]_sum[31]_add_13_OUT_cy<27>
-                                                       encrypt/Madd_v0[31]_sum[31]_add_13_OUT_lut<25>
-                                                       encrypt/Madd_v0[31]_sum[31]_add_13_OUT_cy<27>
-    SLICE_X28Y95.C5      net (fanout=1)        1.926   encrypt/v0[31]_sum[31]_add_13_OUT<26>
-    SLICE_X28Y95.COUT    Topcyc                0.325   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<26>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X28Y96.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X28Y96.CMUX    Tcinc                 0.289   encrypt/v1[31]_v0[31]_add_17_OUT<31>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_xor<31>
-    SLICE_X25Y95.C5      net (fanout=1)        0.709   encrypt/v1[31]_v0[31]_add_17_OUT<30>
-    SLICE_X25Y95.CLK     Tas                   0.373   encrypt/v1<31>
-                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT241
-                                                       encrypt/v1_30
-    -------------------------------------------------  ---------------------------
-    Total                                     14.159ns (4.545ns logic, 9.614ns route)
-                                                       (32.1% logic, 67.9% route)
-
---------------------------------------------------------------------------------
-Slack (setup path):     5.839ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               encrypt/round_2 (FF)
-  Destination:          encrypt/v1_30 (FF)
-  Requirement:          20.000ns
-  Data Path Delay:      14.120ns (Levels of Logic = 14)
-  Clock Path Skew:      -0.006ns (0.298 - 0.304)
-  Source Clock:         fx2Clk_in_BUFGP rising at 0.000ns
-  Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
-  Clock Uncertainty:    0.035ns
-
-  Clock Uncertainty:          0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
-    Total System Jitter (TSJ):  0.070ns
-    Total Input Jitter (TIJ):   0.000ns
-    Discrete Jitter (DJ):       0.000ns
-    Phase Error (PE):           0.000ns
-
-  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_30
-    Location             Delay type         Delay(ns)  Physical Resource
-                                                       Logical Resource(s)
-    -------------------------------------------------  -------------------
-    SLICE_X17Y86.AMUX    Tshcko                0.518   encrypt/round<4>
-                                                       encrypt/round_2
-    SLICE_X23Y86.B2      net (fanout=10)       1.896   encrypt/round<2>
-    SLICE_X23Y86.B       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-                                                       encrypt/GND_23_o_round[5]_equal_1_o<5>11_3
-    SLICE_X22Y84.A5      net (fanout=13)       0.519   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-    SLICE_X22Y84.COUT    Topcya                0.474   encrypt/Madd_n0098_cy<3>
-                                                       encrypt/Madd_n0098_lut<0>
+    SLICE_X14Y62.C2      net (fanout=13)       1.010   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
+    SLICE_X14Y62.COUT    Topcyc                0.328   encrypt/Madd_n0098_cy<3>
+                                                       encrypt/Mmux_n00932311
                                                        encrypt/Madd_n0098_cy<3>
-    SLICE_X22Y85.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<3>
-    SLICE_X22Y85.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<7>
+    SLICE_X14Y63.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<3>
+    SLICE_X14Y63.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<7>
                                                        encrypt/Madd_n0098_cy<7>
-    SLICE_X22Y86.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<7>
-    SLICE_X22Y86.CMUX    Tcinc                 0.279   encrypt/Madd_n0098_cy<11>
+    SLICE_X14Y64.CIN     net (fanout=1)        0.135   encrypt/Madd_n0098_cy<7>
+    SLICE_X14Y64.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<11>
                                                        encrypt/Madd_n0098_cy<11>
-    SLICE_X24Y86.C1      net (fanout=4)        1.454   encrypt/n0098<10>
-    SLICE_X24Y86.COUT    Topcyc                0.325   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<10>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-    SLICE_X24Y87.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-    SLICE_X24Y87.COUT    Tbyp                  0.091   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+    SLICE_X14Y65.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<11>
+    SLICE_X14Y65.DMUX    Tcind                 0.320   encrypt/Madd_n0098_cy<15>
+                                                       encrypt/Madd_n0098_cy<15>
+    SLICE_X16Y66.D1      net (fanout=4)        1.187   encrypt/n0098<15>
+    SLICE_X16Y66.COUT    Topcyd                0.290   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<15>
                                                        encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X24Y88.CIN     net (fanout=1)        0.082   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X24Y88.COUT    Tbyp                  0.091   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
+    SLICE_X16Y67.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+    SLICE_X16Y67.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
                                                        encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X24Y89.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X24Y89.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<23>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<23>
-    SLICE_X18Y91.B1      net (fanout=1)        2.030   encrypt/v1[31]_sum[31]_add_7_OUT<21>
-    SLICE_X18Y91.COUT    Topcyb                0.483   encrypt/Madd_n0107_cy<23>
-                                                       encrypt/Madd_n0107_lut<21>
-                                                       encrypt/Madd_n0107_cy<23>
-    SLICE_X18Y92.CIN     net (fanout=1)        0.003   encrypt/Madd_n0107_cy<23>
-    SLICE_X18Y92.BMUX    Tcinb                 0.310   encrypt/Madd_n0107_cy<27>
-                                                       encrypt/Madd_n0107_cy<27>
-    SLICE_X20Y91.B3      net (fanout=5)        0.686   encrypt/n0107<25>
-    SLICE_X20Y91.CMUX    Topbc                 0.613   encrypt/Madd_v0[31]_sum[31]_add_13_OUT_cy<27>
-                                                       encrypt/Madd_v0[31]_sum[31]_add_13_OUT_lut<25>
-                                                       encrypt/Madd_v0[31]_sum[31]_add_13_OUT_cy<27>
-    SLICE_X28Y95.C5      net (fanout=1)        1.926   encrypt/v0[31]_sum[31]_add_13_OUT<26>
-    SLICE_X28Y95.COUT    Topcyc                0.325   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<26>
+    SLICE_X18Y71.B3      net (fanout=1)        1.103   encrypt/v1[31]_sum[31]_add_7_OUT<17>
+    SLICE_X18Y71.CMUX    Topbc                 0.650   encrypt/Madd_n0107_cy<19>
+                                                       encrypt/Madd_n0107_lut<17>
+                                                       encrypt/Madd_n0107_cy<19>
+    SLICE_X20Y77.C3      net (fanout=5)        1.547   encrypt/n0107<18>
+    SLICE_X20Y77.COUT    Topcyc                0.325   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_lut<21>_INV_0
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+    SLICE_X20Y78.CIN     net (fanout=1)        0.003   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+    SLICE_X20Y78.BMUX    Tcinb                 0.277   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
+    SLICE_X24Y72.B2      net (fanout=1)        1.445   encrypt/v0[31]_GND_23_o_add_12_OUT<25>
+    SLICE_X24Y72.CMUX    Topbc                 0.613   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
+                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<25>
                                                        encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X28Y96.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X28Y96.CMUX    Tcinc                 0.289   encrypt/v1[31]_v0[31]_add_17_OUT<31>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_xor<31>
-    SLICE_X25Y95.C5      net (fanout=1)        0.709   encrypt/v1[31]_v0[31]_add_17_OUT<30>
-    SLICE_X25Y95.CLK     Tas                   0.373   encrypt/v1<31>
-                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT241
-                                                       encrypt/v1_30
+    SLICE_X24Y75.C3      net (fanout=1)        0.810   encrypt/v1[31]_v0[31]_add_17_OUT<26>
+    SLICE_X24Y75.CLK     Tas                   0.349   encrypt/v1<27>
+                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT191
+                                                       encrypt/v1_26
     -------------------------------------------------  ---------------------------
-    Total                                     14.120ns (4.800ns logic, 9.320ns route)
-                                                       (34.0% logic, 66.0% route)
+    Total                                     12.940ns (4.450ns logic, 8.490ns route)
+                                                       (34.4% logic, 65.6% route)
 
 --------------------------------------------------------------------------------
 
-Paths for end point encrypt/v1_29 (SLICE_X25Y95.B6), 19057383 paths
+Paths for end point encrypt/v1_27 (SLICE_X24Y75.D4), 14439228 paths
 --------------------------------------------------------------------------------
-Slack (setup path):     5.853ns (requirement - (data path - clock path skew + uncertainty))
+Slack (setup path):     7.029ns (requirement - (data path - clock path skew + uncertainty))
   Source:               encrypt/round_2 (FF)
-  Destination:          encrypt/v1_29 (FF)
+  Destination:          encrypt/v1_27 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      14.106ns (Levels of Logic = 13)
-  Clock Path Skew:      -0.006ns (0.298 - 0.304)
+  Data Path Delay:      12.928ns (Levels of Logic = 12)
+  Clock Path Skew:      -0.008ns (0.293 - 0.301)
   Source Clock:         fx2Clk_in_BUFGP rising at 0.000ns
   Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -496,246 +259,438 @@ Slack (setup path):     5.853ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_29
+  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_27
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X17Y86.AMUX    Tshcko                0.518   encrypt/round<4>
+    SLICE_X10Y71.AMUX    Tshcko                0.576   encrypt/round<5>
                                                        encrypt/round_2
-    SLICE_X23Y86.B2      net (fanout=10)       1.896   encrypt/round<2>
-    SLICE_X23Y86.B       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
+    SLICE_X15Y66.D1      net (fanout=10)       1.241   encrypt/round<2>
+    SLICE_X15Y66.D       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
                                                        encrypt/GND_23_o_round[5]_equal_1_o<5>11_3
-    SLICE_X22Y85.B3      net (fanout=13)       0.662   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-    SLICE_X22Y85.COUT    Topcyb                0.483   encrypt/Madd_n0098_cy<7>
-                                                       encrypt/Madd_n0098_lut<5>
-                                                       encrypt/Madd_n0098_cy<7>
-    SLICE_X22Y86.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<7>
-    SLICE_X22Y86.CMUX    Tcinc                 0.279   encrypt/Madd_n0098_cy<11>
-                                                       encrypt/Madd_n0098_cy<11>
-    SLICE_X24Y86.C1      net (fanout=4)        1.454   encrypt/n0098<10>
-    SLICE_X24Y86.COUT    Topcyc                0.325   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<10>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-    SLICE_X24Y87.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-    SLICE_X24Y87.COUT    Tbyp                  0.091   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X24Y88.CIN     net (fanout=1)        0.082   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X24Y88.COUT    Tbyp                  0.091   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X24Y89.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X24Y89.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<23>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<23>
-    SLICE_X18Y91.B1      net (fanout=1)        2.030   encrypt/v1[31]_sum[31]_add_7_OUT<21>
-    SLICE_X18Y91.COUT    Topcyb                0.483   encrypt/Madd_n0107_cy<23>
-                                                       encrypt/Madd_n0107_lut<21>
-                                                       encrypt/Madd_n0107_cy<23>
-    SLICE_X18Y92.CIN     net (fanout=1)        0.003   encrypt/Madd_n0107_cy<23>
-    SLICE_X18Y92.BMUX    Tcinb                 0.310   encrypt/Madd_n0107_cy<27>
-                                                       encrypt/Madd_n0107_cy<27>
-    SLICE_X20Y91.B3      net (fanout=5)        0.686   encrypt/n0107<25>
-    SLICE_X20Y91.CMUX    Topbc                 0.613   encrypt/Madd_v0[31]_sum[31]_add_13_OUT_cy<27>
-                                                       encrypt/Madd_v0[31]_sum[31]_add_13_OUT_lut<25>
-                                                       encrypt/Madd_v0[31]_sum[31]_add_13_OUT_cy<27>
-    SLICE_X28Y95.C5      net (fanout=1)        1.926   encrypt/v0[31]_sum[31]_add_13_OUT<26>
-    SLICE_X28Y95.COUT    Topcyc                0.325   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<26>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X28Y96.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X28Y96.BMUX    Tcinb                 0.277   encrypt/v1[31]_v0[31]_add_17_OUT<31>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_xor<31>
-    SLICE_X25Y95.B6      net (fanout=1)        0.651   encrypt/v1[31]_v0[31]_add_17_OUT<29>
-    SLICE_X25Y95.CLK     Tas                   0.373   encrypt/v1<31>
-                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT221
-                                                       encrypt/v1_29
-    -------------------------------------------------  ---------------------------
-    Total                                     14.106ns (4.704ns logic, 9.402ns route)
-                                                       (33.3% logic, 66.7% route)
-
---------------------------------------------------------------------------------
-Slack (setup path):     5.870ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               encrypt/round_2 (FF)
-  Destination:          encrypt/v1_29 (FF)
-  Requirement:          20.000ns
-  Data Path Delay:      14.089ns (Levels of Logic = 13)
-  Clock Path Skew:      -0.006ns (0.298 - 0.304)
-  Source Clock:         fx2Clk_in_BUFGP rising at 0.000ns
-  Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
-  Clock Uncertainty:    0.035ns
-
-  Clock Uncertainty:          0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
-    Total System Jitter (TSJ):  0.070ns
-    Total Input Jitter (TIJ):   0.000ns
-    Discrete Jitter (DJ):       0.000ns
-    Phase Error (PE):           0.000ns
-
-  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_29
-    Location             Delay type         Delay(ns)  Physical Resource
-                                                       Logical Resource(s)
-    -------------------------------------------------  -------------------
-    SLICE_X17Y86.AMUX    Tshcko                0.518   encrypt/round<4>
-                                                       encrypt/round_2
-    SLICE_X23Y86.B2      net (fanout=10)       1.896   encrypt/round<2>
-    SLICE_X23Y86.B       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-                                                       encrypt/GND_23_o_round[5]_equal_1_o<5>11_3
-    SLICE_X22Y85.D2      net (fanout=13)       0.816   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-    SLICE_X22Y85.COUT    Topcyd                0.312   encrypt/Madd_n0098_cy<7>
-                                                       encrypt/Madd_n0098_lut<7>
-                                                       encrypt/Madd_n0098_cy<7>
-    SLICE_X22Y86.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<7>
-    SLICE_X22Y86.CMUX    Tcinc                 0.279   encrypt/Madd_n0098_cy<11>
-                                                       encrypt/Madd_n0098_cy<11>
-    SLICE_X24Y86.C1      net (fanout=4)        1.454   encrypt/n0098<10>
-    SLICE_X24Y86.COUT    Topcyc                0.325   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<10>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-    SLICE_X24Y87.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-    SLICE_X24Y87.COUT    Tbyp                  0.091   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X24Y88.CIN     net (fanout=1)        0.082   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X24Y88.COUT    Tbyp                  0.091   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X24Y89.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X24Y89.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<23>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<23>
-    SLICE_X18Y91.B1      net (fanout=1)        2.030   encrypt/v1[31]_sum[31]_add_7_OUT<21>
-    SLICE_X18Y91.COUT    Topcyb                0.483   encrypt/Madd_n0107_cy<23>
-                                                       encrypt/Madd_n0107_lut<21>
-                                                       encrypt/Madd_n0107_cy<23>
-    SLICE_X18Y92.CIN     net (fanout=1)        0.003   encrypt/Madd_n0107_cy<23>
-    SLICE_X18Y92.BMUX    Tcinb                 0.310   encrypt/Madd_n0107_cy<27>
-                                                       encrypt/Madd_n0107_cy<27>
-    SLICE_X20Y91.B3      net (fanout=5)        0.686   encrypt/n0107<25>
-    SLICE_X20Y91.CMUX    Topbc                 0.613   encrypt/Madd_v0[31]_sum[31]_add_13_OUT_cy<27>
-                                                       encrypt/Madd_v0[31]_sum[31]_add_13_OUT_lut<25>
-                                                       encrypt/Madd_v0[31]_sum[31]_add_13_OUT_cy<27>
-    SLICE_X28Y95.C5      net (fanout=1)        1.926   encrypt/v0[31]_sum[31]_add_13_OUT<26>
-    SLICE_X28Y95.COUT    Topcyc                0.325   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<26>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X28Y96.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X28Y96.BMUX    Tcinb                 0.277   encrypt/v1[31]_v0[31]_add_17_OUT<31>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_xor<31>
-    SLICE_X25Y95.B6      net (fanout=1)        0.651   encrypt/v1[31]_v0[31]_add_17_OUT<29>
-    SLICE_X25Y95.CLK     Tas                   0.373   encrypt/v1<31>
-                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT221
-                                                       encrypt/v1_29
-    -------------------------------------------------  ---------------------------
-    Total                                     14.089ns (4.533ns logic, 9.556ns route)
-                                                       (32.2% logic, 67.8% route)
-
---------------------------------------------------------------------------------
-Slack (setup path):     5.909ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               encrypt/round_2 (FF)
-  Destination:          encrypt/v1_29 (FF)
-  Requirement:          20.000ns
-  Data Path Delay:      14.050ns (Levels of Logic = 14)
-  Clock Path Skew:      -0.006ns (0.298 - 0.304)
-  Source Clock:         fx2Clk_in_BUFGP rising at 0.000ns
-  Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
-  Clock Uncertainty:    0.035ns
-
-  Clock Uncertainty:          0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
-    Total System Jitter (TSJ):  0.070ns
-    Total Input Jitter (TIJ):   0.000ns
-    Discrete Jitter (DJ):       0.000ns
-    Phase Error (PE):           0.000ns
-
-  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_29
-    Location             Delay type         Delay(ns)  Physical Resource
-                                                       Logical Resource(s)
-    -------------------------------------------------  -------------------
-    SLICE_X17Y86.AMUX    Tshcko                0.518   encrypt/round<4>
-                                                       encrypt/round_2
-    SLICE_X23Y86.B2      net (fanout=10)       1.896   encrypt/round<2>
-    SLICE_X23Y86.B       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-                                                       encrypt/GND_23_o_round[5]_equal_1_o<5>11_3
-    SLICE_X22Y84.A5      net (fanout=13)       0.519   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-    SLICE_X22Y84.COUT    Topcya                0.474   encrypt/Madd_n0098_cy<3>
-                                                       encrypt/Madd_n0098_lut<0>
+    SLICE_X14Y62.B3      net (fanout=13)       0.918   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
+    SLICE_X14Y62.COUT    Topcyb                0.483   encrypt/Madd_n0098_cy<3>
+                                                       encrypt/Mmux_n00931211
                                                        encrypt/Madd_n0098_cy<3>
-    SLICE_X22Y85.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<3>
-    SLICE_X22Y85.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<7>
+    SLICE_X14Y63.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<3>
+    SLICE_X14Y63.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<7>
                                                        encrypt/Madd_n0098_cy<7>
-    SLICE_X22Y86.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<7>
-    SLICE_X22Y86.CMUX    Tcinc                 0.279   encrypt/Madd_n0098_cy<11>
+    SLICE_X14Y64.CIN     net (fanout=1)        0.135   encrypt/Madd_n0098_cy<7>
+    SLICE_X14Y64.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<11>
                                                        encrypt/Madd_n0098_cy<11>
-    SLICE_X24Y86.C1      net (fanout=4)        1.454   encrypt/n0098<10>
-    SLICE_X24Y86.COUT    Topcyc                0.325   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<10>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-    SLICE_X24Y87.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<11>
-    SLICE_X24Y87.COUT    Tbyp                  0.091   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+    SLICE_X14Y65.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<11>
+    SLICE_X14Y65.DMUX    Tcind                 0.320   encrypt/Madd_n0098_cy<15>
+                                                       encrypt/Madd_n0098_cy<15>
+    SLICE_X16Y66.D1      net (fanout=4)        1.187   encrypt/n0098<15>
+    SLICE_X16Y66.COUT    Topcyd                0.290   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<15>
                                                        encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X24Y88.CIN     net (fanout=1)        0.082   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X24Y88.COUT    Tbyp                  0.091   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
+    SLICE_X16Y67.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+    SLICE_X16Y67.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
                                                        encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X24Y89.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X24Y89.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<23>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<23>
-    SLICE_X18Y91.B1      net (fanout=1)        2.030   encrypt/v1[31]_sum[31]_add_7_OUT<21>
-    SLICE_X18Y91.COUT    Topcyb                0.483   encrypt/Madd_n0107_cy<23>
-                                                       encrypt/Madd_n0107_lut<21>
-                                                       encrypt/Madd_n0107_cy<23>
-    SLICE_X18Y92.CIN     net (fanout=1)        0.003   encrypt/Madd_n0107_cy<23>
-    SLICE_X18Y92.BMUX    Tcinb                 0.310   encrypt/Madd_n0107_cy<27>
-                                                       encrypt/Madd_n0107_cy<27>
-    SLICE_X20Y91.B3      net (fanout=5)        0.686   encrypt/n0107<25>
-    SLICE_X20Y91.CMUX    Topbc                 0.613   encrypt/Madd_v0[31]_sum[31]_add_13_OUT_cy<27>
-                                                       encrypt/Madd_v0[31]_sum[31]_add_13_OUT_lut<25>
-                                                       encrypt/Madd_v0[31]_sum[31]_add_13_OUT_cy<27>
-    SLICE_X28Y95.C5      net (fanout=1)        1.926   encrypt/v0[31]_sum[31]_add_13_OUT<26>
-    SLICE_X28Y95.COUT    Topcyc                0.325   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<26>
+    SLICE_X18Y71.B3      net (fanout=1)        1.103   encrypt/v1[31]_sum[31]_add_7_OUT<17>
+    SLICE_X18Y71.CMUX    Topbc                 0.650   encrypt/Madd_n0107_cy<19>
+                                                       encrypt/Madd_n0107_lut<17>
+                                                       encrypt/Madd_n0107_cy<19>
+    SLICE_X20Y77.C3      net (fanout=5)        1.547   encrypt/n0107<18>
+    SLICE_X20Y77.COUT    Topcyc                0.325   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_lut<21>_INV_0
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+    SLICE_X20Y78.CIN     net (fanout=1)        0.003   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+    SLICE_X20Y78.BMUX    Tcinb                 0.277   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
+    SLICE_X24Y72.B2      net (fanout=1)        1.445   encrypt/v0[31]_GND_23_o_add_12_OUT<25>
+    SLICE_X24Y72.DMUX    Topbd                 0.644   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
+                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<25>
                                                        encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X28Y96.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X28Y96.BMUX    Tcinb                 0.277   encrypt/v1[31]_v0[31]_add_17_OUT<31>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_xor<31>
-    SLICE_X25Y95.B6      net (fanout=1)        0.651   encrypt/v1[31]_v0[31]_add_17_OUT<29>
-    SLICE_X25Y95.CLK     Tas                   0.373   encrypt/v1<31>
-                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT221
-                                                       encrypt/v1_29
+    SLICE_X24Y75.D4      net (fanout=1)        0.704   encrypt/v1[31]_v0[31]_add_17_OUT<27>
+    SLICE_X24Y75.CLK     Tas                   0.349   encrypt/v1<27>
+                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT201
+                                                       encrypt/v1_27
     -------------------------------------------------  ---------------------------
-    Total                                     14.050ns (4.788ns logic, 9.262ns route)
-                                                       (34.1% logic, 65.9% route)
+    Total                                     12.928ns (4.636ns logic, 8.292ns route)
+                                                       (35.9% logic, 64.1% route)
+
+--------------------------------------------------------------------------------
+Slack (setup path):     7.043ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               encrypt/round_2 (FF)
+  Destination:          encrypt/v1_27 (FF)
+  Requirement:          20.000ns
+  Data Path Delay:      12.914ns (Levels of Logic = 11)
+  Clock Path Skew:      -0.008ns (0.293 - 0.301)
+  Source Clock:         fx2Clk_in_BUFGP rising at 0.000ns
+  Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
+  Clock Uncertainty:    0.035ns
+
+  Clock Uncertainty:          0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter (TSJ):  0.070ns
+    Total Input Jitter (TIJ):   0.000ns
+    Discrete Jitter (DJ):       0.000ns
+    Phase Error (PE):           0.000ns
+
+  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_27
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X10Y71.AMUX    Tshcko                0.576   encrypt/round<5>
+                                                       encrypt/round_2
+    SLICE_X15Y66.D1      net (fanout=10)       1.241   encrypt/round<2>
+    SLICE_X15Y66.D       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
+                                                       encrypt/GND_23_o_round[5]_equal_1_o<5>11_3
+    SLICE_X14Y63.A2      net (fanout=13)       1.009   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
+    SLICE_X14Y63.COUT    Topcya                0.474   encrypt/Madd_n0098_cy<7>
+                                                       encrypt/Madd_n0098_lut<4>
+                                                       encrypt/Madd_n0098_cy<7>
+    SLICE_X14Y64.CIN     net (fanout=1)        0.135   encrypt/Madd_n0098_cy<7>
+    SLICE_X14Y64.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<11>
+                                                       encrypt/Madd_n0098_cy<11>
+    SLICE_X14Y65.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<11>
+    SLICE_X14Y65.DMUX    Tcind                 0.320   encrypt/Madd_n0098_cy<15>
+                                                       encrypt/Madd_n0098_cy<15>
+    SLICE_X16Y66.D1      net (fanout=4)        1.187   encrypt/n0098<15>
+    SLICE_X16Y66.COUT    Topcyd                0.290   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<15>
+                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+    SLICE_X16Y67.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+    SLICE_X16Y67.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
+                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
+    SLICE_X18Y71.B3      net (fanout=1)        1.103   encrypt/v1[31]_sum[31]_add_7_OUT<17>
+    SLICE_X18Y71.CMUX    Topbc                 0.650   encrypt/Madd_n0107_cy<19>
+                                                       encrypt/Madd_n0107_lut<17>
+                                                       encrypt/Madd_n0107_cy<19>
+    SLICE_X20Y77.C3      net (fanout=5)        1.547   encrypt/n0107<18>
+    SLICE_X20Y77.COUT    Topcyc                0.325   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_lut<21>_INV_0
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+    SLICE_X20Y78.CIN     net (fanout=1)        0.003   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+    SLICE_X20Y78.BMUX    Tcinb                 0.277   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
+    SLICE_X24Y72.B2      net (fanout=1)        1.445   encrypt/v0[31]_GND_23_o_add_12_OUT<25>
+    SLICE_X24Y72.DMUX    Topbd                 0.644   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
+                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<25>
+                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
+    SLICE_X24Y75.D4      net (fanout=1)        0.704   encrypt/v1[31]_v0[31]_add_17_OUT<27>
+    SLICE_X24Y75.CLK     Tas                   0.349   encrypt/v1<27>
+                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT201
+                                                       encrypt/v1_27
+    -------------------------------------------------  ---------------------------
+    Total                                     12.914ns (4.534ns logic, 8.380ns route)
+                                                       (35.1% logic, 64.9% route)
+
+--------------------------------------------------------------------------------
+Slack (setup path):     7.092ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               encrypt/round_2 (FF)
+  Destination:          encrypt/v1_27 (FF)
+  Requirement:          20.000ns
+  Data Path Delay:      12.865ns (Levels of Logic = 12)
+  Clock Path Skew:      -0.008ns (0.293 - 0.301)
+  Source Clock:         fx2Clk_in_BUFGP rising at 0.000ns
+  Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
+  Clock Uncertainty:    0.035ns
+
+  Clock Uncertainty:          0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter (TSJ):  0.070ns
+    Total Input Jitter (TIJ):   0.000ns
+    Discrete Jitter (DJ):       0.000ns
+    Phase Error (PE):           0.000ns
+
+  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_27
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X10Y71.AMUX    Tshcko                0.576   encrypt/round<5>
+                                                       encrypt/round_2
+    SLICE_X15Y66.D1      net (fanout=10)       1.241   encrypt/round<2>
+    SLICE_X15Y66.D       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
+                                                       encrypt/GND_23_o_round[5]_equal_1_o<5>11_3
+    SLICE_X14Y62.C2      net (fanout=13)       1.010   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
+    SLICE_X14Y62.COUT    Topcyc                0.328   encrypt/Madd_n0098_cy<3>
+                                                       encrypt/Mmux_n00932311
+                                                       encrypt/Madd_n0098_cy<3>
+    SLICE_X14Y63.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<3>
+    SLICE_X14Y63.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<7>
+                                                       encrypt/Madd_n0098_cy<7>
+    SLICE_X14Y64.CIN     net (fanout=1)        0.135   encrypt/Madd_n0098_cy<7>
+    SLICE_X14Y64.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<11>
+                                                       encrypt/Madd_n0098_cy<11>
+    SLICE_X14Y65.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<11>
+    SLICE_X14Y65.DMUX    Tcind                 0.320   encrypt/Madd_n0098_cy<15>
+                                                       encrypt/Madd_n0098_cy<15>
+    SLICE_X16Y66.D1      net (fanout=4)        1.187   encrypt/n0098<15>
+    SLICE_X16Y66.COUT    Topcyd                0.290   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<15>
+                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+    SLICE_X16Y67.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+    SLICE_X16Y67.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
+                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
+    SLICE_X18Y71.B3      net (fanout=1)        1.103   encrypt/v1[31]_sum[31]_add_7_OUT<17>
+    SLICE_X18Y71.CMUX    Topbc                 0.650   encrypt/Madd_n0107_cy<19>
+                                                       encrypt/Madd_n0107_lut<17>
+                                                       encrypt/Madd_n0107_cy<19>
+    SLICE_X20Y77.C3      net (fanout=5)        1.547   encrypt/n0107<18>
+    SLICE_X20Y77.COUT    Topcyc                0.325   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_lut<21>_INV_0
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+    SLICE_X20Y78.CIN     net (fanout=1)        0.003   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+    SLICE_X20Y78.BMUX    Tcinb                 0.277   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
+    SLICE_X24Y72.B2      net (fanout=1)        1.445   encrypt/v0[31]_GND_23_o_add_12_OUT<25>
+    SLICE_X24Y72.DMUX    Topbd                 0.644   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
+                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<25>
+                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
+    SLICE_X24Y75.D4      net (fanout=1)        0.704   encrypt/v1[31]_v0[31]_add_17_OUT<27>
+    SLICE_X24Y75.CLK     Tas                   0.349   encrypt/v1<27>
+                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT201
+                                                       encrypt/v1_27
+    -------------------------------------------------  ---------------------------
+    Total                                     12.865ns (4.481ns logic, 8.384ns route)
+                                                       (34.8% logic, 65.2% route)
+
+--------------------------------------------------------------------------------
+
+Paths for end point encrypt/v1_25 (SLICE_X24Y75.B3), 10533158 paths
+--------------------------------------------------------------------------------
+Slack (setup path):     7.125ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               encrypt/round_2 (FF)
+  Destination:          encrypt/v1_25 (FF)
+  Requirement:          20.000ns
+  Data Path Delay:      12.832ns (Levels of Logic = 12)
+  Clock Path Skew:      -0.008ns (0.293 - 0.301)
+  Source Clock:         fx2Clk_in_BUFGP rising at 0.000ns
+  Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
+  Clock Uncertainty:    0.035ns
+
+  Clock Uncertainty:          0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter (TSJ):  0.070ns
+    Total Input Jitter (TIJ):   0.000ns
+    Discrete Jitter (DJ):       0.000ns
+    Phase Error (PE):           0.000ns
+
+  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_25
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X10Y71.AMUX    Tshcko                0.576   encrypt/round<5>
+                                                       encrypt/round_2
+    SLICE_X15Y66.D1      net (fanout=10)       1.241   encrypt/round<2>
+    SLICE_X15Y66.D       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
+                                                       encrypt/GND_23_o_round[5]_equal_1_o<5>11_3
+    SLICE_X14Y62.B3      net (fanout=13)       0.918   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
+    SLICE_X14Y62.COUT    Topcyb                0.483   encrypt/Madd_n0098_cy<3>
+                                                       encrypt/Mmux_n00931211
+                                                       encrypt/Madd_n0098_cy<3>
+    SLICE_X14Y63.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<3>
+    SLICE_X14Y63.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<7>
+                                                       encrypt/Madd_n0098_cy<7>
+    SLICE_X14Y64.CIN     net (fanout=1)        0.135   encrypt/Madd_n0098_cy<7>
+    SLICE_X14Y64.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<11>
+                                                       encrypt/Madd_n0098_cy<11>
+    SLICE_X14Y65.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<11>
+    SLICE_X14Y65.DMUX    Tcind                 0.320   encrypt/Madd_n0098_cy<15>
+                                                       encrypt/Madd_n0098_cy<15>
+    SLICE_X16Y66.D1      net (fanout=4)        1.187   encrypt/n0098<15>
+    SLICE_X16Y66.COUT    Topcyd                0.290   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<15>
+                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+    SLICE_X16Y67.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+    SLICE_X16Y67.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
+                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
+    SLICE_X18Y71.B3      net (fanout=1)        1.103   encrypt/v1[31]_sum[31]_add_7_OUT<17>
+    SLICE_X18Y71.CMUX    Topbc                 0.650   encrypt/Madd_n0107_cy<19>
+                                                       encrypt/Madd_n0107_lut<17>
+                                                       encrypt/Madd_n0107_cy<19>
+    SLICE_X20Y77.C3      net (fanout=5)        1.547   encrypt/n0107<18>
+    SLICE_X20Y77.COUT    Topcyc                0.325   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_lut<21>_INV_0
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+    SLICE_X20Y78.CIN     net (fanout=1)        0.003   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+    SLICE_X20Y78.BMUX    Tcinb                 0.277   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
+    SLICE_X24Y72.B2      net (fanout=1)        1.445   encrypt/v0[31]_GND_23_o_add_12_OUT<25>
+    SLICE_X24Y72.BMUX    Topbb                 0.428   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
+                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<25>
+                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
+    SLICE_X24Y75.B3      net (fanout=1)        0.824   encrypt/v1[31]_v0[31]_add_17_OUT<25>
+    SLICE_X24Y75.CLK     Tas                   0.349   encrypt/v1<27>
+                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT181
+                                                       encrypt/v1_25
+    -------------------------------------------------  ---------------------------
+    Total                                     12.832ns (4.420ns logic, 8.412ns route)
+                                                       (34.4% logic, 65.6% route)
+
+--------------------------------------------------------------------------------
+Slack (setup path):     7.139ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               encrypt/round_2 (FF)
+  Destination:          encrypt/v1_25 (FF)
+  Requirement:          20.000ns
+  Data Path Delay:      12.818ns (Levels of Logic = 11)
+  Clock Path Skew:      -0.008ns (0.293 - 0.301)
+  Source Clock:         fx2Clk_in_BUFGP rising at 0.000ns
+  Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
+  Clock Uncertainty:    0.035ns
+
+  Clock Uncertainty:          0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter (TSJ):  0.070ns
+    Total Input Jitter (TIJ):   0.000ns
+    Discrete Jitter (DJ):       0.000ns
+    Phase Error (PE):           0.000ns
+
+  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_25
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X10Y71.AMUX    Tshcko                0.576   encrypt/round<5>
+                                                       encrypt/round_2
+    SLICE_X15Y66.D1      net (fanout=10)       1.241   encrypt/round<2>
+    SLICE_X15Y66.D       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
+                                                       encrypt/GND_23_o_round[5]_equal_1_o<5>11_3
+    SLICE_X14Y63.A2      net (fanout=13)       1.009   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
+    SLICE_X14Y63.COUT    Topcya                0.474   encrypt/Madd_n0098_cy<7>
+                                                       encrypt/Madd_n0098_lut<4>
+                                                       encrypt/Madd_n0098_cy<7>
+    SLICE_X14Y64.CIN     net (fanout=1)        0.135   encrypt/Madd_n0098_cy<7>
+    SLICE_X14Y64.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<11>
+                                                       encrypt/Madd_n0098_cy<11>
+    SLICE_X14Y65.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<11>
+    SLICE_X14Y65.DMUX    Tcind                 0.320   encrypt/Madd_n0098_cy<15>
+                                                       encrypt/Madd_n0098_cy<15>
+    SLICE_X16Y66.D1      net (fanout=4)        1.187   encrypt/n0098<15>
+    SLICE_X16Y66.COUT    Topcyd                0.290   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<15>
+                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+    SLICE_X16Y67.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+    SLICE_X16Y67.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
+                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
+    SLICE_X18Y71.B3      net (fanout=1)        1.103   encrypt/v1[31]_sum[31]_add_7_OUT<17>
+    SLICE_X18Y71.CMUX    Topbc                 0.650   encrypt/Madd_n0107_cy<19>
+                                                       encrypt/Madd_n0107_lut<17>
+                                                       encrypt/Madd_n0107_cy<19>
+    SLICE_X20Y77.C3      net (fanout=5)        1.547   encrypt/n0107<18>
+    SLICE_X20Y77.COUT    Topcyc                0.325   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_lut<21>_INV_0
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+    SLICE_X20Y78.CIN     net (fanout=1)        0.003   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+    SLICE_X20Y78.BMUX    Tcinb                 0.277   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
+    SLICE_X24Y72.B2      net (fanout=1)        1.445   encrypt/v0[31]_GND_23_o_add_12_OUT<25>
+    SLICE_X24Y72.BMUX    Topbb                 0.428   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
+                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<25>
+                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
+    SLICE_X24Y75.B3      net (fanout=1)        0.824   encrypt/v1[31]_v0[31]_add_17_OUT<25>
+    SLICE_X24Y75.CLK     Tas                   0.349   encrypt/v1<27>
+                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT181
+                                                       encrypt/v1_25
+    -------------------------------------------------  ---------------------------
+    Total                                     12.818ns (4.318ns logic, 8.500ns route)
+                                                       (33.7% logic, 66.3% route)
+
+--------------------------------------------------------------------------------
+Slack (setup path):     7.186ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               encrypt/round_2 (FF)
+  Destination:          encrypt/v1_25 (FF)
+  Requirement:          20.000ns
+  Data Path Delay:      12.771ns (Levels of Logic = 12)
+  Clock Path Skew:      -0.008ns (0.293 - 0.301)
+  Source Clock:         fx2Clk_in_BUFGP rising at 0.000ns
+  Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
+  Clock Uncertainty:    0.035ns
+
+  Clock Uncertainty:          0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter (TSJ):  0.070ns
+    Total Input Jitter (TIJ):   0.000ns
+    Discrete Jitter (DJ):       0.000ns
+    Phase Error (PE):           0.000ns
+
+  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_25
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X10Y71.AMUX    Tshcko                0.576   encrypt/round<5>
+                                                       encrypt/round_2
+    SLICE_X15Y66.D1      net (fanout=10)       1.241   encrypt/round<2>
+    SLICE_X15Y66.D       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
+                                                       encrypt/GND_23_o_round[5]_equal_1_o<5>11_3
+    SLICE_X14Y62.B3      net (fanout=13)       0.918   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
+    SLICE_X14Y62.COUT    Topcyb                0.483   encrypt/Madd_n0098_cy<3>
+                                                       encrypt/Mmux_n00931211
+                                                       encrypt/Madd_n0098_cy<3>
+    SLICE_X14Y63.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<3>
+    SLICE_X14Y63.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<7>
+                                                       encrypt/Madd_n0098_cy<7>
+    SLICE_X14Y64.CIN     net (fanout=1)        0.135   encrypt/Madd_n0098_cy<7>
+    SLICE_X14Y64.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<11>
+                                                       encrypt/Madd_n0098_cy<11>
+    SLICE_X14Y65.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<11>
+    SLICE_X14Y65.DMUX    Tcind                 0.320   encrypt/Madd_n0098_cy<15>
+                                                       encrypt/Madd_n0098_cy<15>
+    SLICE_X16Y66.D1      net (fanout=4)        1.187   encrypt/n0098<15>
+    SLICE_X16Y66.COUT    Topcyd                0.290   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<15>
+                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+    SLICE_X16Y67.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
+    SLICE_X16Y67.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
+                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
+    SLICE_X18Y71.B3      net (fanout=1)        1.103   encrypt/v1[31]_sum[31]_add_7_OUT<17>
+    SLICE_X18Y71.CMUX    Topbc                 0.650   encrypt/Madd_n0107_cy<19>
+                                                       encrypt/Madd_n0107_lut<17>
+                                                       encrypt/Madd_n0107_cy<19>
+    SLICE_X20Y77.C3      net (fanout=5)        1.547   encrypt/n0107<18>
+    SLICE_X20Y77.DMUX    Topcd                 0.493   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_lut<21>_INV_0
+                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
+    SLICE_X24Y71.D1      net (fanout=1)        1.275   encrypt/v0[31]_GND_23_o_add_12_OUT<23>
+    SLICE_X24Y71.COUT    Topcyd                0.290   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<23>
+                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<23>
+                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<23>
+    SLICE_X24Y72.CIN     net (fanout=1)        0.082   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<23>
+    SLICE_X24Y72.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
+                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
+    SLICE_X24Y75.B3      net (fanout=1)        0.824   encrypt/v1[31]_v0[31]_add_17_OUT<25>
+    SLICE_X24Y75.CLK     Tas                   0.349   encrypt/v1<27>
+                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT181
+                                                       encrypt/v1_25
+    -------------------------------------------------  ---------------------------
+    Total                                     12.771ns (4.450ns logic, 8.321ns route)
+                                                       (34.8% logic, 65.2% route)
 
 --------------------------------------------------------------------------------
 
 Hold Paths: TS_clk = PERIOD TIMEGRP "fx2Clk_in" 20 ns HIGH 50%;
 --------------------------------------------------------------------------------
 
-Paths for end point en_input_1 (SLICE_X16Y91.B6), 1 path
+Paths for end point decrypt/v1_24 (SLICE_X12Y102.A6), 1 path
 --------------------------------------------------------------------------------
-Slack (hold path):      0.410ns (requirement - (clock path skew + uncertainty - data path))
-  Source:               main_process.input_eight_bytes_1 (FF)
-  Destination:          en_input_1 (FF)
+Slack (hold path):      0.413ns (requirement - (clock path skew + uncertainty - data path))
+  Source:               decrypt/v1_24 (FF)
+  Destination:          decrypt/v1_24 (FF)
   Requirement:          0.000ns
-  Data Path Delay:      0.412ns (Levels of Logic = 1)
-  Clock Path Skew:      0.002ns (0.040 - 0.038)
+  Data Path Delay:      0.413ns (Levels of Logic = 1)
+  Clock Path Skew:      0.000ns
   Source Clock:         fx2Clk_in_BUFGP rising at 20.000ns
   Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.000ns
 
-  Minimum Data Path at Fast Process Corner: main_process.input_eight_bytes_1 to en_input_1
+  Minimum Data Path at Fast Process Corner: decrypt/v1_24 to decrypt/v1_24
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X17Y91.AQ      Tcko                  0.198   main_process.input_eight_bytes<8>
-                                                       main_process.input_eight_bytes_1
-    SLICE_X16Y91.B6      net (fanout=2)        0.024   main_process.input_eight_bytes<1>
-    SLICE_X16Y91.CLK     Tah         (-Th)    -0.190   en_input<3>
-                                                       Mmux_main_process.input_eight_bytes[0]_sw_in[0]_MUX_295_o111
-                                                       en_input_1
+    SLICE_X12Y102.AQ     Tcko                  0.200   decrypt/v1<27>
+                                                       decrypt/v1_24
+    SLICE_X12Y102.A6     net (fanout=3)        0.023   decrypt/v1<24>
+    SLICE_X12Y102.CLK    Tah         (-Th)    -0.190   decrypt/v1<27>
+                                                       decrypt/Mmux_v1[31]_GND_24_o_mux_20_OUT171
+                                                       decrypt/v1_24
     -------------------------------------------------  ---------------------------
-    Total                                      0.412ns (0.388ns logic, 0.024ns route)
-                                                       (94.2% logic, 5.8% route)
+    Total                                      0.413ns (0.390ns logic, 0.023ns route)
+                                                       (94.4% logic, 5.6% route)
 
 --------------------------------------------------------------------------------
 
-Paths for end point main_process.response_from_host_42 (SLICE_X0Y114.D6), 1 path
+Paths for end point main_process.response_from_host_46 (SLICE_X4Y103.D6), 1 path
 --------------------------------------------------------------------------------
 Slack (hold path):      0.414ns (requirement - (clock path skew + uncertainty - data path))
-  Source:               main_process.response_from_host_42 (FF)
-  Destination:          main_process.response_from_host_42 (FF)
+  Source:               main_process.response_from_host_46 (FF)
+  Destination:          main_process.response_from_host_46 (FF)
   Requirement:          0.000ns
   Data Path Delay:      0.414ns (Levels of Logic = 1)
   Clock Path Skew:      0.000ns
@@ -743,47 +698,47 @@ Slack (hold path):      0.414ns (requirement - (clock path skew + uncertainty - 
   Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.000ns
 
-  Minimum Data Path at Fast Process Corner: main_process.response_from_host_42 to main_process.response_from_host_42
+  Minimum Data Path at Fast Process Corner: main_process.response_from_host_46 to main_process.response_from_host_46
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X0Y114.DQ      Tcko                  0.200   main_process.response_from_host<42>
-                                                       main_process.response_from_host_42
-    SLICE_X0Y114.D6      net (fanout=2)        0.024   main_process.response_from_host<42>
-    SLICE_X0Y114.CLK     Tah         (-Th)    -0.190   main_process.response_from_host<42>
-                                                       Mmux__n1125141
-                                                       main_process.response_from_host_42
+    SLICE_X4Y103.DQ      Tcko                  0.200   main_process.response_from_host<46>
+                                                       main_process.response_from_host_46
+    SLICE_X4Y103.D6      net (fanout=2)        0.024   main_process.response_from_host<46>
+    SLICE_X4Y103.CLK     Tah         (-Th)    -0.190   main_process.response_from_host<46>
+                                                       Mmux__n116091
+                                                       main_process.response_from_host_46
     -------------------------------------------------  ---------------------------
     Total                                      0.414ns (0.390ns logic, 0.024ns route)
                                                        (94.2% logic, 5.8% route)
 
 --------------------------------------------------------------------------------
 
-Paths for end point main_process.check_for_host_response_4 (SLICE_X24Y111.A6), 1 path
+Paths for end point decrypt/v1_31 (SLICE_X12Y103.D6), 1 path
 --------------------------------------------------------------------------------
-Slack (hold path):      0.414ns (requirement - (clock path skew + uncertainty - data path))
-  Source:               main_process.check_for_host_response_4 (FF)
-  Destination:          main_process.check_for_host_response_4 (FF)
+Slack (hold path):      0.415ns (requirement - (clock path skew + uncertainty - data path))
+  Source:               decrypt/v1_31 (FF)
+  Destination:          decrypt/v1_31 (FF)
   Requirement:          0.000ns
-  Data Path Delay:      0.414ns (Levels of Logic = 1)
+  Data Path Delay:      0.415ns (Levels of Logic = 1)
   Clock Path Skew:      0.000ns
   Source Clock:         fx2Clk_in_BUFGP rising at 20.000ns
   Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.000ns
 
-  Minimum Data Path at Fast Process Corner: main_process.check_for_host_response_4 to main_process.check_for_host_response_4
+  Minimum Data Path at Fast Process Corner: decrypt/v1_31 to decrypt/v1_31
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X24Y111.AQ     Tcko                  0.200   main_process.check_for_host_response<5>
-                                                       main_process.check_for_host_response_4
-    SLICE_X24Y111.A6     net (fanout=2)        0.024   main_process.check_for_host_response<4>
-    SLICE_X24Y111.CLK    Tah         (-Th)    -0.190   main_process.check_for_host_response<5>
-                                                       Mmux__n112741
-                                                       main_process.check_for_host_response_4
+    SLICE_X12Y103.DQ     Tcko                  0.200   decrypt/v1<31>
+                                                       decrypt/v1_31
+    SLICE_X12Y103.D6     net (fanout=2)        0.025   decrypt/v1<31>
+    SLICE_X12Y103.CLK    Tah         (-Th)    -0.190   decrypt/v1<31>
+                                                       decrypt/Mmux_v1[31]_GND_24_o_mux_20_OUT251
+                                                       decrypt/v1_31
     -------------------------------------------------  ---------------------------
-    Total                                      0.414ns (0.390ns logic, 0.024ns route)
-                                                       (94.2% logic, 5.8% route)
+    Total                                      0.415ns (0.390ns logic, 0.025ns route)
+                                                       (94.0% logic, 6.0% route)
 
 --------------------------------------------------------------------------------
 
@@ -800,17 +755,17 @@ Slack: 17.334ns (period - min period limit)
 Slack: 19.520ns (period - min period limit)
   Period: 20.000ns
   Min period limit: 0.480ns (2083.333MHz) (Tcp)
-  Physical resource: data_in_debouncer/count<3>/CLK
-  Logical resource: data_in_debouncer/count_0/CK
-  Location pin: SLICE_X10Y46.CLK
+  Physical resource: start_debouncer/count<3>/CLK
+  Logical resource: start_debouncer/count_0/CK
+  Location pin: SLICE_X14Y31.CLK
   Clock network: fx2Clk_in_BUFGP
 --------------------------------------------------------------------------------
 Slack: 19.520ns (period - min period limit)
   Period: 20.000ns
   Min period limit: 0.480ns (2083.333MHz) (Tcp)
-  Physical resource: data_in_debouncer/count<3>/CLK
-  Logical resource: data_in_debouncer/count_1/CK
-  Location pin: SLICE_X10Y46.CLK
+  Physical resource: start_debouncer/count<3>/CLK
+  Logical resource: start_debouncer/count_1/CK
+  Location pin: SLICE_X14Y31.CLK
   Clock network: fx2Clk_in_BUFGP
 --------------------------------------------------------------------------------
 
@@ -827,7 +782,7 @@ Clock to Setup on destination clock fx2Clk_in
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-fx2Clk_in      |   14.250|         |         |         |
+fx2Clk_in      |   13.046|         |         |         |
 ---------------+---------+---------+---------+---------+
 
 
@@ -836,16 +791,16 @@ Timing summary:
 
 Timing errors: 0  Score: 0  (Setup/Max: 0, Hold: 0)
 
-Constraints cover 215349905 paths, 0 nets, and 6907 connections
+Constraints cover 215350756 paths, 0 nets, and 6917 connections
 
 Design statistics:
-   Minimum period:  14.250ns{1}   (Maximum frequency:  70.175MHz)
+   Minimum period:  13.046ns{1}   (Maximum frequency:  76.652MHz)
 
 
 ------------------------------------Footnotes-----------------------------------
 1)  The minimum period statistic assumes all single cycle delays.
 
-Analysis completed Mon Mar 27 15:11:53 2017 
+Analysis completed Mon Mar 27 17:40:54 2017 
 --------------------------------------------------------------------------------
 
 Trace Settings:
