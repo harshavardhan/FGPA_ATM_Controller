@@ -1,0 +1,41 @@
+xst -intstyle ise -ifn "/home/pandu/Desktop/DigitalLogicDesign/Lab/finishingup-xise/top_level.xst" -ofn "/home/pandu/Desktop/DigitalLogicDesign/Lab/finishingup-xise/top_level.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx45-csg324-2 top_level.ngc top_level.ngd  
+map -intstyle ise -p xc6slx45-csg324-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o top_level_map.ncd top_level.ngd top_level.pcf 
+par -w -intstyle ise -ol high -mt off top_level_map.ncd top_level.ncd top_level.pcf 
+trce -intstyle ise -v 3 -s 2 -n 3 -fastpaths -xml top_level.twx top_level.ncd -o top_level.twr top_level.pcf 
+bitgen -intstyle ise -f top_level.ut top_level.ncd 
+xst -intstyle ise -ifn "/home/pandu/Desktop/DigitalLogicDesign/Lab/finishingup-xise/top_level.xst" -ofn "/home/pandu/Desktop/DigitalLogicDesign/Lab/finishingup-xise/top_level.syr" 
+xst -intstyle ise -ifn "/home/pandu/Desktop/DigitalLogicDesign/Lab/finishingup-xise/top_level.xst" -ofn "/home/pandu/Desktop/DigitalLogicDesign/Lab/finishingup-xise/top_level.syr" 
+vhdtdtfi -prj finishingup-xise -o /home/pandu/Desktop/DigitalLogicDesign/Lab/finishingup-xise/top_level.vhi -module top_level -template /opt/Xilinx/14.7/ISE_DS/ISE//data/vhdlinst.tft -deleteonerror -lib work encrypter.vhd -lib work decrypter.vhd -lib work debouncer.vhd -lib work comm_fgpa_fx2.vhd -lib work atm_top_level.vhd 
+vhdtdtfi -lib work encrypter.vhd -lib work decrypter.vhd -lib work debouncer.vhd -lib work comm_fgpa_fx2.vhd -lib work atm_top_level.vhd -prj finishingup-xise -o top_level.spl -module top_level -template /opt/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan6 top_level.spl /home/pandu/Desktop/DigitalLogicDesign/Lab/finishingup-xise/top_level.sym 
+xst -intstyle ise -ifn "/home/pandu/Desktop/DigitalLogicDesign/Lab/finishingup-xise/top_level.xst" -ofn "/home/pandu/Desktop/DigitalLogicDesign/Lab/finishingup-xise/top_level.syr" 
+xst -intstyle ise -ifn "/home/pandu/Desktop/DigitalLogicDesign/Lab/finishingup-xise/top_level.xst" -ofn "/home/pandu/Desktop/DigitalLogicDesign/Lab/finishingup-xise/top_level.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx45-csg324-2 top_level.ngc top_level.ngd  
+map -intstyle ise -p xc6slx45-csg324-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o top_level_map.ncd top_level.ngd top_level.pcf 
+par -w -intstyle ise -ol high -mt off top_level_map.ncd top_level.ncd top_level.pcf 
+trce -intstyle ise -v 3 -s 2 -n 3 -fastpaths -xml top_level.twx top_level.ncd -o top_level.twr top_level.pcf 
+bitgen -intstyle ise -f top_level.ut top_level.ncd 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx45-csg324-2 top_level.ngc top_level.ngd  
+map -intstyle ise -p xc6slx45-csg324-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o top_level_map.ncd top_level.ngd top_level.pcf 
+par -w -intstyle ise -ol high -mt off top_level_map.ncd top_level.ncd top_level.pcf 
+trce -intstyle ise -v 3 -s 2 -n 3 -fastpaths -xml top_level.twx top_level.ncd -o top_level.twr top_level.pcf 
+bitgen -intstyle ise -f top_level.ut top_level.ncd 
+xst -intstyle ise -ifn "/home/pandu/Desktop/DigitalLogicDesign/Lab/frontend/top_level.xst" -ofn "/home/pandu/Desktop/DigitalLogicDesign/Lab/frontend/top_level.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc board.ucf -p xc6slx45-csg324-2 top_level.ngc top_level.ngd  
+map -intstyle ise -p xc6slx45-csg324-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o top_level_map.ncd top_level.ngd top_level.pcf 
+par -w -intstyle ise -ol high -mt off top_level_map.ncd top_level.ncd top_level.pcf 
+trce -intstyle ise -v 3 -s 2 -n 3 -fastpaths -xml top_level.twx top_level.ncd -o top_level.twr top_level.pcf -ucf board.ucf 
+bitgen -intstyle ise -f top_level.ut top_level.ncd 
+xst -intstyle ise -ifn "/home/pandu/Desktop/DigitalLogicDesign/Lab/frontend/top_level.xst" -ofn "/home/pandu/Desktop/DigitalLogicDesign/Lab/frontend/top_level.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc board.ucf -p xc6slx45-csg324-2 top_level.ngc top_level.ngd  
+map -intstyle ise -p xc6slx45-csg324-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o top_level_map.ncd top_level.ngd top_level.pcf 
+par -w -intstyle ise -ol high -mt off top_level_map.ncd top_level.ncd top_level.pcf 
+trce -intstyle ise -v 3 -s 2 -n 3 -fastpaths -xml top_level.twx top_level.ncd -o top_level.twr top_level.pcf -ucf board.ucf 
+bitgen -intstyle ise -f top_level.ut top_level.ncd 
+xst -intstyle ise -ifn "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/frontend/top_level.xst" -ofn "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/frontend/top_level.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc board.ucf -p xc6slx45-csg324-2 top_level.ngc top_level.ngd  
+map -intstyle ise -p xc6slx45-csg324-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o top_level_map.ncd top_level.ngd top_level.pcf 
+par -w -intstyle ise -ol high -mt off top_level_map.ncd top_level.ncd top_level.pcf 
+trce -intstyle ise -v 3 -s 2 -n 3 -fastpaths -xml top_level.twx top_level.ncd -o top_level.twr top_level.pcf -ucf board.ucf 
+bitgen -intstyle ise -f top_level.ut top_level.ncd 
