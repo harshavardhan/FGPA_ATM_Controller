@@ -1,0 +1,78 @@
+   1              		.file	"sig.c"
+   2              		.text
+   3              		.p2align 4,,15
+   5              	sigHandler:
+   6              	.LFB8:
+   7              		.cfi_startproc
+   8 0000 C6050000 		movb	$1, m_sigint(%rip)
+   8      000001
+   9 0007 C3       		ret
+  10              		.cfi_endproc
+  11              	.LFE8:
+  13 0008 0F1F8400 		.p2align 4,,15
+  13      00000000 
+  14              		.globl	sigIsRaised
+  16              	sigIsRaised:
+  17              	.LFB7:
+  18              		.cfi_startproc
+  19 0010 0FB60500 		movzbl	m_sigint(%rip), %eax
+  19      000000
+  20 0017 C3       		ret
+  21              		.cfi_endproc
+  22              	.LFE7:
+  24 0018 0F1F8400 		.p2align 4,,15
+  24      00000000 
+  25              		.globl	sigRegisterHandler
+  27              	sigRegisterHandler:
+  28              	.LFB9:
+  29              		.cfi_startproc
+  30 0020 4881EC48 		subq	$328, %rsp
+  30      010000
+  31              		.cfi_def_cfa_offset 336
+  32 0027 488D7C24 		leaq	8(%rsp), %rdi
+  32      08
+  33 002c 48C70424 		movq	$sigHandler, (%rsp)
+  33      00000000 
+  34 0034 E8000000 		call	sigemptyset
+  34      00
+  35 0039 488D9424 		leaq	160(%rsp), %rdx
+  35      A0000000 
+  36 0041 31F6     		xorl	%esi, %esi
+  37 0043 BF020000 		movl	$2, %edi
+  37      00
+  38 0048 C7842488 		movl	$0, 136(%rsp)
+  38      00000000 
+  38      000000
+  39 0053 E8000000 		call	sigaction
+  39      00
+  40 0058 4883BC24 		cmpq	$1, 160(%rsp)
+  40      A0000000 
+  40      01
+  41 0061 740F     		je	.L3
+  42 0063 31D2     		xorl	%edx, %edx
+  43 0065 4889E6   		movq	%rsp, %rsi
+  44 0068 BF020000 		movl	$2, %edi
+  44      00
+  45 006d E8000000 		call	sigaction
+  45      00
+  46              	.L3:
+  47 0072 4881C448 		addq	$328, %rsp
+  47      010000
+  48              		.cfi_def_cfa_offset 8
+  49 0079 C3       		ret
+  50              		.cfi_endproc
+  51              	.LFE9:
+  53              		.local	m_sigint
+  54              		.comm	m_sigint,1,16
+  55              		.ident	"GCC: (Ubuntu 4.8.4-2ubuntu1~14.04.3) 4.8.4"
+  56              		.section	.note.GNU-stack,"",@progbits
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 sig.c
+     /tmp/ccMNfvSj.s:5      .text:0000000000000000 sigHandler
+     /tmp/ccMNfvSj.s:54     .bss:0000000000000000 m_sigint
+     /tmp/ccMNfvSj.s:16     .text:0000000000000010 sigIsRaised
+     /tmp/ccMNfvSj.s:27     .text:0000000000000020 sigRegisterHandler
+
+UNDEFINED SYMBOLS
+sigemptyset
+sigaction
