@@ -29,19 +29,19 @@ INFO:Timing:3339 - The clock-to-out numbers in this timing report are based on
 Timing constraint: TS_clk = PERIOD TIMEGRP "fx2Clk_in" 20 ns HIGH 50%;
 For more information, see Period Analysis in the Timing Closure User Guide (UG612).
 
- 215350756 paths analyzed, 4362 endpoints analyzed, 0 failing endpoints
+ 246553971 paths analyzed, 5132 endpoints analyzed, 0 failing endpoints
  0 timing errors detected. (0 setup errors, 0 hold errors, 0 component switching limit errors)
- Minimum period is  13.046ns.
+ Minimum period is  14.759ns.
 --------------------------------------------------------------------------------
 
-Paths for end point encrypt/v1_26 (SLICE_X24Y75.C3), 12405991 paths
+Paths for end point note_allocate/amount_asked_int_8 (SLICE_X13Y92.B3), 309017 paths
 --------------------------------------------------------------------------------
-Slack (setup path):     6.954ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               encrypt/round_2 (FF)
-  Destination:          encrypt/v1_26 (FF)
+Slack (setup path):     5.241ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               note_allocate/right_limit_5 (FF)
+  Destination:          note_allocate/amount_asked_int_8 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      13.003ns (Levels of Logic = 12)
-  Clock Path Skew:      -0.008ns (0.293 - 0.301)
+  Data Path Delay:      14.702ns (Levels of Logic = 10)
+  Clock Path Skew:      -0.022ns (0.292 - 0.314)
   Source Clock:         fx2Clk_in_BUFGP rising at 0.000ns
   Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -52,65 +52,59 @@ Slack (setup path):     6.954ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_26
+  Maximum Data Path at Slow Process Corner: note_allocate/right_limit_5 to note_allocate/amount_asked_int_8
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X10Y71.AMUX    Tshcko                0.576   encrypt/round<5>
-                                                       encrypt/round_2
-    SLICE_X15Y66.D1      net (fanout=10)       1.241   encrypt/round<2>
-    SLICE_X15Y66.D       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-                                                       encrypt/GND_23_o_round[5]_equal_1_o<5>11_3
-    SLICE_X14Y62.B3      net (fanout=13)       0.918   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-    SLICE_X14Y62.COUT    Topcyb                0.483   encrypt/Madd_n0098_cy<3>
-                                                       encrypt/Mmux_n00931211
-                                                       encrypt/Madd_n0098_cy<3>
-    SLICE_X14Y63.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<3>
-    SLICE_X14Y63.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<7>
-                                                       encrypt/Madd_n0098_cy<7>
-    SLICE_X14Y64.CIN     net (fanout=1)        0.135   encrypt/Madd_n0098_cy<7>
-    SLICE_X14Y64.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<11>
-                                                       encrypt/Madd_n0098_cy<11>
-    SLICE_X14Y65.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<11>
-    SLICE_X14Y65.DMUX    Tcind                 0.320   encrypt/Madd_n0098_cy<15>
-                                                       encrypt/Madd_n0098_cy<15>
-    SLICE_X16Y66.D1      net (fanout=4)        1.187   encrypt/n0098<15>
-    SLICE_X16Y66.COUT    Topcyd                0.290   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<15>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X16Y67.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X16Y67.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X18Y71.B3      net (fanout=1)        1.103   encrypt/v1[31]_sum[31]_add_7_OUT<17>
-    SLICE_X18Y71.CMUX    Topbc                 0.650   encrypt/Madd_n0107_cy<19>
-                                                       encrypt/Madd_n0107_lut<17>
-                                                       encrypt/Madd_n0107_cy<19>
-    SLICE_X20Y77.C3      net (fanout=5)        1.547   encrypt/n0107<18>
-    SLICE_X20Y77.COUT    Topcyc                0.325   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_lut<21>_INV_0
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-    SLICE_X20Y78.CIN     net (fanout=1)        0.003   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-    SLICE_X20Y78.BMUX    Tcinb                 0.277   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
-    SLICE_X24Y72.B2      net (fanout=1)        1.445   encrypt/v0[31]_GND_23_o_add_12_OUT<25>
-    SLICE_X24Y72.CMUX    Topbc                 0.613   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<25>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X24Y75.C3      net (fanout=1)        0.810   encrypt/v1[31]_v0[31]_add_17_OUT<26>
-    SLICE_X24Y75.CLK     Tas                   0.349   encrypt/v1<27>
-                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT191
-                                                       encrypt/v1_26
+    SLICE_X20Y95.CQ      Tcko                  0.476   note_allocate/right_limit<5>
+                                                       note_allocate/right_limit_5
+    SLICE_X8Y83.B4       net (fanout=3)        1.842   note_allocate/right_limit<5>
+    SLICE_X8Y83.DQ       Tad_logic             1.118   note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>
+                                                       note_allocate/Madd_n0405_lut<5>
+                                                       note_allocate/Madd_n0405_cy<7>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>_rt
+    SLICE_X2Y93.B2       net (fanout=36)       2.648   note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>
+    SLICE_X2Y93.COUT     Topcyb                0.483   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_lut<8>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+    SLICE_X2Y94.CIN      net (fanout=1)        0.003   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+    SLICE_X2Y94.AMUX     Tcina                 0.220   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<13>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<13>
+    SLICE_X6Y93.B5       net (fanout=2)        1.074   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd_133
+    SLICE_X6Y93.COUT     Topcyb                0.483   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_lut<13>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+    SLICE_X6Y94.CIN      net (fanout=1)        0.003   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+    SLICE_X6Y94.AMUX     Tcina                 0.220   note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_B23
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_xor<16>
+    SLICE_X16Y93.D4      net (fanout=1)        1.085   note_allocate/PWR_17_o_BUS_0003_MuLt_65_OUT<16>
+    SLICE_X16Y93.COUT    Topcyd                0.335   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_lutdi7
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+    SLICE_X16Y94.CIN     net (fanout=1)        0.003   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+    SLICE_X16Y94.CMUX    Tcinc                 0.296   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+    SLICE_X7Y96.B1       net (fanout=7)        1.377   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+    SLICE_X7Y96.B        Tilo                  0.259   note_allocate/system_state_FSM_FFd2
+                                                       note_allocate/_n04731
+    SLICE_X9Y90.D4       net (fanout=3)        1.247   note_allocate/_n0473
+    SLICE_X9Y90.D        Tilo                  0.259   note_allocate/amount_asked_int<2>
+                                                       note_allocate/_n0499_inv2
+    SLICE_X13Y92.B3      net (fanout=11)       0.898   note_allocate/_n0499_inv2
+    SLICE_X13Y92.CLK     Tas                   0.373   note_allocate/amount_asked_int<10>
+                                                       note_allocate/amount_asked_int_8_dpot
+                                                       note_allocate/amount_asked_int_8
     -------------------------------------------------  ---------------------------
-    Total                                     13.003ns (4.605ns logic, 8.398ns route)
-                                                       (35.4% logic, 64.6% route)
+    Total                                     14.702ns (4.522ns logic, 10.180ns route)
+                                                       (30.8% logic, 69.2% route)
 
 --------------------------------------------------------------------------------
-Slack (setup path):     6.968ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               encrypt/round_2 (FF)
-  Destination:          encrypt/v1_26 (FF)
+Slack (setup path):     5.286ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               note_allocate/right_limit_5 (FF)
+  Destination:          note_allocate/amount_asked_int_8 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      12.989ns (Levels of Logic = 11)
-  Clock Path Skew:      -0.008ns (0.293 - 0.301)
+  Data Path Delay:      14.657ns (Levels of Logic = 10)
+  Clock Path Skew:      -0.022ns (0.292 - 0.314)
   Source Clock:         fx2Clk_in_BUFGP rising at 0.000ns
   Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -121,62 +115,59 @@ Slack (setup path):     6.968ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_26
+  Maximum Data Path at Slow Process Corner: note_allocate/right_limit_5 to note_allocate/amount_asked_int_8
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X10Y71.AMUX    Tshcko                0.576   encrypt/round<5>
-                                                       encrypt/round_2
-    SLICE_X15Y66.D1      net (fanout=10)       1.241   encrypt/round<2>
-    SLICE_X15Y66.D       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-                                                       encrypt/GND_23_o_round[5]_equal_1_o<5>11_3
-    SLICE_X14Y63.A2      net (fanout=13)       1.009   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-    SLICE_X14Y63.COUT    Topcya                0.474   encrypt/Madd_n0098_cy<7>
-                                                       encrypt/Madd_n0098_lut<4>
-                                                       encrypt/Madd_n0098_cy<7>
-    SLICE_X14Y64.CIN     net (fanout=1)        0.135   encrypt/Madd_n0098_cy<7>
-    SLICE_X14Y64.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<11>
-                                                       encrypt/Madd_n0098_cy<11>
-    SLICE_X14Y65.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<11>
-    SLICE_X14Y65.DMUX    Tcind                 0.320   encrypt/Madd_n0098_cy<15>
-                                                       encrypt/Madd_n0098_cy<15>
-    SLICE_X16Y66.D1      net (fanout=4)        1.187   encrypt/n0098<15>
-    SLICE_X16Y66.COUT    Topcyd                0.290   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<15>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X16Y67.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X16Y67.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X18Y71.B3      net (fanout=1)        1.103   encrypt/v1[31]_sum[31]_add_7_OUT<17>
-    SLICE_X18Y71.CMUX    Topbc                 0.650   encrypt/Madd_n0107_cy<19>
-                                                       encrypt/Madd_n0107_lut<17>
-                                                       encrypt/Madd_n0107_cy<19>
-    SLICE_X20Y77.C3      net (fanout=5)        1.547   encrypt/n0107<18>
-    SLICE_X20Y77.COUT    Topcyc                0.325   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_lut<21>_INV_0
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-    SLICE_X20Y78.CIN     net (fanout=1)        0.003   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-    SLICE_X20Y78.BMUX    Tcinb                 0.277   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
-    SLICE_X24Y72.B2      net (fanout=1)        1.445   encrypt/v0[31]_GND_23_o_add_12_OUT<25>
-    SLICE_X24Y72.CMUX    Topbc                 0.613   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<25>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X24Y75.C3      net (fanout=1)        0.810   encrypt/v1[31]_v0[31]_add_17_OUT<26>
-    SLICE_X24Y75.CLK     Tas                   0.349   encrypt/v1<27>
-                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT191
-                                                       encrypt/v1_26
+    SLICE_X20Y95.CQ      Tcko                  0.476   note_allocate/right_limit<5>
+                                                       note_allocate/right_limit_5
+    SLICE_X8Y83.B4       net (fanout=3)        1.842   note_allocate/right_limit<5>
+    SLICE_X8Y83.DQ       Tad_logic             1.118   note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>
+                                                       note_allocate/Madd_n0405_lut<5>
+                                                       note_allocate/Madd_n0405_cy<7>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>_rt
+    SLICE_X2Y93.B2       net (fanout=36)       2.648   note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>
+    SLICE_X2Y93.COUT     Topcyb                0.483   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_lut<8>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+    SLICE_X2Y94.CIN      net (fanout=1)        0.003   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+    SLICE_X2Y94.AMUX     Tcina                 0.220   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<13>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<13>
+    SLICE_X6Y93.B5       net (fanout=2)        1.074   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd_133
+    SLICE_X6Y93.COUT     Topcyb                0.483   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_lut<13>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+    SLICE_X6Y94.CIN      net (fanout=1)        0.003   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+    SLICE_X6Y94.AMUX     Tcina                 0.220   note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_B23
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_xor<16>
+    SLICE_X16Y93.D4      net (fanout=1)        1.085   note_allocate/PWR_17_o_BUS_0003_MuLt_65_OUT<16>
+    SLICE_X16Y93.COUT    Topcyd                0.290   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_lut<7>
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+    SLICE_X16Y94.CIN     net (fanout=1)        0.003   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+    SLICE_X16Y94.CMUX    Tcinc                 0.296   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+    SLICE_X7Y96.B1       net (fanout=7)        1.377   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+    SLICE_X7Y96.B        Tilo                  0.259   note_allocate/system_state_FSM_FFd2
+                                                       note_allocate/_n04731
+    SLICE_X9Y90.D4       net (fanout=3)        1.247   note_allocate/_n0473
+    SLICE_X9Y90.D        Tilo                  0.259   note_allocate/amount_asked_int<2>
+                                                       note_allocate/_n0499_inv2
+    SLICE_X13Y92.B3      net (fanout=11)       0.898   note_allocate/_n0499_inv2
+    SLICE_X13Y92.CLK     Tas                   0.373   note_allocate/amount_asked_int<10>
+                                                       note_allocate/amount_asked_int_8_dpot
+                                                       note_allocate/amount_asked_int_8
     -------------------------------------------------  ---------------------------
-    Total                                     12.989ns (4.503ns logic, 8.486ns route)
-                                                       (34.7% logic, 65.3% route)
+    Total                                     14.657ns (4.477ns logic, 10.180ns route)
+                                                       (30.5% logic, 69.5% route)
 
 --------------------------------------------------------------------------------
-Slack (setup path):     7.017ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               encrypt/round_2 (FF)
-  Destination:          encrypt/v1_26 (FF)
+Slack (setup path):     5.322ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               note_allocate/right_limit_0 (FF)
+  Destination:          note_allocate/amount_asked_int_8 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      12.940ns (Levels of Logic = 12)
-  Clock Path Skew:      -0.008ns (0.293 - 0.301)
+  Data Path Delay:      14.622ns (Levels of Logic = 11)
+  Clock Path Skew:      -0.021ns (0.292 - 0.313)
   Source Clock:         fx2Clk_in_BUFGP rising at 0.000ns
   Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -187,68 +178,65 @@ Slack (setup path):     7.017ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_26
+  Maximum Data Path at Slow Process Corner: note_allocate/right_limit_0 to note_allocate/amount_asked_int_8
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X10Y71.AMUX    Tshcko                0.576   encrypt/round<5>
-                                                       encrypt/round_2
-    SLICE_X15Y66.D1      net (fanout=10)       1.241   encrypt/round<2>
-    SLICE_X15Y66.D       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-                                                       encrypt/GND_23_o_round[5]_equal_1_o<5>11_3
-    SLICE_X14Y62.C2      net (fanout=13)       1.010   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-    SLICE_X14Y62.COUT    Topcyc                0.328   encrypt/Madd_n0098_cy<3>
-                                                       encrypt/Mmux_n00932311
-                                                       encrypt/Madd_n0098_cy<3>
-    SLICE_X14Y63.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<3>
-    SLICE_X14Y63.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<7>
-                                                       encrypt/Madd_n0098_cy<7>
-    SLICE_X14Y64.CIN     net (fanout=1)        0.135   encrypt/Madd_n0098_cy<7>
-    SLICE_X14Y64.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<11>
-                                                       encrypt/Madd_n0098_cy<11>
-    SLICE_X14Y65.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<11>
-    SLICE_X14Y65.DMUX    Tcind                 0.320   encrypt/Madd_n0098_cy<15>
-                                                       encrypt/Madd_n0098_cy<15>
-    SLICE_X16Y66.D1      net (fanout=4)        1.187   encrypt/n0098<15>
-    SLICE_X16Y66.COUT    Topcyd                0.290   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<15>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X16Y67.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X16Y67.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X18Y71.B3      net (fanout=1)        1.103   encrypt/v1[31]_sum[31]_add_7_OUT<17>
-    SLICE_X18Y71.CMUX    Topbc                 0.650   encrypt/Madd_n0107_cy<19>
-                                                       encrypt/Madd_n0107_lut<17>
-                                                       encrypt/Madd_n0107_cy<19>
-    SLICE_X20Y77.C3      net (fanout=5)        1.547   encrypt/n0107<18>
-    SLICE_X20Y77.COUT    Topcyc                0.325   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_lut<21>_INV_0
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-    SLICE_X20Y78.CIN     net (fanout=1)        0.003   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-    SLICE_X20Y78.BMUX    Tcinb                 0.277   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
-    SLICE_X24Y72.B2      net (fanout=1)        1.445   encrypt/v0[31]_GND_23_o_add_12_OUT<25>
-    SLICE_X24Y72.CMUX    Topbc                 0.613   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<25>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X24Y75.C3      net (fanout=1)        0.810   encrypt/v1[31]_v0[31]_add_17_OUT<26>
-    SLICE_X24Y75.CLK     Tas                   0.349   encrypt/v1<27>
-                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT191
-                                                       encrypt/v1_26
+    SLICE_X6Y95.CQ       Tcko                  0.525   note_allocate/right_limit<0>
+                                                       note_allocate/right_limit_0
+    SLICE_X8Y82.A3       net (fanout=3)        1.593   note_allocate/right_limit<0>
+    SLICE_X8Y82.COUT     Topcya                0.472   note_allocate/Madd_n0405_cy<3>
+                                                       note_allocate/Madd_n0405_lut<0>
+                                                       note_allocate/Madd_n0405_cy<3>
+    SLICE_X8Y83.CIN      net (fanout=1)        0.003   note_allocate/Madd_n0405_cy<3>
+    SLICE_X8Y83.DQ       Tito_logic            0.763   note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>
+                                                       note_allocate/Madd_n0405_cy<7>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>_rt
+    SLICE_X2Y93.B2       net (fanout=36)       2.648   note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>
+    SLICE_X2Y93.COUT     Topcyb                0.483   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_lut<8>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+    SLICE_X2Y94.CIN      net (fanout=1)        0.003   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+    SLICE_X2Y94.AMUX     Tcina                 0.220   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<13>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<13>
+    SLICE_X6Y93.B5       net (fanout=2)        1.074   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd_133
+    SLICE_X6Y93.COUT     Topcyb                0.483   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_lut<13>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+    SLICE_X6Y94.CIN      net (fanout=1)        0.003   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+    SLICE_X6Y94.AMUX     Tcina                 0.220   note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_B23
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_xor<16>
+    SLICE_X16Y93.D4      net (fanout=1)        1.085   note_allocate/PWR_17_o_BUS_0003_MuLt_65_OUT<16>
+    SLICE_X16Y93.COUT    Topcyd                0.335   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_lutdi7
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+    SLICE_X16Y94.CIN     net (fanout=1)        0.003   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+    SLICE_X16Y94.CMUX    Tcinc                 0.296   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+    SLICE_X7Y96.B1       net (fanout=7)        1.377   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+    SLICE_X7Y96.B        Tilo                  0.259   note_allocate/system_state_FSM_FFd2
+                                                       note_allocate/_n04731
+    SLICE_X9Y90.D4       net (fanout=3)        1.247   note_allocate/_n0473
+    SLICE_X9Y90.D        Tilo                  0.259   note_allocate/amount_asked_int<2>
+                                                       note_allocate/_n0499_inv2
+    SLICE_X13Y92.B3      net (fanout=11)       0.898   note_allocate/_n0499_inv2
+    SLICE_X13Y92.CLK     Tas                   0.373   note_allocate/amount_asked_int<10>
+                                                       note_allocate/amount_asked_int_8_dpot
+                                                       note_allocate/amount_asked_int_8
     -------------------------------------------------  ---------------------------
-    Total                                     12.940ns (4.450ns logic, 8.490ns route)
-                                                       (34.4% logic, 65.6% route)
+    Total                                     14.622ns (4.688ns logic, 9.934ns route)
+                                                       (32.1% logic, 67.9% route)
 
 --------------------------------------------------------------------------------
 
-Paths for end point encrypt/v1_27 (SLICE_X24Y75.D4), 14439228 paths
+Paths for end point note_allocate/amount_asked_int_7 (SLICE_X13Y92.A3), 309017 paths
 --------------------------------------------------------------------------------
-Slack (setup path):     7.029ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               encrypt/round_2 (FF)
-  Destination:          encrypt/v1_27 (FF)
+Slack (setup path):     5.252ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               note_allocate/right_limit_5 (FF)
+  Destination:          note_allocate/amount_asked_int_7 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      12.928ns (Levels of Logic = 12)
-  Clock Path Skew:      -0.008ns (0.293 - 0.301)
+  Data Path Delay:      14.691ns (Levels of Logic = 10)
+  Clock Path Skew:      -0.022ns (0.292 - 0.314)
   Source Clock:         fx2Clk_in_BUFGP rising at 0.000ns
   Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -259,65 +247,59 @@ Slack (setup path):     7.029ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_27
+  Maximum Data Path at Slow Process Corner: note_allocate/right_limit_5 to note_allocate/amount_asked_int_7
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X10Y71.AMUX    Tshcko                0.576   encrypt/round<5>
-                                                       encrypt/round_2
-    SLICE_X15Y66.D1      net (fanout=10)       1.241   encrypt/round<2>
-    SLICE_X15Y66.D       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-                                                       encrypt/GND_23_o_round[5]_equal_1_o<5>11_3
-    SLICE_X14Y62.B3      net (fanout=13)       0.918   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-    SLICE_X14Y62.COUT    Topcyb                0.483   encrypt/Madd_n0098_cy<3>
-                                                       encrypt/Mmux_n00931211
-                                                       encrypt/Madd_n0098_cy<3>
-    SLICE_X14Y63.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<3>
-    SLICE_X14Y63.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<7>
-                                                       encrypt/Madd_n0098_cy<7>
-    SLICE_X14Y64.CIN     net (fanout=1)        0.135   encrypt/Madd_n0098_cy<7>
-    SLICE_X14Y64.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<11>
-                                                       encrypt/Madd_n0098_cy<11>
-    SLICE_X14Y65.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<11>
-    SLICE_X14Y65.DMUX    Tcind                 0.320   encrypt/Madd_n0098_cy<15>
-                                                       encrypt/Madd_n0098_cy<15>
-    SLICE_X16Y66.D1      net (fanout=4)        1.187   encrypt/n0098<15>
-    SLICE_X16Y66.COUT    Topcyd                0.290   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<15>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X16Y67.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X16Y67.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X18Y71.B3      net (fanout=1)        1.103   encrypt/v1[31]_sum[31]_add_7_OUT<17>
-    SLICE_X18Y71.CMUX    Topbc                 0.650   encrypt/Madd_n0107_cy<19>
-                                                       encrypt/Madd_n0107_lut<17>
-                                                       encrypt/Madd_n0107_cy<19>
-    SLICE_X20Y77.C3      net (fanout=5)        1.547   encrypt/n0107<18>
-    SLICE_X20Y77.COUT    Topcyc                0.325   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_lut<21>_INV_0
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-    SLICE_X20Y78.CIN     net (fanout=1)        0.003   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-    SLICE_X20Y78.BMUX    Tcinb                 0.277   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
-    SLICE_X24Y72.B2      net (fanout=1)        1.445   encrypt/v0[31]_GND_23_o_add_12_OUT<25>
-    SLICE_X24Y72.DMUX    Topbd                 0.644   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<25>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X24Y75.D4      net (fanout=1)        0.704   encrypt/v1[31]_v0[31]_add_17_OUT<27>
-    SLICE_X24Y75.CLK     Tas                   0.349   encrypt/v1<27>
-                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT201
-                                                       encrypt/v1_27
+    SLICE_X20Y95.CQ      Tcko                  0.476   note_allocate/right_limit<5>
+                                                       note_allocate/right_limit_5
+    SLICE_X8Y83.B4       net (fanout=3)        1.842   note_allocate/right_limit<5>
+    SLICE_X8Y83.DQ       Tad_logic             1.118   note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>
+                                                       note_allocate/Madd_n0405_lut<5>
+                                                       note_allocate/Madd_n0405_cy<7>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>_rt
+    SLICE_X2Y93.B2       net (fanout=36)       2.648   note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>
+    SLICE_X2Y93.COUT     Topcyb                0.483   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_lut<8>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+    SLICE_X2Y94.CIN      net (fanout=1)        0.003   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+    SLICE_X2Y94.AMUX     Tcina                 0.220   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<13>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<13>
+    SLICE_X6Y93.B5       net (fanout=2)        1.074   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd_133
+    SLICE_X6Y93.COUT     Topcyb                0.483   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_lut<13>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+    SLICE_X6Y94.CIN      net (fanout=1)        0.003   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+    SLICE_X6Y94.AMUX     Tcina                 0.220   note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_B23
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_xor<16>
+    SLICE_X16Y93.D4      net (fanout=1)        1.085   note_allocate/PWR_17_o_BUS_0003_MuLt_65_OUT<16>
+    SLICE_X16Y93.COUT    Topcyd                0.335   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_lutdi7
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+    SLICE_X16Y94.CIN     net (fanout=1)        0.003   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+    SLICE_X16Y94.CMUX    Tcinc                 0.296   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+    SLICE_X7Y96.B1       net (fanout=7)        1.377   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+    SLICE_X7Y96.B        Tilo                  0.259   note_allocate/system_state_FSM_FFd2
+                                                       note_allocate/_n04731
+    SLICE_X9Y90.D4       net (fanout=3)        1.247   note_allocate/_n0473
+    SLICE_X9Y90.D        Tilo                  0.259   note_allocate/amount_asked_int<2>
+                                                       note_allocate/_n0499_inv2
+    SLICE_X13Y92.A3      net (fanout=11)       0.887   note_allocate/_n0499_inv2
+    SLICE_X13Y92.CLK     Tas                   0.373   note_allocate/amount_asked_int<10>
+                                                       note_allocate/amount_asked_int_7_dpot
+                                                       note_allocate/amount_asked_int_7
     -------------------------------------------------  ---------------------------
-    Total                                     12.928ns (4.636ns logic, 8.292ns route)
-                                                       (35.9% logic, 64.1% route)
+    Total                                     14.691ns (4.522ns logic, 10.169ns route)
+                                                       (30.8% logic, 69.2% route)
 
 --------------------------------------------------------------------------------
-Slack (setup path):     7.043ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               encrypt/round_2 (FF)
-  Destination:          encrypt/v1_27 (FF)
+Slack (setup path):     5.297ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               note_allocate/right_limit_5 (FF)
+  Destination:          note_allocate/amount_asked_int_7 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      12.914ns (Levels of Logic = 11)
-  Clock Path Skew:      -0.008ns (0.293 - 0.301)
+  Data Path Delay:      14.646ns (Levels of Logic = 10)
+  Clock Path Skew:      -0.022ns (0.292 - 0.314)
   Source Clock:         fx2Clk_in_BUFGP rising at 0.000ns
   Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -328,62 +310,59 @@ Slack (setup path):     7.043ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_27
+  Maximum Data Path at Slow Process Corner: note_allocate/right_limit_5 to note_allocate/amount_asked_int_7
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X10Y71.AMUX    Tshcko                0.576   encrypt/round<5>
-                                                       encrypt/round_2
-    SLICE_X15Y66.D1      net (fanout=10)       1.241   encrypt/round<2>
-    SLICE_X15Y66.D       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-                                                       encrypt/GND_23_o_round[5]_equal_1_o<5>11_3
-    SLICE_X14Y63.A2      net (fanout=13)       1.009   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-    SLICE_X14Y63.COUT    Topcya                0.474   encrypt/Madd_n0098_cy<7>
-                                                       encrypt/Madd_n0098_lut<4>
-                                                       encrypt/Madd_n0098_cy<7>
-    SLICE_X14Y64.CIN     net (fanout=1)        0.135   encrypt/Madd_n0098_cy<7>
-    SLICE_X14Y64.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<11>
-                                                       encrypt/Madd_n0098_cy<11>
-    SLICE_X14Y65.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<11>
-    SLICE_X14Y65.DMUX    Tcind                 0.320   encrypt/Madd_n0098_cy<15>
-                                                       encrypt/Madd_n0098_cy<15>
-    SLICE_X16Y66.D1      net (fanout=4)        1.187   encrypt/n0098<15>
-    SLICE_X16Y66.COUT    Topcyd                0.290   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<15>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X16Y67.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X16Y67.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X18Y71.B3      net (fanout=1)        1.103   encrypt/v1[31]_sum[31]_add_7_OUT<17>
-    SLICE_X18Y71.CMUX    Topbc                 0.650   encrypt/Madd_n0107_cy<19>
-                                                       encrypt/Madd_n0107_lut<17>
-                                                       encrypt/Madd_n0107_cy<19>
-    SLICE_X20Y77.C3      net (fanout=5)        1.547   encrypt/n0107<18>
-    SLICE_X20Y77.COUT    Topcyc                0.325   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_lut<21>_INV_0
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-    SLICE_X20Y78.CIN     net (fanout=1)        0.003   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-    SLICE_X20Y78.BMUX    Tcinb                 0.277   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
-    SLICE_X24Y72.B2      net (fanout=1)        1.445   encrypt/v0[31]_GND_23_o_add_12_OUT<25>
-    SLICE_X24Y72.DMUX    Topbd                 0.644   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<25>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X24Y75.D4      net (fanout=1)        0.704   encrypt/v1[31]_v0[31]_add_17_OUT<27>
-    SLICE_X24Y75.CLK     Tas                   0.349   encrypt/v1<27>
-                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT201
-                                                       encrypt/v1_27
+    SLICE_X20Y95.CQ      Tcko                  0.476   note_allocate/right_limit<5>
+                                                       note_allocate/right_limit_5
+    SLICE_X8Y83.B4       net (fanout=3)        1.842   note_allocate/right_limit<5>
+    SLICE_X8Y83.DQ       Tad_logic             1.118   note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>
+                                                       note_allocate/Madd_n0405_lut<5>
+                                                       note_allocate/Madd_n0405_cy<7>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>_rt
+    SLICE_X2Y93.B2       net (fanout=36)       2.648   note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>
+    SLICE_X2Y93.COUT     Topcyb                0.483   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_lut<8>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+    SLICE_X2Y94.CIN      net (fanout=1)        0.003   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+    SLICE_X2Y94.AMUX     Tcina                 0.220   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<13>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<13>
+    SLICE_X6Y93.B5       net (fanout=2)        1.074   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd_133
+    SLICE_X6Y93.COUT     Topcyb                0.483   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_lut<13>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+    SLICE_X6Y94.CIN      net (fanout=1)        0.003   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+    SLICE_X6Y94.AMUX     Tcina                 0.220   note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_B23
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_xor<16>
+    SLICE_X16Y93.D4      net (fanout=1)        1.085   note_allocate/PWR_17_o_BUS_0003_MuLt_65_OUT<16>
+    SLICE_X16Y93.COUT    Topcyd                0.290   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_lut<7>
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+    SLICE_X16Y94.CIN     net (fanout=1)        0.003   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+    SLICE_X16Y94.CMUX    Tcinc                 0.296   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+    SLICE_X7Y96.B1       net (fanout=7)        1.377   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+    SLICE_X7Y96.B        Tilo                  0.259   note_allocate/system_state_FSM_FFd2
+                                                       note_allocate/_n04731
+    SLICE_X9Y90.D4       net (fanout=3)        1.247   note_allocate/_n0473
+    SLICE_X9Y90.D        Tilo                  0.259   note_allocate/amount_asked_int<2>
+                                                       note_allocate/_n0499_inv2
+    SLICE_X13Y92.A3      net (fanout=11)       0.887   note_allocate/_n0499_inv2
+    SLICE_X13Y92.CLK     Tas                   0.373   note_allocate/amount_asked_int<10>
+                                                       note_allocate/amount_asked_int_7_dpot
+                                                       note_allocate/amount_asked_int_7
     -------------------------------------------------  ---------------------------
-    Total                                     12.914ns (4.534ns logic, 8.380ns route)
-                                                       (35.1% logic, 64.9% route)
+    Total                                     14.646ns (4.477ns logic, 10.169ns route)
+                                                       (30.6% logic, 69.4% route)
 
 --------------------------------------------------------------------------------
-Slack (setup path):     7.092ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               encrypt/round_2 (FF)
-  Destination:          encrypt/v1_27 (FF)
+Slack (setup path):     5.333ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               note_allocate/right_limit_0 (FF)
+  Destination:          note_allocate/amount_asked_int_7 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      12.865ns (Levels of Logic = 12)
-  Clock Path Skew:      -0.008ns (0.293 - 0.301)
+  Data Path Delay:      14.611ns (Levels of Logic = 11)
+  Clock Path Skew:      -0.021ns (0.292 - 0.313)
   Source Clock:         fx2Clk_in_BUFGP rising at 0.000ns
   Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -394,68 +373,65 @@ Slack (setup path):     7.092ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_27
+  Maximum Data Path at Slow Process Corner: note_allocate/right_limit_0 to note_allocate/amount_asked_int_7
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X10Y71.AMUX    Tshcko                0.576   encrypt/round<5>
-                                                       encrypt/round_2
-    SLICE_X15Y66.D1      net (fanout=10)       1.241   encrypt/round<2>
-    SLICE_X15Y66.D       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-                                                       encrypt/GND_23_o_round[5]_equal_1_o<5>11_3
-    SLICE_X14Y62.C2      net (fanout=13)       1.010   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-    SLICE_X14Y62.COUT    Topcyc                0.328   encrypt/Madd_n0098_cy<3>
-                                                       encrypt/Mmux_n00932311
-                                                       encrypt/Madd_n0098_cy<3>
-    SLICE_X14Y63.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<3>
-    SLICE_X14Y63.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<7>
-                                                       encrypt/Madd_n0098_cy<7>
-    SLICE_X14Y64.CIN     net (fanout=1)        0.135   encrypt/Madd_n0098_cy<7>
-    SLICE_X14Y64.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<11>
-                                                       encrypt/Madd_n0098_cy<11>
-    SLICE_X14Y65.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<11>
-    SLICE_X14Y65.DMUX    Tcind                 0.320   encrypt/Madd_n0098_cy<15>
-                                                       encrypt/Madd_n0098_cy<15>
-    SLICE_X16Y66.D1      net (fanout=4)        1.187   encrypt/n0098<15>
-    SLICE_X16Y66.COUT    Topcyd                0.290   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<15>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X16Y67.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X16Y67.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X18Y71.B3      net (fanout=1)        1.103   encrypt/v1[31]_sum[31]_add_7_OUT<17>
-    SLICE_X18Y71.CMUX    Topbc                 0.650   encrypt/Madd_n0107_cy<19>
-                                                       encrypt/Madd_n0107_lut<17>
-                                                       encrypt/Madd_n0107_cy<19>
-    SLICE_X20Y77.C3      net (fanout=5)        1.547   encrypt/n0107<18>
-    SLICE_X20Y77.COUT    Topcyc                0.325   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_lut<21>_INV_0
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-    SLICE_X20Y78.CIN     net (fanout=1)        0.003   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-    SLICE_X20Y78.BMUX    Tcinb                 0.277   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
-    SLICE_X24Y72.B2      net (fanout=1)        1.445   encrypt/v0[31]_GND_23_o_add_12_OUT<25>
-    SLICE_X24Y72.DMUX    Topbd                 0.644   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<25>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X24Y75.D4      net (fanout=1)        0.704   encrypt/v1[31]_v0[31]_add_17_OUT<27>
-    SLICE_X24Y75.CLK     Tas                   0.349   encrypt/v1<27>
-                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT201
-                                                       encrypt/v1_27
+    SLICE_X6Y95.CQ       Tcko                  0.525   note_allocate/right_limit<0>
+                                                       note_allocate/right_limit_0
+    SLICE_X8Y82.A3       net (fanout=3)        1.593   note_allocate/right_limit<0>
+    SLICE_X8Y82.COUT     Topcya                0.472   note_allocate/Madd_n0405_cy<3>
+                                                       note_allocate/Madd_n0405_lut<0>
+                                                       note_allocate/Madd_n0405_cy<3>
+    SLICE_X8Y83.CIN      net (fanout=1)        0.003   note_allocate/Madd_n0405_cy<3>
+    SLICE_X8Y83.DQ       Tito_logic            0.763   note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>
+                                                       note_allocate/Madd_n0405_cy<7>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>_rt
+    SLICE_X2Y93.B2       net (fanout=36)       2.648   note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>
+    SLICE_X2Y93.COUT     Topcyb                0.483   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_lut<8>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+    SLICE_X2Y94.CIN      net (fanout=1)        0.003   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+    SLICE_X2Y94.AMUX     Tcina                 0.220   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<13>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<13>
+    SLICE_X6Y93.B5       net (fanout=2)        1.074   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd_133
+    SLICE_X6Y93.COUT     Topcyb                0.483   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_lut<13>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+    SLICE_X6Y94.CIN      net (fanout=1)        0.003   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+    SLICE_X6Y94.AMUX     Tcina                 0.220   note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_B23
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_xor<16>
+    SLICE_X16Y93.D4      net (fanout=1)        1.085   note_allocate/PWR_17_o_BUS_0003_MuLt_65_OUT<16>
+    SLICE_X16Y93.COUT    Topcyd                0.335   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_lutdi7
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+    SLICE_X16Y94.CIN     net (fanout=1)        0.003   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+    SLICE_X16Y94.CMUX    Tcinc                 0.296   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+    SLICE_X7Y96.B1       net (fanout=7)        1.377   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+    SLICE_X7Y96.B        Tilo                  0.259   note_allocate/system_state_FSM_FFd2
+                                                       note_allocate/_n04731
+    SLICE_X9Y90.D4       net (fanout=3)        1.247   note_allocate/_n0473
+    SLICE_X9Y90.D        Tilo                  0.259   note_allocate/amount_asked_int<2>
+                                                       note_allocate/_n0499_inv2
+    SLICE_X13Y92.A3      net (fanout=11)       0.887   note_allocate/_n0499_inv2
+    SLICE_X13Y92.CLK     Tas                   0.373   note_allocate/amount_asked_int<10>
+                                                       note_allocate/amount_asked_int_7_dpot
+                                                       note_allocate/amount_asked_int_7
     -------------------------------------------------  ---------------------------
-    Total                                     12.865ns (4.481ns logic, 8.384ns route)
-                                                       (34.8% logic, 65.2% route)
+    Total                                     14.611ns (4.688ns logic, 9.923ns route)
+                                                       (32.1% logic, 67.9% route)
 
 --------------------------------------------------------------------------------
 
-Paths for end point encrypt/v1_25 (SLICE_X24Y75.B3), 10533158 paths
+Paths for end point note_allocate/amount_asked_int_9 (SLICE_X13Y92.C6), 309017 paths
 --------------------------------------------------------------------------------
-Slack (setup path):     7.125ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               encrypt/round_2 (FF)
-  Destination:          encrypt/v1_25 (FF)
+Slack (setup path):     5.468ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               note_allocate/right_limit_5 (FF)
+  Destination:          note_allocate/amount_asked_int_9 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      12.832ns (Levels of Logic = 12)
-  Clock Path Skew:      -0.008ns (0.293 - 0.301)
+  Data Path Delay:      14.475ns (Levels of Logic = 10)
+  Clock Path Skew:      -0.022ns (0.292 - 0.314)
   Source Clock:         fx2Clk_in_BUFGP rising at 0.000ns
   Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -466,65 +442,59 @@ Slack (setup path):     7.125ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_25
+  Maximum Data Path at Slow Process Corner: note_allocate/right_limit_5 to note_allocate/amount_asked_int_9
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X10Y71.AMUX    Tshcko                0.576   encrypt/round<5>
-                                                       encrypt/round_2
-    SLICE_X15Y66.D1      net (fanout=10)       1.241   encrypt/round<2>
-    SLICE_X15Y66.D       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-                                                       encrypt/GND_23_o_round[5]_equal_1_o<5>11_3
-    SLICE_X14Y62.B3      net (fanout=13)       0.918   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-    SLICE_X14Y62.COUT    Topcyb                0.483   encrypt/Madd_n0098_cy<3>
-                                                       encrypt/Mmux_n00931211
-                                                       encrypt/Madd_n0098_cy<3>
-    SLICE_X14Y63.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<3>
-    SLICE_X14Y63.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<7>
-                                                       encrypt/Madd_n0098_cy<7>
-    SLICE_X14Y64.CIN     net (fanout=1)        0.135   encrypt/Madd_n0098_cy<7>
-    SLICE_X14Y64.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<11>
-                                                       encrypt/Madd_n0098_cy<11>
-    SLICE_X14Y65.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<11>
-    SLICE_X14Y65.DMUX    Tcind                 0.320   encrypt/Madd_n0098_cy<15>
-                                                       encrypt/Madd_n0098_cy<15>
-    SLICE_X16Y66.D1      net (fanout=4)        1.187   encrypt/n0098<15>
-    SLICE_X16Y66.COUT    Topcyd                0.290   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<15>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X16Y67.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X16Y67.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X18Y71.B3      net (fanout=1)        1.103   encrypt/v1[31]_sum[31]_add_7_OUT<17>
-    SLICE_X18Y71.CMUX    Topbc                 0.650   encrypt/Madd_n0107_cy<19>
-                                                       encrypt/Madd_n0107_lut<17>
-                                                       encrypt/Madd_n0107_cy<19>
-    SLICE_X20Y77.C3      net (fanout=5)        1.547   encrypt/n0107<18>
-    SLICE_X20Y77.COUT    Topcyc                0.325   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_lut<21>_INV_0
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-    SLICE_X20Y78.CIN     net (fanout=1)        0.003   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-    SLICE_X20Y78.BMUX    Tcinb                 0.277   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
-    SLICE_X24Y72.B2      net (fanout=1)        1.445   encrypt/v0[31]_GND_23_o_add_12_OUT<25>
-    SLICE_X24Y72.BMUX    Topbb                 0.428   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<25>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X24Y75.B3      net (fanout=1)        0.824   encrypt/v1[31]_v0[31]_add_17_OUT<25>
-    SLICE_X24Y75.CLK     Tas                   0.349   encrypt/v1<27>
-                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT181
-                                                       encrypt/v1_25
+    SLICE_X20Y95.CQ      Tcko                  0.476   note_allocate/right_limit<5>
+                                                       note_allocate/right_limit_5
+    SLICE_X8Y83.B4       net (fanout=3)        1.842   note_allocate/right_limit<5>
+    SLICE_X8Y83.DQ       Tad_logic             1.118   note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>
+                                                       note_allocate/Madd_n0405_lut<5>
+                                                       note_allocate/Madd_n0405_cy<7>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>_rt
+    SLICE_X2Y93.B2       net (fanout=36)       2.648   note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>
+    SLICE_X2Y93.COUT     Topcyb                0.483   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_lut<8>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+    SLICE_X2Y94.CIN      net (fanout=1)        0.003   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+    SLICE_X2Y94.AMUX     Tcina                 0.220   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<13>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<13>
+    SLICE_X6Y93.B5       net (fanout=2)        1.074   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd_133
+    SLICE_X6Y93.COUT     Topcyb                0.483   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_lut<13>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+    SLICE_X6Y94.CIN      net (fanout=1)        0.003   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+    SLICE_X6Y94.AMUX     Tcina                 0.220   note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_B23
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_xor<16>
+    SLICE_X16Y93.D4      net (fanout=1)        1.085   note_allocate/PWR_17_o_BUS_0003_MuLt_65_OUT<16>
+    SLICE_X16Y93.COUT    Topcyd                0.335   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_lutdi7
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+    SLICE_X16Y94.CIN     net (fanout=1)        0.003   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+    SLICE_X16Y94.CMUX    Tcinc                 0.296   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+    SLICE_X7Y96.B1       net (fanout=7)        1.377   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+    SLICE_X7Y96.B        Tilo                  0.259   note_allocate/system_state_FSM_FFd2
+                                                       note_allocate/_n04731
+    SLICE_X9Y90.D4       net (fanout=3)        1.247   note_allocate/_n0473
+    SLICE_X9Y90.D        Tilo                  0.259   note_allocate/amount_asked_int<2>
+                                                       note_allocate/_n0499_inv2
+    SLICE_X13Y92.C6      net (fanout=11)       0.671   note_allocate/_n0499_inv2
+    SLICE_X13Y92.CLK     Tas                   0.373   note_allocate/amount_asked_int<10>
+                                                       note_allocate/amount_asked_int_9_dpot
+                                                       note_allocate/amount_asked_int_9
     -------------------------------------------------  ---------------------------
-    Total                                     12.832ns (4.420ns logic, 8.412ns route)
-                                                       (34.4% logic, 65.6% route)
+    Total                                     14.475ns (4.522ns logic, 9.953ns route)
+                                                       (31.2% logic, 68.8% route)
 
 --------------------------------------------------------------------------------
-Slack (setup path):     7.139ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               encrypt/round_2 (FF)
-  Destination:          encrypt/v1_25 (FF)
+Slack (setup path):     5.513ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               note_allocate/right_limit_5 (FF)
+  Destination:          note_allocate/amount_asked_int_9 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      12.818ns (Levels of Logic = 11)
-  Clock Path Skew:      -0.008ns (0.293 - 0.301)
+  Data Path Delay:      14.430ns (Levels of Logic = 10)
+  Clock Path Skew:      -0.022ns (0.292 - 0.314)
   Source Clock:         fx2Clk_in_BUFGP rising at 0.000ns
   Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -535,62 +505,59 @@ Slack (setup path):     7.139ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_25
+  Maximum Data Path at Slow Process Corner: note_allocate/right_limit_5 to note_allocate/amount_asked_int_9
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X10Y71.AMUX    Tshcko                0.576   encrypt/round<5>
-                                                       encrypt/round_2
-    SLICE_X15Y66.D1      net (fanout=10)       1.241   encrypt/round<2>
-    SLICE_X15Y66.D       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-                                                       encrypt/GND_23_o_round[5]_equal_1_o<5>11_3
-    SLICE_X14Y63.A2      net (fanout=13)       1.009   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-    SLICE_X14Y63.COUT    Topcya                0.474   encrypt/Madd_n0098_cy<7>
-                                                       encrypt/Madd_n0098_lut<4>
-                                                       encrypt/Madd_n0098_cy<7>
-    SLICE_X14Y64.CIN     net (fanout=1)        0.135   encrypt/Madd_n0098_cy<7>
-    SLICE_X14Y64.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<11>
-                                                       encrypt/Madd_n0098_cy<11>
-    SLICE_X14Y65.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<11>
-    SLICE_X14Y65.DMUX    Tcind                 0.320   encrypt/Madd_n0098_cy<15>
-                                                       encrypt/Madd_n0098_cy<15>
-    SLICE_X16Y66.D1      net (fanout=4)        1.187   encrypt/n0098<15>
-    SLICE_X16Y66.COUT    Topcyd                0.290   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<15>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X16Y67.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X16Y67.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X18Y71.B3      net (fanout=1)        1.103   encrypt/v1[31]_sum[31]_add_7_OUT<17>
-    SLICE_X18Y71.CMUX    Topbc                 0.650   encrypt/Madd_n0107_cy<19>
-                                                       encrypt/Madd_n0107_lut<17>
-                                                       encrypt/Madd_n0107_cy<19>
-    SLICE_X20Y77.C3      net (fanout=5)        1.547   encrypt/n0107<18>
-    SLICE_X20Y77.COUT    Topcyc                0.325   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_lut<21>_INV_0
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-    SLICE_X20Y78.CIN     net (fanout=1)        0.003   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-    SLICE_X20Y78.BMUX    Tcinb                 0.277   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<26>
-    SLICE_X24Y72.B2      net (fanout=1)        1.445   encrypt/v0[31]_GND_23_o_add_12_OUT<25>
-    SLICE_X24Y72.BMUX    Topbb                 0.428   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<25>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X24Y75.B3      net (fanout=1)        0.824   encrypt/v1[31]_v0[31]_add_17_OUT<25>
-    SLICE_X24Y75.CLK     Tas                   0.349   encrypt/v1<27>
-                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT181
-                                                       encrypt/v1_25
+    SLICE_X20Y95.CQ      Tcko                  0.476   note_allocate/right_limit<5>
+                                                       note_allocate/right_limit_5
+    SLICE_X8Y83.B4       net (fanout=3)        1.842   note_allocate/right_limit<5>
+    SLICE_X8Y83.DQ       Tad_logic             1.118   note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>
+                                                       note_allocate/Madd_n0405_lut<5>
+                                                       note_allocate/Madd_n0405_cy<7>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>_rt
+    SLICE_X2Y93.B2       net (fanout=36)       2.648   note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>
+    SLICE_X2Y93.COUT     Topcyb                0.483   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_lut<8>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+    SLICE_X2Y94.CIN      net (fanout=1)        0.003   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+    SLICE_X2Y94.AMUX     Tcina                 0.220   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<13>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<13>
+    SLICE_X6Y93.B5       net (fanout=2)        1.074   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd_133
+    SLICE_X6Y93.COUT     Topcyb                0.483   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_lut<13>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+    SLICE_X6Y94.CIN      net (fanout=1)        0.003   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+    SLICE_X6Y94.AMUX     Tcina                 0.220   note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_B23
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_xor<16>
+    SLICE_X16Y93.D4      net (fanout=1)        1.085   note_allocate/PWR_17_o_BUS_0003_MuLt_65_OUT<16>
+    SLICE_X16Y93.COUT    Topcyd                0.290   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_lut<7>
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+    SLICE_X16Y94.CIN     net (fanout=1)        0.003   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+    SLICE_X16Y94.CMUX    Tcinc                 0.296   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+    SLICE_X7Y96.B1       net (fanout=7)        1.377   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+    SLICE_X7Y96.B        Tilo                  0.259   note_allocate/system_state_FSM_FFd2
+                                                       note_allocate/_n04731
+    SLICE_X9Y90.D4       net (fanout=3)        1.247   note_allocate/_n0473
+    SLICE_X9Y90.D        Tilo                  0.259   note_allocate/amount_asked_int<2>
+                                                       note_allocate/_n0499_inv2
+    SLICE_X13Y92.C6      net (fanout=11)       0.671   note_allocate/_n0499_inv2
+    SLICE_X13Y92.CLK     Tas                   0.373   note_allocate/amount_asked_int<10>
+                                                       note_allocate/amount_asked_int_9_dpot
+                                                       note_allocate/amount_asked_int_9
     -------------------------------------------------  ---------------------------
-    Total                                     12.818ns (4.318ns logic, 8.500ns route)
-                                                       (33.7% logic, 66.3% route)
+    Total                                     14.430ns (4.477ns logic, 9.953ns route)
+                                                       (31.0% logic, 69.0% route)
 
 --------------------------------------------------------------------------------
-Slack (setup path):     7.186ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               encrypt/round_2 (FF)
-  Destination:          encrypt/v1_25 (FF)
+Slack (setup path):     5.549ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               note_allocate/right_limit_0 (FF)
+  Destination:          note_allocate/amount_asked_int_9 (FF)
   Requirement:          20.000ns
-  Data Path Delay:      12.771ns (Levels of Logic = 12)
-  Clock Path Skew:      -0.008ns (0.293 - 0.301)
+  Data Path Delay:      14.395ns (Levels of Logic = 11)
+  Clock Path Skew:      -0.021ns (0.292 - 0.313)
   Source Clock:         fx2Clk_in_BUFGP rising at 0.000ns
   Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.035ns
@@ -601,144 +568,143 @@ Slack (setup path):     7.186ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.000ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: encrypt/round_2 to encrypt/v1_25
+  Maximum Data Path at Slow Process Corner: note_allocate/right_limit_0 to note_allocate/amount_asked_int_9
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X10Y71.AMUX    Tshcko                0.576   encrypt/round<5>
-                                                       encrypt/round_2
-    SLICE_X15Y66.D1      net (fanout=10)       1.241   encrypt/round<2>
-    SLICE_X15Y66.D       Tilo                  0.259   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-                                                       encrypt/GND_23_o_round[5]_equal_1_o<5>11_3
-    SLICE_X14Y62.B3      net (fanout=13)       0.918   encrypt/GND_23_o_round[5]_equal_1_o<5>11_1
-    SLICE_X14Y62.COUT    Topcyb                0.483   encrypt/Madd_n0098_cy<3>
-                                                       encrypt/Mmux_n00931211
-                                                       encrypt/Madd_n0098_cy<3>
-    SLICE_X14Y63.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<3>
-    SLICE_X14Y63.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<7>
-                                                       encrypt/Madd_n0098_cy<7>
-    SLICE_X14Y64.CIN     net (fanout=1)        0.135   encrypt/Madd_n0098_cy<7>
-    SLICE_X14Y64.COUT    Tbyp                  0.093   encrypt/Madd_n0098_cy<11>
-                                                       encrypt/Madd_n0098_cy<11>
-    SLICE_X14Y65.CIN     net (fanout=1)        0.003   encrypt/Madd_n0098_cy<11>
-    SLICE_X14Y65.DMUX    Tcind                 0.320   encrypt/Madd_n0098_cy<15>
-                                                       encrypt/Madd_n0098_cy<15>
-    SLICE_X16Y66.D1      net (fanout=4)        1.187   encrypt/n0098<15>
-    SLICE_X16Y66.COUT    Topcyd                0.290   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<15>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X16Y67.CIN     net (fanout=1)        0.003   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<15>
-    SLICE_X16Y67.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-                                                       encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<19>
-    SLICE_X18Y71.B3      net (fanout=1)        1.103   encrypt/v1[31]_sum[31]_add_7_OUT<17>
-    SLICE_X18Y71.CMUX    Topbc                 0.650   encrypt/Madd_n0107_cy<19>
-                                                       encrypt/Madd_n0107_lut<17>
-                                                       encrypt/Madd_n0107_cy<19>
-    SLICE_X20Y77.C3      net (fanout=5)        1.547   encrypt/n0107<18>
-    SLICE_X20Y77.DMUX    Topcd                 0.493   encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_lut<21>_INV_0
-                                                       encrypt/Madd_v0[31]_GND_23_o_add_12_OUT_cy<22>
-    SLICE_X24Y71.D1      net (fanout=1)        1.275   encrypt/v0[31]_GND_23_o_add_12_OUT<23>
-    SLICE_X24Y71.COUT    Topcyd                0.290   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<23>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<23>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<23>
-    SLICE_X24Y72.CIN     net (fanout=1)        0.082   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<23>
-    SLICE_X24Y72.BMUX    Tcinb                 0.277   encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-                                                       encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<27>
-    SLICE_X24Y75.B3      net (fanout=1)        0.824   encrypt/v1[31]_v0[31]_add_17_OUT<25>
-    SLICE_X24Y75.CLK     Tas                   0.349   encrypt/v1<27>
-                                                       encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT181
-                                                       encrypt/v1_25
+    SLICE_X6Y95.CQ       Tcko                  0.525   note_allocate/right_limit<0>
+                                                       note_allocate/right_limit_0
+    SLICE_X8Y82.A3       net (fanout=3)        1.593   note_allocate/right_limit<0>
+    SLICE_X8Y82.COUT     Topcya                0.472   note_allocate/Madd_n0405_cy<3>
+                                                       note_allocate/Madd_n0405_lut<0>
+                                                       note_allocate/Madd_n0405_cy<3>
+    SLICE_X8Y83.CIN      net (fanout=1)        0.003   note_allocate/Madd_n0405_cy<3>
+    SLICE_X8Y83.DQ       Tito_logic            0.763   note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>
+                                                       note_allocate/Madd_n0405_cy<7>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>_rt
+    SLICE_X2Y93.B2       net (fanout=36)       2.648   note_allocate/Mmult_PWR_17_o_BUS_0001_MuLt_5_OUT_Madd2_lut<10>
+    SLICE_X2Y93.COUT     Topcyb                0.483   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_lut<8>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+    SLICE_X2Y94.CIN      net (fanout=1)        0.003   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<10>
+    SLICE_X2Y94.AMUX     Tcina                 0.220   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<13>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd3_cy<13>
+    SLICE_X6Y93.B5       net (fanout=2)        1.074   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd_133
+    SLICE_X6Y93.COUT     Topcyb                0.483   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_lut<13>
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+    SLICE_X6Y94.CIN      net (fanout=1)        0.003   note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_cy<15>
+    SLICE_X6Y94.AMUX     Tcina                 0.220   note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_B23
+                                                       note_allocate/Mmult_PWR_17_o_BUS_0003_MuLt_65_OUT_Madd4_xor<16>
+    SLICE_X16Y93.D4      net (fanout=1)        1.085   note_allocate/PWR_17_o_BUS_0003_MuLt_65_OUT<16>
+    SLICE_X16Y93.COUT    Topcyd                0.335   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_lutdi7
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+    SLICE_X16Y94.CIN     net (fanout=1)        0.003   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<7>
+    SLICE_X16Y94.CMUX    Tcinc                 0.296   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+                                                       note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+    SLICE_X7Y96.B1       net (fanout=7)        1.377   note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_67_o_cy<10>
+    SLICE_X7Y96.B        Tilo                  0.259   note_allocate/system_state_FSM_FFd2
+                                                       note_allocate/_n04731
+    SLICE_X9Y90.D4       net (fanout=3)        1.247   note_allocate/_n0473
+    SLICE_X9Y90.D        Tilo                  0.259   note_allocate/amount_asked_int<2>
+                                                       note_allocate/_n0499_inv2
+    SLICE_X13Y92.C6      net (fanout=11)       0.671   note_allocate/_n0499_inv2
+    SLICE_X13Y92.CLK     Tas                   0.373   note_allocate/amount_asked_int<10>
+                                                       note_allocate/amount_asked_int_9_dpot
+                                                       note_allocate/amount_asked_int_9
     -------------------------------------------------  ---------------------------
-    Total                                     12.771ns (4.450ns logic, 8.321ns route)
-                                                       (34.8% logic, 65.2% route)
+    Total                                     14.395ns (4.688ns logic, 9.707ns route)
+                                                       (32.6% logic, 67.4% route)
 
 --------------------------------------------------------------------------------
 
 Hold Paths: TS_clk = PERIOD TIMEGRP "fx2Clk_in" 20 ns HIGH 50%;
 --------------------------------------------------------------------------------
 
-Paths for end point decrypt/v1_24 (SLICE_X12Y102.A6), 1 path
+Paths for end point main_process.led_4to7_blink_counter_2 (SLICE_X12Y87.B5), 1 path
 --------------------------------------------------------------------------------
-Slack (hold path):      0.413ns (requirement - (clock path skew + uncertainty - data path))
-  Source:               decrypt/v1_24 (FF)
-  Destination:          decrypt/v1_24 (FF)
+Slack (hold path):      0.399ns (requirement - (clock path skew + uncertainty - data path))
+  Source:               main_process.led_4to7_blink_counter_1 (FF)
+  Destination:          main_process.led_4to7_blink_counter_2 (FF)
   Requirement:          0.000ns
-  Data Path Delay:      0.413ns (Levels of Logic = 1)
+  Data Path Delay:      0.399ns (Levels of Logic = 1)
   Clock Path Skew:      0.000ns
   Source Clock:         fx2Clk_in_BUFGP rising at 20.000ns
   Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.000ns
 
-  Minimum Data Path at Fast Process Corner: decrypt/v1_24 to decrypt/v1_24
+  Minimum Data Path at Fast Process Corner: main_process.led_4to7_blink_counter_1 to main_process.led_4to7_blink_counter_2
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X12Y102.AQ     Tcko                  0.200   decrypt/v1<27>
-                                                       decrypt/v1_24
-    SLICE_X12Y102.A6     net (fanout=3)        0.023   decrypt/v1<24>
-    SLICE_X12Y102.CLK    Tah         (-Th)    -0.190   decrypt/v1<27>
-                                                       decrypt/Mmux_v1[31]_GND_24_o_mux_20_OUT171
-                                                       decrypt/v1_24
+    SLICE_X12Y87.BQ      Tcko                  0.200   main_process.led_4to7_blink_counter<1>
+                                                       main_process.led_4to7_blink_counter_1
+    SLICE_X12Y87.B5      net (fanout=2)        0.078   main_process.led_4to7_blink_counter<1>
+    SLICE_X12Y87.CLK     Tah         (-Th)    -0.121   main_process.led_4to7_blink_counter<1>
+                                                       Mcount_main_process.led_4to7_blink_counter_xor<2>11
+                                                       main_process.led_4to7_blink_counter_2
     -------------------------------------------------  ---------------------------
-    Total                                      0.413ns (0.390ns logic, 0.023ns route)
-                                                       (94.4% logic, 5.6% route)
+    Total                                      0.399ns (0.321ns logic, 0.078ns route)
+                                                       (80.5% logic, 19.5% route)
 
 --------------------------------------------------------------------------------
 
-Paths for end point main_process.response_from_host_46 (SLICE_X4Y103.D6), 1 path
+Paths for end point data_in_debouncer/oldbutton (SLICE_X10Y47.CE), 1 path
 --------------------------------------------------------------------------------
-Slack (hold path):      0.414ns (requirement - (clock path skew + uncertainty - data path))
-  Source:               main_process.response_from_host_46 (FF)
-  Destination:          main_process.response_from_host_46 (FF)
+Slack (hold path):      0.404ns (requirement - (clock path skew + uncertainty - data path))
+  Source:               data_in_debouncer/oldbutton (FF)
+  Destination:          data_in_debouncer/oldbutton (FF)
   Requirement:          0.000ns
-  Data Path Delay:      0.414ns (Levels of Logic = 1)
+  Data Path Delay:      0.404ns (Levels of Logic = 1)
   Clock Path Skew:      0.000ns
   Source Clock:         fx2Clk_in_BUFGP rising at 20.000ns
   Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.000ns
 
-  Minimum Data Path at Fast Process Corner: main_process.response_from_host_46 to main_process.response_from_host_46
+  Minimum Data Path at Fast Process Corner: data_in_debouncer/oldbutton to data_in_debouncer/oldbutton
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X4Y103.DQ      Tcko                  0.200   main_process.response_from_host<46>
-                                                       main_process.response_from_host_46
-    SLICE_X4Y103.D6      net (fanout=2)        0.024   main_process.response_from_host<46>
-    SLICE_X4Y103.CLK     Tah         (-Th)    -0.190   main_process.response_from_host<46>
-                                                       Mmux__n116091
-                                                       main_process.response_from_host_46
+    SLICE_X10Y47.AQ      Tcko                  0.234   data_in_debouncer/oldbutton
+                                                       data_in_debouncer/oldbutton
+    SLICE_X10Y47.A6      net (fanout=3)        0.026   data_in_debouncer/oldbutton
+    SLICE_X10Y47.A       Tilo                  0.156   data_in_debouncer/oldbutton
+                                                       data_in_debouncer/n000311
+    SLICE_X10Y47.CE      net (fanout=6)        0.080   data_in_debouncer/n0003
+    SLICE_X10Y47.CLK     Tckce       (-Th)     0.092   data_in_debouncer/oldbutton
+                                                       data_in_debouncer/oldbutton
     -------------------------------------------------  ---------------------------
-    Total                                      0.414ns (0.390ns logic, 0.024ns route)
-                                                       (94.2% logic, 5.8% route)
+    Total                                      0.404ns (0.298ns logic, 0.106ns route)
+                                                       (73.8% logic, 26.2% route)
 
 --------------------------------------------------------------------------------
 
-Paths for end point decrypt/v1_31 (SLICE_X12Y103.D6), 1 path
+Paths for end point amount_to_be_allocated_1 (SLICE_X24Y87.B6), 1 path
 --------------------------------------------------------------------------------
-Slack (hold path):      0.415ns (requirement - (clock path skew + uncertainty - data path))
-  Source:               decrypt/v1_31 (FF)
-  Destination:          decrypt/v1_31 (FF)
+Slack (hold path):      0.404ns (requirement - (clock path skew + uncertainty - data path))
+  Source:               main_process.input_eight_bytes_1 (FF)
+  Destination:          amount_to_be_allocated_1 (FF)
   Requirement:          0.000ns
-  Data Path Delay:      0.415ns (Levels of Logic = 1)
-  Clock Path Skew:      0.000ns
+  Data Path Delay:      0.406ns (Levels of Logic = 1)
+  Clock Path Skew:      0.002ns (0.031 - 0.029)
   Source Clock:         fx2Clk_in_BUFGP rising at 20.000ns
   Destination Clock:    fx2Clk_in_BUFGP rising at 20.000ns
   Clock Uncertainty:    0.000ns
 
-  Minimum Data Path at Fast Process Corner: decrypt/v1_31 to decrypt/v1_31
+  Minimum Data Path at Fast Process Corner: main_process.input_eight_bytes_1 to amount_to_be_allocated_1
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X12Y103.DQ     Tcko                  0.200   decrypt/v1<31>
-                                                       decrypt/v1_31
-    SLICE_X12Y103.D6     net (fanout=2)        0.025   decrypt/v1<31>
-    SLICE_X12Y103.CLK    Tah         (-Th)    -0.190   decrypt/v1<31>
-                                                       decrypt/Mmux_v1[31]_GND_24_o_mux_20_OUT251
-                                                       decrypt/v1_31
+    SLICE_X25Y87.AQ      Tcko                  0.198   main_process.input_eight_bytes<8>
+                                                       main_process.input_eight_bytes_1
+    SLICE_X24Y87.B6      net (fanout=1)        0.018   main_process.input_eight_bytes<1>
+    SLICE_X24Y87.CLK     Tah         (-Th)    -0.190   amount_to_be_allocated<3>
+                                                       Mmux_main_process.input_eight_bytes[0]_sw_in[0]_MUX_400_o111
+                                                       amount_to_be_allocated_1
     -------------------------------------------------  ---------------------------
-    Total                                      0.415ns (0.390ns logic, 0.025ns route)
-                                                       (94.0% logic, 6.0% route)
+    Total                                      0.406ns (0.388ns logic, 0.018ns route)
+                                                       (95.6% logic, 4.4% route)
 
 --------------------------------------------------------------------------------
 
@@ -755,17 +721,17 @@ Slack: 17.334ns (period - min period limit)
 Slack: 19.520ns (period - min period limit)
   Period: 20.000ns
   Min period limit: 0.480ns (2083.333MHz) (Tcp)
-  Physical resource: start_debouncer/count<3>/CLK
-  Logical resource: start_debouncer/count_0/CK
-  Location pin: SLICE_X14Y31.CLK
+  Physical resource: data_in_debouncer/count<3>/CLK
+  Logical resource: data_in_debouncer/count_0/CK
+  Location pin: SLICE_X10Y48.CLK
   Clock network: fx2Clk_in_BUFGP
 --------------------------------------------------------------------------------
 Slack: 19.520ns (period - min period limit)
   Period: 20.000ns
   Min period limit: 0.480ns (2083.333MHz) (Tcp)
-  Physical resource: start_debouncer/count<3>/CLK
-  Logical resource: start_debouncer/count_1/CK
-  Location pin: SLICE_X14Y31.CLK
+  Physical resource: data_in_debouncer/count<3>/CLK
+  Logical resource: data_in_debouncer/count_1/CK
+  Location pin: SLICE_X10Y48.CLK
   Clock network: fx2Clk_in_BUFGP
 --------------------------------------------------------------------------------
 
@@ -782,7 +748,7 @@ Clock to Setup on destination clock fx2Clk_in
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-fx2Clk_in      |   13.046|         |         |         |
+fx2Clk_in      |   14.759|         |         |         |
 ---------------+---------+---------+---------+---------+
 
 
@@ -791,23 +757,23 @@ Timing summary:
 
 Timing errors: 0  Score: 0  (Setup/Max: 0, Hold: 0)
 
-Constraints cover 215350756 paths, 0 nets, and 6917 connections
+Constraints cover 246553971 paths, 0 nets, and 10159 connections
 
 Design statistics:
-   Minimum period:  13.046ns{1}   (Maximum frequency:  76.652MHz)
+   Minimum period:  14.759ns{1}   (Maximum frequency:  67.755MHz)
 
 
 ------------------------------------Footnotes-----------------------------------
 1)  The minimum period statistic assumes all single cycle delays.
 
-Analysis completed Wed Mar 29 11:21:59 2017 
+Analysis completed Tue Apr 18 18:40:04 2017 
 --------------------------------------------------------------------------------
 
 Trace Settings:
 -------------------------
 Trace Settings 
 
-Peak Memory Usage: 470 MB
+Peak Memory Usage: 481 MB
 
 
 

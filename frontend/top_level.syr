@@ -4,15 +4,15 @@ Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 Parameter TMPDIR set to xst/projnav.tmp
 
 
-Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.03 secs
+Total REAL time to Xst completion: 1.00 secs
+Total CPU time to Xst completion: 0.04 secs
  
 --> 
 Parameter xsthdpdir set to xst
 
 
-Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.03 secs
+Total REAL time to Xst completion: 1.00 secs
+Total CPU time to Xst completion: 0.04 secs
  
 --> 
 Reading design: top_level.prj
@@ -108,19 +108,22 @@ Slice Utilization Ratio Delta      : 5
 =========================================================================
 *                          HDL Parsing                                  *
 =========================================================================
-Parsing VHDL file "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/frontend/encrypter.vhd" into library work
+Parsing VHDL file "/home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/connectingatms/note_allocator.vhd" into library work
+Parsing entity <note_allocator>.
+Parsing architecture <na_rtl> of entity <note_allocator>.
+Parsing VHDL file "/home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/connectingatms/encrypter.vhd" into library work
 Parsing entity <encrypter>.
 Parsing architecture <en_rtl> of entity <encrypter>.
-Parsing VHDL file "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/frontend/decrypter.vhd" into library work
+Parsing VHDL file "/home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/connectingatms/decrypter.vhd" into library work
 Parsing entity <decrypter>.
 Parsing architecture <de_rtl> of entity <decrypter>.
-Parsing VHDL file "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/frontend/debouncer.vhd" into library work
+Parsing VHDL file "/home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/connectingatms/debouncer.vhd" into library work
 Parsing entity <debouncer>.
 Parsing architecture <debouncer_rtl> of entity <debouncer>.
-Parsing VHDL file "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/frontend/comm_fgpa_fx2.vhd" into library work
+Parsing VHDL file "/home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/connectingatms/comm_fgpa_fx2.vhd" into library work
 Parsing entity <comm_fpga_fx2>.
 Parsing architecture <rtl> of entity <comm_fpga_fx2>.
-Parsing VHDL file "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/frontend/atm_top_level.vhd" into library work
+Parsing VHDL file "/home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/connectingatms/atm_top_level.vhd" into library work
 Parsing entity <top_level>.
 Parsing architecture <structural> of entity <top_level>.
 
@@ -138,37 +141,42 @@ Elaborating entity <encrypter> (architecture <en_rtl>) from library <work>.
 
 Elaborating entity <decrypter> (architecture <de_rtl>) from library <work>.
 
+Elaborating entity <note_allocator> (architecture <na_rtl>) from library <work>.
+
 =========================================================================
 *                           HDL Synthesis                               *
 =========================================================================
 
 Synthesizing Unit <top_level>.
-    Related source file is "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/frontend/atm_top_level.vhd".
+    Related source file is "/home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/connectingatms/atm_top_level.vhd".
         N = 100000000
         M = 50000000
         max_no_of_blinks = 8
+INFO:Xst:3210 - "/home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/connectingatms/atm_top_level.vhd" line 234: Output port <done> of the instance <note_allocate> is unconnected or connected to loadless signal.
     Found 1-bit register for signal <main_process.input_taken_already>.
     Found 1-bit register for signal <start_encrypt>.
     Found 1-bit register for signal <start_decrypt>.
-    Found 1-bit register for signal <adequate_cash_in_atm>.
+    Found 1-bit register for signal <start_note_allocation>.
     Found 1-bit register for signal <main_process.adequate_cash_in_account>.
     Found 1-bit register for signal <main_process.user_is_admin>.
     Found 1-bit register for signal <main_process.dispensing_done_already>.
     Found 1-bit register for signal <main_process.time_gap>.
+    Found 5-bit register for signal <system_state>.
+    Found 5-bit register for signal <bank_id>.
     Found 4-bit register for signal <main_process.input_byte_count>.
     Found 4-bit register for signal <main_process.led_blink_counter>.
     Found 64-bit register for signal <main_process.input_eight_bytes>.
-    Found 64-bit register for signal <main_process.response_from_host>.
-    Found 8-bit register for signal <main_process.check_for_host_response>.
+    Found 64-bit register for signal <main_process.response_from_backend>.
+    Found 8-bit register for signal <main_process.checksum_for_backend_response>.
     Found 8-bit register for signal <main_process.no_2000_notes_to_be_dispensed>.
     Found 8-bit register for signal <main_process.no_1000_notes_to_be_dispensed>.
     Found 8-bit register for signal <main_process.no_500_notes_to_be_dispensed>.
     Found 8-bit register for signal <main_process.no_100_notes_to_be_dispensed>.
     Found 8-bit register for signal <led_out>.
     Found 3-bit register for signal <main_process.led_4to7_blink_counter>.
-    Found 3-bit register for signal <system_state>.
     Found 27-bit register for signal <main_process.time_counter>.
     Found 64-bit register for signal <en_input>.
+    Found 32-bit register for signal <amount_to_be_allocated>.
     Found 64-bit register for signal <de_input>.
     Found 8-bit register for signal <n2000>.
     Found 8-bit register for signal <n1000>.
@@ -176,51 +184,47 @@ Synthesizing Unit <top_level>.
     Found 8-bit register for signal <n100>.
     Found finite state machine <FSM_0> for signal <system_state>.
     -----------------------------------------------------------------------
-    | States             | 8                                              |
-    | Transitions        | 32                                             |
+    | States             | 9                                              |
+    | Transitions        | 33                                             |
     | Inputs             | 24                                             |
-    | Outputs            | 14                                             |
+    | Outputs            | 17                                             |
     | Clock              | fx2Clk_in (rising_edge)                        |
     | Reset              | debounced_reset (positive)                     |
     | Reset type         | asynchronous                                   |
-    | Reset State        | 000                                            |
-    | Power Up State     | 000                                            |
+    | Reset State        | 00000                                          |
+    | Power Up State     | 00000                                          |
     | Encoding           | auto                                           |
     | Implementation     | LUT                                            |
     -----------------------------------------------------------------------
-    Found 4-bit adder for signal <main_process.input_byte_count[3]_GND_4_o_add_78_OUT> created at line 317.
-    Found 4-bit adder for signal <main_process.led_blink_counter[3]_GND_4_o_add_136_OUT> created at line 523.
-    Found 3-bit adder for signal <main_process.led_4to7_blink_counter[2]_GND_4_o_add_212_OUT> created at line 659.
-    Found 27-bit adder for signal <main_process.time_counter[26]_GND_4_o_add_345_OUT> created at line 695.
-    Found 7-bit subtractor for signal <GND_4_o_GND_4_o_sub_5_OUT<6:0>> created at line 313.
-    Found 8-bit subtractor for signal <GND_4_o_GND_4_o_sub_144_OUT<7:0>> created at line 544.
-    Found 8-bit subtractor for signal <GND_4_o_GND_4_o_sub_145_OUT<7:0>> created at line 545.
-    Found 8-bit subtractor for signal <GND_4_o_GND_4_o_sub_146_OUT<7:0>> created at line 546.
-    Found 8-bit subtractor for signal <GND_4_o_GND_4_o_sub_147_OUT<7:0>> created at line 547.
-    Found 8-bit subtractor for signal <GND_4_o_GND_4_o_sub_158_OUT<7:0>> created at line 562.
-    Found 8-bit subtractor for signal <GND_4_o_GND_4_o_sub_164_OUT<7:0>> created at line 575.
-    Found 8-bit subtractor for signal <GND_4_o_GND_4_o_sub_170_OUT<7:0>> created at line 588.
-    Found 8-bit subtractor for signal <GND_4_o_GND_4_o_sub_176_OUT<7:0>> created at line 601.
-    Found 1-bit tristate buffer for signal <fx2Addr_out<0>> created at line 16
-    Found 4-bit comparator greater for signal <main_process.input_byte_count[3]_PWR_4_o_LessThan_4_o> created at line 309
-    Found 8-bit comparator greater for signal <n2000[7]_main_process.input_eight_bytes[31]_LessThan_96_o> created at line 355
-    Found 8-bit comparator greater for signal <n1000[7]_main_process.input_eight_bytes[23]_LessThan_97_o> created at line 356
-    Found 8-bit comparator greater for signal <n500[7]_main_process.input_eight_bytes[15]_LessThan_98_o> created at line 357
-    Found 8-bit comparator greater for signal <n100[7]_main_process.input_eight_bytes[7]_LessThan_99_o> created at line 358
-    Found 3-bit comparator greater for signal <main_process.led_4to7_blink_counter[2]_GND_4_o_LessThan_207_o> created at line 639
-    Found 27-bit comparator greater for signal <GND_4_o_main_process.time_counter[26]_LessThan_214_o> created at line 660
-    Found 3-bit comparator greater for signal <main_process.led_4to7_blink_counter[2]_PWR_4_o_LessThan_215_o> created at line 660
+    Found 4-bit adder for signal <main_process.input_byte_count[3]_GND_4_o_add_80_OUT> created at line 401.
+    Found 4-bit adder for signal <main_process.led_blink_counter[3]_GND_4_o_add_139_OUT> created at line 618.
+    Found 3-bit adder for signal <main_process.led_4to7_blink_counter[2]_GND_4_o_add_215_OUT> created at line 754.
+    Found 27-bit adder for signal <main_process.time_counter[26]_GND_4_o_add_366_OUT> created at line 791.
+    Found 7-bit subtractor for signal <GND_4_o_GND_4_o_sub_7_OUT<6:0>> created at line 397.
+    Found 8-bit subtractor for signal <GND_4_o_GND_4_o_sub_147_OUT<7:0>> created at line 639.
+    Found 8-bit subtractor for signal <GND_4_o_GND_4_o_sub_148_OUT<7:0>> created at line 640.
+    Found 8-bit subtractor for signal <GND_4_o_GND_4_o_sub_149_OUT<7:0>> created at line 641.
+    Found 8-bit subtractor for signal <GND_4_o_GND_4_o_sub_150_OUT<7:0>> created at line 642.
+    Found 8-bit subtractor for signal <GND_4_o_GND_4_o_sub_161_OUT<7:0>> created at line 657.
+    Found 8-bit subtractor for signal <GND_4_o_GND_4_o_sub_167_OUT<7:0>> created at line 670.
+    Found 8-bit subtractor for signal <GND_4_o_GND_4_o_sub_173_OUT<7:0>> created at line 683.
+    Found 8-bit subtractor for signal <GND_4_o_GND_4_o_sub_179_OUT<7:0>> created at line 696.
+    Found 1-bit tristate buffer for signal <fx2Addr_out<0>> created at line 17
+    Found 4-bit comparator greater for signal <main_process.input_byte_count[3]_PWR_4_o_LessThan_6_o> created at line 393
+    Found 3-bit comparator greater for signal <main_process.led_4to7_blink_counter[2]_GND_4_o_LessThan_210_o> created at line 734
+    Found 27-bit comparator greater for signal <GND_4_o_main_process.time_counter[26]_LessThan_217_o> created at line 755
+    Found 3-bit comparator greater for signal <main_process.led_4to7_blink_counter[2]_PWR_4_o_LessThan_218_o> created at line 755
     Summary:
 	inferred  13 Adder/Subtractor(s).
-	inferred 382 D-type flip-flop(s).
-	inferred   8 Comparator(s).
-	inferred 426 Multiplexer(s).
+	inferred 419 D-type flip-flop(s).
+	inferred   4 Comparator(s).
+	inferred 427 Multiplexer(s).
 	inferred   1 Tristate(s).
 	inferred   1 Finite State Machine(s).
 Unit <top_level> synthesized.
 
 Synthesizing Unit <comm_fpga_fx2>.
-    Related source file is "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/frontend/comm_fgpa_fx2.vhd".
+    Related source file is "/home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/connectingatms/comm_fgpa_fx2.vhd".
     Found 17-bit register for signal <count>.
     Found 7-bit register for signal <chanAddr>.
     Found 1-bit register for signal <isWrite>.
@@ -259,7 +263,7 @@ Synthesizing Unit <comm_fpga_fx2>.
 Unit <comm_fpga_fx2> synthesized.
 
 Synthesizing Unit <debouncer>.
-    Related source file is "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/frontend/debouncer.vhd".
+    Related source file is "/home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/connectingatms/debouncer.vhd".
         wait_cycles = "11110100001000111111"
     Found 1-bit register for signal <oldbutton>.
     Found 1-bit register for signal <button_deb>.
@@ -271,7 +275,7 @@ Synthesizing Unit <debouncer>.
 Unit <debouncer> synthesized.
 
 Synthesizing Unit <encrypter>.
-    Related source file is "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/frontend/encrypter.vhd".
+    Related source file is "/home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/connectingatms/encrypter.vhd".
     Found 32-bit register for signal <sum>.
     Found 64-bit register for signal <ciphertext>.
     Found 6-bit register for signal <round>.
@@ -297,7 +301,7 @@ Synthesizing Unit <encrypter>.
 Unit <encrypter> synthesized.
 
 Synthesizing Unit <decrypter>.
-    Related source file is "/home/pandu/Desktop/DigitalLogicDesign/Lab/03-finishingup/frontend/decrypter.vhd".
+    Related source file is "/home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/connectingatms/decrypter.vhd".
     Found 32-bit register for signal <plaintext>.
     Found 6-bit register for signal <round>.
     Found 32-bit register for signal <sum>.
@@ -322,57 +326,135 @@ Synthesizing Unit <decrypter>.
 	inferred  10 Multiplexer(s).
 Unit <decrypter> synthesized.
 
+Synthesizing Unit <note_allocator>.
+    Related source file is "/home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/connectingatms/note_allocator.vhd".
+    Found 31-bit register for signal <amount_asked_int>.
+    Found 3-bit register for signal <system_state>.
+    Found 1-bit register for signal <allocation_possible>.
+    Found 1-bit register for signal <done>.
+    Found 1-bit register for signal <binarysearch_start>.
+    Found 8-bit register for signal <left_limit>.
+    Found 8-bit register for signal <right_limit>.
+    Found 8-bit register for signal <n2000_out>.
+    Found 8-bit register for signal <n1000_out>.
+    Found 8-bit register for signal <n500_out>.
+    Found 8-bit register for signal <n100_out>.
+    Found finite state machine <FSM_2> for signal <system_state>.
+    -----------------------------------------------------------------------
+    | States             | 7                                              |
+    | Transitions        | 30                                             |
+    | Inputs             | 11                                             |
+    | Outputs            | 4                                              |
+    | Clock              | clk (rising_edge)                              |
+    | Reset              | reset (positive)                               |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | 000                                            |
+    | Power Up State     | 000                                            |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found 9-bit adder for signal <n0405> created at line 83.
+    Found 31-bit subtractor for signal <GND_26_o_GND_26_o_sub_10_OUT<30:0>> created at line 88.
+    Found 31-bit subtractor for signal <GND_26_o_GND_26_o_sub_26_OUT<30:0>> created at line 98.
+    Found 31-bit subtractor for signal <GND_26_o_GND_26_o_sub_40_OUT<30:0>> created at line 120.
+    Found 31-bit subtractor for signal <GND_26_o_GND_26_o_sub_56_OUT<30:0>> created at line 130.
+    Found 31-bit subtractor for signal <GND_26_o_GND_26_o_sub_70_OUT<30:0>> created at line 152.
+    Found 31-bit subtractor for signal <GND_26_o_GND_26_o_sub_86_OUT<30:0>> created at line 162.
+    Found 31-bit subtractor for signal <GND_26_o_GND_26_o_sub_100_OUT<30:0>> created at line 184.
+    Found 31-bit subtractor for signal <GND_26_o_GND_26_o_sub_116_OUT<30:0>> created at line 194.
+    Found 11x8-bit multiplier for signal <PWR_17_o_n2000_in[7]_MuLt_2_OUT> created at line 75.
+    Found 11x8-bit multiplier for signal <PWR_17_o_BUS_0001_MuLt_5_OUT> created at line 84.
+    Found 11x8-bit multiplier for signal <PWR_17_o_left_limit[7]_MuLt_8_OUT> created at line 88.
+    Found 10x8-bit multiplier for signal <PWR_17_o_n1000_in[7]_MuLt_32_OUT> created at line 107.
+    Found 10x8-bit multiplier for signal <PWR_17_o_BUS_0002_MuLt_35_OUT> created at line 116.
+    Found 10x8-bit multiplier for signal <PWR_17_o_left_limit[7]_MuLt_38_OUT> created at line 120.
+    Found 9x8-bit multiplier for signal <PWR_17_o_n500_in[7]_MuLt_62_OUT> created at line 139.
+    Found 9x8-bit multiplier for signal <PWR_17_o_BUS_0003_MuLt_65_OUT> created at line 148.
+    Found 9x8-bit multiplier for signal <PWR_17_o_left_limit[7]_MuLt_68_OUT> created at line 152.
+    Found 7x8-bit multiplier for signal <PWR_17_o_n100_in[7]_MuLt_92_OUT> created at line 171.
+    Found 7x8-bit multiplier for signal <PWR_17_o_BUS_0004_MuLt_95_OUT> created at line 180.
+    Found 7x8-bit multiplier for signal <PWR_17_o_left_limit[7]_MuLt_98_OUT> created at line 184.
+    Found 31-bit comparator greater for signal <amount_asked_int[30]_GND_26_o_LessThan_4_o> created at line 75
+    Found 31-bit comparator greater for signal <amount_asked_int[30]_GND_26_o_LessThan_7_o> created at line 84
+    Found 8-bit comparator equal for signal <BUS_0001_left_limit[7]_equal_8_o> created at line 87
+    Found 31-bit comparator greater for signal <amount_asked_int[30]_GND_26_o_LessThan_34_o> created at line 107
+    Found 31-bit comparator greater for signal <amount_asked_int[30]_GND_26_o_LessThan_37_o> created at line 116
+    Found 31-bit comparator greater for signal <amount_asked_int[30]_GND_26_o_LessThan_64_o> created at line 139
+    Found 31-bit comparator greater for signal <amount_asked_int[30]_GND_26_o_LessThan_67_o> created at line 148
+    Found 31-bit comparator greater for signal <amount_asked_int[30]_GND_26_o_LessThan_94_o> created at line 171
+    Found 31-bit comparator greater for signal <amount_asked_int[30]_GND_26_o_LessThan_97_o> created at line 180
+    Summary:
+	inferred  12 Multiplier(s).
+	inferred   2 Adder/Subtractor(s).
+	inferred  82 D-type flip-flop(s).
+	inferred   9 Comparator(s).
+	inferred  34 Multiplexer(s).
+	inferred   1 Finite State Machine(s).
+Unit <note_allocator> synthesized.
+
 =========================================================================
 HDL Synthesis Report
 
 Macro Statistics
-# Adders/Subtractors                                   : 38
+# Multipliers                                          : 12
+ 10x8-bit multiplier                                   : 3
+ 11x8-bit multiplier                                   : 3
+ 8x7-bit multiplier                                    : 3
+ 9x8-bit multiplier                                    : 3
+# Adders/Subtractors                                   : 41
  17-bit subtractor                                     : 1
- 20-bit adder                                          : 4
+ 20-bit adder                                          : 5
  27-bit adder                                          : 1
  3-bit adder                                           : 1
+ 31-bit subtractor                                     : 1
  32-bit adder                                          : 15
  32-bit subtractor                                     : 3
  4-bit adder                                           : 2
  6-bit adder                                           : 2
  7-bit subtractor                                      : 1
  8-bit subtractor                                      : 8
-# Registers                                            : 54
- 1-bit register                                        : 20
+ 9-bit adder                                           : 1
+# Registers                                            : 69
+ 1-bit register                                        : 25
  17-bit register                                       : 1
- 20-bit register                                       : 4
+ 20-bit register                                       : 5
  27-bit register                                       : 1
  3-bit register                                        : 1
- 32-bit register                                       : 7
+ 31-bit register                                       : 1
+ 32-bit register                                       : 8
  4-bit register                                        : 2
+ 5-bit register                                        : 1
  6-bit register                                        : 2
  64-bit register                                       : 5
  7-bit register                                        : 1
- 8-bit register                                        : 10
-# Comparators                                          : 10
+ 8-bit register                                        : 16
+# Comparators                                          : 15
  27-bit comparator greater                             : 1
  3-bit comparator greater                              : 2
+ 31-bit comparator greater                             : 8
  4-bit comparator greater                              : 1
  6-bit comparator greater                              : 2
- 8-bit comparator greater                              : 4
-# Multiplexers                                         : 473
- 1-bit 2-to-1 multiplexer                              : 386
+ 8-bit comparator equal                                : 1
+# Multiplexers                                         : 508
+ 1-bit 2-to-1 multiplexer                              : 390
  17-bit 2-to-1 multiplexer                             : 3
  27-bit 2-to-1 multiplexer                             : 1
  3-bit 2-to-1 multiplexer                              : 1
+ 31-bit 2-to-1 multiplexer                             : 11
  32-bit 2-to-1 multiplexer                             : 12
  4-bit 2-to-1 multiplexer                              : 3
  6-bit 2-to-1 multiplexer                              : 4
  64-bit 2-to-1 multiplexer                             : 3
- 8-bit 2-to-1 multiplexer                              : 60
+ 8-bit 2-to-1 multiplexer                              : 80
 # Tristates                                            : 13
  1-bit tristate buffer                                 : 13
-# FSMs                                                 : 2
-# Xors                                                 : 16
- 1-bit xor2                                            : 8
+# FSMs                                                 : 3
+# Xors                                                 : 18
+ 1-bit xor2                                            : 10
  32-bit xor2                                           : 8
 
 =========================================================================
+INFO:Xst:1767 - HDL ADVISOR - Resource sharing has identified that some arithmetic operations in this design can share the same physical resources for reduced device utilization. For improved clock frequency you may try to disable resource sharing.
 
 =========================================================================
 *                       Advanced HDL Synthesis                          *
@@ -396,40 +478,49 @@ Unit <top_level> synthesized (advanced).
 Advanced HDL Synthesis Report
 
 Macro Statistics
-# Adders/Subtractors                                   : 32
+# Multipliers                                          : 12
+ 10x8-bit multiplier                                   : 3
+ 11x8-bit multiplier                                   : 3
+ 8x7-bit multiplier                                    : 3
+ 9x8-bit multiplier                                    : 3
+# Adders/Subtractors                                   : 35
  17-bit subtractor                                     : 1
- 20-bit adder                                          : 4
+ 20-bit adder                                          : 5
+ 31-bit subtractor                                     : 1
  32-bit adder                                          : 15
  32-bit subtractor                                     : 3
  4-bit adder                                           : 2
  6-bit adder                                           : 2
  7-bit subtractor                                      : 1
  8-bit subtractor                                      : 4
-# Counters                                             : 6
- 20-bit up counter                                     : 4
+ 9-bit adder                                           : 1
+# Counters                                             : 7
+ 20-bit up counter                                     : 5
  27-bit up counter                                     : 1
  3-bit up counter                                      : 1
 # Accumulators                                         : 4
  8-bit down loadable accumulator                       : 4
-# Registers                                            : 656
- Flip-Flops                                            : 656
-# Comparators                                          : 10
+# Registers                                            : 777
+ Flip-Flops                                            : 777
+# Comparators                                          : 15
  27-bit comparator greater                             : 1
  3-bit comparator greater                              : 2
+ 31-bit comparator greater                             : 8
  4-bit comparator greater                              : 1
  6-bit comparator greater                              : 2
- 8-bit comparator greater                              : 4
-# Multiplexers                                         : 537
- 1-bit 2-to-1 multiplexer                              : 458
+ 8-bit comparator equal                                : 1
+# Multiplexers                                         : 572
+ 1-bit 2-to-1 multiplexer                              : 462
  17-bit 2-to-1 multiplexer                             : 3
+ 31-bit 2-to-1 multiplexer                             : 11
  32-bit 2-to-1 multiplexer                             : 12
  4-bit 2-to-1 multiplexer                              : 3
  6-bit 2-to-1 multiplexer                              : 4
  64-bit 2-to-1 multiplexer                             : 2
- 8-bit 2-to-1 multiplexer                              : 55
-# FSMs                                                 : 2
-# Xors                                                 : 16
- 1-bit xor2                                            : 8
+ 8-bit 2-to-1 multiplexer                              : 75
+# FSMs                                                 : 3
+# Xors                                                 : 18
+ 1-bit xor2                                            : 10
  32-bit xor2                                           : 8
 
 =========================================================================
@@ -437,19 +528,52 @@ Macro Statistics
 =========================================================================
 *                         Low Level Synthesis                           *
 =========================================================================
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_20> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_20> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_4> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_4> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_23> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_23> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_3> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_3> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_15> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_15> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_22> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_22> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_9> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_9> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_28> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_28> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_8> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_8> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_27> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_27> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_19> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_19> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_26> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_26> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_10> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_10> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_12> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_12> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_11> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_11> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_16> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_16> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_0> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_0> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_30> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_30> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_7> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_7> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_6> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_6> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_5> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_5> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_31> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_31> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_29> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_29> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_2> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_2> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_14> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_14> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_21> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_21> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_1> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_1> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_13> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_13> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_18> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_18> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_25> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_25> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_17> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_17> 
+INFO:Xst:2261 - The FF/Latch <amount_to_be_allocated_24> in Unit <top_level> is equivalent to the following FF/Latch, which will be removed : <en_input_24> 
 Analyzing FSM <MFsm> for best encoding.
-Optimizing FSM <FSM_0> on signal <system_state[1:3]> with user encoding.
+Optimizing FSM <FSM_0> on signal <system_state[1:5]> with user encoding.
 -------------------
  State | Encoding
 -------------------
- 000   | 000
- 001   | 001
- 010   | 010
- 011   | 011
- 100   | 100
- 110   | 110
- 101   | 101
- 111   | 111
+ 00000 | 00000
+ 00001 | 00001
+ 01000 | 01000
+ 00011 | 00011
+ 00100 | 00100
+ 00110 | 00110
+ 00101 | 00101
+ 00111 | 00111
+ 00010 | 00010
 -------------------
 Analyzing FSM <MFsm> for best encoding.
 Optimizing FSM <comm_fpga_fx2/FSM_1> on signal <state[1:4]> with user encoding.
@@ -466,6 +590,19 @@ Optimizing FSM <comm_fpga_fx2/FSM_1> on signal <state[1:4]> with user encoding.
  s_end_write_nonaligned | 0111
  s_read                 | 1000
 ------------------------------------
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <note_allocate/FSM_2> on signal <system_state[1:3]> with gray encoding.
+-------------------
+ State | Encoding
+-------------------
+ 000   | 000
+ 001   | 001
+ 010   | 011
+ 011   | 010
+ 100   | 110
+ 101   | 111
+ 110   | 101
+-------------------
 
 Optimizing unit <top_level> ...
 
@@ -475,13 +612,28 @@ Optimizing unit <encrypter> ...
 
 Optimizing unit <decrypter> ...
 
+Optimizing unit <note_allocator> ...
+WARNING:Xst:2677 - Node <note_allocate/done> of sequential type is unconnected in block <top_level>.
+
 Mapping all equations...
 Building and optimizing final netlist ...
-Found area constraint ratio of 100 (+ 5) on block top_level, actual ratio is 8.
+Found area constraint ratio of 100 (+ 5) on block top_level, actual ratio is 12.
 FlipFlop comm_fpga_fx2/state_FSM_FFd1 has been replicated 1 time(s)
 FlipFlop comm_fpga_fx2/state_FSM_FFd2 has been replicated 1 time(s)
 FlipFlop decrypt/round_5 has been replicated 1 time(s)
-FlipFlop encrypt/round_5 has been replicated 2 time(s)
+FlipFlop encrypt/round_5 has been replicated 1 time(s)
+FlipFlop main_process.dispensing_done_already has been replicated 1 time(s)
+FlipFlop n2000_1 has been replicated 1 time(s)
+FlipFlop n2000_2 has been replicated 1 time(s)
+FlipFlop n500_2 has been replicated 1 time(s)
+FlipFlop note_allocate/left_limit_0 has been replicated 1 time(s)
+FlipFlop note_allocate/left_limit_1 has been replicated 1 time(s)
+FlipFlop note_allocate/left_limit_2 has been replicated 1 time(s)
+FlipFlop note_allocate/left_limit_3 has been replicated 1 time(s)
+FlipFlop note_allocate/left_limit_4 has been replicated 1 time(s)
+FlipFlop note_allocate/left_limit_5 has been replicated 1 time(s)
+FlipFlop note_allocate/left_limit_6 has been replicated 1 time(s)
+FlipFlop note_allocate/left_limit_7 has been replicated 1 time(s)
 
 Final Macro Processing ...
 
@@ -489,8 +641,8 @@ Final Macro Processing ...
 Final Register Report
 
 Macro Statistics
-# Registers                                            : 810
- Flip-Flops                                            : 810
+# Registers                                            : 933
+ Flip-Flops                                            : 933
 
 =========================================================================
 
@@ -513,30 +665,30 @@ Top Level Output File Name         : top_level.ngc
 
 Primitive and Black Box Usage:
 ------------------------------
-# BELS                             : 3391
+# BELS                             : 4944
 #      GND                         : 1
-#      INV                         : 85
-#      LUT1                        : 226
-#      LUT2                        : 198
-#      LUT3                        : 491
-#      LUT4                        : 151
-#      LUT5                        : 243
-#      LUT6                        : 467
-#      MUXCY                       : 749
-#      MUXF7                       : 5
+#      INV                         : 92
+#      LUT1                        : 264
+#      LUT2                        : 310
+#      LUT3                        : 590
+#      LUT4                        : 383
+#      LUT5                        : 471
+#      LUT6                        : 575
+#      MUXCY                       : 1147
+#      MUXF7                       : 17
 #      VCC                         : 1
-#      XORCY                       : 774
-# FlipFlops/Latches                : 810
+#      XORCY                       : 1093
+# FlipFlops/Latches                : 933
 #      FD                          : 6
-#      FDC                         : 30
-#      FDCE                        : 355
-#      FDE                         : 322
+#      FDC                         : 35
+#      FDCE                        : 392
+#      FDE                         : 383
 #      FDPE                        : 17
-#      FDR                         : 80
+#      FDR                         : 100
 # Clock Buffers                    : 1
 #      BUFGP                       : 1
-# IO Buffers                       : 36
-#      IBUF                        : 14
+# IO Buffers                       : 37
+#      IBUF                        : 15
 #      IOBUF                       : 8
 #      OBUF                        : 8
 #      OBUFT                       : 6
@@ -548,20 +700,20 @@ Selected Device : 6slx45csg324-2
 
 
 Slice Logic Utilization: 
- Number of Slice Registers:             810  out of  54576     1%  
- Number of Slice LUTs:                 1861  out of  27288     6%  
-    Number used as Logic:              1861  out of  27288     6%  
+ Number of Slice Registers:             933  out of  54576     1%  
+ Number of Slice LUTs:                 2685  out of  27288     9%  
+    Number used as Logic:              2685  out of  27288     9%  
 
 Slice Logic Distribution: 
- Number of LUT Flip Flop pairs used:   2005
-   Number with an unused Flip Flop:    1195  out of   2005    59%  
-   Number with an unused LUT:           144  out of   2005     7%  
-   Number of fully used LUT-FF pairs:   666  out of   2005    33%  
-   Number of unique control sets:        43
+ Number of LUT Flip Flop pairs used:   2860
+   Number with an unused Flip Flop:    1927  out of   2860    67%  
+   Number with an unused LUT:           175  out of   2860     6%  
+   Number of fully used LUT-FF pairs:   758  out of   2860    26%  
+   Number of unique control sets:        56
 
 IO Utilization: 
- Number of IOs:                          49
- Number of bonded IOBs:                  37  out of    218    16%  
+ Number of IOs:                          50
+ Number of bonded IOBs:                  38  out of    218    17%  
 
 Specific Feature Utilization:
  Number of BUFG/BUFGCTRLs:                1  out of     16     6%  
@@ -587,7 +739,7 @@ Clock Information:
 -----------------------------------+------------------------+-------+
 Clock Signal                       | Clock buffer(FF name)  | Load  |
 -----------------------------------+------------------------+-------+
-fx2Clk_in                          | BUFGP                  | 810   |
+fx2Clk_in                          | BUFGP                  | 933   |
 -----------------------------------+------------------------+-------+
 
 Asynchronous Control Signals Information:
@@ -598,10 +750,10 @@ Timing Summary:
 ---------------
 Speed Grade: -2
 
-   Minimum period: 11.413ns (Maximum Frequency: 87.621MHz)
-   Minimum input arrival time before clock: 11.545ns
-   Maximum output required time after clock: 12.882ns
-   Maximum combinational path delay: 12.841ns
+   Minimum period: 11.587ns (Maximum Frequency: 86.301MHz)
+   Minimum input arrival time before clock: 11.508ns
+   Maximum output required time after clock: 14.491ns
+   Maximum combinational path delay: 14.009ns
 
 Timing Details:
 ---------------
@@ -609,146 +761,142 @@ All values displayed in nanoseconds (ns)
 
 =========================================================================
 Timing constraint: Default period analysis for Clock 'fx2Clk_in'
-  Clock period: 11.413ns (frequency: 87.621MHz)
-  Total number of paths / destination ports: 215350756 / 1974
+  Clock period: 11.587ns (frequency: 86.301MHz)
+  Total number of paths / destination ports: 246553971 / 2251
 -------------------------------------------------------------------------
-Delay:               11.413ns (Levels of Logic = 48)
-  Source:            encrypt/round_4 (FF)
-  Destination:       encrypt/v1_31 (FF)
+Delay:               11.587ns (Levels of Logic = 42)
+  Source:            n100_2 (FF)
+  Destination:       note_allocate/amount_asked_int_30 (FF)
   Source Clock:      fx2Clk_in rising
   Destination Clock: fx2Clk_in rising
 
-  Data Path: encrypt/round_4 to encrypt/v1_31
+  Data Path: n100_2 to note_allocate/amount_asked_int_30
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FDCE:C->Q             8   0.525   1.374  encrypt/round_4 (encrypt/round_4)
-     LUT5:I0->O           13   0.254   1.098  encrypt/GND_23_o_round[5]_equal_1_o<5>11_3 (encrypt/GND_23_o_round[5]_equal_1_o<5>11_1)
-     LUT3:I2->O            1   0.254   0.000  encrypt/Madd_n0098_lut<0> (encrypt/Madd_n0098_lut<0>)
-     MUXCY:S->O            1   0.215   0.000  encrypt/Madd_n0098_cy<0> (encrypt/Madd_n0098_cy<0>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<1> (encrypt/Madd_n0098_cy<1>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<2> (encrypt/Madd_n0098_cy<2>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<3> (encrypt/Madd_n0098_cy<3>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<4> (encrypt/Madd_n0098_cy<4>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<5> (encrypt/Madd_n0098_cy<5>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<6> (encrypt/Madd_n0098_cy<6>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<7> (encrypt/Madd_n0098_cy<7>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<8> (encrypt/Madd_n0098_cy<8>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<9> (encrypt/Madd_n0098_cy<9>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<10> (encrypt/Madd_n0098_cy<10>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<11> (encrypt/Madd_n0098_cy<11>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<12> (encrypt/Madd_n0098_cy<12>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<13> (encrypt/Madd_n0098_cy<13>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<14> (encrypt/Madd_n0098_cy<14>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<15> (encrypt/Madd_n0098_cy<15>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<16> (encrypt/Madd_n0098_cy<16>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<17> (encrypt/Madd_n0098_cy<17>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<18> (encrypt/Madd_n0098_cy<18>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<19> (encrypt/Madd_n0098_cy<19>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<20> (encrypt/Madd_n0098_cy<20>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<21> (encrypt/Madd_n0098_cy<21>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<22> (encrypt/Madd_n0098_cy<22>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<23> (encrypt/Madd_n0098_cy<23>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_n0098_cy<24> (encrypt/Madd_n0098_cy<24>)
-     XORCY:CI->O           3   0.206   0.766  encrypt/Madd_n0098_xor<25> (encrypt/n0098<25>)
-     LUT5:I4->O            1   0.254   0.000  encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<25> (encrypt/Madd_v1[31]_sum[31]_add_7_OUT_lut<25>)
-     MUXCY:S->O            1   0.215   0.000  encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<25> (encrypt/Madd_v1[31]_sum[31]_add_7_OUT_cy<25>)
-     XORCY:CI->O           1   0.206   0.682  encrypt/Madd_v1[31]_sum[31]_add_7_OUT_xor<26> (encrypt/v1[31]_sum[31]_add_7_OUT<26>)
-     LUT6:I5->O            1   0.254   0.000  encrypt/Madd_n0107_lut<26> (encrypt/Madd_n0107_lut<26>)
-     MUXCY:S->O            1   0.215   0.000  encrypt/Madd_n0107_cy<26> (encrypt/Madd_n0107_cy<26>)
-     XORCY:CI->O           4   0.206   0.804  encrypt/Madd_n0107_xor<27> (encrypt/n0107<27>)
-     LUT1:I0->O            1   0.254   0.000  encrypt/Madd_GND_23_o_PWR_14_o_add_15_OUT_cy<22>_rt (encrypt/Madd_GND_23_o_PWR_14_o_add_15_OUT_cy<22>_rt)
-     MUXCY:S->O            1   0.215   0.000  encrypt/Madd_GND_23_o_PWR_14_o_add_15_OUT_cy<22> (encrypt/Madd_GND_23_o_PWR_14_o_add_15_OUT_cy<22>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_GND_23_o_PWR_14_o_add_15_OUT_cy<23> (encrypt/Madd_GND_23_o_PWR_14_o_add_15_OUT_cy<23>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_GND_23_o_PWR_14_o_add_15_OUT_cy<24> (encrypt/Madd_GND_23_o_PWR_14_o_add_15_OUT_cy<24>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_GND_23_o_PWR_14_o_add_15_OUT_cy<25> (encrypt/Madd_GND_23_o_PWR_14_o_add_15_OUT_cy<25>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_GND_23_o_PWR_14_o_add_15_OUT_cy<26> (encrypt/Madd_GND_23_o_PWR_14_o_add_15_OUT_cy<26>)
-     MUXCY:CI->O           0   0.023   0.000  encrypt/Madd_GND_23_o_PWR_14_o_add_15_OUT_cy<27> (encrypt/Madd_GND_23_o_PWR_14_o_add_15_OUT_cy<27>)
-     XORCY:CI->O           4   0.206   0.804  encrypt/Madd_GND_23_o_PWR_14_o_add_15_OUT_xor<28> (encrypt/GND_23_o_PWR_14_o_add_15_OUT<28>)
-     LUT6:I5->O            1   0.254   0.000  encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<28> (encrypt/Madd_v1[31]_v0[31]_add_17_OUT_lut<28>)
-     MUXCY:S->O            1   0.215   0.000  encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<28> (encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<28>)
-     MUXCY:CI->O           1   0.023   0.000  encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<29> (encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<29>)
-     MUXCY:CI->O           0   0.023   0.000  encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<30> (encrypt/Madd_v1[31]_v0[31]_add_17_OUT_cy<30>)
-     XORCY:CI->O           1   0.206   0.682  encrypt/Madd_v1[31]_v0[31]_add_17_OUT_xor<31> (encrypt/v1[31]_v0[31]_add_17_OUT<31>)
-     LUT3:I2->O            1   0.254   0.000  encrypt/Mmux_v1[31]_v1[31]_mux_22_OUT251 (encrypt/v1[31]_v1[31]_mux_22_OUT<31>)
-     FDE:D                     0.074          encrypt/v1_31
+     FDE:C->Q             10   0.525   1.438  n100_2 (n100_2)
+     LUT6:I1->O            4   0.254   0.804  note_allocate/Mmult_PWR_17_o_n100_in[7]_MuLt_92_OUT_Madd_cy<5>11 (note_allocate/Mmult_PWR_17_o_n100_in[7]_MuLt_92_OUT_Madd_cy<5>)
+     LUT4:I3->O            1   0.254   0.000  note_allocate/Mmult_PWR_17_o_n100_in[7]_MuLt_92_OUT_Madd1_lut<9> (note_allocate/Mmult_PWR_17_o_n100_in[7]_MuLt_92_OUT_Madd1_lut<9>)
+     MUXCY:S->O            1   0.215   0.000  note_allocate/Mmult_PWR_17_o_n100_in[7]_MuLt_92_OUT_Madd1_cy<9> (note_allocate/Mmult_PWR_17_o_n100_in[7]_MuLt_92_OUT_Madd1_cy<9>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmult_PWR_17_o_n100_in[7]_MuLt_92_OUT_Madd1_cy<10> (note_allocate/Mmult_PWR_17_o_n100_in[7]_MuLt_92_OUT_Madd1_cy<10>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmult_PWR_17_o_n100_in[7]_MuLt_92_OUT_Madd1_cy<11> (note_allocate/Mmult_PWR_17_o_n100_in[7]_MuLt_92_OUT_Madd1_cy<11>)
+     XORCY:CI->O           5   0.206   1.117  note_allocate/Mmult_PWR_17_o_n100_in[7]_MuLt_92_OUT_Madd1_xor<12> (note_allocate/PWR_17_o_n100_in[7]_MuLt_92_OUT<12>)
+     LUT4:I0->O            1   0.254   0.000  note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_94_o_lut<5> (note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_94_o_lut<5>)
+     MUXCY:S->O            1   0.215   0.000  note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_94_o_cy<5> (note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_94_o_cy<5>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_94_o_cy<6> (note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_94_o_cy<6>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_94_o_cy<7> (note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_94_o_cy<7>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_94_o_cy<8> (note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_94_o_cy<8>)
+     MUXCY:CI->O          40   0.023   1.654  note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_94_o_cy<9> (note_allocate/Mcompar_amount_asked_int[30]_GND_26_o_LessThan_94_o_cy<9>)
+     LUT4:I3->O            3   0.254   0.766  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_B241 (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_B24)
+     LUT6:I5->O            1   0.254   0.910  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_lut<5>_SW1 (N232)
+     LUT6:I3->O            1   0.235   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_lut<5> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_lut<5>)
+     MUXCY:S->O            1   0.215   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<5> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<5>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<6> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<6>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<7> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<7>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<8> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<8>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<9> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<9>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<10> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<10>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<11> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<11>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<12> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<12>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<13> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<13>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<14> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<14>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<15> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<15>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<16> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<16>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<17> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<17>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<18> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<18>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<19> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<19>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<20> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<20>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<21> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<21>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<22> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<22>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<23> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<23>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<24> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<24>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<25> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<25>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<26> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<26>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<27> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<27>)
+     MUXCY:CI->O           1   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<28> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<28>)
+     MUXCY:CI->O           0   0.023   0.000  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<29> (note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_cy<29>)
+     XORCY:CI->O           1   0.206   0.790  note_allocate/Mmux_amount_asked_int[30]_amount_asked[30]_mux_127_OUT_rs_xor<30> (note_allocate/amount_asked_int[30]_amount_asked[30]_mux_127_OUT<30>)
+     LUT3:I1->O            1   0.250   0.000  note_allocate/amount_asked_int_30_dpot (note_allocate/amount_asked_int_30_dpot)
+     FDCE:D                    0.074          note_allocate/amount_asked_int_30
     ----------------------------------------
-    Total                     11.413ns (5.203ns logic, 6.210ns route)
-                                       (45.6% logic, 54.4% route)
+    Total                     11.587ns (4.108ns logic, 7.479ns route)
+                                       (35.5% logic, 64.5% route)
 
 =========================================================================
 Timing constraint: Default OFFSET IN BEFORE for Clock 'fx2Clk_in'
-  Total number of paths / destination ports: 1383 / 483
+  Total number of paths / destination ports: 1412 / 511
 -------------------------------------------------------------------------
-Offset:              11.545ns (Levels of Logic = 7)
+Offset:              11.508ns (Levels of Logic = 7)
   Source:            fx2GotData_in (PAD)
-  Destination:       system_state_FSM_FFd3 (FF)
+  Destination:       system_state_FSM_FFd5 (FF)
   Destination Clock: fx2Clk_in rising
 
-  Data Path: fx2GotData_in to system_state_FSM_FFd3
+  Data Path: fx2GotData_in to system_state_FSM_FFd5
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     IBUF:I->O            11   1.328   1.469  fx2GotData_in_IBUF (fx2GotData_in_IBUF)
+     IBUF:I->O            12   1.328   1.499  fx2GotData_in_IBUF (fx2GotData_in_IBUF)
      LUT5:I0->O           33   0.254   1.537  comm_fpga_fx2/Mmux_h2fValid_out11 (h2fValid)
      LUT6:I5->O           60   0.254   1.899  mux641511 (mux64151)
      LUT5:I4->O            9   0.254   0.976  mux1011511 (mux101151)
-     LUT6:I5->O           67   0.254   2.061  PWR_4_o_main_process.check_for_host_response[7]_equal_125_o<7>4 (PWR_4_o_main_process.check_for_host_response[7]_equal_125_o)
-     LUT6:I4->O            1   0.250   0.682  system_state_FSM_FFd3-In6 (system_state_FSM_FFd3-In7)
-     LUT3:I2->O            1   0.254   0.000  system_state_FSM_FFd3-In7 (system_state_FSM_FFd3-In)
-     FDC:D                     0.074          system_state_FSM_FFd3
+     LUT6:I5->O           66   0.254   1.945  PWR_4_o_main_process.checksum_for_backend_response[7]_equal_128_o<7>4 (PWR_4_o_main_process.checksum_for_backend_response[7]_equal_128_o)
+     LUT5:I4->O            2   0.254   0.726  system_state_FSM_FFd5-In513 (system_state_FSM_FFd5-In51)
+     LUT6:I5->O            1   0.254   0.000  system_state_FSM_FFd4-In2 (system_state_FSM_FFd4-In)
+     FDC:D                     0.074          system_state_FSM_FFd4
     ----------------------------------------
-    Total                     11.545ns (2.922ns logic, 8.623ns route)
-                                       (25.3% logic, 74.7% route)
+    Total                     11.508ns (2.926ns logic, 8.582ns route)
+                                       (25.4% logic, 74.6% route)
 
 =========================================================================
 Timing constraint: Default OFFSET OUT AFTER for Clock 'fx2Clk_in'
-  Total number of paths / destination ports: 1622 / 22
+  Total number of paths / destination ports: 1613 / 22
 -------------------------------------------------------------------------
-Offset:              12.882ns (Levels of Logic = 7)
-  Source:            comm_fpga_fx2/state_FSM_FFd2 (FF)
-  Destination:       fx2Data_io<7> (PAD)
+Offset:              14.491ns (Levels of Logic = 8)
+  Source:            system_state_FSM_FFd4 (FF)
+  Destination:       fx2Data_io<0> (PAD)
   Source Clock:      fx2Clk_in rising
 
-  Data Path: comm_fpga_fx2/state_FSM_FFd2 to fx2Data_io<7>
+  Data Path: system_state_FSM_FFd4 to fx2Data_io<0>
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FD:C->Q              31   0.525   1.731  comm_fpga_fx2/state_FSM_FFd2 (comm_fpga_fx2/state_FSM_FFd2)
-     LUT4:I1->O           10   0.235   1.236  comm_fpga_fx2/_n0136<3>1 (comm_fpga_fx2/_n0136)
-     LUT6:I3->O           18   0.235   1.235  GND_4_o_GND_4_o_AND_43_o2 (GND_4_o_GND_4_o_AND_43_o2)
-     LUT3:I2->O            8   0.254   1.399  GND_4_o_GND_4_o_AND_51_o11 (GND_4_o_GND_4_o_AND_51_o1)
-     LUT6:I0->O            1   0.254   0.910  comm_fpga_fx2/Mmux_dataOut31 (comm_fpga_fx2/Mmux_dataOut3)
-     LUT6:I3->O            1   0.235   0.790  comm_fpga_fx2/Mmux_dataOut33 (comm_fpga_fx2/Mmux_dataOut32)
-     LUT6:I4->O            1   0.250   0.681  comm_fpga_fx2/Mmux_dataOut35 (comm_fpga_fx2/dataOut<2>)
-     IOBUF:I->IO               2.912          fx2Data_io_2_IOBUF (fx2Data_io<2>)
+     FDC:C->Q            179   0.525   2.394  system_state_FSM_FFd4 (system_state_FSM_FFd4)
+     LUT3:I2->O            4   0.254   0.804  _n1354_inv211 (_n1354_inv21)
+     LUT6:I5->O           17   0.254   1.209  GND_4_o_GND_4_o_AND_410_o2 (GND_4_o_GND_4_o_AND_410_o2)
+     LUT3:I2->O            8   0.254   1.399  GND_4_o_GND_4_o_AND_418_o11 (GND_4_o_GND_4_o_AND_418_o1)
+     LUT6:I0->O            1   0.254   0.910  comm_fpga_fx2/Mmux_dataOut11 (comm_fpga_fx2/Mmux_dataOut1)
+     LUT6:I3->O            1   0.235   0.790  comm_fpga_fx2/Mmux_dataOut13 (comm_fpga_fx2/Mmux_dataOut12)
+     LUT6:I4->O            1   0.250   1.112  comm_fpga_fx2/Mmux_dataOut15 (comm_fpga_fx2/Mmux_dataOut14)
+     LUT6:I1->O            1   0.254   0.681  comm_fpga_fx2/Mmux_dataOut16 (comm_fpga_fx2/dataOut<0>)
+     IOBUF:I->IO               2.912          fx2Data_io_0_IOBUF (fx2Data_io<0>)
     ----------------------------------------
-    Total                     12.882ns (4.900ns logic, 7.982ns route)
-                                       (38.0% logic, 62.0% route)
+    Total                     14.491ns (5.192ns logic, 9.299ns route)
+                                       (35.8% logic, 64.2% route)
 
 =========================================================================
 Timing constraint: Default path analysis
-  Total number of paths / destination ports: 127 / 11
+  Total number of paths / destination ports: 126 / 11
 -------------------------------------------------------------------------
-Delay:               12.841ns (Levels of Logic = 8)
+Delay:               14.009ns (Levels of Logic = 9)
   Source:            fx2GotRoom_in (PAD)
-  Destination:       fx2Data_io<7> (PAD)
+  Destination:       fx2Data_io<0> (PAD)
 
-  Data Path: fx2GotRoom_in to fx2Data_io<7>
+  Data Path: fx2GotRoom_in to fx2Data_io<0>
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     IBUF:I->O            14   1.328   1.403  fx2GotRoom_in_IBUF (fx2GotRoom_in_IBUF)
-     LUT4:I0->O            1   0.254   0.682  GND_4_o_GND_4_o_AND_43_o2_SW0 (N81)
-     LUT6:I5->O           18   0.254   1.235  GND_4_o_GND_4_o_AND_43_o2 (GND_4_o_GND_4_o_AND_43_o2)
-     LUT3:I2->O            8   0.254   1.399  GND_4_o_GND_4_o_AND_51_o11 (GND_4_o_GND_4_o_AND_51_o1)
-     LUT6:I0->O            1   0.254   0.910  comm_fpga_fx2/Mmux_dataOut31 (comm_fpga_fx2/Mmux_dataOut3)
-     LUT6:I3->O            1   0.235   0.790  comm_fpga_fx2/Mmux_dataOut33 (comm_fpga_fx2/Mmux_dataOut32)
-     LUT6:I4->O            1   0.250   0.681  comm_fpga_fx2/Mmux_dataOut35 (comm_fpga_fx2/dataOut<2>)
-     IOBUF:I->IO               2.912          fx2Data_io_2_IOBUF (fx2Data_io<2>)
+     IBUF:I->O            14   1.328   1.127  fx2GotRoom_in_IBUF (fx2GotRoom_in_IBUF)
+     LUT2:I1->O            1   0.254   0.790  GND_4_o_GND_4_o_AND_410_o2_SW0 (N77)
+     LUT6:I4->O           17   0.250   1.209  GND_4_o_GND_4_o_AND_410_o2 (GND_4_o_GND_4_o_AND_410_o2)
+     LUT3:I2->O            8   0.254   1.399  GND_4_o_GND_4_o_AND_418_o11 (GND_4_o_GND_4_o_AND_418_o1)
+     LUT6:I0->O            1   0.254   0.910  comm_fpga_fx2/Mmux_dataOut11 (comm_fpga_fx2/Mmux_dataOut1)
+     LUT6:I3->O            1   0.235   0.790  comm_fpga_fx2/Mmux_dataOut13 (comm_fpga_fx2/Mmux_dataOut12)
+     LUT6:I4->O            1   0.250   1.112  comm_fpga_fx2/Mmux_dataOut15 (comm_fpga_fx2/Mmux_dataOut14)
+     LUT6:I1->O            1   0.254   0.681  comm_fpga_fx2/Mmux_dataOut16 (comm_fpga_fx2/dataOut<0>)
+     IOBUF:I->IO               2.912          fx2Data_io_0_IOBUF (fx2Data_io<0>)
     ----------------------------------------
-    Total                     12.841ns (5.741ns logic, 7.100ns route)
-                                       (44.7% logic, 55.3% route)
+    Total                     14.009ns (5.991ns logic, 8.018ns route)
+                                       (42.8% logic, 57.2% route)
 
 =========================================================================
 
@@ -760,21 +908,21 @@ Clock to Setup on destination clock fx2Clk_in
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-fx2Clk_in      |   11.413|         |         |         |
+fx2Clk_in      |   11.587|         |         |         |
 ---------------+---------+---------+---------+---------+
 
 =========================================================================
 
 
-Total REAL time to Xst completion: 12.00 secs
-Total CPU time to Xst completion: 11.09 secs
+Total REAL time to Xst completion: 15.00 secs
+Total CPU time to Xst completion: 14.22 secs
  
 --> 
 
 
-Total memory usage is 406408 kilobytes
+Total memory usage is 417148 kilobytes
 
 Number of errors   :    0 (   0 filtered)
-Number of warnings :    0 (   0 filtered)
-Number of infos    :    0 (   0 filtered)
+Number of warnings :    1 (   0 filtered)
+Number of infos    :   34 (   0 filtered)
 

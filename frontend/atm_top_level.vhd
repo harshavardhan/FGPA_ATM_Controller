@@ -4,6 +4,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity top_level is
+	-- Clock time period is 20 ns
 	generic (
 		N : integer := 100000000;
 		M : integer := 50000000;
@@ -33,6 +34,7 @@ entity top_level is
 		sw_in          : in    std_logic_vector(7 downto 0); -- eight switches
 
 		-- ATM: ----------------------------------------------------------------------------------------
+		load_bank_id 	: in  STD_LOGIC;
 		next_data_in  	: in  STD_LOGIC;
 		reset 		 	: in  STD_LOGIC;
 		start 			: in  STD_LOGIC;
@@ -66,6 +68,31 @@ architecture structural of top_level is
 			 done       : out STD_LOGIC);
 	end component;
 
+	component note_allocator
+		Port(clk    : in  STD_LOGIC;
+			 reset      : in  STD_LOGIC;
+			 start      : in  STD_LOGIC;
+			 -- number of denomination notes available in atm
+			 n2000_in	: in std_logic_vector(7 downto 0);
+			 n1000_in	: in std_logic_vector(7 downto 0);
+			 n500_in	: in std_logic_vector(7 downto 0);
+			 n100_in	: in std_logic_vector(7 downto 0);
+			 -- amount entered by user
+			 amount_asked : in std_logic_vector(31 downto 0);
+
+			 -- is the allocation possible
+			 allocation_possible : out std_logic;
+			 -- allocated of denominations to be dispensed (if possible) 
+			 n2000_out	: out std_logic_vector(7 downto 0);
+			 n1000_out	: out std_logic_vector(7 downto 0);
+			 n500_out	: out std_logic_vector(7 downto 0);
+			 n100_out	: out std_logic_vector(7 downto 0);
+			 
+			 -- receive output 
+			 done       : out STD_LOGIC);
+
+	end component;
+
 	-- Channel read/write interface -----------------------------------------------------------------
 	signal chanAddr  : std_logic_vector(6 downto 0);  -- the selected channel (0-127)
 
@@ -86,32 +113,49 @@ architecture structural of top_level is
 	-- Reset signal so host can delay startup
 	signal fx2Reset  : std_logic;
 
-	-- Modification
-	signal system_state                   : STD_LOGIC_VECTOR(2 downto 0) := (others => '0');
+	-- Setup and Configuration 
+	signal bank_id 						  : STD_LOGIC_VECTOR(4 downto 0) := (others => '0');
 
+	-- System State
+	signal system_state                   : STD_LOGIC_VECTOR(4 downto 0) := (others => '0');
+	
+	-- Encrypter
 	signal start_encrypt 				  : STD_LOGIC                     := '0';
 	signal en_input           			  : STD_LOGIC_VECTOR(63 downto 0) := (others => '0');
-	signal encryption_over                : STD_LOGIC                     := '1';
+	signal encryption_over                : STD_LOGIC                     := '0';
 	signal en_output 					  : STD_LOGIC_VECTOR(63 downto 0) := (others => '0');
 	
+	-- Decrypter
 	signal start_decrypt 				  : STD_LOGIC                     := '0';
 	signal de_input			  			  : STD_LOGIC_VECTOR(63 downto 0) := (others => '0');
-	signal decryption_over                : STD_LOGIC                     := '1';
+	signal decryption_over                : STD_LOGIC                     := '0';
 	signal de_output                  	  : STD_LOGIC_VECTOR(31 downto 0) := (others => '0');
 	
+	-- Primary push buttons
+	signal debounced_load_bank_id		  : STD_LOGIC 					  := '0';
 	signal debounced_next_data  		  : STD_LOGIC                     := '0';
 	signal debounced_reset                : STD_LOGIC                     := '0';
 	signal debounced_start                : STD_LOGIC                     := '0';
 	signal debounced_done                 : STD_LOGIC                     := '0';
 
+	-- Note count registers
 	signal n2000 	: STD_LOGIC_VECTOR(7 downto 0) := (others => '0');	
 	signal n1000 	: STD_LOGIC_VECTOR(7 downto 0) := (others => '0');	
 	signal n500 	: STD_LOGIC_VECTOR(7 downto 0) := (others => '0');	
 	signal n100 	: STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 
-	-- 
+	-- Note allocator
+	signal start_note_allocation         : STD_LOGIC                     := '0';
+	signal note_allocation_over          : STD_LOGIC                     := '0';
+	signal amount_to_be_allocated 		 : STD_LOGIC_VECTOR(31 downto 0) := (others => '0');
+
+	signal n2000_allocated	: STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
+	signal n1000_allocated	: STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
+	signal n500_allocated	: STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
+	signal n100_allocated	: STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 
 	signal adequate_cash_in_atm   	  : std_logic := '0';
+
 begin
 	-- CommFPGA module
 	fx2Read_out <= fx2Read;
@@ -146,6 +190,11 @@ begin
 		);
 
  	-- ATM requirements
+	load_bank_id_debouncer : debouncer
+	port map(clk        => fx2Clk_in,
+		     button     => load_bank_id,
+		     button_deb => debounced_load_bank_id);
+
 	data_in_debouncer : debouncer
 		port map(clk        => fx2Clk_in,
 			     button     => next_data_in,
@@ -182,6 +231,29 @@ begin
 			     plaintext  => de_output,
 			     done       => decryption_over);
 
+	note_allocate : note_allocator
+		port map(clk    	=> fx2Clk_in,
+				 reset      => debounced_reset,
+				 start      => start_note_allocation,
+				 -- number of denomination notes available in atm
+				 n2000_in	=> n2000,
+				 n1000_in	=> n1000,
+				 n500_in	=> n500,
+				 n100_in	=> n100,
+				 -- amount entered by user
+				 amount_asked => amount_to_be_allocated,
+
+				 -- is the allocation possible
+				 allocation_possible => adequate_cash_in_atm,
+				 -- allocated of denominations to be dispensed (if possible) 
+				 n2000_out	=> n2000_allocated,
+				 n1000_out	=> n1000_allocated,
+				 n500_out	=> n500_allocated,
+				 n100_out	=> n100_allocated,
+				 
+				 -- receive output 
+				 done       => note_allocation_over);
+
 	-- TODO : implement else for all channel i/o
 	main_process : process(fx2Clk_in, debounced_reset)
 		-- Taking Input (Input 8 bytes one by one) 
@@ -194,15 +266,15 @@ begin
 		-- Communicating wih backend
 		variable adequate_cash_in_account 					: std_logic := '0';
 		variable user_is_admin 								: std_logic := '0';
-		variable response_from_host 						: std_logic_vector(63 downto 0) := (others => '0');
-		variable check_for_host_response 					: std_logic_vector(7 downto 0) := (others => '0');
+		variable response_from_backend 						: std_logic_vector(63 downto 0) := (others => '0');
+		variable checksum_for_backend_response 				: std_logic_vector(7 downto 0) := (others => '0');
 
 		-- Dispensing Cash
 		variable dispensing_done_already 					: std_logic := '0';
-		variable no_2000_notes_to_be_dispensed					: integer range 0 to 255 := 0;
-		variable no_1000_notes_to_be_dispensed					: integer range 0 to 255 := 0;
-		variable no_500_notes_to_be_dispensed						: integer range 0 to 255 := 0;
-		variable no_100_notes_to_be_dispensed						: integer range 0 to 255 := 0;
+		variable no_2000_notes_to_be_dispensed				: integer range 0 to 255 := 0;
+		variable no_1000_notes_to_be_dispensed				: integer range 0 to 255 := 0;
+		variable no_500_notes_to_be_dispensed				: integer range 0 to 255 := 0;
+		variable no_100_notes_to_be_dispensed				: integer range 0 to 255 := 0;
 		variable led_4to7_blink_counter						: integer range 0 to 6 	 := 0;
 
 		-- Led Control
@@ -212,8 +284,10 @@ begin
 
 	begin
 		if debounced_reset = '1' then
+			-- Reset configuration
+
 			-- Resetting the system state
-			system_state <= "000";
+			system_state <= "00000";
 
 			-- Resetting Taking Input variables
 			input_byte_count  := 0;
@@ -226,12 +300,15 @@ begin
 			-- Resetting Decryption variables
 			start_decrypt <= '0';
 
+			-- Resetting Note allocation variables
+			start_note_allocation <= '0';
+
 			-- Communicating wih backend
-			adequate_cash_in_atm <= '0';
+			--adequate_cash_in_atm <= '0';
 			adequate_cash_in_account := '0';
 			user_is_admin := '0';
-			response_from_host := (others => '0');
-			check_for_host_response := (others => '0');
+			response_from_backend := (others => '0');
+			checksum_for_backend_response := (others => '0');
 
 			-- Dispensing Cash
 			dispensing_done_already := '0';
@@ -250,8 +327,9 @@ begin
 		elsif (fx2Clk_in'event AND fx2Clk_in = '1') then
 		
 			--------------------- States described below ------------------------
+			
 			-- Ready
-			if(system_state = "000") then
+			if(system_state = "00000") then
 				------------------------------ Initializing variables ----------------------
 				-- Resetting Taking Input variables
 				input_byte_count  := 0;
@@ -264,12 +342,15 @@ begin
 				-- Resetting Decryption variables
 				start_decrypt <= '0';
 
+				-- Resetting allocation variables
+				start_note_allocation <= '0';
+
 				-- Communicating wih backend
-				adequate_cash_in_atm <= '0';
+				--adequate_cash_in_atm <= '0';
 				adequate_cash_in_account := '0';
 				user_is_admin := '0';
-				response_from_host := (others => '0');
-				check_for_host_response := (others => '0');
+				response_from_backend := (others => '0');
+				checksum_for_backend_response := (others => '0');
 
 				-- Dispensing Cash
 				dispensing_done_already := '0';
@@ -283,29 +364,31 @@ begin
 				led_out <= (others => '0');
 				led_blink_counter := 0;
 				time_gap := '0';
-
 				----------------------------- Initializing Complete ------------------------------------------
 
-				-- Start button pressed, ready -> taking input
-				if (debounced_start = '1') then
-					system_state <= "001";
+				-- Load bank id pressed, update the bank id
+				if (debounced_load_bank_id = '1') then
+					bank_id <= sw_in(4 downto 0);
+					led_out(7 downto 3) <= bank_id;
 				end if;
 
-				---- Still not ready for communication
-				--if chanAddr = "0000000" and f2hReady = '1' then
-				--	f2hData <= x"00";
-				--end if;
+
+				-- Start button pressed, to taking input state
+				if (debounced_start = '1') then
+					system_state <= "00001";
+				end if;
 
 				-- Led Control
-				led_out <= (others => '0');
+				--led_out <= (others => '0');
 
 			-- Taking Input
-			elsif (system_state = "001") then
+			elsif (system_state = "00001") then
 				--If debounced_next_data is pressed read the 8 bit slide input
 				--If it is pressed more than 8 times, nothing happens
 				
 				-- debounced_next_data == 1 doesnot mean updating registers 
 				-- The former value will be 1 for atleast the clk_time_period * no_cycles_in_debouncer
+				-- and hence input_taken_already is used
 				if debounced_next_data = '1' and input_byte_count < 8 then
 					-- If this byte not already taken 
 					if input_taken_already = '0' then
@@ -317,29 +400,28 @@ begin
 						input_byte_count := input_byte_count + 1;
 						--When pressed for 8th time change the system state to "Encrypt" mode
 						if input_byte_count = 8 then
-							-- Puts the eight inputs to encrypter plaintext port
+							-- Feeds the encrypter plaintext port with input_eight_bytes
 							-- Note that this doesn't start encryption
 							en_input <= input_eight_bytes;
+							-- Feeds the note_allocator amount_asked port with input_eight_bytes
+							amount_to_be_allocated <= input_eight_bytes(31 downto 0);
+
 							-- Turning Off all leds
 							led_out <= (others => '0');
 							-- Goes to Next State
-							system_state <= "010";
+							system_state <= "01000";
 						else
 							-- Led Control 
 							led_out(3 downto 1) <= std_logic_vector(to_unsigned(input_byte_count, 3));
 						end if;
 					end if;
+
 				-- debounced_next_data == 0 can only exist right after start 
 				-- or after releasing next_data 
 				elsif debounced_next_data = '0' then
 					-- In all cases input_taken_already can be assigned to zero 
 					input_taken_already := '0';
 				end if;
-
-				---- Still not ready for communication
-				--if chanAddr = "0000000" and f2hReady = '1' then
-				--	f2hData <= x"00";
-				--end if;
 
 				-- Led Control
 				if time_counter > M then
@@ -348,33 +430,44 @@ begin
 					led_out(0) <= '0';
 				end if;
 
+			-- Note Allocation
+			elsif (system_state = "01000") then
+				-- Starts note allocation process
+				start_note_allocation <= '1';
+				
+				if note_allocation_over <= '1' then 
+					system_state <= "00010";
+				end if;
+
+				-- Led Control
+				if time_counter > M then
+					led_out(1 downto 0) <= "11";
+				else
+					led_out(1 downto 0) <= "00";
+				end if;
+
 			-- Encrypt
-			elsif (system_state = "010") then
+			elsif (system_state = "00010") then
 
 				-- checking Adquate cash in atm
-				if input_eight_bytes(31 downto 24) > n2000 
-					or input_eight_bytes(23 downto 16) > n1000 
-					or input_eight_bytes(15 downto 8) > n500 
-					or input_eight_bytes(7 downto 0) > n100 then
-					-- Send 0x02 
-					adequate_cash_in_atm <= '0';
-				else
-					-- Send 0x01
-					adequate_cash_in_atm <= '1';
-				end if;
+				--if input_eight_bytes(31 downto 24) > n2000 
+				--	or input_eight_bytes(23 downto 16) > n1000 
+				--	or input_eight_bytes(15 downto 8) > n500 
+				--	or input_eight_bytes(7 downto 0) > n100 then
+				--	-- Send 0x02 
+				--	adequate_cash_in_atm <= '0';
+				--else
+				--	-- Send 0x01
+				--	adequate_cash_in_atm <= '1';
+				--end if;
 				
 				-- Starting encryption
 				start_encrypt <= '1';
 			
 				-- After encrytion is done
 				if encryption_over = '1' then
-					system_state <= "011"; -- Goes into next step
+					system_state <= "00011"; -- Goes into next state
 				end if;
-
-				---- Still not ready for communication
-				--if chanAddr = "0000000" and f2hReady = '1' then
-				--	f2hData <= x"00";
-				--end if;
 
 				-- Led Control
 				if time_counter > M then
@@ -384,7 +477,7 @@ begin
 				end if;
 
 			-- Communicating wih backend
-			elsif (system_state = "011") then
+			elsif (system_state = "00011") then
 
 				---- Ready for communication
 				--if chanAddr = "0000000" and f2hReady = '1' then
@@ -435,49 +528,50 @@ begin
 
 					elsif h2fData = x"04" then
 					-- User Not validated 
-						system_state <= "000"; -- Directly go into ready state
+						system_state <= "00000"; -- Directly go into ready state
 					end if;
 
 				end if;
 
 				-- From channels 10 to 17 recieve the data from host
 				if chanAddr = "0001010" and h2fValid = '1' then 
-					response_from_host(7 downto 0) := h2fData;
-					check_for_host_response(0) := '1'; 
-				
+					response_from_backend(7 downto 0) := h2fData;
+					checksum_for_backend_response(0) := '1'; 
+
 				elsif chanAddr = "0001011" and h2fValid = '1' then
-					response_from_host(15 downto 8) := h2fData;
-					check_for_host_response(1) := '1';
-				
+					response_from_backend(15 downto 8) := h2fData;
+					checksum_for_backend_response(1) := '1';
+
 				elsif chanAddr = "0001100" and h2fValid = '1' then
-					response_from_host(23 downto 16) := h2fData;
-					check_for_host_response(2) := '1';
-				
+					response_from_backend(23 downto 16) := h2fData;
+					checksum_for_backend_response(2) := '1';
+
 				elsif chanAddr = "0001101" and h2fValid = '1' then
-					response_from_host(31 downto 24) := h2fData;
-					check_for_host_response(3) := '1';
+					response_from_backend(31 downto 24) := h2fData;
+					checksum_for_backend_response(3) := '1';
 				
 				elsif chanAddr = "0001110" and h2fValid = '1' then
-					response_from_host(39 downto 32) := h2fData;
-					check_for_host_response(4) := '1';
-				
+					response_from_backend(39 downto 32) := h2fData;
+					checksum_for_backend_response(4) := '1';
+
 				elsif chanAddr = "0001111" and h2fValid = '1' then
-					response_from_host(47 downto 40) := h2fData;
-					check_for_host_response(5) := '1';
+					response_from_backend(47 downto 40) := h2fData;
+					checksum_for_backend_response(5) := '1';
 				
 				elsif chanAddr = "0010000" and h2fValid = '1' then
-					response_from_host(55 downto 48) := h2fData;
-					check_for_host_response(6) := '1';
+					response_from_backend(55 downto 48) := h2fData;
+					checksum_for_backend_response(6) := '1';
 				
 				elsif chanAddr = "0010001" and h2fValid = '1' then
-					response_from_host(63 downto 56) := h2fData;
-					check_for_host_response(7) := '1';				
+					response_from_backend(63 downto 56) := h2fData;
+					checksum_for_backend_response(7) := '1';				
+				
 				end if;
 
 				-- If all 8 bytes of response recieved from host
-				if check_for_host_response = "11111111" then 
-					de_input <= response_from_host; -- Give input to decrypter 
-					system_state <= "100"; -- Go to next state 
+				if checksum_for_backend_response = "11111111" then 
+					de_input <= response_from_backend; -- Give input to decrypter 
+					system_state <= "00100"; -- Go to next state 
 				end if;
 
 				-- Led Control
@@ -488,7 +582,7 @@ begin
 				end if;
 
 			-- Decrypt
-			elsif (system_state = "100") then 
+			elsif (system_state = "00100") then 
 
 				-- Starting decryption
 				start_decrypt <= '1';
@@ -498,9 +592,9 @@ begin
 					-- Turning Off all leds
 					led_out <= (others => '0');
 					if user_is_admin = '1' then
-						system_state <= "101"; -- Goes into Loading cash
+						system_state <= "00101"; -- Goes into Loading cash
 					elsif user_is_admin = '0' then
-						system_state <= "110"; -- Goes into Dispensing cash
+						system_state <= "00110"; -- Goes into Dispensing cash
 					end if;
 				end if;
 
@@ -512,7 +606,7 @@ begin
 				end if;
 
 			-- Loading cash
-			elsif (system_state = "101") then 
+			elsif (system_state = "00101") then 
 				n2000 <= de_output(31 downto 24);
 				n1000 <= de_output(23 downto 16);
 				n500  <= de_output(15 downto 8);
@@ -532,25 +626,25 @@ begin
 					-- Turning off all the leds
 					led_out <= (others => '0');
 					-- Going to next state
-					system_state <= "111";
+					system_state <= "00111";
 				end if;				
 
 			-- Dispensing cash
-			elsif (system_state = "110") then
+			elsif (system_state = "00110") then
 
 				if adequate_cash_in_account = '1' and adequate_cash_in_atm = '1' then
 					if dispensing_done_already = '0' then 
 						-- Updating the registers (cash removed)
-						n2000 <= std_logic_vector(unsigned(n2000) - unsigned(de_output(31 downto 24)));
-						n1000 <= std_logic_vector(unsigned(n1000) - unsigned(de_output(23 downto 16)));
-						n500  <= std_logic_vector(unsigned(n500)  - unsigned(de_output(15 downto 8)));
-						n100  <= std_logic_vector(unsigned(n100)  - unsigned(de_output(7  downto 0)));
+						n2000 <= std_logic_vector(unsigned(n2000) - unsigned(n2000_allocated));
+						n1000 <= std_logic_vector(unsigned(n1000) - unsigned(n1000_allocated));
+						n500  <= std_logic_vector(unsigned(n500)  - unsigned(n500_allocated));
+						n100  <= std_logic_vector(unsigned(n100)  - unsigned(n100_allocated));
 						
 						-- No of repective notes to be dispensed
-						no_2000_notes_to_be_dispensed := to_integer(unsigned(de_output(31 downto 24)));
-						no_1000_notes_to_be_dispensed := to_integer(unsigned(de_output(23 downto 16)));
-						no_500_notes_to_be_dispensed 	:= to_integer(unsigned(de_output(15 downto 8)));
-						no_100_notes_to_be_dispensed 	:= to_integer(unsigned(de_output(7 downto 0)));
+						no_2000_notes_to_be_dispensed := to_integer(unsigned(n2000_allocated));
+						no_1000_notes_to_be_dispensed := to_integer(unsigned(n1000_allocated));
+						no_500_notes_to_be_dispensed 	:= to_integer(unsigned(n500_allocated));
+						no_100_notes_to_be_dispensed 	:= to_integer(unsigned(n100_allocated));
 
 						dispensing_done_already := '1';
 					end if;
@@ -614,7 +708,7 @@ begin
 							-- Turning off all leds
 							led_out <= (others => '0');
 							-- Going to dummy state
-							system_state <= "111";
+							system_state <= "00111";
 						else
 							-- Turn off cash dispensing counter leds
 							led_out(7 downto 4) <= "0000";
@@ -627,7 +721,7 @@ begin
 						-- Turning off all leds
 						led_out <= (others => '0');
 						-- Going to dummy state
-						system_state <= "111";
+						system_state <= "00111";
 					else
 						-- Turn off cash dispensing counter leds
 						led_out(7 downto 4) <= "0000";
@@ -648,7 +742,7 @@ begin
 						-- Turning off all leds
 						led_out <= (others => '0');
 						-- Going to dummy state
-						system_state <= "111";
+						system_state <= "00111";
 					else
 						-- Turn off cash dispensing counter leds
 						led_out(7 downto 4) <= "0000";
@@ -679,16 +773,17 @@ begin
 				end if;
 			
 			-- Dummy state 
-			elsif (system_state = "111") then
+			elsif (system_state = "00111") then
 				-- Waits for done press and goes to Ready state
 				if debounced_done = '1' then
-					system_state <= "000";
+					system_state <= "00000";
 				end if;
 
 			end if;
 
 			-----------------  END OF STATES -----------------
 
+			-- update time counter every clk cycle
 			if time_counter = N then
 				time_counter := 0;
 			else
@@ -700,32 +795,32 @@ begin
 
 
 	-- I/O
-	-- 
+	
+	-- f2h flow ------------------------------------------------------------------------------------------------------------------------ 
 	f2hData <= 
 			-- No communication code = 0x00
 			(others => '0') 
-				when (chanAddr = "0000000" and f2hReady = '1' and (system_state = "000" or system_state = "001" or system_state = "010"))
+				when (chanAddr = "0000000" and f2hReady = '1' and (system_state = "00000" or system_state = "00001" or system_state = "00010" or system_state = "01000"))
 			-- Adequate Cash in atm codes = 0x01 0x02 
-			else x"01" when (chanAddr = "0000000" and f2hReady = '1' and system_state = "011" and adequate_cash_in_atm = '1')
-			else x"02" when (chanAddr = "0000000" and f2hReady = '1' and system_state = "011" and adequate_cash_in_atm = '0')
+			else x"01" when (chanAddr = "0000000" and f2hReady = '1' and system_state = "00011" and adequate_cash_in_atm = '1')
+			else x"02" when (chanAddr = "0000000" and f2hReady = '1' and system_state = "00011" and adequate_cash_in_atm = '0')
 			-- If communication is done, in all next states channel0 gives code = 0x"03"
-			else x"03" when (chanAddr = "0000000" and f2hReady = '1' and (system_state = "100" or system_state = "101" or system_state = "110" or system_state = "111"))
+			else x"03" when (chanAddr = "0000000" and f2hReady = '1' and (system_state = "00100" or system_state = "00101" or system_state = "00110" or system_state = "00111"))
 			-- Channel 1 - 8 
 			-- From channel 1 to 8 give out corresponding bytes of input_eight_bytes_encrypted
-			else en_output(7 downto 0)   when (chanAddr = "0000001" and f2hReady = '1' and system_state = "011")
-			else en_output(15 downto 8)  when (chanAddr = "0000010" and f2hReady = '1' and system_state = "011")
-			else en_output(23 downto 16) when (chanAddr = "0000011" and f2hReady = '1' and system_state = "011")
-			else en_output(31 downto 24) when (chanAddr = "0000100" and f2hReady = '1' and system_state = "011")
-			else en_output(39 downto 32) when (chanAddr = "0000101" and f2hReady = '1' and system_state = "011")
-			else en_output(47 downto 40) when (chanAddr = "0000110" and f2hReady = '1' and system_state = "011")
-			else en_output(55 downto 48) when (chanAddr = "0000111" and f2hReady = '1' and system_state = "011")
-			else en_output(63 downto 56) when (chanAddr = "0001000" and f2hReady = '1' and system_state = "011")
+			else en_output(7 downto 0)   when (chanAddr = "0000001" and f2hReady = '1' and system_state = "00011")
+			else en_output(15 downto 8)  when (chanAddr = "0000010" and f2hReady = '1' and system_state = "00011")
+			else en_output(23 downto 16) when (chanAddr = "0000011" and f2hReady = '1' and system_state = "00011")
+			else en_output(31 downto 24) when (chanAddr = "0000100" and f2hReady = '1' and system_state = "00011")
+			else en_output(39 downto 32) when (chanAddr = "0000101" and f2hReady = '1' and system_state = "00011")
+			else en_output(47 downto 40) when (chanAddr = "0000110" and f2hReady = '1' and system_state = "00011")
+			else en_output(55 downto 48) when (chanAddr = "0000111" and f2hReady = '1' and system_state = "00011")
+			else en_output(63 downto 56) when (chanAddr = "0001000" and f2hReady = '1' and system_state = "00011")
 			else (others => '0');
 
 
 	f2hValid <= '1';
 	h2fReady <= '1';
+	-------------------------------------------------------------------------------------------------------------------------------------
 
-	--data_to_be_displayed <= en_output when (system_state = '0') else de_output; -- edit
-	--done                 <= encryption_over AND decryption_over;
 end architecture;

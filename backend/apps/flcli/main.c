@@ -1,7 +1,15 @@
 /*
-   Original 64 bit -> | User 16-bit | Password 16-bit | 2k 8-bit | 1k 8-bit | 500 8-bit | 100 8-bit |
-   (in VHDL before encryption)  8 7 6 5 4 3 2 1	
+   If the user is an admin : 
+   Original 64 bit -> | User ID 16-bit | Password 16-bit | 2k 8-bit | 1k 8-bit | 500 8-bit | 100 8-bit |
+   (in VHDL before encryption)  8 7 6 5 4 3 2 1
+
+   If the user is an accountee : 
+   Original 64 bit -> | User ID 16-bit | Password 16-bit | Amount in 32 bit |
+   (in VHDL before encryption)  8 7 6 5 4 3 2 1
+
+   User ID 16-bit -> Least 5 significant bits indicate bankID
 */
+
 #define _GNU_SOURCE
 
 #include <stdint.h>
@@ -11,7 +19,6 @@
 #include <argtable2.h>
 #include <string.h>
 #include <libfpgalink.h>
-
 #include <errno.h>
 #include <makestuff.h>
 #include <libbuffer.h>
@@ -23,15 +30,20 @@
 #ifdef WIN32
 #include <Windows.h>
 #else
-
 #include <sys/time.h>
-
 #endif
+
 #define N 100005
+#define M (((ll)1 << 32)-1)
+#define maxNotes 255
+#define ll long long
 
 int dataFromCSV[N][4];
 int numLines = 0;
 bool LOG = false;
+int bankID = -1;
+uint32_t maxAmountCanBeDispensed = M;
+uint8_t max2000Limit = maxNotes, max1000Limit = maxNotes, max500Limit = maxNotes, max100Limit = maxNotes; 
 
 /* Adapted from tiny encryption algorithm wikipedia */
 void decrypt(uint32_t *v, uint32_t *k) {
@@ -87,7 +99,8 @@ uint16_t myHash(uint16_t befHash) {
     uint16_t ret = 0;
     for (uint16_t i = 0; i <= 15; i++) {
         if ((befHash & (1 << i)) != 0) {
-            uint16_t j = ((i + 11) % 16);
+            uint16_t leftShift = (uint16_t)bankID % 16;
+            uint16_t j = ((i + leftShift) % 16);
             ret += (1 << j);
         }
     }
@@ -119,12 +132,8 @@ bool find(uint16_t userID, uint16_t hashedPin, bool *isAdmin, int *bal, int *inL
     return pos;
 }
 
-bool suffBal(int bal, int *reqAmo, uint8_t num_100, uint8_t num_500, uint8_t num_1000, uint8_t num_2000) {
+bool suffBalUser(int bal, int *reqAmo) {
     bool hasSuffBal = true;
-    *reqAmo += 100 * ((int) num_100);
-    *reqAmo += 500 * ((int) num_500);
-    *reqAmo += 1000 * ((int) num_1000);
-    *reqAmo += 2000 * ((int) num_2000);
     if (*reqAmo > bal) hasSuffBal = false;
     return hasSuffBal;
 }
@@ -166,7 +175,8 @@ int main(int argc, char *argv[]) {
 
     struct arg_str *ivpOpt = arg_str0("i", "ivp", "<VID:PID>", "            vendor ID and product ID (e.g 04B4:8613)");
     struct arg_str *vpOpt = arg_str1("v", "vp", "<VID:PID[:DID]>", "       VID, PID and opt. dev ID (e.g 1D50:602B:0001)");
-    struct arg_lit *loopOpt = arg_lit0("y", "atm", "                    communicates with the atm module");
+    struct arg_str *bankIdOpt = arg_str0("b", "bid", "bank id in decimal", "                    sets bank id");
+    struct arg_lit *loopOpt = arg_lit0("y", "atm", "                    starts atm service");
     struct arg_lit *verboseOpt = arg_lit0("l", "log", "        gives log on more events");
     struct arg_lit *helpOpt = arg_lit0("h", "help", "                     print this help and exit");
     struct arg_end *endOpt = arg_end(20);
@@ -174,6 +184,7 @@ int main(int argc, char *argv[]) {
     void *argTable[] = {
             ivpOpt,
             vpOpt,
+            bankIdOpt,
             loopOpt,
             verboseOpt,
             helpOpt,
@@ -200,6 +211,14 @@ int main(int argc, char *argv[]) {
 
     if (verboseOpt->count > 0) {
         LOG = true;
+    }
+
+    if (bankIdOpt->count > 0) {
+        bankID = atoi(bankIdOpt->sval[0]);
+        if(bankID < 0 || bankID > 31) {
+            printf("%s\n", "Invalid bankID");
+            return 0;
+        }
     }
 
     if (helpOpt->count > 0) {
@@ -291,6 +310,12 @@ int main(int argc, char *argv[]) {
                 free(lineFromFile);
                 fclose(fPtr);
 
+                // Bank id error handling
+                if(bankID < 0 || bankID > 31) {
+                    printf("%s\n", "Invalid bankID");
+                    return 0;
+                }
+                
                 while (true) {
                     uint32_t length = 1;
                     uint8_t *readFromChannelZero = malloc(sizeof(uint8_t));
@@ -303,7 +328,6 @@ int main(int argc, char *argv[]) {
                         uint8_t cnt = 1, valRead = *readFromChannelZero;
                         bool cont = true;
                         while (cnt < 3) {
-
                             flSleep(1000);
                             fStatus = flReadChannel(handle, 0, length, readFromChannelZero, &error);
                             CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
@@ -330,19 +354,9 @@ int main(int argc, char *argv[]) {
                                 else inpFromFrontEnd[1] += (*readFromChannel_i) * (1 << temp2);
                             }
                             decrypt64(inpFromFrontEnd);
-                            uint8_t num_100 = 0, num_500 = 0, num_1000 = 0, num_2000 = 0;
+                            uint8_t num_100_admin = 0, num_500_admin = 0, num_1000_admin = 0, num_2000_admin = 0;
                             uint16_t userID = 0, unhashedPin = 0;
-                            for (uint8_t i = 1; i <= 32; i++) {
-                                if (i <= 8) {
-                                    if ((inpFromFrontEnd[0] & (1 << (i - 1))) != 0) num_100 += ((1 << (i - 1)));
-                                } else if (i <= 16) {
-                                    if ((inpFromFrontEnd[0] & (1 << (i - 1))) != 0) num_500 += ((1 << (i - 9)));
-                                } else if (i <= 24) {
-                                    if ((inpFromFrontEnd[0] & (1 << (i - 1))) != 0) num_1000 += ((1 << (i - 17)));
-                                } else {
-                                    if ((inpFromFrontEnd[0] & (1 << (i - 1))) != 0) num_2000 += ((1 << (i - 25)));
-                                }
-                            }
+
                             for (uint16_t i = 1; i <= 32; i++) {
                                 if (i <= 16) {
                                     if ((inpFromFrontEnd[1] & (1 << (i - 1))) != 0) unhashedPin += ((1 << (i - 1)));
@@ -354,10 +368,6 @@ int main(int argc, char *argv[]) {
 //                            printf("userID %u\n", userID);
                             uint16_t hashedPin = myHash(unhashedPin);
 //                            printf("hashedPin %u\n", hashedPin);
-//                            printf("num_2000 %u\n", num_2000);
-//                            printf("num_1000 %u\n", num_1000);
-//                            printf("num_500 %u\n", num_500);
-//                            printf("num_100 %u\n", num_100);
 
                             int bal = -1;
                             bool isAdmin = false;
@@ -366,8 +376,8 @@ int main(int argc, char *argv[]) {
                             if (find(userID, hashedPin, &isAdmin, &bal, &inLineNum)) {
                                 printf("Valid user found \n");
                                 if (!isAdmin) {
-                                    int reqAmo = 0;
-                                    if (suffBal(bal, &reqAmo, num_100, num_500, num_1000, num_2000)) {
+                                    int reqAmo = inpFromFrontEnd[0];
+                                    if (suffBalUser(bal, &reqAmo)) {
 //                                        printf("bal %u\n", bal);
 //                                        printf("req %u\n", reqAmo);
                                         if (LOG) printf("Sufficient Balance in account\n");
@@ -379,12 +389,7 @@ int main(int argc, char *argv[]) {
                                         flSleep(1000);
                                         uint32_t befEncSen[2];
                                         for (int i = 0; i < 2; i++) befEncSen[i] = 0;
-                                        for (uint32_t i = 0; i <= 31; i += 8) {
-                                            if (i == 0) befEncSen[0] += ((1 << i) * ((uint32_t) num_100));
-                                            else if (i == 8) befEncSen[0] += ((1 << i) * ((uint32_t) num_500));
-                                            else if (i == 16) befEncSen[0] += ((1 << i) * ((uint32_t) num_1000));
-                                            else befEncSen[0] += ((1 << i) * ((uint32_t) num_2000));
-                                        }
+                                        befEncSen[0] = reqAmo;
                                         encrypt64(befEncSen);
                                         for (uint8_t i = 10; i <= 13; i++) {
                                             uint8_t tempSto = 0;
@@ -455,13 +460,31 @@ int main(int argc, char *argv[]) {
                                     if (LOG) printf("Write to channel %u = %u \n", 9, *statusOnChan9);
                                     fStatus = flWriteChannel(handle, (uint8_t) 9, length, statusOnChan9, &error);
                                     CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
+
+                                    for (uint8_t i = 1; i <= 32; i++) {
+                                        if (i <= 8) {
+                                            if ((inpFromFrontEnd[0] & (1 << (i - 1))) != 0) num_100_admin += ((1 << (i - 1)));
+                                        } else if (i <= 16) {
+                                            if ((inpFromFrontEnd[0] & (1 << (i - 1))) != 0) num_500_admin += ((1 << (i - 9)));
+                                        } else if (i <= 24) {
+                                            if ((inpFromFrontEnd[0] & (1 << (i - 1))) != 0) num_1000_admin += ((1 << (i - 17)));
+                                        } else {
+                                            if ((inpFromFrontEnd[0] & (1 << (i - 1))) != 0) num_2000_admin += ((1 << (i - 25)));
+                                        }
+                                    }
+
+//                            printf("num_2000_admin %u\n", num_2000_admin);
+//                            printf("num_1000_admin %u\n", num_1000_admin);
+//                            printf("num_500_admin %u\n", num_500_admin);
+//                            printf("num_100_admin %u\n", num_100_admin);
+
                                     uint32_t befEncSen[2];
                                     for (int i = 0; i < 2; i++) befEncSen[i] = 0;
                                     for (uint32_t i = 0; i <= 31; i += 8) {
-                                        if (i == 0) befEncSen[0] += ((1 << i) * ((uint32_t) num_100));
-                                        else if (i == 8) befEncSen[0] += ((1 << i) * ((uint32_t) num_500));
-                                        else if (i == 16) befEncSen[0] += ((1 << i) * ((uint32_t) num_1000));
-                                        else befEncSen[0] += ((1 << i) * ((uint32_t) num_2000));
+                                        if (i == 0) befEncSen[0] += ((1 << i) * ((uint32_t) num_100_admin));
+                                        else if (i == 8) befEncSen[0] += ((1 << i) * ((uint32_t) num_500_admin));
+                                        else if (i == 16) befEncSen[0] += ((1 << i) * ((uint32_t) num_1000_admin));
+                                        else befEncSen[0] += ((1 << i) * ((uint32_t) num_2000_admin));
                                     }
                                     encrypt64(befEncSen);
                                     for (uint8_t i = 10; i <= 13; i++) {
