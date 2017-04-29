@@ -466,7 +466,11 @@ begin
 			
 				-- After encrytion is done
 				if encryption_over = '1' then
-					system_state <= "00011"; -- Goes into next state
+					if  bank_id = en_input(52 downto 48) then
+						system_state <= "00011"; -- Goes into next state
+					else
+						system_state <= "01001"; -- Goes to ethernet communication state	
+					end if ;
 				end if;
 
 				-- Led Control
@@ -777,6 +781,17 @@ begin
 				-- Waits for done press and goes to Ready state
 				if debounced_done = '1' then
 					system_state <= "00000";
+				end if;
+
+			elsif (system_state = "01001") then
+				-- Waits for done press and goes to Ready state
+				if debounced_done = '1' then
+					system_state <= "00000";
+				end if;
+				if time_counter > M then
+					led_out(2 downto 0) <= "101";
+				else
+					led_out(2 downto 0) <= "000";
 				end if;
 
 			end if;

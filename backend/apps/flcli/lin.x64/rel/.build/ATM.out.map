@@ -68,11 +68,11 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o
 LOAD /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o
 LOAD lin.x64/rel/.build/main.o
 LOAD lin.x64/rel/.build/sig.o
-LOAD /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
-LOAD /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
-LOAD /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
-LOAD /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libdump/lin.x64/rel/libdump.a
-LOAD /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+LOAD /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
+LOAD /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+LOAD /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
+LOAD /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libdump/lin.x64/rel/libdump.a
+LOAD /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
 LOAD /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/libreadline.so
 LOAD /usr/lib/gcc/x86_64-linux-gnu/4.8/libgcc.a
 LOAD /usr/lib/gcc/x86_64-linux-gnu/4.8/libgcc_s.so
@@ -208,79 +208,80 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
  *(.iplt)
  .iplt          0x0000000000000000        0x0 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
 
-.text           0x0000000000401060     0x1602
+.text           0x0000000000401060     0x1582
  *(.text.unlikely .text.*_unlikely .text.unlikely.*)
  *(.text.exit .text.exit.*)
  *(.text.startup .text.startup.*)
- .text.startup  0x0000000000401060     0x10a0 lin.x64/rel/.build/main.o
+ .text.startup  0x0000000000401060     0x101e lin.x64/rel/.build/main.o
                 0x0000000000401060                main
  *(.text.hot .text.hot.*)
  *(.text .stub .text.* .gnu.linkonce.t.*)
- .text          0x0000000000402100       0x2a /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
-                0x0000000000402100                _start
- *fill*         0x000000000040212a        0x6 
- .text          0x0000000000402130       0xbd /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o
- *fill*         0x00000000004021ed        0x3 
- .text          0x00000000004021f0      0x3f6 lin.x64/rel/.build/main.o
-                0x00000000004021f0                decrypt
-                0x0000000000402260                encrypt
-                0x00000000004022d0                decrypt64
-                0x0000000000402340                encrypt64
-                0x00000000004023b0                myHash
-                0x0000000000402510                format
-                0x0000000000402570                find
-                0x00000000004025e0                suffBalUser
- *fill*         0x00000000004025e6        0xa 
- .text          0x00000000004025f0       0x72 /usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
-                0x00000000004025f0                __libc_csu_init
-                0x0000000000402660                __libc_csu_fini
+ .text          0x000000000040207e       0x2a /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
+                0x000000000040207e                _start
+ *fill*         0x00000000004020a8        0x8 
+ .text          0x00000000004020b0       0xbd /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o
+ *fill*         0x000000000040216d        0x3 
+ .text          0x0000000000402170      0x3f6 lin.x64/rel/.build/main.o
+                0x0000000000402170                decrypt
+                0x00000000004021e0                encrypt
+                0x0000000000402250                decrypt64
+                0x00000000004022c0                encrypt64
+                0x0000000000402330                myHash
+                0x0000000000402490                format
+                0x00000000004024f0                find
+                0x0000000000402560                suffBalUser
+ *fill*         0x0000000000402566        0xa 
+ .text          0x0000000000402570       0x72 /usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
+                0x0000000000402570                __libc_csu_init
+                0x00000000004025e0                __libc_csu_fini
  *(.gnu.warning)
 
-.fini           0x0000000000402664        0x9
+.fini           0x00000000004025e4        0x9
  *(SORT(.fini))
- .fini          0x0000000000402664        0x4 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o
-                0x0000000000402664                _fini
- .fini          0x0000000000402668        0x5 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
-                0x000000000040266d                PROVIDE (__etext, .)
-                0x000000000040266d                PROVIDE (_etext, .)
-                0x000000000040266d                PROVIDE (etext, .)
+ .fini          0x00000000004025e4        0x4 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o
+                0x00000000004025e4                _fini
+ .fini          0x00000000004025e8        0x5 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
+                0x00000000004025ed                PROVIDE (__etext, .)
+                0x00000000004025ed                PROVIDE (_etext, .)
+                0x00000000004025ed                PROVIDE (etext, .)
 
-.rodata         0x0000000000402670      0x600
+.rodata         0x00000000004025f0      0x5b0
  *(.rodata .rodata.* .gnu.linkonce.r.*)
  .rodata.str1.1
-                0x0000000000402670      0x1f4 lin.x64/rel/.build/main.o
-                                        0x203 (size before relaxing)
- *fill*         0x0000000000402864        0x4 
+                0x00000000004025f0      0x19a lin.x64/rel/.build/main.o
+                                        0x1a9 (size before relaxing)
+ *fill*         0x000000000040278a        0x6 
  .rodata.str1.8
-                0x0000000000402868      0x3f8 lin.x64/rel/.build/main.o
+                0x0000000000402790      0x3f8 lin.x64/rel/.build/main.o
                                         0x3f5 (size before relaxing)
- .rodata.cst16  0x0000000000402c60       0x10 lin.x64/rel/.build/main.o
+ *fill*         0x0000000000402b88        0x8 
+ .rodata.cst16  0x0000000000402b90       0x10 lin.x64/rel/.build/main.o
 
 .rodata1
  *(.rodata1)
 
-.eh_frame_hdr   0x0000000000402c70       0x6c
+.eh_frame_hdr   0x0000000000402ba0       0x6c
  *(.eh_frame_hdr)
- .eh_frame_hdr  0x0000000000402c70       0x6c /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
+ .eh_frame_hdr  0x0000000000402ba0       0x6c /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
 
-.eh_frame       0x0000000000402ce0      0x21c
+.eh_frame       0x0000000000402c10      0x21c
  *(.eh_frame)
- .eh_frame      0x0000000000402ce0       0x30 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
- .eh_frame      0x0000000000402d10       0x40 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
- .eh_frame      0x0000000000402d50      0x148 lin.x64/rel/.build/main.o
+ .eh_frame      0x0000000000402c10       0x30 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
+ .eh_frame      0x0000000000402c40       0x40 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
+ .eh_frame      0x0000000000402c80      0x148 lin.x64/rel/.build/main.o
                                         0x128 (size before relaxing)
- .eh_frame      0x0000000000402e98        0x0 lin.x64/rel/.build/sig.o
+ .eh_frame      0x0000000000402dc8        0x0 lin.x64/rel/.build/sig.o
                                          0x60 (size before relaxing)
- .eh_frame      0x0000000000402e98       0x60 /usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
+ .eh_frame      0x0000000000402dc8       0x60 /usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
                                          0x78 (size before relaxing)
- .eh_frame      0x0000000000402ef8        0x4 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtend.o
+ .eh_frame      0x0000000000402e28        0x4 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtend.o
 
 .gcc_except_table
  *(.gcc_except_table .gcc_except_table.*)
 
 .exception_ranges
  *(.exception_ranges .exception_ranges*)
-                0x0000000000402efc                . = (ALIGN (0x200000) - ((0x200000 - .) & 0x1fffff))
+                0x0000000000402e2c                . = (ALIGN (0x200000) - ((0x200000 - .) & 0x1fffff))
                 0x0000000000603ddc                . = DATA_SEGMENT_ALIGN (0x200000, 0x1000)
 
 .eh_frame
@@ -585,12 +586,12 @@ _ITM_deregisterTMCloneTable                       //lib/x86_64-linux-gnu/librt.s
                                                   //lib/x86_64-linux-gnu/libpthread.so.0
                                                   //lib/x86_64-linux-gnu/libudev.so.1
                                                   //lib/x86_64-linux-gnu/libusb-1.0.so.0
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
                                                   lin.x64/rel/libfx2loader.so
                                                   lin.x64/rel/libusbwrap.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
                                                   /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o
 _ITM_registerTMCloneTable                         //lib/x86_64-linux-gnu/librt.so.1
                                                   //lib/x86_64-linux-gnu/libdbus-1.so.3
@@ -600,12 +601,12 @@ _ITM_registerTMCloneTable                         //lib/x86_64-linux-gnu/librt.s
                                                   //lib/x86_64-linux-gnu/libpthread.so.0
                                                   //lib/x86_64-linux-gnu/libudev.so.1
                                                   //lib/x86_64-linux-gnu/libusb-1.0.so.0
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
                                                   lin.x64/rel/libfx2loader.so
                                                   lin.x64/rel/libusbwrap.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
                                                   /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o
 _Jv_RegisterClasses                               //lib/x86_64-linux-gnu/librt.so.1
                                                   //lib/x86_64-linux-gnu/libdbus-1.so.3
@@ -615,26 +616,26 @@ _Jv_RegisterClasses                               //lib/x86_64-linux-gnu/librt.s
                                                   //lib/x86_64-linux-gnu/libpthread.so.0
                                                   //lib/x86_64-linux-gnu/libudev.so.1
                                                   //lib/x86_64-linux-gnu/libusb-1.0.so.0
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
                                                   lin.x64/rel/libfx2loader.so
                                                   lin.x64/rel/libusbwrap.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
                                                   /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o
 __TMC_END__                                       /usr/lib/gcc/x86_64-linux-gnu/4.8/crtend.o
                                                   /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o
 __after_morecore_hook                             /lib/x86_64-linux-gnu/libc.so.6
 __after_morecore_hook@@GLIBC_2.2.5                /lib/x86_64-linux-gnu/libc.so.6
 __after_morecore_hook@GLIBC_2.2.5                 /lib/x86_64-linux-gnu/libc.so.6
-__bss_start                                       /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+__bss_start                                       /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
                                                   //lib/x86_64-linux-gnu/libcgmanager.so.0
                                                   //lib/x86_64-linux-gnu/libusb-1.0.so.0
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
                                                   lin.x64/rel/libfx2loader.so
                                                   lin.x64/rel/libusbwrap.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
 __close                                           /lib/x86_64-linux-gnu/libc.so.6
 __close@@GLIBC_2.2.5                              /lib/x86_64-linux-gnu/libc.so.6
                                                   //lib/x86_64-linux-gnu/libpthread.so.0
@@ -660,7 +661,7 @@ __fprintf_chk@GLIBC_2.3.4                         /lib/x86_64-linux-gnu/libc.so.
                                                   //lib/x86_64-linux-gnu/libnih.so.1
                                                   //lib/x86_64-linux-gnu/libudev.so.1
                                                   lin.x64/rel/libusbwrap.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
 __free_hook                                       /lib/x86_64-linux-gnu/libc.so.6
 __free_hook@@GLIBC_2.2.5                          /lib/x86_64-linux-gnu/libc.so.6
 __free_hook@GLIBC_2.2.5                           /lib/x86_64-linux-gnu/libc.so.6
@@ -676,12 +677,12 @@ __gmon_start__                                    //lib/x86_64-linux-gnu/librt.s
                                                   //lib/x86_64-linux-gnu/libcgmanager.so.0
                                                   //lib/x86_64-linux-gnu/libudev.so.1
                                                   //lib/x86_64-linux-gnu/libusb-1.0.so.0
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
                                                   lin.x64/rel/libfx2loader.so
                                                   lin.x64/rel/libusbwrap.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
                                                   /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o
 __init_array_end                                  /usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
 __init_array_start                                /usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
@@ -736,7 +737,7 @@ __printf_chk                                      /lib/x86_64-linux-gnu/libc.so.
 __printf_chk@@GLIBC_2.3.4                         /lib/x86_64-linux-gnu/libc.so.6
 __printf_chk@GLIBC_2.3.4                          /lib/x86_64-linux-gnu/libc.so.6
                                                   //lib/x86_64-linux-gnu/libnih.so.1
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
 __pwrite64                                        /lib/x86_64-linux-gnu/libc.so.6
 __pwrite64@@GLIBC_2.2.5                           /lib/x86_64-linux-gnu/libc.so.6
                                                   //lib/x86_64-linux-gnu/libpthread.so.0
@@ -793,47 +794,47 @@ __xpg_sigpause                                    /lib/x86_64-linux-gnu/libc.so.
 __xpg_sigpause@@GLIBC_2.2.5                       /lib/x86_64-linux-gnu/libc.so.6
 __xpg_sigpause@GLIBC_2.2.5                        /lib/x86_64-linux-gnu/libc.so.6
 _dl_starting_up                                   /lib/x86_64-linux-gnu/libc.so.6
-_edata                                            /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+_edata                                            /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
                                                   //lib/x86_64-linux-gnu/libcgmanager.so.0
                                                   //lib/x86_64-linux-gnu/libusb-1.0.so.0
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
                                                   lin.x64/rel/libfx2loader.so
                                                   lin.x64/rel/libusbwrap.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
-_end                                              /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+_end                                              /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
                                                   //lib/x86_64-linux-gnu/libcgmanager.so.0
                                                   //lib/x86_64-linux-gnu/libusb-1.0.so.0
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
                                                   lin.x64/rel/libfx2loader.so
                                                   lin.x64/rel/libusbwrap.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
 _environ                                          /lib/x86_64-linux-gnu/libc.so.6
 _environ@@GLIBC_2.2.5                             /lib/x86_64-linux-gnu/libc.so.6
 _environ@GLIBC_2.2.5                              /lib/x86_64-linux-gnu/libc.so.6
 _fini                                             /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o
                                                   //lib/x86_64-linux-gnu/libcgmanager.so.0
                                                   //lib/x86_64-linux-gnu/libusb-1.0.so.0
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
                                                   lin.x64/rel/libfx2loader.so
                                                   lin.x64/rel/libusbwrap.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
 _flushlbf                                         /lib/x86_64-linux-gnu/libc.so.6
 _flushlbf@@GLIBC_2.2.5                            /lib/x86_64-linux-gnu/libc.so.6
 _flushlbf@GLIBC_2.2.5                             /lib/x86_64-linux-gnu/libc.so.6
 _init                                             /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o
                                                   //lib/x86_64-linux-gnu/libcgmanager.so.0
                                                   //lib/x86_64-linux-gnu/libusb-1.0.so.0
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
                                                   lin.x64/rel/libfx2loader.so
                                                   lin.x64/rel/libusbwrap.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
                                                   /usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
 _longjmp                                          /lib/x86_64-linux-gnu/libc.so.6
 _longjmp@@GLIBC_2.2.5                             /lib/x86_64-linux-gnu/libc.so.6
 _longjmp@GLIBC_2.2.5                              /lib/x86_64-linux-gnu/libc.so.6
@@ -891,23 +892,23 @@ alphasort64@GLIBC_2.2.5                           /lib/x86_64-linux-gnu/libc.so.
 arch_prctl                                        /lib/x86_64-linux-gnu/libc.so.6
 arch_prctl@@GLIBC_2.2.5                           /lib/x86_64-linux-gnu/libc.so.6
 arch_prctl@GLIBC_2.2.5                            /lib/x86_64-linux-gnu/libc.so.6
-arg_end                                           /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+arg_end                                           /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
                                                   lin.x64/rel/.build/main.o
-arg_lit0                                          /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+arg_lit0                                          /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
                                                   lin.x64/rel/.build/main.o
-arg_nullcheck                                     /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+arg_nullcheck                                     /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
                                                   lin.x64/rel/.build/main.o
-arg_parse                                         /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+arg_parse                                         /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
                                                   lin.x64/rel/.build/main.o
-arg_print_errors                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+arg_print_errors                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
                                                   lin.x64/rel/.build/main.o
-arg_print_glossary                                /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+arg_print_glossary                                /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
                                                   lin.x64/rel/.build/main.o
-arg_print_syntax                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+arg_print_syntax                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
                                                   lin.x64/rel/.build/main.o
-arg_str0                                          /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+arg_str0                                          /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
                                                   lin.x64/rel/.build/main.o
-arg_str1                                          /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+arg_str1                                          /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
                                                   lin.x64/rel/.build/main.o
 argp_error                                        /lib/x86_64-linux-gnu/libc.so.6
 argp_error@@GLIBC_2.2.5                           /lib/x86_64-linux-gnu/libc.so.6
@@ -1005,7 +1006,7 @@ btowc@GLIBC_2.2.5                                 /lib/x86_64-linux-gnu/libc.so.
 bzero                                             /lib/x86_64-linux-gnu/libc.so.6
 bzero@@GLIBC_2.2.5                                /lib/x86_64-linux-gnu/libc.so.6
 bzero@GLIBC_2.2.5                                 /lib/x86_64-linux-gnu/libc.so.6
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
 c32rtomb                                          /lib/x86_64-linux-gnu/libc.so.6
 c32rtomb@@GLIBC_2.16                              /lib/x86_64-linux-gnu/libc.so.6
 c32rtomb@GLIBC_2.16                               /lib/x86_64-linux-gnu/libc.so.6
@@ -1019,8 +1020,8 @@ calloc@GLIBC_2.2.5                                /lib/x86_64-linux-gnu/libc.so.
                                                   //lib/x86_64-linux-gnu/libudev.so.1
                                                   //lib/x86_64-linux-gnu/libusb-1.0.so.0
                                                   lin.x64/rel/libusbwrap.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
 canonicalize_file_name                            /lib/x86_64-linux-gnu/libc.so.6
 canonicalize_file_name@@GLIBC_2.2.5               /lib/x86_64-linux-gnu/libc.so.6
 canonicalize_file_name@GLIBC_2.2.5                /lib/x86_64-linux-gnu/libc.so.6
@@ -1201,8 +1202,8 @@ fclose@GLIBC_2.2.5                                /lib/x86_64-linux-gnu/libc.so.
                                                   //lib/x86_64-linux-gnu/libpthread.so.0
                                                   //lib/x86_64-linux-gnu/libudev.so.1
                                                   //lib/x86_64-linux-gnu/libusb-1.0.so.0
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
 fcloseall                                         /lib/x86_64-linux-gnu/libc.so.6
 fcloseall@@GLIBC_2.2.5                            /lib/x86_64-linux-gnu/libc.so.6
 fcloseall@GLIBC_2.2.5                             /lib/x86_64-linux-gnu/libc.so.6
@@ -1220,11 +1221,11 @@ fdopendir@GLIBC_2.4                               /lib/x86_64-linux-gnu/libc.so.
 feof                                              /lib/x86_64-linux-gnu/libc.so.6
 feof@@GLIBC_2.2.5                                 /lib/x86_64-linux-gnu/libc.so.6
 feof@GLIBC_2.2.5                                  /lib/x86_64-linux-gnu/libc.so.6
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
 ferror                                            /lib/x86_64-linux-gnu/libc.so.6
 ferror@@GLIBC_2.2.5                               /lib/x86_64-linux-gnu/libc.so.6
 ferror@GLIBC_2.2.5                                /lib/x86_64-linux-gnu/libc.so.6
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
 fflush                                            /lib/x86_64-linux-gnu/libc.so.6
                                                   lin.x64/rel/.build/main.o
 fflush@@GLIBC_2.2.5                               /lib/x86_64-linux-gnu/libc.so.6
@@ -1250,7 +1251,7 @@ fgets                                             /lib/x86_64-linux-gnu/libc.so.
 fgets@@GLIBC_2.2.5                                /lib/x86_64-linux-gnu/libc.so.6
 fgets@GLIBC_2.2.5                                 /lib/x86_64-linux-gnu/libc.so.6
                                                   //lib/x86_64-linux-gnu/libudev.so.1
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
 fgetsgent_r                                       /lib/x86_64-linux-gnu/libc.so.6
 fgetsgent_r@@GLIBC_2.10                           /lib/x86_64-linux-gnu/libc.so.6
 fgetsgent_r@GLIBC_2.10                            /lib/x86_64-linux-gnu/libc.so.6
@@ -1276,33 +1277,33 @@ finitef@GLIBC_2.2.5                               /lib/x86_64-linux-gnu/libc.so.
 finitel                                           /lib/x86_64-linux-gnu/libc.so.6
 finitel@@GLIBC_2.2.5                              /lib/x86_64-linux-gnu/libc.so.6
 finitel@GLIBC_2.2.5                               /lib/x86_64-linux-gnu/libc.so.6
-flClose                                           /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+flClose                                           /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
                                                   lin.x64/rel/.build/main.o
-flFreeError                                       /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+flFreeError                                       /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
                                                   lin.x64/rel/.build/main.o
-flGetFirmwareID                                   /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+flGetFirmwareID                                   /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
                                                   lin.x64/rel/.build/main.o
-flGetFirmwareVersion                              /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+flGetFirmwareVersion                              /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
                                                   lin.x64/rel/.build/main.o
-flInitialise                                      /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+flInitialise                                      /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
                                                   lin.x64/rel/.build/main.o
-flIsCommCapable                                   /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+flIsCommCapable                                   /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
                                                   lin.x64/rel/.build/main.o
-flIsDeviceAvailable                               /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+flIsDeviceAvailable                               /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
                                                   lin.x64/rel/.build/main.o
-flIsFPGARunning                                   /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+flIsFPGARunning                                   /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
                                                   lin.x64/rel/.build/main.o
-flLoadStandardFirmware                            /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+flLoadStandardFirmware                            /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
                                                   lin.x64/rel/.build/main.o
-flOpen                                            /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+flOpen                                            /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
                                                   lin.x64/rel/.build/main.o
-flReadChannel                                     /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+flReadChannel                                     /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
                                                   lin.x64/rel/.build/main.o
-flSelectConduit                                   /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+flSelectConduit                                   /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
                                                   lin.x64/rel/.build/main.o
-flSleep                                           /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+flSleep                                           /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
                                                   lin.x64/rel/.build/main.o
-flWriteChannel                                    /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+flWriteChannel                                    /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
                                                   lin.x64/rel/.build/main.o
 flock                                             /lib/x86_64-linux-gnu/libc.so.6
 flock@@GLIBC_2.2.5                                /lib/x86_64-linux-gnu/libc.so.6
@@ -1323,8 +1324,8 @@ fopen@GLIBC_2.2.5                                 /lib/x86_64-linux-gnu/libc.so.
                                                   //lib/x86_64-linux-gnu/libpthread.so.0
                                                   //lib/x86_64-linux-gnu/libudev.so.1
                                                   //lib/x86_64-linux-gnu/libusb-1.0.so.0
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
 fork                                              /lib/x86_64-linux-gnu/libc.so.6
 fork@@GLIBC_2.2.5                                 /lib/x86_64-linux-gnu/libc.so.6
                                                   //lib/x86_64-linux-gnu/libpthread.so.0
@@ -1339,15 +1340,15 @@ fputs                                             /lib/x86_64-linux-gnu/libc.so.
 fputs@@GLIBC_2.2.5                                /lib/x86_64-linux-gnu/libc.so.6
 fputs@GLIBC_2.2.5                                 /lib/x86_64-linux-gnu/libc.so.6
                                                   //lib/x86_64-linux-gnu/libusb-1.0.so.0
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
 fread                                             /lib/x86_64-linux-gnu/libc.so.6
 fread@@GLIBC_2.2.5                                /lib/x86_64-linux-gnu/libc.so.6
 fread@GLIBC_2.2.5                                 /lib/x86_64-linux-gnu/libc.so.6
                                                   //lib/x86_64-linux-gnu/libdbus-1.so.3
                                                   //lib/x86_64-linux-gnu/libnih.so.1
                                                   //lib/x86_64-linux-gnu/libudev.so.1
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
 free                                              /lib/x86_64-linux-gnu/libc.so.6
                                                   lin.x64/rel/.build/main.o
 free@@GLIBC_2.2.5                                 /lib/x86_64-linux-gnu/libc.so.6
@@ -1359,11 +1360,11 @@ free@GLIBC_2.2.5                                  /lib/x86_64-linux-gnu/libc.so.
                                                   //lib/x86_64-linux-gnu/libpthread.so.0
                                                   //lib/x86_64-linux-gnu/libudev.so.1
                                                   //lib/x86_64-linux-gnu/libusb-1.0.so.0
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
                                                   lin.x64/rel/libusbwrap.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
 freelocale                                        /lib/x86_64-linux-gnu/libc.so.6
 freelocale@@GLIBC_2.3                             /lib/x86_64-linux-gnu/libc.so.6
 freelocale@GLIBC_2.3                              /lib/x86_64-linux-gnu/libc.so.6
@@ -1398,8 +1399,8 @@ fsync@GLIBC_2.2.5                                 /lib/x86_64-linux-gnu/libc.so.
 ftell                                             /lib/x86_64-linux-gnu/libc.so.6
 ftell@@GLIBC_2.2.5                                /lib/x86_64-linux-gnu/libc.so.6
 ftell@GLIBC_2.2.5                                 /lib/x86_64-linux-gnu/libc.so.6
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
 ftello64                                          /lib/x86_64-linux-gnu/libc.so.6
 ftello64@@GLIBC_2.2.5                             /lib/x86_64-linux-gnu/libc.so.6
 ftello64@GLIBC_2.2.5                              /lib/x86_64-linux-gnu/libc.so.6
@@ -1431,8 +1432,8 @@ fwrite@@GLIBC_2.2.5                               /lib/x86_64-linux-gnu/libc.so.
 fwrite@GLIBC_2.2.5                                /lib/x86_64-linux-gnu/libc.so.6
                                                   //lib/x86_64-linux-gnu/libdbus-1.so.3
                                                   //lib/x86_64-linux-gnu/libusb-1.0.so.0
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
 get_avphys_pages                                  /lib/x86_64-linux-gnu/libc.so.6
 get_avphys_pages@@GLIBC_2.2.5                     /lib/x86_64-linux-gnu/libc.so.6
 get_avphys_pages@GLIBC_2.2.5                      /lib/x86_64-linux-gnu/libc.so.6
@@ -1850,11 +1851,11 @@ malloc@GLIBC_2.2.5                                /lib/x86_64-linux-gnu/libc.so.
                                                   //lib/x86_64-linux-gnu/libnih.so.1
                                                   //lib/x86_64-linux-gnu/libpthread.so.0
                                                   //lib/x86_64-linux-gnu/libusb-1.0.so.0
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/libbuffer.so
                                                   lin.x64/rel/libusbwrap.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libbuffer/lin.x64/rel/liberror.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libfpgalink/lin.x64/rel/libfpgalink.so
 malloc_get_state                                  /lib/x86_64-linux-gnu/libc.so.6
 malloc_get_state@@GLIBC_2.2.5                     /lib/x86_64-linux-gnu/libc.so.6
 malloc_get_state@GLIBC_2.2.5                      /lib/x86_64-linux-gnu/libc.so.6
@@ -2254,15 +2255,15 @@ recvmsg@GLIBC_2.2.5                               /lib/x86_64-linux-gnu/libc.so.
 regcomp                                           /lib/x86_64-linux-gnu/libc.so.6
 regcomp@@GLIBC_2.2.5                              /lib/x86_64-linux-gnu/libc.so.6
 regcomp@GLIBC_2.2.5                               /lib/x86_64-linux-gnu/libc.so.6
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
 regerror                                          /lib/x86_64-linux-gnu/libc.so.6
 regerror@@GLIBC_2.2.5                             /lib/x86_64-linux-gnu/libc.so.6
 regerror@GLIBC_2.2.5                              /lib/x86_64-linux-gnu/libc.so.6
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
 regfree                                           /lib/x86_64-linux-gnu/libc.so.6
 regfree@@GLIBC_2.2.5                              /lib/x86_64-linux-gnu/libc.so.6
 regfree@GLIBC_2.2.5                               /lib/x86_64-linux-gnu/libc.so.6
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
 register_printf_function                          /lib/x86_64-linux-gnu/libc.so.6
 register_printf_function@@GLIBC_2.2.5             /lib/x86_64-linux-gnu/libc.so.6
 register_printf_function@GLIBC_2.2.5              /lib/x86_64-linux-gnu/libc.so.6
@@ -2654,7 +2655,7 @@ strtol@GLIBC_2.2.5                                /lib/x86_64-linux-gnu/libc.so.
                                                   //lib/x86_64-linux-gnu/libnih.so.1
                                                   //lib/x86_64-linux-gnu/libudev.so.1
                                                   //lib/x86_64-linux-gnu/libusb-1.0.so.0
-                                                  /home/pandu/Desktop/DigitalLogicDesign/Lab/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
+                                                  /home/anirudh/Downloads/DLD-LAB/04-connectingatms/backend/libs/libargtable2/lin.x64/rel/libargtable2.so
 strtol_l                                          /lib/x86_64-linux-gnu/libc.so.6
 strtol_l@@GLIBC_2.3                               /lib/x86_64-linux-gnu/libc.so.6
 strtol_l@GLIBC_2.3                                /lib/x86_64-linux-gnu/libc.so.6
