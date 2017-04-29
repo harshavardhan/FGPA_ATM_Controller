@@ -208,80 +208,79 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
  *(.iplt)
  .iplt          0x0000000000000000        0x0 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
 
-.text           0x0000000000401060     0x1582
+.text           0x0000000000401060     0x17f2
  *(.text.unlikely .text.*_unlikely .text.unlikely.*)
  *(.text.exit .text.exit.*)
  *(.text.startup .text.startup.*)
- .text.startup  0x0000000000401060     0x101e lin.x64/rel/.build/main.o
+ .text.startup  0x0000000000401060     0x128a lin.x64/rel/.build/main.o
                 0x0000000000401060                main
  *(.text.hot .text.hot.*)
  *(.text .stub .text.* .gnu.linkonce.t.*)
- .text          0x000000000040207e       0x2a /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
-                0x000000000040207e                _start
- *fill*         0x00000000004020a8        0x8 
- .text          0x00000000004020b0       0xbd /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o
- *fill*         0x000000000040216d        0x3 
- .text          0x0000000000402170      0x3f6 lin.x64/rel/.build/main.o
-                0x0000000000402170                decrypt
-                0x00000000004021e0                encrypt
-                0x0000000000402250                decrypt64
-                0x00000000004022c0                encrypt64
-                0x0000000000402330                myHash
-                0x0000000000402490                format
-                0x00000000004024f0                find
-                0x0000000000402560                suffBalUser
- *fill*         0x0000000000402566        0xa 
- .text          0x0000000000402570       0x72 /usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
-                0x0000000000402570                __libc_csu_init
-                0x00000000004025e0                __libc_csu_fini
+ .text          0x00000000004022ea       0x2a /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
+                0x00000000004022ea                _start
+ *fill*         0x0000000000402314        0xc 
+ .text          0x0000000000402320       0xbd /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o
+ *fill*         0x00000000004023dd        0x3 
+ .text          0x00000000004023e0      0x3f6 lin.x64/rel/.build/main.o
+                0x00000000004023e0                decrypt
+                0x0000000000402450                encrypt
+                0x00000000004024c0                decrypt64
+                0x0000000000402530                encrypt64
+                0x00000000004025a0                myHash
+                0x0000000000402700                format
+                0x0000000000402760                find
+                0x00000000004027d0                suffBalUser
+ *fill*         0x00000000004027d6        0xa 
+ .text          0x00000000004027e0       0x72 /usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
+                0x00000000004027e0                __libc_csu_init
+                0x0000000000402850                __libc_csu_fini
  *(.gnu.warning)
 
-.fini           0x00000000004025e4        0x9
+.fini           0x0000000000402854        0x9
  *(SORT(.fini))
- .fini          0x00000000004025e4        0x4 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o
-                0x00000000004025e4                _fini
- .fini          0x00000000004025e8        0x5 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
-                0x00000000004025ed                PROVIDE (__etext, .)
-                0x00000000004025ed                PROVIDE (_etext, .)
-                0x00000000004025ed                PROVIDE (etext, .)
+ .fini          0x0000000000402854        0x4 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o
+                0x0000000000402854                _fini
+ .fini          0x0000000000402858        0x5 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
+                0x000000000040285d                PROVIDE (__etext, .)
+                0x000000000040285d                PROVIDE (_etext, .)
+                0x000000000040285d                PROVIDE (etext, .)
 
-.rodata         0x00000000004025f0      0x5b0
+.rodata         0x0000000000402860      0x5c0
  *(.rodata .rodata.* .gnu.linkonce.r.*)
  .rodata.str1.1
-                0x00000000004025f0      0x19a lin.x64/rel/.build/main.o
-                                        0x1a9 (size before relaxing)
- *fill*         0x000000000040278a        0x6 
+                0x0000000000402860      0x1b5 lin.x64/rel/.build/main.o
+                                        0x1d2 (size before relaxing)
+ *fill*         0x0000000000402a15        0x3 
  .rodata.str1.8
-                0x0000000000402790      0x3f8 lin.x64/rel/.build/main.o
+                0x0000000000402a18      0x3f8 lin.x64/rel/.build/main.o
                                         0x3f5 (size before relaxing)
- *fill*         0x0000000000402b88        0x8 
- .rodata.cst16  0x0000000000402b90       0x10 lin.x64/rel/.build/main.o
+ .rodata.cst16  0x0000000000402e10       0x10 lin.x64/rel/.build/main.o
 
 .rodata1
  *(.rodata1)
 
-.eh_frame_hdr   0x0000000000402ba0       0x6c
+.eh_frame_hdr   0x0000000000402e20       0x6c
  *(.eh_frame_hdr)
- .eh_frame_hdr  0x0000000000402ba0       0x6c /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
+ .eh_frame_hdr  0x0000000000402e20       0x6c /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
 
-.eh_frame       0x0000000000402c10      0x21c
+.eh_frame       0x0000000000402e90      0x21c
  *(.eh_frame)
- .eh_frame      0x0000000000402c10       0x30 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
- .eh_frame      0x0000000000402c40       0x40 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
- .eh_frame      0x0000000000402c80      0x148 lin.x64/rel/.build/main.o
+ .eh_frame      0x0000000000402e90       0x30 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
+ .eh_frame      0x0000000000402ec0       0x40 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
+ .eh_frame      0x0000000000402f00      0x148 lin.x64/rel/.build/main.o
                                         0x128 (size before relaxing)
- .eh_frame      0x0000000000402dc8        0x0 lin.x64/rel/.build/sig.o
+ .eh_frame      0x0000000000403048        0x0 lin.x64/rel/.build/sig.o
                                          0x60 (size before relaxing)
- .eh_frame      0x0000000000402dc8       0x60 /usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
+ .eh_frame      0x0000000000403048       0x60 /usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
                                          0x78 (size before relaxing)
- .eh_frame      0x0000000000402e28        0x4 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtend.o
+ .eh_frame      0x00000000004030a8        0x4 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtend.o
 
 .gcc_except_table
  *(.gcc_except_table .gcc_except_table.*)
 
 .exception_ranges
  *(.exception_ranges .exception_ranges*)
-                0x0000000000402e2c                . = (ALIGN (0x200000) - ((0x200000 - .) & 0x1fffff))
+                0x00000000004030ac                . = (ALIGN (0x200000) - ((0x200000 - .) & 0x1fffff))
                 0x0000000000603ddc                . = DATA_SEGMENT_ALIGN (0x200000, 0x1000)
 
 .eh_frame

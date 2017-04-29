@@ -12,6 +12,12 @@ entity note_allocator is
 		 n1000_in	: in std_logic_vector(7 downto 0);
 		 n500_in	: in std_logic_vector(7 downto 0);
 		 n100_in	: in std_logic_vector(7 downto 0);
+		 -- limits put by bank
+		 limit_total_amount : in std_logic_vector(31 downto 0);
+		 limit_2000_notes   : in std_logic_vector(7 downto 0);
+		 limit_1000_notes   : in std_logic_vector(7 downto 0);
+		 limit_500_notes   : in std_logic_vector(7 downto 0);
+		 limit_100_notes   : in std_logic_vector(7 downto 0);
 		 -- amount entered by user (range = 0 - 2^32 - 1)
 		 amount_asked : in std_logic_vector(31 downto 0);
 
@@ -71,7 +77,11 @@ begin
 			
 				-- allocating 2000 denomination
 				elsif system_state = "001" then
-					number_of_notes_dispensable_int := to_integer(unsigned(n2000_in));
+					if n2000_in < limit_2000_notes then
+						number_of_notes_dispensable_int := to_integer(unsigned(n2000_in));
+					else
+						number_of_notes_dispensable_int := to_integer(unsigned(limit_2000_notes));
+					end if ;
 					if amount_asked_int < 2000 * number_of_notes_dispensable_int then
 						--number_of_notes_dispensable_int := amount_asked_int / 2;
 						-- number_of_notes_dispensable_int := 1;
@@ -103,7 +113,11 @@ begin
 
 				-- allocating 1000 denomination
 				elsif system_state = "010" then
-					number_of_notes_dispensable_int := to_integer(unsigned(n1000_in));
+					if n1000_in < limit_1000_notes then
+						number_of_notes_dispensable_int := to_integer(unsigned(n1000_in));
+					else
+						number_of_notes_dispensable_int := to_integer(unsigned(limit_1000_notes));
+					end if ;
 					if amount_asked_int < 1000 * number_of_notes_dispensable_int then
 						--number_of_notes_dispensable_int := amount_asked_int / 2;
 						-- number_of_notes_dispensable_int := 1;
@@ -135,7 +149,11 @@ begin
 
 				-- allocating 500 denomination
 				elsif system_state = "011" then
-					number_of_notes_dispensable_int := to_integer(unsigned(n500_in));
+					if n500_in < limit_500_notes then
+						number_of_notes_dispensable_int := to_integer(unsigned(n500_in));
+					else
+						number_of_notes_dispensable_int := to_integer(unsigned(limit_500_notes));
+					end if ;
 					if amount_asked_int < 500 * number_of_notes_dispensable_int then
 						--number_of_notes_dispensable_int := amount_asked_int / 2;
 						-- number_of_notes_dispensable_int := 1;
@@ -167,7 +185,11 @@ begin
 
 				-- allocating 100 denomination
 				elsif system_state = "100" then
-					number_of_notes_dispensable_int := to_integer(unsigned(n100_in));
+					if n100_in < limit_100_notes then
+						number_of_notes_dispensable_int := to_integer(unsigned(n100_in));
+					else
+						number_of_notes_dispensable_int := to_integer(unsigned(limit_100_notes));
+					end if ;
 					if amount_asked_int < 100 * number_of_notes_dispensable_int then
 						--number_of_notes_dispensable_int := amount_asked_int / 2;
 						-- number_of_notes_dispensable_int := 1;
@@ -208,7 +230,7 @@ begin
 				--
 				-- This is done as integer data type cannot hold value more than 2^31 - 1 
 				elsif system_state = "101" then
-					if amount_asked(31) = '0' and amount_asked_int = 0 then
+					if amount_asked(31) = '0' and amount_asked <= limit_total_amount and amount_asked_int = 0 then
 						allocation_possible <= '1';
 					else 
 						allocation_possible <= '0';

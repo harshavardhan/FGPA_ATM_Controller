@@ -8,7 +8,7 @@ entity decrypter is
 		 reset      : in  STD_LOGIC;
 		 ciphertext : in  STD_LOGIC_VECTOR(63 downto 0);
 		 start      : in  STD_LOGIC;
-		 plaintext  : out STD_LOGIC_VECTOR(31 downto 0);
+		 plaintext  : out STD_LOGIC_VECTOR(63 downto 0);
 		 done       : out STD_LOGIC);
 end decrypter;
 
@@ -49,7 +49,8 @@ begin
 					sum := sum - delta;
 					round <= round + 1;
 				elsif round = 32 then
-					plaintext <= v0;
+					plaintext(31 downto 0) <= v0;
+					plaintext(63 downto 32) <= v1;
 					round <= 33;
 					done <= '1';
 				end if;

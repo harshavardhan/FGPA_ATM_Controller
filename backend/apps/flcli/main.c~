@@ -43,7 +43,7 @@ int numLines = 0;
 bool LOG = false;
 int bankID = -1;
 uint32_t maxAmountCanBeDispensed = M;
-uint8_t max2000Limit = 1, max1000Limit = 1, max500Limit = maxNotes, max100Limit = maxNotes; 
+uint8_t max2000Limit = maxNotes, max1000Limit = maxNotes, max500Limit = maxNotes, max100Limit = maxNotes; 
 
 /* Adapted from tiny encryption algorithm wikipedia */
 void decrypt(uint32_t *v, uint32_t *k) {
@@ -326,12 +326,12 @@ int main(int argc, char *argv[]) {
                 uint32_t length = 1;
                 uint32_t befEncSenInit[2];
                 for (int i = 0; i < 2; i++) befEncSenInit[i] = 0;
-                befEncSenInit[1] = maxAmountCanBeDispensed;
+                befEncSenInit[0] = maxNotes;
                 for (uint32_t i = 0; i <= 31; i += 8) {
-                    if (i == 0) befEncSenInit[0] += ((1 << i) * ((uint32_t) max100Limit));
-                    else if (i == 8) befEncSenInit[0] += ((1 << i) * ((uint32_t) max500Limit));
-                    else if (i == 16) befEncSenInit[0] += ((1 << i) * ((uint32_t) max1000Limit));
-                    else befEncSenInit[0] += ((1 << i) * ((uint32_t) max2000Limit));
+                    if (i == 0) befEncSenInit[1] += ((1 << i) * ((uint32_t) max100Limit));
+                    else if (i == 8) befEncSenInit[1] += ((1 << i) * ((uint32_t) max500Limit));
+                    else if (i == 16) befEncSenInit[1] += ((1 << i) * ((uint32_t) max1000Limit));
+                    else befEncSenInit[1] += ((1 << i) * ((uint32_t) max2000Limit));
                 }
                 encrypt64(befEncSenInit);
 
