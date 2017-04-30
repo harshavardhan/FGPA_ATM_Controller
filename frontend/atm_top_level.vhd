@@ -170,6 +170,17 @@ architecture structural of top_level is
 
 	signal adequate_cash_in_atm   	  : std_logic := '0';
 
+	-- Cache memory
+	signal cache1	: std_logic_vector(63 downto 0) := (others => '0');
+	signal cache2	: std_logic_vector(63 downto 0) := (others => '0');
+	signal cache3	: std_logic_vector(63 downto 0) := (others => '0');
+	signal cache4	: std_logic_vector(63 downto 0) := (others => '0');
+
+	-- ATM dependancy on cache
+	signal cache_mode : STD_LOGIC := '0';
+
+	signal prevchanAddr : STD_LOGIC_VECTOR(6 downto 0)	:= (others => '0');
+
 begin
 	-- CommFPGA module
 	fx2Read_out <= fx2Read;
@@ -303,6 +314,12 @@ begin
 		variable led_blink_counter							: integer range 0 to max_no_of_blinks := 0;
 		variable time_gap 									: std_logic := '0';
 
+		-- time out counter used for the board to realize the connection is down
+		variable time_out_counter : integer range 0 to 31 := 0 ;
+
+		-- we have four cache entries count maitains the number which have been synced with server after connection regain
+		variable cache_update_count : integer range 0 to 4 := 0;
+
 	begin
 
 		if (fx2Clk_in'event AND fx2Clk_in = '1') then
@@ -349,6 +366,16 @@ begin
 				time_counter := 0;
 				led_blink_counter := 0;
 				time_gap := '0';
+
+				-- time out reset
+				time_out_counter := 0;
+
+			-- Check chanAddr change to signify the signal is back up
+			elsif cache_mode = '1' and chanAddr = "0000000" and prevchanAddr /= chanAddr and system_state = "00000" then
+				cache_mode <= '0';
+				system_state <= "01100";
+				start_encrypt <= '0';
+
 			-- Ready
 			elsif(system_state = "00000") then
 				------------------------------ Initializing variables ----------------------
@@ -381,6 +408,9 @@ begin
 				no_100_notes_to_be_dispensed 	:= 0;
 				led_4to7_blink_counter 	:= 0;
 
+				-- Cash update count
+					cache_update_count	:= 0;
+
 				-- Led Control
 				led_out <= (others => '0');
 				led_blink_counter := 0;
@@ -398,6 +428,9 @@ begin
 				if (debounced_start = '1') then
 					system_state <= "00001";
 				end if;
+
+				-- time out reset
+				time_out_counter := 0;
 
 				-- Led Control
 				--led_out <= (others => '0');
@@ -606,6 +639,15 @@ begin
 					led_out(1 downto 0) <= "00";
 				end if;
 
+				if time_counter = N then
+					time_out_counter := time_out_counter + 1;
+				end if ;
+
+				-- If time out is reached go to Communication lost state
+				if time_out_counter = 31 then
+					system_state <= "01010";
+				end if ;
+
 			-- Decrypt
 			elsif (system_state = "00100") then 
 
@@ -672,6 +714,48 @@ begin
 						no_100_notes_to_be_dispensed 	:= to_integer(unsigned(n100_allocated));
 
 						dispensing_done_already := '1';
+						-- cache updation
+						if cache1(63 downto 48) = en_input(63 downto 48) then
+							cache1(63 downto 32) <= en_input(63 downto 32);
+							if cache_mode = '1' then
+								cache1(31 downto 0) <= std_logic_vector(unsigned(cache1(31 downto 0)) - unsigned(en_input(31 downto 0)));
+							else
+								cache1(31 downto 0)	 <= de_output(31 downto 0);
+							end if ;
+						elsif cache2(63 downto 48) = en_input(63 downto 48) then
+							cache1(63 downto 32) <= en_input(63 downto 32);
+							if cache_mode = '1' then
+								cache1(31 downto 0) <= std_logic_vector(unsigned(cache2(31 downto 0)) - unsigned(en_input(31 downto 0)));
+							else
+								cache1(31 downto 0)	 <= de_output(31 downto 0);
+							end if ;
+							cache2 <= cache1;
+						elsif cache3(63 downto 48) = en_input(63 downto 48) then
+							cache1(63 downto 32) <= en_input(63 downto 32);
+							if cache_mode = '1' then
+								cache1(31 downto 0) <= std_logic_vector(unsigned(cache3(31 downto 0)) - unsigned(en_input(31 downto 0)));
+							else
+								cache1(31 downto 0)	 <= de_output(31 downto 0);
+							end if ;
+							cache2 <= cache1;
+							cache3 <= cache2;
+						elsif cache4(63 downto 48) = en_input(63 downto 48) then
+							cache1(63 downto 32) <= en_input(63 downto 32);
+							if cache_mode = '1' then
+								cache1(31 downto 0) <= std_logic_vector(unsigned(cache4(31 downto 0)) - unsigned(en_input(31 downto 0)));
+							else
+								cache1(31 downto 0)	 <= de_output(31 downto 0);
+							end if ;
+							cache2 <= cache1;
+							cache3 <= cache2;
+							cache4 <= cache3;
+						else
+							cache1(63 downto 32) <= en_input(63 downto 32);
+							cache1(31 downto 0)	 <= de_output(31 downto 0);
+							cache2 <= cache1;
+							cache3 <= cache2;
+							cache4 <= cache3;									
+						end if;
 					end if;
 
 					-- Dispensing cash in terms of blinks of corresponding leds
@@ -742,6 +826,46 @@ begin
 
 				elsif adequate_cash_in_account = '0'then
 					-- Go to dummy state after sufficient number of blinks
+					if dispensing_done_already = '0' then 
+
+						dispensing_done_already := '1';
+						-- cache updation
+						if cache1(63 downto 48) = en_input(63 downto 48) then
+							cache1(63 downto 32) <= en_input(63 downto 32);
+							if cache_mode = '1' then
+								cache1(31 downto 0) <= cache1(31 downto 0);
+							else	
+								cache1(31 downto 0)	 <= de_output(31 downto 0);
+							end if ;
+						elsif cache2(63 downto 48) = en_input(63 downto 48) then
+							cache1(63 downto 32) <= en_input(63 downto 32);
+							if cache_mode = '1' then
+								cache1(31 downto 0) <= cache2(31 downto 0);
+							else	
+								cache1(31 downto 0)	 <= de_output(31 downto 0);
+							end if ;
+							cache2 <= cache1;
+						elsif cache3(63 downto 48) = en_input(63 downto 48) then
+							cache1(63 downto 32) <= en_input(63 downto 32);
+							if cache_mode = '1' then
+								cache1(31 downto 0) <= cache3(31 downto 0);
+							else	
+								cache1(31 downto 0)	 <= de_output(31 downto 0);
+							end if ;
+							cache2 <= cache1;
+							cache3 <= cache2;
+						else
+							cache1(63 downto 32) <= en_input(63 downto 32);
+							if cache_mode = '1' then
+								cache1(31 downto 0) <= cache4(31 downto 0);
+							else	
+								cache1(31 downto 0)	 <= de_output(31 downto 0);
+							end if ;
+							cache2 <= cache1;
+							cache3 <= cache2;
+							cache4 <= cache3;									
+						end if;
+					end if;
 					if led_blink_counter = max_no_of_blinks then
 						-- Turning off all leds
 						led_out <= (others => '0');
@@ -763,6 +887,46 @@ begin
 
 				elsif adequate_cash_in_account = '1' and adequate_cash_in_atm = '0' then
 					-- Go to dummy state after sufficient number of blinks
+					if dispensing_done_already = '0' then 
+
+						dispensing_done_already := '1';
+						-- cache updation
+						if cache1(63 downto 48) = en_input(63 downto 48) then
+							cache1(63 downto 32) <= en_input(63 downto 32);
+							if cache_mode = '1' then
+								cache1(31 downto 0) <= cache1(31 downto 0);
+							else	
+								cache1(31 downto 0)	 <= de_output(31 downto 0);
+							end if ;
+						elsif cache2(63 downto 48) = en_input(63 downto 48) then
+							cache1(63 downto 32) <= en_input(63 downto 32);
+							if cache_mode = '1' then
+								cache1(31 downto 0) <= cache2(31 downto 0);
+							else	
+								cache1(31 downto 0)	 <= de_output(31 downto 0);
+							end if ;
+							cache2 <= cache1;
+						elsif cache3(63 downto 48) = en_input(63 downto 48) then
+							cache1(63 downto 32) <= en_input(63 downto 32);
+							if cache_mode = '1' then
+								cache1(31 downto 0) <= cache3(31 downto 0);
+							else	
+								cache1(31 downto 0)	 <= de_output(31 downto 0);
+							end if ;
+							cache2 <= cache1;
+							cache3 <= cache2;
+						else
+							cache1(63 downto 32) <= en_input(63 downto 32);
+							if cache_mode = '1' then
+								cache1(31 downto 0) <= cache4(31 downto 0);
+							else	
+								cache1(31 downto 0)	 <= de_output(31 downto 0);
+							end if ;
+							cache2 <= cache1;
+							cache3 <= cache2;
+							cache4 <= cache3;									
+						end if;
+					end if;
 					if led_blink_counter = max_no_of_blinks then
 						-- Turning off all leds
 						led_out <= (others => '0');
@@ -803,7 +967,12 @@ begin
 				if debounced_done = '1' then
 					system_state <= "00000";
 				end if;
+				--if time_counter = N then
+				--	led_out <= cache1(63 - 8*temp downto 56 - 8*temp);
+				--	temp := temp + 1;
+				--end if ;
 
+			-- Ethernet state
 			elsif (system_state = "01001") then
 				-- Waits for done press and goes to Ready state
 				if debounced_done = '1' then
@@ -815,6 +984,7 @@ begin
 					led_out(2 downto 0) <= "000";
 				end if;
 
+			-- Setup state
 			elsif (system_state = "11111") then
 				-- From channels 18 to  recieve the data from host
 				if chanAddr = "0010010" and h2fValid = '1' then 
@@ -864,6 +1034,7 @@ begin
 					led_out(1 downto 0) <= "00";
 				end if;
 
+			-- Decrypt the setup message
 			elsif (system_state = "11110") then
 				start_decrypt <= '1';
 
@@ -882,6 +1053,164 @@ begin
 					led_out(1 downto 0) <= "00";
 				end if;
 
+			-- Communication lost state
+			elsif (system_state = "01010") then
+				if en_input(63 downto 32) = cache1(63 downto 32) then
+					if en_input(31 downto 0) <= cache1(31 downto 0) then
+						adequate_cash_in_account := '1';
+						cache_mode <= '1';
+						system_state <= "00110";
+					else
+						adequate_cash_in_account := '0';
+						cache_mode <= '1';
+						system_state <= "00110";		
+					end if ;
+				elsif en_input(63 downto 32) = cache2(63 downto 32) then
+					if en_input(31 downto 0) <= cache2(31 downto 0) then
+						adequate_cash_in_account := '1';
+						cache_mode <= '1';
+						system_state <= "00110";
+					else
+						adequate_cash_in_account := '0';
+						cache_mode <= '1';
+						system_state <= "00110";		
+					end if ;
+				elsif en_input(63 downto 32) = cache3(63 downto 32) then
+					if en_input(31 downto 0) <= cache3(31 downto 0) then
+						adequate_cash_in_account := '1';
+						cache_mode <= '1';
+						system_state <= "00110";
+					else
+						adequate_cash_in_account := '0';
+						cache_mode <= '1';
+						system_state <= "00110";		
+					end if ;
+				elsif en_input(63 downto 32) = cache4(63 downto 32) then
+					if en_input(31 downto 0) <= cache4(31 downto 0) then
+						adequate_cash_in_account := '1';
+						cache_mode <= '1';
+						system_state <= "00110";
+					else
+						adequate_cash_in_account := '0';
+						cache_mode <= '1';
+						system_state <= "00110";		
+					end if ;
+				else
+					system_state <= "01011";
+				end if ;
+
+			-- Communication lost and user not in cache
+			elsif (system_state = "01011") then
+				-- Led Control
+				-- Led Control
+				if time_counter = N then
+					led_blink_counter := led_blink_counter + 1;
+				elsif time_counter > M then
+					led_out(7 downto 6) <= "11";
+				else
+					led_out(7 downto 6) <= "00";
+				end if;
+
+				-- If the blinking happens for "max_no_of_blinks" then go to next state 
+				if led_blink_counter = max_no_of_blinks then
+					-- Turning off all the leds
+					led_out <= (others => '0');
+					-- Going to next state
+					system_state <= "00000";
+				end if;
+
+			-- Communication regained
+			elsif (system_state = "01100") then
+				if start_encrypt = '0' then
+					start_decrypt <= '0';
+					start_encrypt <= '1';
+					en_input <= cache1;
+					checksum_for_backend_response := "00000000";
+				end if ;
+				-- If all the cache entries have been updated go to Ready state
+				if cache_update_count = 4 then
+					system_state <= "00000";
+					cache_mode <= '0';
+				elsif encryption_over = '1' then
+					system_state <= "01101";
+					start_encrypt <= '0';
+				end if;
+
+				-- Led control
+				if time_counter > M then
+					led_out(7 downto 0) <= "10101010";
+				else
+					led_out(7 downto 0) <= "00000000";
+				end if;
+
+			-- Communicate the cache changes to Backend
+			elsif (system_state = "01101") then
+				-- From channels 10 to 17 recieve the data from host
+				if chanAddr = "0001010" and h2fValid = '1' then 
+					response_from_backend(7 downto 0) := h2fData;
+					checksum_for_backend_response(0) := '1'; 
+
+				elsif chanAddr = "0001011" and h2fValid = '1' then
+					response_from_backend(15 downto 8) := h2fData;
+					checksum_for_backend_response(1) := '1';
+
+				elsif chanAddr = "0001100" and h2fValid = '1' then
+					response_from_backend(23 downto 16) := h2fData;
+					checksum_for_backend_response(2) := '1';
+
+				elsif chanAddr = "0001101" and h2fValid = '1' then
+					response_from_backend(31 downto 24) := h2fData;
+					checksum_for_backend_response(3) := '1';
+				
+				elsif chanAddr = "0001110" and h2fValid = '1' then
+					response_from_backend(39 downto 32) := h2fData;
+					checksum_for_backend_response(4) := '1';
+
+				elsif chanAddr = "0001111" and h2fValid = '1' then
+					response_from_backend(47 downto 40) := h2fData;
+					checksum_for_backend_response(5) := '1';
+				
+				elsif chanAddr = "0010000" and h2fValid = '1' then
+					response_from_backend(55 downto 48) := h2fData;
+					checksum_for_backend_response(6) := '1';
+				
+				elsif chanAddr = "0010001" and h2fValid = '1' then
+					response_from_backend(63 downto 56) := h2fData;
+					checksum_for_backend_response(7) := '1';				
+				
+				end if;
+
+				if time_counter > M then
+					led_out(7 downto 0) <= "10101010";
+				else
+					led_out(7 downto 0) <= "00000000";
+				end if;
+
+				-- If all 8 bytes of response recieved from host
+				if checksum_for_backend_response = "11111111" then 
+					de_input <= response_from_backend; -- Give input to decrypter 
+					system_state <= "01110"; -- Go to next state 
+				end if;
+
+			-- Update cache based on Backend's reply
+			elsif (system_state = "01110") then
+				start_decrypt <= '1';
+				-- Update with circular rotation of entries so that after a complete round everything is in place
+				if decryption_over = '1' then
+					cache1 <= cache4;
+					cache2(63 downto 32) <= cache1(63 downto 32);
+					cache2(31 downto 0) <= de_output(31 downto 0);
+					cache3 <= cache2;
+					cache4 <= cache3;
+					system_state <= "01100";
+					cache_update_count := cache_update_count + 1; 				
+				end if ;
+				if time_counter > M then
+					led_out(7 downto 0) <= "10101010";
+				else
+					led_out(7 downto 0) <= "00000000";
+				end if;
+
 			end if;
 
 			-----------------  END OF STATES -----------------
@@ -892,6 +1221,10 @@ begin
 			else
 				time_counter := time_counter + 1;
 			end if;
+
+			if prevchanAddr /= chanAddr then
+				prevchanAddr <= chanAddr;
+			end if ;
 
 		end if;
 	end process;
@@ -909,16 +1242,17 @@ begin
 			else x"02" when (chanAddr = "0000000" and f2hReady = '1' and system_state = "00011" and adequate_cash_in_atm = '0')
 			-- If communication is done, in all next states channel0 gives code = 0x"03"
 			else x"03" when (chanAddr = "0000000" and f2hReady = '1' and (system_state = "00100" or system_state = "00101" or system_state = "00110" or system_state = "00111"))
+			else x"05" When (chanAddr = "0000000" and f2hReady = '1' and (system_state = "01100" or system_state = "01101" or system_state = "01110") )
 			-- Channel 1 - 8 
 			-- From channel 1 to 8 give out corresponding bytes of input_eight_bytes_encrypted
-			else en_output(7 downto 0)   when (chanAddr = "0000001" and f2hReady = '1' and system_state = "00011")
-			else en_output(15 downto 8)  when (chanAddr = "0000010" and f2hReady = '1' and system_state = "00011")
-			else en_output(23 downto 16) when (chanAddr = "0000011" and f2hReady = '1' and system_state = "00011")
-			else en_output(31 downto 24) when (chanAddr = "0000100" and f2hReady = '1' and system_state = "00011")
-			else en_output(39 downto 32) when (chanAddr = "0000101" and f2hReady = '1' and system_state = "00011")
-			else en_output(47 downto 40) when (chanAddr = "0000110" and f2hReady = '1' and system_state = "00011")
-			else en_output(55 downto 48) when (chanAddr = "0000111" and f2hReady = '1' and system_state = "00011")
-			else en_output(63 downto 56) when (chanAddr = "0001000" and f2hReady = '1' and system_state = "00011")
+			else en_output(7 downto 0)   when (chanAddr = "0000001" and f2hReady = '1' and (system_state = "00011" or system_state = "01101"))
+			else en_output(15 downto 8)  when (chanAddr = "0000010" and f2hReady = '1' and (system_state = "00011" or system_state = "01101"))
+			else en_output(23 downto 16) when (chanAddr = "0000011" and f2hReady = '1' and (system_state = "00011" or system_state = "01101"))
+			else en_output(31 downto 24) when (chanAddr = "0000100" and f2hReady = '1' and (system_state = "00011" or system_state = "01101"))
+			else en_output(39 downto 32) when (chanAddr = "0000101" and f2hReady = '1' and (system_state = "00011" or system_state = "01101"))
+			else en_output(47 downto 40) when (chanAddr = "0000110" and f2hReady = '1' and (system_state = "00011" or system_state = "01101"))
+			else en_output(55 downto 48) when (chanAddr = "0000111" and f2hReady = '1' and (system_state = "00011" or system_state = "01101"))
+			else en_output(63 downto 56) when (chanAddr = "0001000" and f2hReady = '1' and (system_state = "00011" or system_state = "01101"))
 			else (others => '0');
 
 

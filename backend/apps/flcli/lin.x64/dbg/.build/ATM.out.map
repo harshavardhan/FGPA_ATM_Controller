@@ -210,7 +210,7 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
  *(.iplt)
  .iplt          0x0000000000000000        0x0 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
 
-.text           0x0000000000401150     0x2252
+.text           0x0000000000401150     0x2f82
  *(.text.unlikely .text.*_unlikely .text.unlikely.*)
  *(.text.exit .text.exit.*)
  *(.text.startup .text.startup.*)
@@ -220,7 +220,7 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
                 0x0000000000401150                _start
  *fill*         0x000000000040117a        0x6 
  .text          0x0000000000401180       0xbd /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o
- .text          0x000000000040123d     0x20e7 lin.x64/dbg/.build/main.o
+ .text          0x000000000040123d     0x2e23 lin.x64/dbg/.build/main.o
                 0x000000000040123d                decrypt
                 0x000000000040131a                encrypt
                 0x00000000004013f7                decrypt64
@@ -229,51 +229,50 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
                 0x00000000004014e7                format
                 0x0000000000401567                find
                 0x0000000000401614                suffBalUser
-                0x0000000000401638                main
- *fill*         0x0000000000403324        0xc 
- .text          0x0000000000403330       0x72 /usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
-                0x0000000000403330                __libc_csu_init
-                0x00000000004033a0                __libc_csu_fini
+                0x000000000040164e                main
+ .text          0x0000000000404060       0x72 /usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
+                0x0000000000404060                __libc_csu_init
+                0x00000000004040d0                __libc_csu_fini
  *(.gnu.warning)
 
-.fini           0x00000000004033a4        0x9
+.fini           0x00000000004040d4        0x9
  *(SORT(.fini))
- .fini          0x00000000004033a4        0x4 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o
-                0x00000000004033a4                _fini
- .fini          0x00000000004033a8        0x5 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
-                0x00000000004033ad                PROVIDE (__etext, .)
-                0x00000000004033ad                PROVIDE (_etext, .)
-                0x00000000004033ad                PROVIDE (etext, .)
+ .fini          0x00000000004040d4        0x4 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o
+                0x00000000004040d4                _fini
+ .fini          0x00000000004040d8        0x5 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
+                0x00000000004040dd                PROVIDE (__etext, .)
+                0x00000000004040dd                PROVIDE (_etext, .)
+                0x00000000004040dd                PROVIDE (etext, .)
 
-.rodata         0x00000000004033c0      0x709
+.rodata         0x00000000004040e0      0x769
  *(.rodata .rodata.* .gnu.linkonce.r.*)
- .rodata        0x00000000004033c0      0x709 lin.x64/dbg/.build/main.o
+ .rodata        0x00000000004040e0      0x769 lin.x64/dbg/.build/main.o
 
 .rodata1
  *(.rodata1)
 
-.eh_frame_hdr   0x0000000000403acc       0x6c
+.eh_frame_hdr   0x000000000040484c       0x6c
  *(.eh_frame_hdr)
- .eh_frame_hdr  0x0000000000403acc       0x6c /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
+ .eh_frame_hdr  0x000000000040484c       0x6c /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
 
-.eh_frame       0x0000000000403b38      0x214
+.eh_frame       0x00000000004048b8      0x214
  *(.eh_frame)
- .eh_frame      0x0000000000403b38       0x30 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
- .eh_frame      0x0000000000403b68       0x40 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
- .eh_frame      0x0000000000403ba8      0x140 lin.x64/dbg/.build/main.o
- .eh_frame      0x0000000000403ce8        0x0 lin.x64/dbg/.build/sig.o
+ .eh_frame      0x00000000004048b8       0x30 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
+ .eh_frame      0x00000000004048e8       0x40 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
+ .eh_frame      0x0000000000404928      0x140 lin.x64/dbg/.build/main.o
+ .eh_frame      0x0000000000404a68        0x0 lin.x64/dbg/.build/sig.o
                                          0x78 (size before relaxing)
- .eh_frame      0x0000000000403ce8       0x60 /usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
+ .eh_frame      0x0000000000404a68       0x60 /usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
                                          0x78 (size before relaxing)
- .eh_frame      0x0000000000403d48        0x4 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtend.o
+ .eh_frame      0x0000000000404ac8        0x4 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtend.o
 
 .gcc_except_table
  *(.gcc_except_table .gcc_except_table.*)
 
 .exception_ranges
  *(.exception_ranges .exception_ranges*)
-                0x0000000000403d4c                . = (ALIGN (0x200000) - ((0x200000 - .) & 0x1fffff))
-                0x0000000000603ddc                . = DATA_SEGMENT_ALIGN (0x200000, 0x1000)
+                0x0000000000404acc                . = (ALIGN (0x200000) - ((0x200000 - .) & 0x1fffff))
+                0x0000000000604ddc                . = DATA_SEGMENT_ALIGN (0x200000, 0x1000)
 
 .eh_frame
  *(.eh_frame)
@@ -291,24 +290,24 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
  *(.tbss .tbss.* .gnu.linkonce.tb.*)
  *(.tcommon)
 
-.preinit_array  0x0000000000603ddc        0x0
-                0x0000000000603ddc                PROVIDE (__preinit_array_start, .)
+.preinit_array  0x0000000000604ddc        0x0
+                0x0000000000604ddc                PROVIDE (__preinit_array_start, .)
  *(.preinit_array)
-                0x0000000000603ddc                PROVIDE (__preinit_array_end, .)
+                0x0000000000604ddc                PROVIDE (__preinit_array_end, .)
 
-.init_array     0x0000000000603de0        0x8
-                0x0000000000603de0                PROVIDE (__init_array_start, .)
+.init_array     0x0000000000604de0        0x8
+                0x0000000000604de0                PROVIDE (__init_array_start, .)
  *(SORT(.init_array.*) SORT(.ctors.*))
  *(.init_array EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .ctors)
- .init_array    0x0000000000603de0        0x8 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o
-                0x0000000000603de8                PROVIDE (__init_array_end, .)
+ .init_array    0x0000000000604de0        0x8 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o
+                0x0000000000604de8                PROVIDE (__init_array_end, .)
 
-.fini_array     0x0000000000603de8        0x8
-                0x0000000000603de8                PROVIDE (__fini_array_start, .)
+.fini_array     0x0000000000604de8        0x8
+                0x0000000000604de8                PROVIDE (__fini_array_start, .)
  *(SORT(.fini_array.*) SORT(.dtors.*))
  *(.fini_array EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .dtors)
- .fini_array    0x0000000000603de8        0x8 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o
-                0x0000000000603df0                PROVIDE (__fini_array_end, .)
+ .fini_array    0x0000000000604de8        0x8 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o
+                0x0000000000604df0                PROVIDE (__fini_array_end, .)
 
 .ctors
  *crtbegin.o(.ctors)
@@ -324,91 +323,92 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
  *(SORT(.dtors.*))
  *(.dtors)
 
-.jcr            0x0000000000603df0        0x8
+.jcr            0x0000000000604df0        0x8
  *(.jcr)
- .jcr           0x0000000000603df0        0x0 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o
- .jcr           0x0000000000603df0        0x8 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtend.o
+ .jcr           0x0000000000604df0        0x0 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o
+ .jcr           0x0000000000604df0        0x8 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtend.o
 
 .data.rel.ro
  *(.data.rel.ro.local* .gnu.linkonce.d.rel.ro.local.*)
  *(.data.rel.ro .data.rel.ro.* .gnu.linkonce.d.rel.ro.*)
 
-.dynamic        0x0000000000603df8      0x200
+.dynamic        0x0000000000604df8      0x200
  *(.dynamic)
- .dynamic       0x0000000000603df8      0x200 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
-                0x0000000000603df8                _DYNAMIC
+ .dynamic       0x0000000000604df8      0x200 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
+                0x0000000000604df8                _DYNAMIC
 
-.got            0x0000000000603ff8        0x8
+.got            0x0000000000604ff8        0x8
  *(.got)
- .got           0x0000000000603ff8        0x8 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
+ .got           0x0000000000604ff8        0x8 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
  *(.igot)
-                0x0000000000604fe8                . = DATA_SEGMENT_RELRO_END (., (SIZEOF (.got.plt) >= 0x18)?0x18:0x0)
+                0x0000000000605fe8                . = DATA_SEGMENT_RELRO_END (., (SIZEOF (.got.plt) >= 0x18)?0x18:0x0)
 
-.got.plt        0x0000000000604000      0x158
+.got.plt        0x0000000000605000      0x158
  *(.got.plt)
- .got.plt       0x0000000000604000      0x158 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
-                0x0000000000604000                _GLOBAL_OFFSET_TABLE_
+ .got.plt       0x0000000000605000      0x158 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
+                0x0000000000605000                _GLOBAL_OFFSET_TABLE_
  *(.igot.plt)
  .igot.plt      0x0000000000000000        0x0 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
 
-.data           0x0000000000604158        0xc
+.data           0x0000000000605158       0x18
  *(.data .data.* .gnu.linkonce.d.*)
- .data          0x0000000000604158        0xc lin.x64/dbg/.build/main.o
-                0x0000000000604158                bankID
-                0x000000000060415c                maxAmountCanBeDispensed
-                0x0000000000604160                max2000Limit
-                0x0000000000604161                max1000Limit
-                0x0000000000604162                max500Limit
-                0x0000000000604163                max100Limit
+ .data          0x0000000000605158       0x18 lin.x64/dbg/.build/main.o
+                0x0000000000605158                bankID
+                0x000000000060515c                maxAmountCanBeDispensed
+                0x0000000000605160                max2000Limit
+                0x0000000000605161                max1000Limit
+                0x0000000000605162                max500Limit
+                0x0000000000605163                max100Limit
+                0x0000000000605168                maxPercent
 
 .tm_clone_table
-                0x0000000000604168        0x0
+                0x0000000000605170        0x0
  .tm_clone_table
-                0x0000000000604168        0x0 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o
+                0x0000000000605170        0x0 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o
  .tm_clone_table
-                0x0000000000604168        0x0 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtend.o
+                0x0000000000605170        0x0 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtend.o
 
 .data1
  *(.data1)
-                0x0000000000604168                _edata = .
-                0x0000000000604168                PROVIDE (edata, .)
-                0x0000000000604168                . = .
-                0x0000000000604168                __bss_start = .
+                0x0000000000605170                _edata = .
+                0x0000000000605170                PROVIDE (edata, .)
+                0x0000000000605170                . = .
+                0x0000000000605170                __bss_start = .
 
-.bss            0x0000000000604180   0x186a70
+.bss            0x0000000000605180   0x186a70
  *(.dynbss)
- .dynbss        0x0000000000604180       0x10 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
-                0x0000000000604180                stdout@@GLIBC_2.2.5
-                0x0000000000604188                stderr@@GLIBC_2.2.5
+ .dynbss        0x0000000000605180       0x10 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
+                0x0000000000605180                stdout@@GLIBC_2.2.5
+                0x0000000000605188                stderr@@GLIBC_2.2.5
  *(.bss .bss.* .gnu.linkonce.b.*)
- .bss           0x0000000000604190        0x1 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o
- *fill*         0x0000000000604191        0x3 
- .bss           0x0000000000604194        0x5 lin.x64/dbg/.build/main.o
-                0x0000000000604194                numLines
-                0x0000000000604198                LOG
+ .bss           0x0000000000605190        0x1 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o
+ *fill*         0x0000000000605191        0x3 
+ .bss           0x0000000000605194        0x5 lin.x64/dbg/.build/main.o
+                0x0000000000605194                numLines
+                0x0000000000605198                LOG
  *(COMMON)
- *fill*         0x0000000000604199        0x7 
- COMMON         0x00000000006041a0   0x186a50 lin.x64/dbg/.build/main.o
-                0x00000000006041a0                dataFromCSV
-                0x000000000078abf0                . = ALIGN ((. != 0x0)?0x8:0x1)
+ *fill*         0x0000000000605199        0x7 
+ COMMON         0x00000000006051a0   0x186a50 lin.x64/dbg/.build/main.o
+                0x00000000006051a0                dataFromCSV
+                0x000000000078bbf0                . = ALIGN ((. != 0x0)?0x8:0x1)
 
 .lbss
  *(.dynlbss)
  *(.lbss .lbss.* .gnu.linkonce.lb.*)
  *(LARGE_COMMON)
-                0x000000000078abf0                . = ALIGN (0x8)
-                0x000000000078abf0                . = SEGMENT_START ("ldata-segment", .)
+                0x000000000078bbf0                . = ALIGN (0x8)
+                0x000000000078bbf0                . = SEGMENT_START ("ldata-segment", .)
 
 .lrodata
  *(.lrodata .lrodata.* .gnu.linkonce.lr.*)
 
-.ldata          0x0000000000b8abf0        0x0
+.ldata          0x0000000000b8bbf0        0x0
  *(.ldata .ldata.* .gnu.linkonce.l.*)
-                0x0000000000b8abf0                . = ALIGN ((. != 0x0)?0x8:0x1)
-                0x0000000000b8abf0                . = ALIGN (0x8)
-                0x0000000000b8abf0                _end = .
-                0x0000000000b8abf0                PROVIDE (end, .)
-                0x0000000000b8abf0                . = DATA_SEGMENT_END (.)
+                0x0000000000b8bbf0                . = ALIGN ((. != 0x0)?0x8:0x1)
+                0x0000000000b8bbf0                . = ALIGN (0x8)
+                0x0000000000b8bbf0                _end = .
+                0x0000000000b8bbf0                PROVIDE (end, .)
+                0x0000000000b8bbf0                . = DATA_SEGMENT_END (.)
 
 .stab
  *(.stab)
@@ -459,29 +459,29 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x0000000000000000     0x1560
+.debug_info     0x0000000000000000     0x1a65
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x0000000000000000     0x13ad lin.x64/dbg/.build/main.o
- .debug_info    0x00000000000013ad      0x1b3 lin.x64/dbg/.build/sig.o
+ .debug_info    0x0000000000000000     0x18b2 lin.x64/dbg/.build/main.o
+ .debug_info    0x00000000000018b2      0x1b3 lin.x64/dbg/.build/sig.o
 
 .debug_abbrev   0x0000000000000000      0x312
  *(.debug_abbrev)
  .debug_abbrev  0x0000000000000000      0x214 lin.x64/dbg/.build/main.o
  .debug_abbrev  0x0000000000000214       0xfe lin.x64/dbg/.build/sig.o
 
-.debug_line     0x0000000000000000      0x7eb
+.debug_line     0x0000000000000000      0xa0c
  *(.debug_line .debug_line.* .debug_line_end)
- .debug_line    0x0000000000000000      0x749 lin.x64/dbg/.build/main.o
- .debug_line    0x0000000000000749       0xa2 lin.x64/dbg/.build/sig.o
+ .debug_line    0x0000000000000000      0x96a lin.x64/dbg/.build/main.o
+ .debug_line    0x000000000000096a       0xa2 lin.x64/dbg/.build/sig.o
 
 .debug_frame
  *(.debug_frame)
 
-.debug_str      0x0000000000000000      0x8de
+.debug_str      0x0000000000000000      0x8fe
  *(.debug_str)
- .debug_str     0x0000000000000000      0x838 lin.x64/dbg/.build/main.o
-                                        0x8ba (size before relaxing)
- .debug_str     0x0000000000000838       0xa6 lin.x64/dbg/.build/sig.o
+ .debug_str     0x0000000000000000      0x858 lin.x64/dbg/.build/main.o
+                                        0x8da (size before relaxing)
+ .debug_str     0x0000000000000858       0xa6 lin.x64/dbg/.build/sig.o
                                         0x1e1 (size before relaxing)
 
 .debug_loc
@@ -505,9 +505,9 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x0000000000000000      0x1b0
+.debug_ranges   0x0000000000000000      0x360
  *(.debug_ranges)
- .debug_ranges  0x0000000000000000      0x1b0 lin.x64/dbg/.build/main.o
+ .debug_ranges  0x0000000000000000      0x360 lin.x64/dbg/.build/main.o
 
 .debug_macro
  *(.debug_macro)
@@ -1888,6 +1888,7 @@ max100Limit                                       lin.x64/dbg/.build/main.o
 max2000Limit                                      lin.x64/dbg/.build/main.o
 max500Limit                                       lin.x64/dbg/.build/main.o
 maxAmountCanBeDispensed                           lin.x64/dbg/.build/main.o
+maxPercent                                        lin.x64/dbg/.build/main.o
 mbrlen                                            /lib/x86_64-linux-gnu/libc.so.6
 mbrlen@@GLIBC_2.2.5                               /lib/x86_64-linux-gnu/libc.so.6
 mbrlen@GLIBC_2.2.5                                /lib/x86_64-linux-gnu/libc.so.6

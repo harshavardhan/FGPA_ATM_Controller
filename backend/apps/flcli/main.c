@@ -43,7 +43,8 @@ int numLines = 0;
 bool LOG = false;
 int bankID = -1;
 uint32_t maxAmountCanBeDispensed = M;
-uint8_t max2000Limit = 1, max1000Limit = 1, max500Limit = maxNotes, max100Limit = maxNotes; 
+uint8_t max2000Limit = maxNotes, max1000Limit = maxNotes, max500Limit = maxNotes, max100Limit = maxNotes; 
+double maxPercent = 0.8;
 
 /* Adapted from tiny encryption algorithm wikipedia */
 void decrypt(uint32_t *v, uint32_t *k) {
@@ -133,8 +134,8 @@ bool find(uint16_t userID, uint16_t hashedPin, bool *isAdmin, int *bal, int *inL
 }
 
 bool suffBalUser(int bal, int *reqAmo) {
-    bool hasSuffBal = true;
-    if (*reqAmo > bal) hasSuffBal = false;
+    bool hasSuffBal = true; 
+    if (*reqAmo > maxPercent * bal) hasSuffBal = false;
     return hasSuffBal;
 }
 
@@ -370,8 +371,11 @@ int main(int argc, char *argv[]) {
                     CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
                     if (LOG) printf("Read from channel 0 = %u \n", *readFromChannelZero);
 
-                    if (((*readFromChannelZero) == 1) || ((*readFromChannelZero) == 2)) {
-                        uint8_t cnt = 1, valRead = *readFromChannelZero;
+                    uint32_t valRead = 0;
+
+                    if (((*readFromChannelZero) == 1) || ((*readFromChannelZero) == 2) || ((*readFromChannelZero) == 5)) {
+                        uint8_t cnt = 1;
+                        valRead = *readFromChannelZero;
                         bool cont = true;
                         while (cnt < 3) {
                             flSleep(1000);
@@ -386,56 +390,274 @@ int main(int argc, char *argv[]) {
                             }
                         }
                         if (cont) {
-                            uint32_t inpFromFrontEnd[2];
-                            for (int i = 0; i < 2; i++) inpFromFrontEnd[i] = 0;
-                            for (uint32_t i = 1; i <= 8; i++) {
-                                uint8_t *readFromChannel_i = malloc(sizeof(uint8_t));
+                            if(valRead == 1 || valRead == 2) {
+                                uint32_t inpFromFrontEnd[2];
+                                for (int i = 0; i < 2; i++) inpFromFrontEnd[i] = 0;
+                                for (uint32_t i = 1; i <= 8; i++) {
+                                    uint8_t *readFromChannel_i = malloc(sizeof(uint8_t));
 
-                                flSleep(1000);
-                                fStatus = flReadChannel(handle, (uint8_t) i, length, readFromChannel_i, &error);
-                                CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
-                                if (LOG) printf("Read from channel %u = %u \n", i, *readFromChannel_i);
-                                uint32_t temp1 = 8 * (i - 1), temp2 = 8 * (i - 5);
-                                if (i <= 4) inpFromFrontEnd[0] += (*readFromChannel_i) * (1 << temp1);
-                                else inpFromFrontEnd[1] += (*readFromChannel_i) * (1 << temp2);
-                            }
-                            decrypt64(inpFromFrontEnd);
-                            uint8_t num_100_admin = 0, num_500_admin = 0, num_1000_admin = 0, num_2000_admin = 0;
-                            uint16_t userID = 0, unhashedPin = 0;
-
-                            for (uint16_t i = 1; i <= 32; i++) {
-                                if (i <= 16) {
-                                    if ((inpFromFrontEnd[1] & (1 << (i - 1))) != 0) unhashedPin += ((1 << (i - 1)));
-                                } else {
-                                    if ((inpFromFrontEnd[1] & (1 << (i - 1))) != 0) userID += ((1 << (i - 17)));
+                                    flSleep(1000);
+                                    fStatus = flReadChannel(handle, (uint8_t) i, length, readFromChannel_i, &error);
+                                    CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
+                                    if (LOG) printf("Read from channel %u = %u \n", i, *readFromChannel_i);
+                                    uint32_t temp1 = 8 * (i - 1), temp2 = 8 * (i - 5);
+                                    if (i <= 4) inpFromFrontEnd[0] += (*readFromChannel_i) * (1 << temp1);
+                                    else inpFromFrontEnd[1] += (*readFromChannel_i) * (1 << temp2);
                                 }
-                            }
-                           printf("unhashedPin %u\n", unhashedPin);
-                           printf("userID %u\n", userID);
-                            uint16_t hashedPin = myHash(unhashedPin);
-                           printf("hashedPin %u\n", hashedPin);
+                                decrypt64(inpFromFrontEnd);
+                                uint8_t num_100_admin = 0, num_500_admin = 0, num_1000_admin = 0, num_2000_admin = 0;
+                                uint16_t userID = 0, unhashedPin = 0;
 
-                            int bal = -1;
-                            bool isAdmin = false;
-                            int inLineNum = -1;
-                            uint8_t *statusOnChan9 = malloc(sizeof(uint8_t));
-                            if (find(userID, hashedPin, &isAdmin, &bal, &inLineNum)) {
-                                printf("Valid user found \n");
-                                if (!isAdmin) {
-                                    int reqAmo = inpFromFrontEnd[0];
-                                    if (suffBalUser(bal, &reqAmo)) {
-//                                        printf("bal %u\n", bal);
-//                                        printf("req %u\n", reqAmo);
-                                        if (LOG) printf("Sufficient Balance in account\n");
-                                        *statusOnChan9 = 1;
+                                for (uint16_t i = 1; i <= 32; i++) {
+                                    if (i <= 16) {
+                                        if ((inpFromFrontEnd[1] & (1 << (i - 1))) != 0) unhashedPin += ((1 << (i - 1)));
+                                    } else {
+                                        if ((inpFromFrontEnd[1] & (1 << (i - 1))) != 0) userID += ((1 << (i - 17)));
+                                    }
+                                }
+                                printf("unhashedPin %u\n", unhashedPin);
+                                printf("userID %u\n", userID);
+                                uint16_t hashedPin = myHash(unhashedPin);
+                                printf("hashedPin %u\n", hashedPin);
+
+                                int bal = -1;
+                                bool isAdmin = false;
+                                int inLineNum = -1;
+                                uint8_t *statusOnChan9 = malloc(sizeof(uint8_t));
+                                if (find(userID, hashedPin, &isAdmin, &bal, &inLineNum)) {
+                                    printf("Valid user found \n");
+                                    if (!isAdmin) {
+                                        int reqAmo = inpFromFrontEnd[0];
+                                        if (suffBalUser(bal, &reqAmo)) {
+    //                                        printf("bal %u\n", bal);
+    //                                        printf("req %u\n", reqAmo);
+                                            if (LOG) printf("Sufficient Balance in account\n");
+                                            *statusOnChan9 = 1;
+                                            flSleep(1000);
+                                            if (LOG) printf("Write to channel %u = %u \n", 9, *statusOnChan9);
+                                            fStatus = flWriteChannel(handle, (uint8_t) 9, length, statusOnChan9, &error);
+                                            CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
+                                            flSleep(1000);
+                                            uint32_t befEncSen[2];
+                                            for (int i = 0; i < 2; i++) befEncSen[i] = 0;
+                                            if ((*readFromChannelZero) == 1) {
+                                                befEncSen[0] = maxPercent * (dataFromCSV[inLineNum][3] - reqAmo);
+                                            }
+                                            else if ((*readFromChannelZero) == 2)  {
+                                                befEncSen[0] = maxPercent * dataFromCSV[inLineNum][3];
+                                            }
+                                            encrypt64(befEncSen);
+                                            for (uint8_t i = 10; i <= 13; i++) {
+                                                uint8_t tempSto = 0;
+                                                for (uint8_t j = 0; j <= 7; j++) {
+                                                    uint8_t temp = j + (i - 10) * 8;
+                                                    if ((befEncSen[0] & (1 << temp)) != 0) {
+                                                        tempSto += (1 << j);
+                                                    }
+                                                }
+                                                flSleep(1000);
+                                                fStatus = flWriteChannel(handle, (uint8_t) i, length, &tempSto, &error);
+                                                if (LOG) printf("Write to channel %u = %u \n", i, tempSto);
+                                                CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
+                                            }
+
+                                            for (uint8_t i = 14; i <= 17; i++) {
+                                                uint8_t tempSto = 0;
+                                                for (uint8_t j = 0; j <= 7; j++) {
+                                                    uint8_t temp = j + (i - 14) * 8;
+                                                    if ((befEncSen[1] & (1 << temp)) != 0) {
+                                                        tempSto += (1 << j);
+                                                    }
+                                                }
+                                                flSleep(1000);
+                                                fStatus = flWriteChannel(handle, (uint8_t) i, length, &tempSto, &error);
+                                                if (LOG) printf("Write to channel %u = %u \n", i, tempSto);
+                                                CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
+                                            }
+                                            /* update the balance in the global variable now and update the csv here itself */
+                                            if ((*readFromChannelZero) == 1) {
+                                                dataFromCSV[inLineNum][3] -= reqAmo;
+
+                                                /* Updating csv file in place */
+                                                fPtr = fopen("SampleBackEndDatabase.csv", "w+"); // change flag according to need
+                                                fprintf(fPtr, "%s", "\"User ID (decimal)\",\"PIN Hash (decimal)\",\"Admin\",\"Balance (decimal)\"");
+                                                fprintf(fPtr, "\n");
+                                                for (int i = 1; i <= numLines; i++) {
+                                                    for (int k = 0; k < 4; k++) {
+                                                        fprintf(fPtr, "%d", dataFromCSV[i][k]);
+                                                        if (k == 3) {
+                                                            if (i != numLines) fprintf(fPtr, "\n");
+                                                        } else fprintf(fPtr, ",");
+                                                    }
+                                                }
+                                                fclose(fPtr);
+                                            }
+                                        } 
+                                        else {
+    //                                        printf("bal %u\n", bal);
+    //                                        printf("req %u\n", reqAmo);
+                                            if (LOG) printf("Insufficient Balance \n");
+                                            *statusOnChan9 = 2;
+                                            flSleep(1000);
+                                            if (LOG) printf("Write to channel %u = %u \n", 9, *statusOnChan9);
+                                            fStatus = flWriteChannel(handle, (uint8_t) 9, length, statusOnChan9, &error);
+                                            CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
+                                            uint32_t befEncSen[2];
+                                            for (int i = 0; i < 2; i++) befEncSen[i] = 0;
+                                            befEncSen[0] = maxPercent * dataFromCSV[inLineNum][3];
+                                            encrypt64(befEncSen);
+                                            for (uint8_t i = 10; i <= 13; i++) {
+                                                uint8_t tempSto = 0;
+                                                for (uint8_t j = 0; j <= 7; j++) {
+                                                    uint8_t temp = j + (i - 10) * 8;
+                                                    if ((befEncSen[0] & (1 << temp)) != 0) {
+                                                        tempSto += (1 << j);
+                                                    }
+                                                }
+                                                flSleep(1000);
+                                                fStatus = flWriteChannel(handle, (uint8_t) i, length, &tempSto, &error);
+                                                if (LOG) printf("Write to channel %u = %u \n", i, tempSto);
+                                                CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
+                                            }
+
+                                            for (uint8_t i = 14; i <= 17; i++) {
+                                                uint8_t tempSto = 0;
+                                                for (uint8_t j = 0; j <= 7; j++) {
+                                                    uint8_t temp = j + (i - 14) * 8;
+                                                    if ((befEncSen[1] & (1 << temp)) != 0) {
+                                                        tempSto += (1 << j);
+                                                    }
+                                                }
+                                                flSleep(1000);
+                                                fStatus = flWriteChannel(handle, (uint8_t) i, length, &tempSto, &error);
+                                                if (LOG) printf("Write to channel %u = %u \n", i, tempSto);
+                                                CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
+                                            }
+                                        }
+                                    } 
+                                    else {
+                                        printf("User has admin privileges \n");
+                                        *statusOnChan9 = 3;
                                         flSleep(1000);
                                         if (LOG) printf("Write to channel %u = %u \n", 9, *statusOnChan9);
                                         fStatus = flWriteChannel(handle, (uint8_t) 9, length, statusOnChan9, &error);
                                         CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
-                                        flSleep(1000);
+
+                                        for (uint8_t i = 1; i <= 32; i++) {
+                                            if (i <= 8) {
+                                                if ((inpFromFrontEnd[0] & (1 << (i - 1))) != 0) num_100_admin += ((1 << (i - 1)));
+                                            } else if (i <= 16) {
+                                                if ((inpFromFrontEnd[0] & (1 << (i - 1))) != 0) num_500_admin += ((1 << (i - 9)));
+                                            } else if (i <= 24) {
+                                                if ((inpFromFrontEnd[0] & (1 << (i - 1))) != 0) num_1000_admin += ((1 << (i - 17)));
+                                            } else {
+                                                if ((inpFromFrontEnd[0] & (1 << (i - 1))) != 0) num_2000_admin += ((1 << (i - 25)));
+                                            }
+                                        }
+
+    //                            printf("num_2000_admin %u\n", num_2000_admin);
+    //                            printf("num_1000_admin %u\n", num_1000_admin);
+    //                            printf("num_500_admin %u\n", num_500_admin);
+    //                            printf("num_100_admin %u\n", num_100_admin);
+
                                         uint32_t befEncSen[2];
                                         for (int i = 0; i < 2; i++) befEncSen[i] = 0;
-                                        befEncSen[0] = reqAmo;
+                                        for (uint32_t i = 0; i <= 31; i += 8) {
+                                            if (i == 0) befEncSen[0] += ((1 << i) * ((uint32_t) num_100_admin));
+                                            else if (i == 8) befEncSen[0] += ((1 << i) * ((uint32_t) num_500_admin));
+                                            else if (i == 16) befEncSen[0] += ((1 << i) * ((uint32_t) num_1000_admin));
+                                            else befEncSen[0] += ((1 << i) * ((uint32_t) num_2000_admin));
+                                        }
+                                        encrypt64(befEncSen);
+                                        for (uint8_t i = 10; i <= 13; i++) {
+                                            uint8_t tempSto = 0;
+                                            for (uint8_t j = 0; j <= 7; j++) {
+                                                uint8_t temp = j + (i - 10) * 8;
+                                                if ((befEncSen[0] & (1 << temp)) != 0) {
+                                                    tempSto += (1 << j);
+                                                }
+                                            }
+                                            flSleep(1000);
+                                            if (LOG) printf("Write to channel %u = %u \n", i, tempSto);
+                                            fStatus = flWriteChannel(handle, (uint8_t) i, length, &tempSto, &error);
+                                            CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
+                                        }
+
+                                        for (uint8_t i = 14; i <= 17; i++) {
+                                            uint8_t tempSto = 0;
+                                            for (uint8_t j = 0; j <= 7; j++) {
+                                                uint8_t temp = j + (i - 14) * 8;
+                                                if ((befEncSen[1] & (1 << temp)) != 0) {
+                                                    tempSto += (1 << j);
+                                                }
+                                            }
+                                            flSleep(1000);
+                                            if (LOG) printf("Write to channel %u = %u \n", i, tempSto);
+                                            fStatus = flWriteChannel(handle, (uint8_t) i, length, &tempSto, &error);
+                                            CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
+                                        }
+                                    }
+                                }
+                                else {
+                                    printf("Invalid user \n");
+                                    *statusOnChan9 = 4;
+                                    flSleep(1000);
+                                    if (LOG) printf("Write to channel %u = %u \n", 9, *statusOnChan9);
+                                    fStatus = flWriteChannel(handle, (uint8_t) 9, length, statusOnChan9, &error);
+                                    CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
+                                    for (int i = 10; i <= 17; i++) {
+                                        uint8_t tempSto = 0;
+                                        flSleep(1000);
+                                        if (LOG) printf("Write to channel %u = %u \n", i, tempSto);
+                                        fStatus = flWriteChannel(handle, (uint8_t) i, length, &tempSto, &error);
+                                        CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
+                                    }
+                                }
+                            }
+                            else if(valRead == 5) {
+                                uint32_t inpFromFrontEnd[2];
+                                for (int i = 0; i < 2; i++) inpFromFrontEnd[i] = 0;
+                                for (uint32_t i = 1; i <= 8; i++) {
+                                    uint8_t *readFromChannel_i = malloc(sizeof(uint8_t));
+
+                                    flSleep(1000);
+                                    fStatus = flReadChannel(handle, (uint8_t) i, length, readFromChannel_i, &error);
+                                    CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
+                                    if (LOG) printf("Read from channel %u = %u \n", i, *readFromChannel_i);
+                                    uint32_t temp1 = 8 * (i - 1), temp2 = 8 * (i - 5);
+                                    if (i <= 4) inpFromFrontEnd[0] += (*readFromChannel_i) * (1 << temp1);
+                                    else inpFromFrontEnd[1] += (*readFromChannel_i) * (1 << temp2);
+                                }
+                                decrypt64(inpFromFrontEnd);
+                                uint16_t userID = 0, unhashedPin = 0;
+
+                                for (uint16_t i = 1; i <= 32; i++) {
+                                    if (i <= 16) {
+                                        if ((inpFromFrontEnd[1] & (1 << (i - 1))) != 0) unhashedPin += ((1 << (i - 1)));
+                                    } else {
+                                        if ((inpFromFrontEnd[1] & (1 << (i - 1))) != 0) userID += ((1 << (i - 17)));
+                                    }
+                                }
+                                printf("unhashedPin %u\n", unhashedPin);
+                                printf("userID %u\n", userID);
+                                uint16_t hashedPin = myHash(unhashedPin);
+                                printf("hashedPin %u\n", hashedPin);
+                                int bal = -1;
+                                bool isAdmin = false;
+                                int inLineNum = -1;
+
+                                if (find(userID, hashedPin, &isAdmin, &bal, &inLineNum)) {
+                                    printf("Valid user found from cache \n");
+                                    if (!isAdmin) {
+                                        int remCacheBal = inpFromFrontEnd[0];
+                                        printf("Bef Balance %d\n", bal);
+                                        int finalBal = (maxPercent * bal - remCacheBal);
+                                        printf("Final Balance %d\n", finalBal);
+                                        finalBal = bal - finalBal;
+
+                                        uint32_t befEncSen[2];
+                                        for (int i = 0; i < 2; i++) befEncSen[i] = 0;
+                                        befEncSen[0] = maxPercent * finalBal;
                                         encrypt64(befEncSen);
                                         for (uint8_t i = 10; i <= 13; i++) {
                                             uint8_t tempSto = 0;
@@ -464,74 +686,34 @@ int main(int argc, char *argv[]) {
                                             if (LOG) printf("Write to channel %u = %u \n", i, tempSto);
                                             CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
                                         }
-                                        /* update the balance in the global variable now and update the csv here itself */
-                                        if ((*readFromChannelZero) == 1) {
-                                            dataFromCSV[inLineNum][3] -= reqAmo;
 
-                                            /* Updating csv file in place */
-                                            fPtr = fopen("SampleBackEndDatabase.csv", "w+"); // change flag according to need
-                                            fprintf(fPtr, "%s", "\"User ID (decimal)\",\"PIN Hash (decimal)\",\"Admin\",\"Balance (decimal)\"");
-                                            fprintf(fPtr, "\n");
-                                            for (int i = 1; i <= numLines; i++) {
-                                                for (int k = 0; k < 4; k++) {
-                                                    fprintf(fPtr, "%d", dataFromCSV[i][k]);
-                                                    if (k == 3) {
-                                                        if (i != numLines) fprintf(fPtr, "\n");
-                                                    } else fprintf(fPtr, ",");
-                                                }
+                                        /* update the balance in the global variable now and update the csv here itself */   
+                                        dataFromCSV[inLineNum][3] = finalBal;
+
+                                        /* Updating csv file in place */
+                                        fPtr = fopen("SampleBackEndDatabase.csv", "w+"); // change flag according to need
+                                        fprintf(fPtr, "%s", "\"User ID (decimal)\",\"PIN Hash (decimal)\",\"Admin\",\"Balance (decimal)\"");
+                                        fprintf(fPtr, "\n");
+                                        for (int i = 1; i <= numLines; i++) {
+                                            for (int k = 0; k < 4; k++) {
+                                                fprintf(fPtr, "%d", dataFromCSV[i][k]);
+                                                if (k == 3) {
+                                                    if (i != numLines) fprintf(fPtr, "\n");
+                                                } else fprintf(fPtr, ",");
                                             }
-                                            fclose(fPtr);
                                         }
-                                    } else {
-//                                        printf("bal %u\n", bal);
-//                                        printf("req %u\n", reqAmo);
-                                        if (LOG) printf("Insufficient Balance \n");
-                                        *statusOnChan9 = 2;
-                                        flSleep(1000);
-                                        if (LOG) printf("Write to channel %u = %u \n", 9, *statusOnChan9);
-                                        fStatus = flWriteChannel(handle, (uint8_t) 9, length, statusOnChan9, &error);
-                                        CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
-                                        for (int i = 10; i <= 17; i++) {
-                                            uint8_t tempSto = 0;
-                                            flSleep(1000);
-                                            if (LOG) printf("Write to channel %u = %u \n", i, tempSto);
-                                            fStatus = flWriteChannel(handle, (uint8_t) i, length, &tempSto, &error);
-                                            CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
-                                        }
+                                        fclose(fPtr);
                                     }
-                                } else {
-                                    printf("User has admin privileges \n");
-                                    *statusOnChan9 = 3;
-                                    flSleep(1000);
-                                    if (LOG) printf("Write to channel %u = %u \n", 9, *statusOnChan9);
-                                    fStatus = flWriteChannel(handle, (uint8_t) 9, length, statusOnChan9, &error);
-                                    CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
-
-                                    for (uint8_t i = 1; i <= 32; i++) {
-                                        if (i <= 8) {
-                                            if ((inpFromFrontEnd[0] & (1 << (i - 1))) != 0) num_100_admin += ((1 << (i - 1)));
-                                        } else if (i <= 16) {
-                                            if ((inpFromFrontEnd[0] & (1 << (i - 1))) != 0) num_500_admin += ((1 << (i - 9)));
-                                        } else if (i <= 24) {
-                                            if ((inpFromFrontEnd[0] & (1 << (i - 1))) != 0) num_1000_admin += ((1 << (i - 17)));
-                                        } else {
-                                            if ((inpFromFrontEnd[0] & (1 << (i - 1))) != 0) num_2000_admin += ((1 << (i - 25)));
-                                        }
+                                    else {
+                                        printf("%s\n", "Admin found from cache");
+                                        return 0;
                                     }
-
-//                            printf("num_2000_admin %u\n", num_2000_admin);
-//                            printf("num_1000_admin %u\n", num_1000_admin);
-//                            printf("num_500_admin %u\n", num_500_admin);
-//                            printf("num_100_admin %u\n", num_100_admin);
+                                }
+                                else {
+                                    printf("%s\n", "Empty cache");
 
                                     uint32_t befEncSen[2];
                                     for (int i = 0; i < 2; i++) befEncSen[i] = 0;
-                                    for (uint32_t i = 0; i <= 31; i += 8) {
-                                        if (i == 0) befEncSen[0] += ((1 << i) * ((uint32_t) num_100_admin));
-                                        else if (i == 8) befEncSen[0] += ((1 << i) * ((uint32_t) num_500_admin));
-                                        else if (i == 16) befEncSen[0] += ((1 << i) * ((uint32_t) num_1000_admin));
-                                        else befEncSen[0] += ((1 << i) * ((uint32_t) num_2000_admin));
-                                    }
                                     encrypt64(befEncSen);
                                     for (uint8_t i = 10; i <= 13; i++) {
                                         uint8_t tempSto = 0;
@@ -542,8 +724,8 @@ int main(int argc, char *argv[]) {
                                             }
                                         }
                                         flSleep(1000);
-                                        if (LOG) printf("Write to channel %u = %u \n", i, tempSto);
                                         fStatus = flWriteChannel(handle, (uint8_t) i, length, &tempSto, &error);
+                                        if (LOG) printf("Write to channel %u = %u \n", i, tempSto);
                                         CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
                                     }
 
@@ -556,27 +738,13 @@ int main(int argc, char *argv[]) {
                                             }
                                         }
                                         flSleep(1000);
-                                        if (LOG) printf("Write to channel %u = %u \n", i, tempSto);
                                         fStatus = flWriteChannel(handle, (uint8_t) i, length, &tempSto, &error);
+                                        if (LOG) printf("Write to channel %u = %u \n", i, tempSto);
                                         CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
                                     }
                                 }
-                            } else {
-                                printf("Invalid user \n");
-                                *statusOnChan9 = 4;
-                                flSleep(1000);
-                                if (LOG) printf("Write to channel %u = %u \n", 9, *statusOnChan9);
-                                fStatus = flWriteChannel(handle, (uint8_t) 9, length, statusOnChan9, &error);
-                                CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
-                                for (int i = 10; i <= 17; i++) {
-                                    uint8_t tempSto = 0;
-                                    flSleep(1000);
-                                    if (LOG) printf("Write to channel %u = %u \n", i, tempSto);
-                                    fStatus = flWriteChannel(handle, (uint8_t) i, length, &tempSto, &error);
-                                    CHECK_STATUS(fStatus, FLP_LIBERR, cleanup);
-                                }
                             }
-                        }
+                        } 
                     }
                     flSleep(1000);
                 }

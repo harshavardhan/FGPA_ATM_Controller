@@ -208,79 +208,78 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
  *(.iplt)
  .iplt          0x0000000000000000        0x0 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
 
-.text           0x0000000000401060     0x17f2
+.text           0x0000000000401060     0x2022
  *(.text.unlikely .text.*_unlikely .text.unlikely.*)
  *(.text.exit .text.exit.*)
  *(.text.startup .text.startup.*)
- .text.startup  0x0000000000401060     0x128a lin.x64/rel/.build/main.o
+ .text.startup  0x0000000000401060     0x1ab5 lin.x64/rel/.build/main.o
                 0x0000000000401060                main
  *(.text.hot .text.hot.*)
  *(.text .stub .text.* .gnu.linkonce.t.*)
- .text          0x00000000004022ea       0x2a /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
-                0x00000000004022ea                _start
- *fill*         0x0000000000402314        0xc 
- .text          0x0000000000402320       0xbd /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o
- *fill*         0x00000000004023dd        0x3 
- .text          0x00000000004023e0      0x3f6 lin.x64/rel/.build/main.o
-                0x00000000004023e0                decrypt
-                0x0000000000402450                encrypt
-                0x00000000004024c0                decrypt64
-                0x0000000000402530                encrypt64
-                0x00000000004025a0                myHash
-                0x0000000000402700                format
-                0x0000000000402760                find
-                0x00000000004027d0                suffBalUser
- *fill*         0x00000000004027d6        0xa 
- .text          0x00000000004027e0       0x72 /usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
-                0x00000000004027e0                __libc_csu_init
-                0x0000000000402850                __libc_csu_fini
+ .text          0x0000000000402b15       0x2a /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
+                0x0000000000402b15                _start
+ *fill*         0x0000000000402b3f        0x1 
+ .text          0x0000000000402b40       0xbd /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o
+ *fill*         0x0000000000402bfd        0x3 
+ .text          0x0000000000402c00      0x408 lin.x64/rel/.build/main.o
+                0x0000000000402c00                decrypt
+                0x0000000000402c70                encrypt
+                0x0000000000402ce0                decrypt64
+                0x0000000000402d50                encrypt64
+                0x0000000000402dc0                myHash
+                0x0000000000402f20                format
+                0x0000000000402f80                find
+                0x0000000000402ff0                suffBalUser
+ *fill*         0x0000000000403008        0x8 
+ .text          0x0000000000403010       0x72 /usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
+                0x0000000000403010                __libc_csu_init
+                0x0000000000403080                __libc_csu_fini
  *(.gnu.warning)
 
-.fini           0x0000000000402854        0x9
+.fini           0x0000000000403084        0x9
  *(SORT(.fini))
- .fini          0x0000000000402854        0x4 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o
-                0x0000000000402854                _fini
- .fini          0x0000000000402858        0x5 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
-                0x000000000040285d                PROVIDE (__etext, .)
-                0x000000000040285d                PROVIDE (_etext, .)
-                0x000000000040285d                PROVIDE (etext, .)
+ .fini          0x0000000000403084        0x4 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o
+                0x0000000000403084                _fini
+ .fini          0x0000000000403088        0x5 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
+                0x000000000040308d                PROVIDE (__etext, .)
+                0x000000000040308d                PROVIDE (_etext, .)
+                0x000000000040308d                PROVIDE (etext, .)
 
-.rodata         0x0000000000402860      0x5c0
+.rodata         0x0000000000403090      0x620
  *(.rodata .rodata.* .gnu.linkonce.r.*)
  .rodata.str1.1
-                0x0000000000402860      0x1b5 lin.x64/rel/.build/main.o
-                                        0x1d2 (size before relaxing)
- *fill*         0x0000000000402a15        0x3 
+                0x0000000000403090      0x218 lin.x64/rel/.build/main.o
+                                        0x235 (size before relaxing)
  .rodata.str1.8
-                0x0000000000402a18      0x3f8 lin.x64/rel/.build/main.o
+                0x00000000004032a8      0x3f8 lin.x64/rel/.build/main.o
                                         0x3f5 (size before relaxing)
- .rodata.cst16  0x0000000000402e10       0x10 lin.x64/rel/.build/main.o
+ .rodata.cst16  0x00000000004036a0       0x10 lin.x64/rel/.build/main.o
 
 .rodata1
  *(.rodata1)
 
-.eh_frame_hdr   0x0000000000402e20       0x6c
+.eh_frame_hdr   0x00000000004036b0       0x6c
  *(.eh_frame_hdr)
- .eh_frame_hdr  0x0000000000402e20       0x6c /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
+ .eh_frame_hdr  0x00000000004036b0       0x6c /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
 
-.eh_frame       0x0000000000402e90      0x21c
+.eh_frame       0x0000000000403720      0x21c
  *(.eh_frame)
- .eh_frame      0x0000000000402e90       0x30 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
- .eh_frame      0x0000000000402ec0       0x40 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
- .eh_frame      0x0000000000402f00      0x148 lin.x64/rel/.build/main.o
+ .eh_frame      0x0000000000403720       0x30 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
+ .eh_frame      0x0000000000403750       0x40 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o
+ .eh_frame      0x0000000000403790      0x148 lin.x64/rel/.build/main.o
                                         0x128 (size before relaxing)
- .eh_frame      0x0000000000403048        0x0 lin.x64/rel/.build/sig.o
+ .eh_frame      0x00000000004038d8        0x0 lin.x64/rel/.build/sig.o
                                          0x60 (size before relaxing)
- .eh_frame      0x0000000000403048       0x60 /usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
+ .eh_frame      0x00000000004038d8       0x60 /usr/lib/x86_64-linux-gnu/libc_nonshared.a(elf-init.oS)
                                          0x78 (size before relaxing)
- .eh_frame      0x00000000004030a8        0x4 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtend.o
+ .eh_frame      0x0000000000403938        0x4 /usr/lib/gcc/x86_64-linux-gnu/4.8/crtend.o
 
 .gcc_except_table
  *(.gcc_except_table .gcc_except_table.*)
 
 .exception_ranges
  *(.exception_ranges .exception_ranges*)
-                0x00000000004030ac                . = (ALIGN (0x200000) - ((0x200000 - .) & 0x1fffff))
+                0x000000000040393c                . = (ALIGN (0x200000) - ((0x200000 - .) & 0x1fffff))
                 0x0000000000603ddc                . = DATA_SEGMENT_ALIGN (0x200000, 0x1000)
 
 .eh_frame
@@ -362,11 +361,12 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
 .data           0x0000000000604140       0x14
  *(.data .data.* .gnu.linkonce.d.*)
  .data          0x0000000000604140       0x14 lin.x64/rel/.build/main.o
-                0x0000000000604140                max100Limit
-                0x0000000000604141                max500Limit
-                0x0000000000604142                max1000Limit
-                0x0000000000604143                max2000Limit
-                0x0000000000604144                maxAmountCanBeDispensed
+                0x0000000000604140                maxPercent
+                0x0000000000604148                max100Limit
+                0x0000000000604149                max500Limit
+                0x000000000060414a                max1000Limit
+                0x000000000060414b                max2000Limit
+                0x000000000060414c                maxAmountCanBeDispensed
                 0x0000000000604150                bankID
 
 .tm_clone_table
@@ -1878,6 +1878,7 @@ max100Limit                                       lin.x64/rel/.build/main.o
 max2000Limit                                      lin.x64/rel/.build/main.o
 max500Limit                                       lin.x64/rel/.build/main.o
 maxAmountCanBeDispensed                           lin.x64/rel/.build/main.o
+maxPercent                                        lin.x64/rel/.build/main.o
 mbrlen                                            /lib/x86_64-linux-gnu/libc.so.6
 mbrlen@@GLIBC_2.2.5                               /lib/x86_64-linux-gnu/libc.so.6
 mbrlen@GLIBC_2.2.5                                /lib/x86_64-linux-gnu/libc.so.6
